@@ -1,0 +1,103 @@
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width initial-scale=1.0,user-scalable=0,maximum-scale=1.5">
+	<title></title>
+	<script>workName = "v_vis"</script>
+	<link rel="stylesheet" href="style/reset.css">
+	<link rel="stylesheet" href="style/style.css">
+	<link rel="icon" type="image/png" href="web_icon.png" />
+	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-114514958-1"></script>
+	<!-- Google Tag Manager -->
+	<script>
+			(function (w, d, s, l, i) {
+				w[l] = w[l] || []; w[l].push({
+					'gtm.start':
+						new Date().getTime(), event: 'gtm.js'
+				}); var f = d.getElementsByTagName(s)[0],
+					j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+						'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+			})(window, document, 'script', 'dataLayer', 'GTM-PMLJXPC');
+	</script>
+	<!-- End Google Tag Manager -->
+</head>
+
+<body>
+	<!-- Google Tag Manager (noscript) -->
+	<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PMLJXPC" height="0" width="0"
+			style="display:none;visibility:hidden"></iframe></noscript>
+	<!-- End Google Tag Manager (noscript) -->
+	<header class="lg"></header>
+	<!-- /**Title************************************************************/ -->
+	<div class="container" style="max-width: 1500px;">
+		<h1 class="hidden"></h1>
+		<div id="sidebar" class="lg"></div>
+		<!-- /**************************************************************/ -->
+		<div class="article">
+
+			<img id="img00" style="max-width: 1500px;" class="scrollSession pt-md mt-xl mb-xs">
+			<h6 class="gray">illustrator</h6>
+
+
+			<img id="img01" style=" max-width: 1500px;" class="scrollSession pt-md mt-xl mb-xs">
+			<h6 class="gray">illustrator</h6>
+
+
+			<img id="img02" style=" max-width: 1500px;" class="scrollSession pt-md mt-xl mb-xs">
+			<h6 class="gray">illustrator</h6>
+
+
+			<img id="img03" style="max-width: 1500px;" class="scrollSession pt-md mt-xl mb-xs">
+			<h6 class="gray">illustrator</h6>
+
+			<div id="img04" class="scrollSession move-by-scroll-box pt-md mt-xl mb-xs">
+				<img style=" max-width: 1500px;" class="mb-xs">
+				<img style="width: 14%; bottom: 50%; opacity: 0.95;" class="move-by-scroll f-radius-md " alt="gif">
+				<img style="width: 14%; bottom: 72%; opacity: 0.95;" class="move-by-scroll f-radius-md " alt="gif">
+				<video id="v_01" style=" right: 16px; bottom: 5%;" class="v_vis_v" src="../image/v_01.mp4"
+					muted></video>
+			</div>
+			<h6 class="gray">3d Max, V-ray, Photoshop</h6>
+
+
+			<div id="img05" class="scrollSession move-by-scroll-box pt-md mt-xl mb-xs">
+				<img style=" max-width: 1500px;" class="mb-xs">
+				<iframe width="60%" height="60%" style=" bottom: 32px;" class="move-by-scroll"
+					src="https://www.youtube.com/embed/wK7eU07037c" title="YouTube video player" frameborder="0"
+					allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+					allowfullscreen></iframe>
+			</div>
+			<h6 class="gray">Illustrator, After Effects</h6>
+
+
+			<img id="img06" style=" max-width: 1500px;" class="scrollSession pt-md mt-xl mb-xs">
+			<h6 class="gray">illustrator</h6>
+
+
+			<a id="lastBtn" class="icon-btn po-fixed hidden" style="bottom: 5%;right: 76px;">arrow_upward</a>
+			<a id="nextBtn" class="icon-btn po-fixed hidden" style="bottom: 5%;right: 16px;">arrow_downward</a>
+
+		</div>
+	</div>
+	<footer></footer>
+
+</body>
+<script src="js/app.js"></script>
+<script src="js/image_nexter.js"></script>
+<script>
+	var v_01 = $("v_01")
+	var v_01Tag = 0
+	v_01.addEventListener('click', function (e) {
+		if (v_01Tag == 0) {
+			v_01.play()
+			v_01Tag = 1
+		} else {
+			v_01.pause()
+			v_01Tag = 0
+		}
+
+	})
+
+
+</script>
+
+</html>
