@@ -47,7 +47,7 @@
 <body>
     <div class="container">
         <input type="text">
-        <ul>
+        <ul id="your-container">
             <li>100</li>
             <li>100</li>
             <li>100</li>
@@ -63,4 +63,25 @@
         </ul>
     </div>
 </body>
+<script>
+    // 檢查是否支援 visualViewport API
+if (window.visualViewport) {
+  // 監聽視窗大小變化事件
+  window.visualViewport.addEventListener('resize', () => {
+    // 獲取當前可視區域高度
+    const viewportHeight = window.visualViewport.height;
+    
+    // 獲取視窗偏移量（虛擬鍵盤可能導致的）
+    const offsetTop = window.visualViewport.offsetTop;
+    
+    // 調整您的容器或元素高度
+    const yourContainer = document.getElementById('your-container');
+    yourContainer.style.height = `${viewportHeight}px`;
+    yourContainer.style.top = `${offsetTop}px`;
+    
+    console.log('可視區域高度:', viewportHeight);
+    console.log('視窗偏移量:', offsetTop);
+  });
+}
+</script>
 </html>
