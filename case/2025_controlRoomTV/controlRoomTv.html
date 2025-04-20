@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>互動式電視牆</title>
+    <link rel="stylesheet" href="style.css">
+
+
+</head>
+
+<body>
+
+    <div class="tv-wall-main-container">
+        <!-- 背景影片 -->
+        <video class="background-video" autoplay loop muted>
+            <source src="elements/" type="video/mp4">
+        </video>
+        <div class="tv-wall-container">
+            <div class="video-wall">
+            </div>
+
+            <a href="#" class="tv-screen tv01">
+                <video autoplay loop muted>
+                    <source src="elements/" type="video/mp4">
+                </video>
+                <span class="border-line bottom"></span>
+                <span class="border-line right"></span>
+                <span class="border-line top"></span>
+                <span class="border-line left"></span>
+            </a>
+            <a href="#" class="tv-screen tv02">
+                <video autoplay loop muted>
+                    <source src="elements/" type="video/mp4">
+                </video>
+                <span class="border-line bottom"></span>
+                <span class="border-line right"></span>
+                <span class="border-line top"></span>
+                <span class="border-line left"></span>
+            </a>
+            <a href="#" class="tv-screen tv03">
+                <video autoplay loop muted>
+                    <source src="elements/ControlRoom.mp4" type="video/mp4">
+                </video>
+                <span class="border-line bottom"></span>
+                <span class="border-line right"></span>
+                <span class="border-line top"></span>
+                <span class="border-line left"></span>
+            </a>
+            <a href="#" class="tv-screen tv04">
+                <video autoplay loop muted>
+                    <source src="elements/Signage.mp4" type="video/mp4">
+                </video>
+                <span class="border-line bottom"></span>
+                <span class="border-line right"></span>
+                <span class="border-line top"></span>
+                <span class="border-line left"></span>
+            </a>
+            <a href="#" class="tv-screen tv05">
+                <video autoplay loop muted>
+                    <source src="elements/" type="video/mp4">
+                </video>
+                <span class="border-line bottom"></span>
+                <span class="border-line right"></span>
+                <span class="border-line top"></span>
+                <span class="border-line left"></span>
+            </a>
+            <a href="#" class="tv-screen tv06">
+                <video autoplay loop muted>
+                    <source src="elements/" type="video/mp4">
+                </video>
+                <span class="border-line bottom"></span>
+                <span class="border-line right"></span>
+                <span class="border-line top"></span>
+                <span class="border-line left"></span>
+            </a>
+            <a href="#" class="tv-screen tv07">
+                <video autoplay loop muted>
+                    <source src="elements/Dashboard.mp4" type="video/mp4">
+                </video>
+                <span class="border-line bottom"></span>
+                <span class="border-line right"></span>
+                <span class="border-line top"></span>
+                <span class="border-line left"></span>
+            </a>
+            <a href="#" class="tv-screen tv08">
+                <video autoplay loop muted>
+                    <source src="elements/MeetingRoom.mp4" type="video/mp4">
+                </video>
+                <span class="border-line bottom"></span>
+                <span class="border-line right"></span>
+                <span class="border-line top"></span>
+                <span class="border-line left"></span>
+            </a>
+            <a href="#" class="tv-screen tv09">
+                <video autoplay loop muted>
+                    <source src="elements/WorkStation.mp4" type="video/mp4">
+                </video>
+                <span class="border-line bottom"></span>
+                <span class="border-line right"></span>
+                <span class="border-line top"></span>
+                <span class="border-line left"></span>
+            </a>
+            <a href="#" class="tv-screen tv10">
+                <video autoplay loop muted>
+                    <source src="elements/Broadcast.mp4" type="video/mp4">
+                </video>
+                <span class="border-line bottom"></span>
+                <span class="border-line right"></span>
+                <span class="border-line top"></span>
+                <span class="border-line left"></span>
+            </a>
+            <a href="#" class="tv-screen tv11">
+                <video autoplay loop muted>
+                    <source src="elements/ConferenceSuit.mp4" type="video/mp4">
+                </video>
+                <span class="border-line bottom"></span>
+                <span class="border-line right"></span>
+                <span class="border-line top"></span>
+                <span class="border-line left"></span>
+            </a>
+            <a href="#" class="tv-screen tv12">
+                <video autoplay loop muted>
+                    <source src="elements/ServerRoom.mp4" type="video/mp4">
+                </video>
+                <span class="border-line bottom"></span>
+                <span class="border-line right"></span>
+                <span class="border-line top"></span>
+                <span class="border-line left"></span>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // 為了確保在行動裝置上順利運行，加載所有影片
+        document.addEventListener('DOMContentLoaded', function () {
+            const videos = document.querySelectorAll('video');
+            videos.forEach(video => {
+                // 設定預加載
+                video.load();
+                // 確保影片循環播放
+                video.addEventListener('ended', function () {
+                    this.currentTime = 0;
+                    this.play();
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>
