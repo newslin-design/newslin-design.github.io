@@ -15,7 +15,7 @@
     <div class="tv-wall-main-container">
         <!-- 背景影片 -->
         <video class="background-video" autoplay loop muted>
-            <source src="elements/" type="video/mp4">
+            <source src="elements/Background.mp4" type="video/mp4">
         </video>
         <div class="tv-wall-container">
             <div class="video-wall" id="videoWall"></div>
@@ -43,12 +43,25 @@
             const row = Math.floor(index / columns);
             const num = (index + 1).toString().padStart(2, '0');
 
-            const screen = document.createElement('a');
-            screen.href = "#";
+            const screen = document.createElement('div');
             screen.className = `tv-screen`;
             screen.style.width = `${100 / columns}%`
             screen.style.left = `${(100 / columns) * col + 100 / columns / 2}%`;
             screen.style.top = `${(100 / rows) * row + 100 / rows / 2}%`;
+
+            const link = document.createElement('a');
+            link.href = "#";
+            link.className = `screen-link`;
+            link.target = `_blank`;
+            link.dataToggle = `modal`;
+            link.dataTarget = `#lightBox_webpage_solution-page-${index}`;
+            link.rel = `noopener`;
+
+
+            const text = document.createElement('div');
+            text.className = `screen-text`;
+            text.innerText = name;
+
 
 
             const video = document.createElement('video');
@@ -63,7 +76,10 @@
 
 
             video.appendChild(source);
+
             screen.appendChild(video);
+            screen.appendChild(link);
+            screen.appendChild(text);
 
             ['bottom', 'right', 'top', 'left'].forEach(pos => {
                 const border = document.createElement('span');

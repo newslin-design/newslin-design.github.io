@@ -45,17 +45,17 @@ tv-wall
     padding-top: 60%;
     -webkit-transform-style: preserve-3d;
     transform-style: preserve-3d;
-    -webkit-perspective: 1500px;
-    perspective: 1500px;
+    -webkit-perspective: 1300px;
+    perspective: 1300px;
     margin: auto;
     overflow: hidden;
-    background-color: #3b3b3b;
+    /* background-color: #3b3b3b; */
 }
 
 .video-wall {
     position: absolute;
     left: 50%;
-    top: 50%;
+    top: 40%;
     width: 120%;
     display: flex;
     flex-wrap: wrap;
@@ -63,7 +63,7 @@ tv-wall
     background-color: #000;
     border: 8px solid #111;
     border-radius: 12px;
-    transform: translate3d(-20%, -90%, -1800px) rotateX(-10deg) rotateY(-15deg);
+    transform: translate3d(-20%, -90%, -1800px) rotateX(-5deg) rotateY(-25deg) rotateZ(-2deg);
     transition: transform 1s ease;
 }
 
@@ -73,17 +73,58 @@ tv-wall
     left: 50%;
     top: 50%;
     aspect-ratio: 16/9;
-    overflow: hidden;
     border-radius: 0;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
     transform-style: preserve-3d;
     transform: translateZ(0);
     cursor: pointer;
     transition: all 1s ease;
-    background-color: #333;
     border: 1px solid #0000003a;
     transform: translate3d(-50%, -50%, 0px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.5s ease;
+    cursor: pointer;
+    /* overflow: hidden; */
+
 }
+
+.tv-screen .screen-text {
+    position: absolute;
+    top: 109%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #fff;
+    opacity: 0;
+    transition: 1.5s;
+}
+
+.tv-screen.open .screen-text {
+    opacity: 1;
+}
+
+
+
+.tv-screen .screen-link {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+
+}
+
+.tv-screen.open .screen-link {
+
+    pointer-events: all
+}
+
+
+
+
+
 
 .tv-screen video {
     width: 100%;
@@ -91,19 +132,29 @@ tv-wall
     object-fit: cover;
 }
 
+
+
 /* Desktop hover effect */
 @media (min-width: 769px) {
     .tv-screen:hover {
         z-index: 10;
-        box-shadow: 0 0 25px rgba(0, 255, 255, 0.7);
-        transform: translate3d(-50%, -50%, 150px) rotateX(0deg) rotateY(0deg) scale(1.3);
+        box-shadow: 0 0 32px rgba(0, 255, 255, 0.5);
+        transform: translate3d(-50%, -50%, 150px) rotateX(0deg) rotateY(0deg) scale(1.2);
     }
 
     .tv-screen.open {
         z-index: 10;
-        box-shadow: 0 0 12px rgba(0, 255, 255, 0.4);
-        transform: translate3d(-50%, -50%, 2300px) rotateX(0deg) rotateY(0deg) scale(1.2);
+        box-shadow: 0 0 25px rgba(0, 0, 0, 0.5);
+        transform: translate3d(-50%, -20%, 2200px) rotateX(0deg) rotateY(0deg) scale(1);
+        border-radius: 8px;
+        opacity: 0.9;
+        border: 2px solid #000000;
     }
+
+    .tv-screen.open video {
+        border-radius: 8px;
+    }
+
 
 
     .tv-screen:hover::after {
@@ -149,28 +200,15 @@ tv-wall
 tv-wall 動畫 
 
 ************************************** */
-.tv-screen {
-    position: absolute;
-    aspect-ratio: 16/9;
-    width: 25%;
-    overflow: hidden;
-    background-color: #333;
-    border: 1px solid #0000003a;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
-    transition: all 0.5s ease;
-    cursor: pointer;
-}
-
-
-
 
 
 
 /* 動畫邊框效果 */
 .border-line {
     position: absolute;
-    background-color: #fc2f70;
+    background-color: #34f5ffd0;
     transition: transform 0.4s ease;
+
 }
 
 .border-line.bottom,
@@ -217,6 +255,7 @@ tv-wall 動畫
 .tv-screen:hover .border-line.top {
     transform-origin: top left;
     transform: scaleX(1);
+
 }
 
 .tv-screen:hover .border-line.right {
