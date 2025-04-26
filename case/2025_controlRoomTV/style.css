@@ -16,7 +16,7 @@ body {
     max-width: 1440px;
     margin: auto;
     position: relative;
-    /* overflow: hidden; */
+    overflow: hidden;
 
 }
 
@@ -30,7 +30,15 @@ body {
 }
 
 
-
+.tables {
+    width: 70%;
+    mix-blend-mode: lighten;
+    mix-blend-mode: screen;
+    position: absolute;
+    top: 45%;
+    left: -5%;
+    /* opacity: 0.6; */
+}
 
 
 /* **************************************
@@ -55,7 +63,7 @@ tv-wall
 .video-wall {
     position: absolute;
     left: 50%;
-    top: 40%;
+    top: 38%;
     width: 120%;
     display: flex;
     flex-wrap: wrap;
@@ -86,8 +94,10 @@ tv-wall
     align-items: center;
     transition: all 0.5s ease;
     cursor: pointer;
-    /* overflow: hidden; */
+}
 
+.tv-screen.disable {
+    pointer-events: none;
 }
 
 .tv-screen .screen-text {
@@ -117,7 +127,6 @@ tv-wall
 }
 
 .tv-screen.open .screen-link {
-
     pointer-events: all
 }
 
@@ -134,34 +143,31 @@ tv-wall
 
 
 
-/* Desktop hover effect */
-@media (min-width: 769px) {
-    .tv-screen:hover {
-        z-index: 10;
-        box-shadow: 0 0 32px rgba(0, 255, 255, 0.5);
-        transform: translate3d(-50%, -50%, 150px) rotateX(0deg) rotateY(0deg) scale(1.2);
-    }
 
-    .tv-screen.open {
-        z-index: 10;
-        box-shadow: 0 0 25px rgba(0, 0, 0, 0.5);
-        transform: translate3d(-50%, -20%, 2200px) rotateX(0deg) rotateY(0deg) scale(1);
-        border-radius: 8px;
-        opacity: 0.9;
-        border: 2px solid #000000;
-    }
+.tv-screen:hover {
+    z-index: 10;
+    box-shadow: 0 0 32px rgba(0, 255, 255, 0.5);
+    transform: translate3d(-50%, -50%, 150px) rotateX(0deg) rotateY(0deg) scale(1.2);
+}
 
-    .tv-screen.open video {
-        border-radius: 8px;
-    }
+.tv-screen.open {
+    z-index: 10;
+    box-shadow: 0 0 25px rgba(0, 0, 0, 0.8);
+    transform: translate3d(-50%, -20%, 2200px) rotateX(0deg) rotateY(0deg) scale(1);
+    border-radius: 8px;
+    opacity: 0.9;
+    border: 0px solid #000000;
+    /* box-sizing: content-box; */
+}
 
+.tv-screen.open video {
+    border-radius: 8px;
+}
 
-
-    .tv-screen:hover::after {
-        border-color: #00ffff;
-        box-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff;
-        animation: borderGlow 2s linear infinite;
-    }
+.tv-screen:hover::after {
+    border-color: #00ffff;
+    box-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff;
+    animation: borderGlow 2s linear infinite;
 }
 
 
@@ -172,22 +178,106 @@ tv-wall
 }
 
 
-
 .close-btn {
     position: absolute;
-    right: -22%;
-    top: -48%;
-    width: 64px;
-    height: 64px;
+    right: -10%;
+    top: -18%;
+    width: 22px;
+    height: 22px;
+    font-size: 10px;
     background-color: rgba(0, 0, 0, 0.708);
     border-radius: 50%;
-    font-size: 28px;
     color: #fff;
-    z-index: 500;
     border: 1px solid #333;
     box-shadow: 0 0 32px #000000ac;
     cursor: pointer;
+    transform: translate3d(-50%, -50%, 0px);
+    opacity: 0;
+    transition: 1s;
 }
+
+.close-btn.open {
+    right: 37.4%;
+    top: 46.2%;
+    transform: translate3d(-50%, -50%, 2201px);
+    opacity: 1;
+
+}
+
+
+
+/* Desktop hover effect */
+@media (max-width: 820px) {
+
+    .close-btn.open {
+        right: 37.4%;
+        top: 47.2%;
+        transform: translate3d(-50%, -50%, 2201px);
+        width: 17px;
+        height: 17px;
+        opacity: 1;
+        font-size: 8px;
+
+    }
+
+}
+
+
+
+/* Desktop hover effect */
+@media (max-width: 500px) {
+
+
+    .tv-wall-container {
+        padding-top: 120%;
+    }
+
+    .background-video {
+        width: auto;
+        height: 100%;
+        left: -50%;
+    }
+
+    .tables {
+        opacity: 0;
+    }
+
+
+    .video-wall {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 90%;
+        border: 1px solid #0000003a;
+        pointer-events: none;
+        transform: translate3d(-50%, -50%, 0px) rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+    }
+
+    .close-btn.open {
+        right: 37.4%;
+        top: 47.2%;
+        transform: translate3d(-50%, -50%, 2201px);
+        width: 17px;
+        height: 17px;
+        opacity: 1;
+        font-size: 8px;
+
+    }
+
+    .tv-screen .screen-link {
+        pointer-events: all
+    }
+
+    .tv-screen .screen-text {
+        font-size: 12px;
+        top: 85%;
+        left: 50%;
+        color: #fff;
+        opacity: 1;
+        text-shadow: 0 0 3px #000;
+    }
+}
+
 
 
 

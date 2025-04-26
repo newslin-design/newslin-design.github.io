@@ -14,6 +14,8 @@
 
     <div class="tv-wall-main-container">
         <!-- 背景影片 -->
+        <img class="tables" src="elements/table.png" alt="">
+
         <video class="background-video" autoplay loop muted>
             <source src="elements/Background.mp4" type="video/mp4">
         </video>
@@ -23,125 +25,144 @@
     </div>
 
     <script>
-
-
-        const columns = 4; // 電視牆幾欄
-        const rows = 3;    // 電視牆幾列
-        const videoList = [
-            "", "", "ControlRoom", "Signage",
-            "", "", "Dashboard", "MeetingRoom",
-            "WorkStation", "Broadcast", "ConferenceSuit", "ServerRoom"
-        ];
-
-        const videoWall = document.getElementById("videoWall");
-        videoWall.style.aspectRatio = (16 * columns) / (9 * rows)
-
-        videoWall.style.setProperty('--columns', columns);
-
-        videoList.forEach((name, index) => {
-            const col = index % columns;
-            const row = Math.floor(index / columns);
-            const num = (index + 1).toString().padStart(2, '0');
-
-            const screen = document.createElement('div');
-            screen.className = `tv-screen`;
-            screen.style.width = `${100 / columns}%`
-            screen.style.left = `${(100 / columns) * col + 100 / columns / 2}%`;
-            screen.style.top = `${(100 / rows) * row + 100 / rows / 2}%`;
-
-            const link = document.createElement('a');
-            link.href = "#";
-            link.className = `screen-link`;
-            link.target = `_blank`;
-            link.dataToggle = `modal`;
-            link.dataTarget = `#lightBox_webpage_solution-page-${index}`;
-            link.rel = `noopener`;
-
-
-            const text = document.createElement('div');
-            text.className = `screen-text`;
-            text.innerText = name;
-
-
-
-            const video = document.createElement('video');
-            video.autoplay = true;
-            video.loop = true;
-            video.muted = true;
-
-            const source = document.createElement('source');
-            source.src = name ? `elements/${name}.mp4` : "elements/";
-            source.type = "video/mp4";
-
-
-
-            video.appendChild(source);
-
-            screen.appendChild(video);
-            screen.appendChild(link);
-            screen.appendChild(text);
-
-            ['bottom', 'right', 'top', 'left'].forEach(pos => {
-                const border = document.createElement('span');
-                border.className = `border-line ${pos}`;
-                screen.appendChild(border);
-            });
-
-            videoWall.appendChild(screen);
-        });
-
-
-
-
         let openedScreen = null;
         let originalLeft = "";
         let originalTop = "";
+        let isMobile = window.innerWidth < 500;
 
-        videoWall.addEventListener('click', (e) => {
-            const target = e.target.closest('.tv-screen');
-            if (!target || openedScreen === target) return;
+        function createVideoWall() {
+            isMobile = window.innerWidth < 500; // 每次建牆時重新判定
 
-            // 移除之前的 open 狀態
-            if (openedScreen) {
-                openedScreen.classList.remove('open');
-                openedScreen.style.left = originalLeft;
-                openedScreen.style.top = originalTop;
+            const columns = isMobile ? 2 : 4;
+            const rows = isMobile ? 4 : 3;
 
-                const closeBtn = document.querySelector('.close-btn');
-                if (closeBtn) closeBtn.remove();
+            const videoList = [
+                "", "", "ControlRoom", "Signage",
+                "", "", "Dashboard", "MeetingRoom",
+                "WorkStation", "Broadcast", "ConferenceSuit", "ServerRoom"
+            ];
+
+            const videoWall = document.getElementById("videoWall");
+            videoWall.innerHTML = '';
+            videoWall.style.aspectRatio = (16 * columns) / (9 * rows);
+            videoWall.style.setProperty('--columns', columns);
+
+            videoList.forEach((name, index) => {
+                if (isMobile && [0, 1, 4, 5].includes(index)) {
+                    return;
+                }
+
+                const screen = document.createElement('div');
+                screen.className = `tv-screen`;
+
+                const count = videoWall.childElementCount;
+                const col = count % columns;
+                const row = Math.floor(count / columns);
+
+                screen.style.width = `${100 / columns}%`;
+                screen.style.left = `${(100 / columns) * col + 100 / columns / 2}%`;
+                screen.style.top = `${(100 / rows) * row + 100 / rows / 2}%`;
+
+                const link = document.createElement('a');
+                link.href = "#";
+                link.className = `screen-link`;
+                link.target = `_blank`;
+                link.dataToggle = `modal`;
+                link.dataTarget = `#lightBox_webpage_solution-page-${index}`;
+                link.rel = `noopener`;
+
+                const text = document.createElement('div');
+                text.className = `screen-text`;
+                text.innerText = name;
+
+                const video = document.createElement('video');
+                video.autoplay = true;
+                video.loop = true;
+                video.muted = true;
+
+                const source = document.createElement('source');
+                source.src = name ? `elements/${name}.mp4` : "elements/";
+                source.type = "video/mp4";
+
+                video.appendChild(source);
+                screen.appendChild(video);
+                screen.appendChild(link);
+                screen.appendChild(text);
+
+                ['bottom', 'right', 'top', 'left'].forEach(pos => {
+                    const border = document.createElement('span');
+                    border.className = `border-line ${pos}`;
+                    screen.appendChild(border);
+                });
+
+                videoWall.appendChild(screen);
+            });
+
+            setupClickEvent();
+        }
+
+        function setupClickEvent() {
+            const videoWall = document.getElementById("videoWall");
+
+            // 先移除之前的 listener，避免重複綁定
+            videoWall.onclick = null;
+
+            if (isMobile) {
+                return; // 手機版直接不綁 click
             }
-            videoWall.classList.remove('open');
 
-            // 記住原本位置並開啟新的 open 狀態
-            openedScreen = target;
-            originalLeft = openedScreen.style.left;
-            originalTop = openedScreen.style.top;
+            videoWall.onclick = (e) => {
+                const target = e.target.closest('.tv-screen');
+                if (!target || openedScreen === target) return;
 
-            openedScreen.classList.add('open');
-            openedScreen.style.left = '50%';     // ✅ 加上置中
-            openedScreen.style.top = '50%';      // ✅ 加上置中
-            videoWall.classList.add('open');
+                if (openedScreen) {
+                    openedScreen.classList.remove('open');
+                    openedScreen.style.left = originalLeft;
+                    openedScreen.style.top = originalTop;
 
-            // 新增關閉按鈕
-            const btn = document.createElement('button');
-            btn.textContent = '✕';
-            btn.className = 'close-btn';
-            btn.onclick = (e) => {
-                e.stopPropagation();
-                openedScreen.classList.remove('open');
-                openedScreen.style.left = originalLeft; // ✅ 恢復原位置
-                openedScreen.style.top = originalTop;
+                    const closeBtn = document.querySelector('.close-btn');
+                    if (closeBtn) closeBtn.remove();
+                }
                 videoWall.classList.remove('open');
-                btn.remove();
-                openedScreen = null;
+
+                openedScreen = target;
+                originalLeft = openedScreen.style.left;
+                originalTop = openedScreen.style.top;
+
+                openedScreen.classList.add('open');
+                openedScreen.style.left = '50%';
+                openedScreen.style.top = '50%';
+                videoWall.classList.add('open');
+
+                const btn = document.createElement('button');
+                btn.textContent = '✕';
+                btn.className = 'close-btn';
+                setTimeout(() => {
+                    btn.classList.add('open');
+                }, 10);
+
+                btn.onclick = (e) => {
+                    e.stopPropagation();
+                    if (openedScreen) {
+                        openedScreen.classList.remove('open');
+                        openedScreen.style.left = originalLeft;
+                        openedScreen.style.top = originalTop;
+                        openedScreen = null;
+                    }
+                    videoWall.classList.remove('open');
+                    btn.remove();
+                };
+                videoWall.appendChild(btn);
             };
-            videoWall.appendChild(btn);
+        }
+
+        // 初始化
+        createVideoWall();
+
+        // 螢幕大小改變時重建
+        window.addEventListener('resize', () => {
+            createVideoWall();
         });
-
-
-
-
-
 
 
 
