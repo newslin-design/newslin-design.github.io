@@ -87,6 +87,7 @@
                     video.autoplay = true;
                     video.loop = true;
                     video.muted = true;
+                    video.playsinline = true;
                     const source = document.createElement('source');
                     source.src = name ? `elements/${name}.mp4` : "elements/";
                     source.type = "video/mp4";
