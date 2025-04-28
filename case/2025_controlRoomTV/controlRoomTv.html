@@ -35,10 +35,11 @@
 
             const columns = isMobile ? 2 : 4;
             const rows = isMobile ? 4 : 3;
+            const unClickableScreenIndexs = [0, 1, 4, 5]
 
             const videoList = [
-                "", "", "ControlRoom", "Signage",
-                "", "", "Dashboard", "MeetingRoom",
+                "ControlRoom01", "ControlRoom02", "ControlRoom", "Signage",
+                "ControlRoom03", "ControlRoom04", "Dashboard", "MeetingRoom",
                 "WorkStation", "Broadcast", "ConferenceSuit", "ServerRoom"
             ];
 
@@ -48,7 +49,7 @@
             videoWall.style.setProperty('--columns', columns);
 
             videoList.forEach((name, index) => {
-                if (isMobile && [0, 1, 4, 5].includes(index)) {
+                if (isMobile && unClickableScreenIndexs.includes(index)) {
                     return;
                 }
 
@@ -75,17 +76,25 @@
                 text.className = `screen-text`;
                 text.innerText = name;
 
-                const video = document.createElement('video');
-                video.autoplay = true;
-                video.loop = true;
-                video.muted = true;
 
-                const source = document.createElement('source');
-                source.src = name ? `elements/${name}.mp4` : "elements/";
-                source.type = "video/mp4";
+                if (unClickableScreenIndexs.includes(index)) {
+                    const img = document.createElement('img');
+                    img.src = name ? `elements/${name}.png` : "elements/";
+                    screen.style.pointerEvents = "none"
+                    screen.appendChild(img);
+                } else {
+                    const video = document.createElement('video');
+                    video.autoplay = true;
+                    video.loop = true;
+                    video.muted = true;
+                    const source = document.createElement('source');
+                    source.src = name ? `elements/${name}.mp4` : "elements/";
+                    source.type = "video/mp4";
+                    video.appendChild(source);
+                    screen.appendChild(video);
+                }
 
-                video.appendChild(source);
-                screen.appendChild(video);
+
                 screen.appendChild(link);
                 screen.appendChild(text);
 
