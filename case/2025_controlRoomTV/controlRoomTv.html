@@ -176,12 +176,6 @@
 
 
 
-
-
-
-
-
-
         // 為了確保在行動裝置上順利運行，加載所有影片
         document.addEventListener('DOMContentLoaded', function () {
             const videos = document.querySelectorAll('video');
@@ -195,6 +189,16 @@
                 });
             });
         });
+        document.addEventListener('touchstart', () => {
+            const videos = document.querySelectorAll('video');
+            videos.forEach(video => {
+                if (video.paused) {
+                    video.play().catch(e => {
+                        console.log('播放失敗:', e);
+                    });
+                }
+            });
+        }, { once: true });
     </script>
 </body>
 
