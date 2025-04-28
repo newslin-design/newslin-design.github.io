@@ -112,12 +112,15 @@ tv-wall
     pointer-events: none;
 }
 
-
-.tv-screen:hover {
-    z-index: 10;
-    box-shadow: 0 0 32px rgba(0, 255, 255, 0.5);
-    transform: translate3d(-50%, -50%, 150px) rotateX(0deg) rotateY(0deg) scale(1.2);
+@media (min-width: 500px) {
+    .tv-screen:hover {
+        z-index: 10;
+        box-shadow: 0 0 32px rgba(0, 255, 255, 0.5);
+        transform: translate3d(-50%, -50%, 150px) rotateX(0deg) rotateY(0deg) scale(1.2);
+    }
 }
+
+
 
 .tv-screen.open {
     z-index: 10;
@@ -129,17 +132,13 @@ tv-wall
 
 }
 
-@media (min-width: 820px) {
 
-    .tv-screen.open:hover {
-        transform: translate3d(-50%, -20%, 2200px) rotateX(0deg) rotateY(0deg) scale(1);
-        box-shadow: 0 0 28px rgb(3, 247, 255);
 
-    }
+.tv-screen.open:hover {
+    transform: translate3d(-50%, -20%, 2200px) rotateX(0deg) rotateY(0deg) scale(1);
+    box-shadow: 0 0 28px rgb(3, 247, 255);
 
 }
-
-
 
 
 
