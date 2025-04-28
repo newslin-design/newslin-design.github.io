@@ -129,12 +129,19 @@ tv-wall
 
 }
 
+@media (min-width: 820px) {
 
-.tv-screen.open:hover {
-    transform: translate3d(-50%, -20%, 2200px) rotateX(0deg) rotateY(0deg) scale(1);
-    box-shadow: 0 0 28px rgb(3, 247, 255);
+    .tv-screen.open:hover {
+        transform: translate3d(-50%, -20%, 2200px) rotateX(0deg) rotateY(0deg) scale(1);
+        box-shadow: 0 0 28px rgb(3, 247, 255);
+
+    }
 
 }
+
+
+
+
 
 
 .tv-screen .screen-text {
