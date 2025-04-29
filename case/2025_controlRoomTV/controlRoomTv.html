@@ -29,13 +29,13 @@
         let originalLeft = "";
         let originalTop = "";
         let isMobile = window.innerWidth < 500;
+        const unClickableScreenIndexs = [0, 1, 4, 5]
 
         function createVideoWall() {
             isMobile = window.innerWidth < 500; // 每次建牆時重新判定
 
             const columns = isMobile ? 2 : 4;
             const rows = isMobile ? 4 : 3;
-            const unClickableScreenIndexs = [0, 1, 4, 5]
 
             const videoList = [
                 "ControlRoom01", "ControlRoom02", "ControlRoom", "Signage",
@@ -199,6 +199,50 @@
                 }
             });
         }, { once: true });
+
+
+
+        // let hoverIndex = 0;
+
+        // if (unClickableScreenIndexs.includes(index))
+
+        let hoverIndex = 0;
+        let intervalId = null;
+        let isPaused = false;
+
+        function rotateHover() {
+            if (isPaused) return;
+
+            const screens = Array.from(document.querySelectorAll('.tv-screen'))
+                .filter((_, i) => !unClickableScreenIndexs.includes(i));
+
+            if (screens.length === 0) return;
+
+            screens.forEach((el, i) => {
+                el.classList.toggle('hover', i === hoverIndex);
+            });
+
+            hoverIndex = (hoverIndex + 1) % screens.length;
+        }
+
+        // 啟動輪播
+        intervalId = setInterval(rotateHover, 2000);
+
+        // 滑鼠移入移出控制暫停
+        document.addEventListener('mouseover', (e) => {
+            if (e.target.closest('.tv-screen')) {
+                isPaused = true;
+                // 清除所有 hover 樣式
+                document.querySelectorAll('.tv-screen.hover').forEach(el => {
+                    el.classList.remove('hover');
+                });
+            }
+        });
+        document.addEventListener('mouseout', (e) => {
+            if (e.target.closest('.tv-screen')) {
+                isPaused = false;
+            }
+        });
     </script>
 </body>
 

@@ -69,6 +69,8 @@ tv-wall
     flex-wrap: wrap;
     transform-style: preserve-3d;
     background-color: #000;
+    box-shadow: 12px 24px 56px #000000a2;
+
     border: 8px solid #111;
     border-radius: 12px;
     transform: translate3d(-20%, -90%, -1800px) rotateX(-5deg) rotateY(-25deg) rotateZ(-2deg);
@@ -113,11 +115,26 @@ tv-wall
 }
 
 @media (min-width: 500px) {
-    .tv-screen:hover {
+
+    .tv-screen:hover,
+    .tv-screen.hover {
         z-index: 10;
-        box-shadow: 0 0 32px rgba(0, 255, 255, 0.5);
+        box-shadow: 0 0 32px rgba(0, 255, 255, 1);
         transform: translate3d(-50%, -50%, 150px) rotateX(0deg) rotateY(0deg) scale(1.2);
+        border: 1px solid #00ffff;
     }
+
+    .tv-screen:hover .screen-text,
+    .tv-screen.hover .screen-text {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        opacity: 1;
+        font-size: 36px;
+        text-shadow: 0 0 12px #000;
+    }
+
+
 }
 
 
@@ -145,6 +162,8 @@ tv-wall
 
 .tv-screen .screen-text {
     position: absolute;
+    font-weight: 700;
+    font-size: 18px;
     top: 109%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -152,6 +171,8 @@ tv-wall
     opacity: 0;
     transition: 1.5s;
 }
+
+
 
 .tv-screen.open .screen-text {
     opacity: 1;
@@ -342,7 +363,7 @@ tv-wall 動畫
 
 .border-line.bottom,
 .border-line.top {
-    height: 2px;
+    height: 6px;
     left: 0;
     right: 0;
     transform: scaleX(0);
@@ -350,7 +371,7 @@ tv-wall 動畫
 
 .border-line.left,
 .border-line.right {
-    width: 2px;
+    width: 6px;
     top: 0;
     bottom: 0;
     transform: scaleY(0);
