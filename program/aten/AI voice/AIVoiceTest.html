@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Voice</title>
+</head>
+<style>
+    /******************************
+           Page
+*******************************/
+    * {
+        position: relative;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+
+    a {
+        text-decoration: none;
+    }
+
+    ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    body,
+    html {
+        width: 100%;
+        height: 100%;
+        font-family: "Noto sans TC", "Microsoft JhengHei ", "微軟正黑體", sans-serif;
+        margin: 0;
+        /* background-color: #3b3b3b; */
+    }
+
+    .btn {
+        display: inline-block;
+        min-width: 120px;
+        background-color: #008CFF;
+        padding: 12px 16px;
+        color: #fff;
+        text-align: center;
+        border-radius: 10px;
+        opacity: 1;
+        transition: 0.5s;
+        cursor: pointer;
+    }
+
+    .btn:hover {
+        opacity: 0.8;
+
+    }
+
+    .toolsTopParent .toolsTip {
+        position: absolute;
+        width: 100%;
+        left: 50%;
+        top: calc(100% + 2px);
+        transform: translate(-50%, -20%);
+        text-align: center;
+        transition: 0.4s ease-out;
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    .toolsTopParent .toolsTip>div {
+        display: inline-block;
+        color: #333;
+        font-size: 14px;
+        background-color: #fff;
+        padding: 6px 12px;
+        border-radius: 12px;
+        box-shadow: 0 2px 16px #0000001b;
+        pointer-events: none;
+    }
+
+    .toolsTopParent:hover .toolsTip {
+        transform: translate(-50%, 0);
+        opacity: 1;
+    }
+
+
+    /*****************************************
+    ******************************************
+    ******************************************
+
+
+                layout
+
+    ******************************************
+    ******************************************
+    ******************************************/
+
+    .container {
+        /* max-width: 1200px; */
+        display: flex;
+        margin-top: 32px;
+        margin: 0px auto;
+        height: 100%;
+    }
+
+    .row {
+        display: flex;
+        flex-wrap: wrap;
+        margin: 0 -4px;
+    }
+
+    .row>* {
+        padding: 0 4px;
+    }
+
+    .flex-dir-col {
+        flex-direction: column
+    }
+
+    .flex-align-c {
+        align-items: center;
+    }
+
+    .flex-align-end {
+        align-items: end;
+    }
+
+
+    .flex-jus-c {
+        justify-content: center;
+    }
+
+    .flex-jus-end {
+        justify-content: end;
+    }
+
+    .flex-dir-row-rev {
+        flex-direction: row-reverse
+    }
+
+    .col {
+        flex: 1 0 0%;
+    }
+
+    .col-1 {
+        width: 8.33333333%;
+    }
+
+    .col-2 {
+        width: 16.66666667%;
+    }
+
+    .col-3 {
+        width: 25%;
+    }
+
+    .col-4 {
+        width: 33.33333333%;
+    }
+
+    .col-5 {
+        width: 41.66666667%;
+    }
+
+    .col-6 {
+        width: 50%;
+    }
+
+    .col-7 {
+        width: 58.33333333%;
+    }
+
+    .col-8 {
+        width: 66.66666667%;
+    }
+
+    .col-9 {
+        width: 75%;
+    }
+
+    .col-10 {
+        width: 83.33333333%;
+    }
+
+    .col-11 {
+        width: 91.66666667%;
+    }
+
+    .col-12 {
+        width: 100%;
+    }
+
+
+    /*** ------------------------------------------- 
+
+
+        SideBar
+
+     ------------------------------------------- ***/
+
+    .sideBar {
+        background-color: #08375E;
+        width: 240px;
+        height: 100%;
+        min-height: 100vh;
+    }
+
+    /*** ------------------------------------------- 
+
+
+        WorkArea 
+
+     ------------------------------------------- ***/
+
+    .workArea {
+        background-color: #ffffff;
+        flex-grow: 1;
+        margin: 0;
+        height: 100%;
+        overflow: hidden;
+    }
+
+    .workArea .divid {
+        width: 98%;
+        height: 2px;
+        background-color: #00000011;
+        margin: 8px 0;
+    }
+
+    .workArea .tools {
+        border-bottom: 2px solid #0000000f;
+        background-color: #fff;
+        padding: 8px 0;
+    }
+
+    .workArea .footer {
+        border-top: 2px solid #00000011;
+        padding: 0;
+    }
+
+    .workArea .footer>* {
+        padding: 16px 16px;
+    }
+
+    /*  ----------------- 
+        textArea
+    -----------------  */
+
+
+    .workArea .textArea {
+        background-color: #f6f6f6;
+        flex-shrink: 2;
+        flex-grow: 1;
+        height: 10%;
+        overflow-y: scroll;
+        position: relative;
+        padding-bottom: 200px;
+        padding-top: 30px;
+    }
+
+
+
+    .workArea .textArea .newVoice {
+        position: absolute;
+        left: 50%;
+        width: 100%;
+        height: 50px;
+        max-width: 1100px;
+        transform: translate(-50%, -50%);
+        margin: 0 auto;
+        padding: 4px;
+        background-image: url("image/newVoice.svg");
+        background-repeat: no-repeat;
+        background-position: center;
+        cursor: pointer;
+        transition: 0.5s;
+        z-index: 1000;
+        opacity: 0.5;
+    }
+
+    .workArea .textArea .newVoice:last-child {
+        opacity: 0.8;
+        background-image: url("image/newVoice_last.svg");
+        transform: translate(-50%, 40%);
+
+    }
+
+    .workArea .textArea .newVoice:hover {
+        opacity: 1;
+        height: 50px;
+        background-image: url("image/newVoice_last_on.svg");
+    }
+
+
+    /* textBox */
+    .workArea .textArea .textBox {
+        margin: 0px 0;
+        padding: 24px 0;
+        transition: 1.5s;
+        overflow: hidden;
+        max-height: 1000px;
+    }
+
+
+
+
+    .workArea .textArea .textBox.fade {
+        padding: 0;
+        opacity: 0;
+        max-height: 0px;
+
+    }
+
+    .workArea .textArea .textBox::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background: transparent linear-gradient(90deg, #ffffff00 0%, #fff 20%, #fff 80%, #ffffff00 100%) 0% 0% no-repeat padding-box;
+        opacity: 0;
+        transition: 0.5s;
+        filter: drop-shadow(0 5px 8px #00000009)
+    }
+
+
+    .workArea .textArea .textBox:hover::before {
+        opacity: 0.2;
+        /* filter: drop-shadow(0 0px 0px #00000000) */
+    }
+
+
+    .workArea .textArea .textBox .pBox::after {
+        content: "";
+        width: 100%;
+        height: 4px;
+        /* background: transparent linear-gradient(90deg, #d2d2d200 10%, #d2d2d270 40%, #d2d2d270 60%, #d2d2d200 90%) 0% 0% no-repeat padding-box; */
+
+        position: absolute;
+        bottom: -3px;
+        filter: blur(2px);
+        transition: 0.5s;
+        opacity: 0;
+
+    }
+
+
+
+
+    .workArea .textArea .textBox .header,
+    .workArea .textArea .textBox p {
+        max-width: 1000px;
+        margin: 4px auto;
+        padding: 4px;
+        transition: 0.5s;
+    }
+
+
+
+    .workArea .textArea .textBox .header .bg {
+        background-image: url("image/testboxHeader.svg");
+        width: 120%;
+        height: 40px;
+        background-repeat: no-repeat;
+        background-position: 0 center;
+        left: -58px;
+        transition: 0.3s;
+    }
+
+    .workArea .textArea .textBox.a01:hover .header .bg {
+        background-image: url("image/testboxHeader_01_hover.svg");
+    }
+
+    .workArea .textArea .textBox.a02:hover .header .bg {
+        background-image: url("image/testboxHeader_02_hover.svg");
+    }
+
+    .workArea .textArea .textBox.a01 .header .bg {
+        background-image: url("image/testboxHeader_01.svg");
+    }
+
+    .workArea .textArea .textBox.a02 .header .bg {
+        background-image: url("image/testboxHeader_02.svg");
+    }
+
+
+    .workArea .textArea .textBox .pBox {
+        transition: 0.3s;
+    }
+
+
+
+    .workArea .textArea .textBox p {
+        font-size: 18px;
+        font-weight: 300;
+        letter-spacing: 0.1em;
+        line-height: 1.88em;
+        padding: 24px 0;
+        margin: 12px auto;
+
+        padding: 24px;
+        border: 1px solid #ffffff00;
+        border-radius: 8px;
+    }
+
+    .workArea .textArea .textBox .pBox p:hover {
+        border: 1px solid #c0c0c0;
+    }
+
+    .workArea .textArea .textBox.focus .pBox p {
+        border: 1px solid #c0c0c0;
+        background-color: #ffffff88;
+    }
+
+    .workArea .textArea .textBox:hover .pBox {
+        /* background: transparent linear-gradient(90deg, #ffffff00 0%, #ffffffaa 20%, #ffffffaa 80%, #ffffff00 100%) 0% 0% no-repeat padding-box; */
+    }
+
+    .workArea .textArea .textBox.focus .pBox {
+        /* background: transparent linear-gradient(90deg, #ffffff00 0%, #fff 20%, #fff 80%, #ffffff00 100%) 0% 0% no-repeat padding-box; */
+    }
+
+
+
+
+    /*   focus   */
+
+    .workArea .textArea .textBox.focus::before {
+        /* opacity: 0.9; */
+    }
+
+    .workArea .textArea .textBox.focus .pBox::after {
+        opacity: 0.4;
+    }
+
+    .workArea .textArea .textBox.focus .header .bg {
+        background-image: url("image/testboxHeader_on.svg");
+    }
+
+    .workArea .textArea .textBox.a01.focus .header .bg {
+        background-image: url("image/testboxHeader_01_on.svg");
+    }
+
+    .workArea .textArea .textBox.a02.focus .header .bg {
+        background-image: url("image/testboxHeader_02_on.svg");
+    }
+
+
+
+
+
+    /*** ------------------------------------------- 
+
+
+        FileBar
+
+     ------------------------------------------- ***/
+
+    .fileBar {
+        background-color: #f5f5f5;
+        width: 300px;
+        /* height: 100%;
+        min-height: 100vh; */
+
+        border-left: 2px solid #0000000f;
+        transition: 0.8s;
+    }
+
+    .fileBar.close {
+        width: 0;
+    }
+
+    .fileBar .openBtn {
+        cursor: pointer;
+        position: absolute;
+        top: 0;
+        left: 0;
+        margin: 4px;
+        border-radius: 50%;
+        transition: 0.8s;
+        z-index: 1000;
+    }
+
+    .fileBar.close .openBtn {
+        left: -50px;
+        background-color: #4A6B95;
+        transform: rotate(180deg);
+    }
+
+    .fileBar .fileContainer {
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        height: 100%;
+        min-height: 100vh;
+        transition: 1.2s ease-in;
+        opacity: 1;
+    }
+
+    .fileBar.close .fileContainer {
+        width: 0;
+        opacity: 0;
+
+    }
+
+
+    .fileBar .header,
+    .fileBar .footer {
+        background-color: #EBEBEB;
+        border-bottom: 2px solid #0000000f;
+        padding: 12px 16px;
+        text-align: center;
+        font-size: 14px;
+    }
+
+
+
+    .fileBar .header {
+        background-color: #4A6B95;
+        color: #fff;
+        font-size: 16px;
+    }
+
+
+    .fileBar .body {
+        padding: 12px 0;
+        flex-grow: 1;
+    }
+
+    .fileBar .body h3 {
+        margin: 0 4px;
+        font-size: 14px;
+        font-weight: 400;
+    }
+
+    .fileBar .body .playBtn {
+        transition: 0.5s;
+        cursor: pointer;
+        transform: scale(1);
+        filter: drop-shadow(0 0 1px rgba(0, 0, 0, 0.1));
+    }
+
+    .fileBar .body .playBtn:hover {
+        transform: scale(1.05);
+        filter: drop-shadow(0 0 3px rgba(0, 0, 0, 0.3));
+
+    }
+
+    .fileBar .body p {
+        margin: 4px 0;
+        font-size: 11px;
+        font-weight: 400;
+        color: #797979;
+        letter-spacing: 0.05em;
+    }
+
+
+
+    /* Card */
+
+    .fileBar .body .fileCard {
+        height: 72px;
+        padding: 8px;
+        margin: 4px 0;
+        background-color: #00000000;
+        transition: 0.5s;
+        cursor: pointer;
+    }
+
+    .fileBar .body .fileCard:hover {
+        background-color: #00000010;
+        /* background-color: #b6090982; */
+    }
+
+
+
+    .fileBar .body .fileCard .tools {
+        position: absolute;
+        right: 0;
+        top: 0;
+        height: 95%;
+        display: flex;
+        align-items: center;
+        justify-content: end;
+        padding: 0 4px;
+        transform: translateX(5%);
+    }
+
+    .fileBar .body .fileCard .tools>img {
+        margin: 3px;
+    }
+
+    .fileBar .body .fileCard::after {
+        content: "";
+        position: absolute;
+        background-color: #EBEBEB;
+        width: 248px;
+        height: 2px;
+        left: 50%;
+        bottom: -3px;
+        transform: translate(-50%, 0%);
+    }
+
+    .fileBar .body .fileCard .col-2 {
+        text-align: center;
+    }
+
+    .fileBar .footer {
+        border-top: 2px solid #0000000f;
+        padding: 10px 16px;
+    }
+</style>
+
+<body>
+    <div class="container">
+        <div class="sideBar">
+
+        </div>
+        <div class="workArea row flex-dir-col">
+            <div class="tools row flex-dir-col flex-align-c ">
+                <div class="col"><img src="image/menu title.svg" alt=""></div>
+                <div class="divid"></div>
+                <div class="col toolimg"></div>
+            </div>
+            <div class="textArea">
+                <!-- <input type="button" name="close" value="關" onclick=""> -->
+                <div class="newVoice"></div>
+                <div class="textBox a01">
+                    <div class="header">
+                        <div class="bg a01"></div>
+                    </div>
+                    <div class="pBox">
+                        <p>
+                            宏正的優聲學人工智慧語音合成技術為針對企業應用推出的軟硬體包套賣斷服務，消費者在購買包含預先訓練過人工智慧模型的推論伺服器後，即可搭建私有雲並無限制使用人工智慧語音合成。
+                            與一般雲端人工智慧語音合成服務論字不但更適合使用量大的產業應用於新聞朗讀、影音創作、教育訓練等情境，私有雲的架構也較公有雲更加安全，可以降低企業「代言人」遭冒用的風險。
+                            優聲學的技術優勢除了能夠提供發音更加自然的語音之外，也針對台灣口音進行最佳化，故更適合國內企業採用。
+
+                        </p>
+                    </div>
+
+                </div>
+                <div class="newVoice"></div>
+
+                <div class="textBox a02">
+                    <div class="header">
+                        <div class="bg "></div>
+                    </div>
+                    <div class="pBox">
+                        <p>宏正的優聲學 語音選擇 更可以客製化企業專屬語音。相較於一般語音合成服務需要約6個月的時間進行調整，優聲學只需2~3週即可完成，也是一大優勢。
+                        </p>
+                    </div>
+                </div>
+                <div class="newVoice"></div>
+
+                <div class="textBox a01">
+                    <div class="header">
+                        <div class="bg"></div>
+                    </div>
+                    <div class="pBox">
+                        <p>宏正的優聲學人工智慧語音合成技術為針對企業應用推出的軟硬體包套賣斷服務，消費者在購買包含預先訓練過人工智慧模型的推論伺服器後，即可搭建私有雲並無限制使用人工智慧語音合成。
+                            與一般雲端人工智慧語音合成服務論字計價的方式相比，優聲學不但更適合使用量大的產業應用於新聞朗讀、影音創作、教育訓練等情境，私有雲的架構也較公有雲更加安全，可以降低企業「代言人」遭冒用的風險。
+                            優聲學的技術優勢除了能夠提供發音更加自然的語音之外，也針對台灣口音進行最佳化，故更適合國內企業採用。
+                            另一方面，優聲學目前提供6種不同風格的男、女語音夠提供發音更加自然的語音之外，也針對台灣口音進行最佳化，故更適合國內企業採用。
+                            另一方面，優聲學目前提供6種不同風格的男、女語音夠提供發音更加自然的語音之外，也針對台灣口音進行最佳化，故更適合國內企業採用。
+                            另一方面，優聲學目前提供6種不同風格的男、女語音夠提供發音更加自然的語音之外，也針對台灣口音進行最佳化，故更適合國內企業採用。
+                            另一方面，優聲學目前提供6種不同風格的男、女語音選擇， 更可以客製化企業專屬語音。相較於一般語音合成服務需要約6個月的時間進行調整，優聲學只需2~3週即可完成，也是一大優勢。
+                            宏正的優聲學人工智慧語音合成技術為針對企業應用推出的軟硬體包套賣斷服務，消費者在購買包含預先訓練過人工智慧模型的推論伺服器後，即可搭建私有雲並無限制使用人工智慧語音合成。
+                            與一般雲端人工智慧語音合成服務論字計價的方式相比，優聲學不但更適合使用量大的產業應用於新聞朗讀、影音創作、教育訓練等情境，私有雲的架構也較公有雲更加安全，可以降低企業「代言人」遭冒用的風險。
+                            優聲學的技術優勢除了能夠提供發音更加自然的語音之外，也針對台灣口音進行最佳化，故更適合國內企業採用。
+                            另一方面，優聲學目前提供6種不同風格的男、女語音選擇 更可以客製化企業專屬語音。相較於一般語音合成服務需要約6個月的時間進行調整，優聲學只需2~3週即可完成，也是一大優勢。
+                        </p>
+                    </div>
+                </div>
+                <div class="newVoice"></div>
+            </div>
+            <div class="footer">
+                <div class="row flex-align-c" style="background-color: #F5F5F5; margin: 0px;">
+                    <div style="flex: 0 0 0%;">
+                        <div class="btn sys">合成</div>
+                    </div>
+                    <div style="flex: 1 0 0%;"><img src="image/btn__icon-text__atenblue.svg" alt=""></div>
+                    <div style="flex: 0 0 0%;"><img src="image/footer_text.svg" alt=""></div>
+
+                </div>
+                <div class="" style="background-color: #EBEBEB; margin: 0px; text-align: right;">
+                </div>
+            </div>
+
+
+        </div>
+        <div class="fileBar">
+            <img src="image/openBtn.svg" alt="" class="openBtn">
+            <div class="fileContainer">
+                <div class="header">語音庫</div>
+                <div class="body">
+                    <div class="fileCard">
+                        <div class="row flex-align-c flex-jus-c">
+                            <div class="col-2 row flex-align-c flex-jus-c"><img class="playBtn" src="image/btn_play.svg"
+                                    alt=""></div>
+                            <div class="col-10">
+                                <h3>宏正於44家合成列獲得傑出...</h3>
+                            </div>
+                            <div class="col-2">
+                                <p>12:50</p>
+                            </div>
+                            <div class="col-10">
+                                <p>2500 字 2022-07-28 14:33</p>
+                            </div>
+                        </div>
+                        <div class="tools">
+                            <img src="image/icon_download.svg" alt="">
+                            <img src="image/icon_more.svg" alt="">
+                        </div>
+                    </div>
+                    <div class="fileCard">
+                        <div class="row flex-align-c flex-jus-c">
+                            <div class="col-2 row flex-align-c flex-jus-c"><img class="playBtn" src="image/btn_play.svg"
+                                    alt=""></div>
+                            <div class="col-10">
+                                <h3>宏正於4444家已獲得傑傑出...</h3>
+                            </div>
+                            <div class="col-2">
+                                <p>12:50</p>
+                            </div>
+                            <div class="col-10">
+                                <p>2500 字 2022-07-28 14:33</p>
+                            </div>
+                        </div>
+                        <div class="tools">
+                            <img src="image/icon_download.svg" alt="">
+                            <img src="image/icon_more.svg" alt="">
+                        </div>
+                    </div>
+                    <div class="fileCard">
+                        <div class="row flex-align-c flex-jus-c">
+                            <div class="col-2 row flex-align-c flex-jus-c"><img class="playBtn" src="image/btn_play.svg"
+                                    alt=""></div>
+                            <div class="col-10">
+                                <h3>宏正於44家已獲得傑出大獎</h3>
+                            </div>
+                            <div class="col-2">
+                                <p>12:50</p>
+                            </div>
+                            <div class="col-10">
+                                <p>2500 字 2022-07-28 14:33</p>
+                            </div>
+                        </div>
+                        <div class="tools">
+                            <img src="image/icon_download.svg" alt="">
+                            <img src="image/icon_more.svg" alt="">
+                        </div>
+                    </div>
+                    <div class="fileCard">
+                        <div class="row flex-align-c flex-jus-c">
+                            <div class="col-2 row flex-align-c flex-jus-c"><img class="playBtn" src="image/btn_play.svg"
+                                    alt=""></div>
+                            <div class="col-10">
+                                <h3>宏正於44家已已已獲得傑出...</h3>
+                            </div>
+                            <div class="col-2">
+                                <p>12:50</p>
+                            </div>
+                            <div class="col-10">
+                                <p>2500 字 2022-07-28 14:33</p>
+                            </div>
+                        </div>
+                        <div class="tools">
+                            <img src="image/icon_download.svg" alt="">
+                            <img src="image/icon_more.svg" alt="">
+                        </div>
+                    </div>
+
+                </div>
+                <div class="footer">儲存 30天內合成的語音</div>
+            </div>
+
+        </div>
+    </div>
+</body>
+<script>
+
+    var $id = function (name) {
+        return document.getElementById(name)
+    }
+    var $css = function (name) {
+        return document.getElementsByClassName(name)
+    }
+    var $tag = function (name) {
+        return document.getElementsByTagName(name)
+    }
+    var test = function (print = "test") {
+        console.log(print)
+    }
+    function nothing() {
+        console.log("nothing")
+    }
+
+    // ------------------------
+    // toggle
+    // ------------------------
+
+    toggle = (tagObj, do1, do0, autoSwitchTag = true) => {
+        if (tagObj.tag === 0) {
+            do1()
+            if (autoSwitchTag) {
+                tagObj.tag = 1
+            }
+        } else {
+            do0()
+            if (autoSwitchTag) {
+                tagObj.tag = 0
+            }
+        }
+    }
+
+
+
+
+
+
+
+    class toolsTip {
+        constructor(text, who, style = "toolsTip") {
+
+            this.objBox = document.createElement("div")
+
+            this.obj = document.createElement("div")
+            this.obj.textContent = text
+            this.objBox.classList = style
+
+            this.objBox.appendChild(this.obj)
+            who.appendChild(this.objBox)
+            who.classList.add("toolsTopParent")
+            who.style.zIndex = 5000
+        }
+    }
+
+
+
+
+
+
+    var body = $tag("body")[0]
+    var sysBtn = $css("sys")[0]
+    var tools = $css("toolimg")[0]
+    var textArea = $css("textArea")[0]
+    var textBox = $css("textBox")
+
+    var newVoiceBtn = $css("newVoice")
+
+
+    let toolsTipBox = []
+    toolsTipBox[0] = (new toolsTip("語音合成", sysBtn))
+    toolsTipBox[1] = (new toolsTip("新增聲優", newVoiceBtn[0]))
+    toolsTipBox[2] = (new toolsTip("新增聲優", newVoiceBtn[1]))
+    toolsTipBox[3] = (new toolsTip("新增聲優", newVoiceBtn[2]))
+
+
+
+    var Toolsimg = []
+    Toolsimg[0] = document.createElement("img")
+    Toolsimg[0].src = "image/Tools_01.svg"
+    Toolsimg[1] = document.createElement("img")
+    Toolsimg[1].src = "image/Tools_02.svg"
+    tools.appendChild(Toolsimg[0])
+
+
+    for (let i = 0; i < textBox.length; i++) {
+        textBox[i].addEventListener("click", () => {
+            resetAllTextBox()
+
+            textBox[i].classList.add("focus")
+            if (textBox[i].classList[1] == "a01") {
+                tools.replaceChild(Toolsimg[0], tools.firstChild)
+            } else {
+                tools.replaceChild(Toolsimg[1], tools.firstChild)
+            }
+        })
+    }
+
+    var resetAllTextBox = () => {
+        for (let i = 0; i < textBox.length; i++) {
+            textBox[i].classList.remove("focus")
+        }
+    }
+
+
+    // ---------------------------
+    // 插入新文字框功能
+    // 插入的 HTML 内容
+    let newHTML = `
+    <div class="textBox a02 fade">
+        <div class="header">
+            <div class="bg "></div>
+        </div>
+        <div class="pBox"><p style="color:#ccc">請輸入文字</p></div>
+    </div>
+    <div class="newVoice"></div>
+    `
+
+    //在指定位置插入新的 HTML 元素
+
+    for (let i = 0; i < newVoiceBtn.length; i++) {
+        let index = i * 2
+
+        newVoiceBtn[i].addEventListener("click", () => {
+            textArea.children[index].insertAdjacentHTML('afterend', newHTML);
+
+            console.log(i, index)
+            setTimeout(() => {
+
+
+                console.log(index)
+                textBox[i].classList.remove("fade")
+
+            }, 100)
+        }
+        )
+    }
+
+
+    // ---------------------------
+    //語音庫功能
+    // ---------------------------
+
+    var fileBar = $css("fileBar")[0]
+    var openBtn = $css("openBtn")[0]
+    var fileBarTag = { tag: 1 }
+    fileBar.classList.add("close")
+    openBtn.addEventListener("click", () => {
+        toggle(fileBarTag, () => {
+            fileBar.classList.add("close")
+        }, () => {
+            fileBar.classList.remove("close")
+        })
+
+    })
+
+
+    // let i = 0
+    // window.onload = () => {
+    //     setInterval(() => {
+    //         i++
+    //         console.log(i)
+    //     }, 1000)
+    //     setTimeout(() => {
+    //         window.close();
+
+    //     }, 10000)
+
+    // }
+
+
+</script>
+
+</html>

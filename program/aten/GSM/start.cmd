@@ -1,0 +1,1 @@
+start chrome.exe --disable-web-security --user-data-dir="C:/ChromeDevSession" file:///D:/Github/newlinsite.github.io/program/aten/GSM/museum2024.html --start-fullscreen

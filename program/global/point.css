@@ -1,0 +1,755 @@
+    /******************************
+           Page
+*******************************/
+    * {
+        position: relative;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+
+    a {
+        text-decoration: none;
+    }
+
+    ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    body,
+    html {
+        width: 100%;
+        height: 100%;
+        font-family: "Noto sans TC", "Microsoft JhengHei ", "微軟正黑體", sans-serif;
+        /* overflow: hidden; */
+        margin: 0;
+        background-color: #F5F8FA;
+    }
+
+    .container {}
+
+    h3 {
+        font-weight: 500 !important;
+        letter-spacing: -0.01em !important;
+        word-spacing: -0.05em !important;
+
+        padding-bottom: 10px !important;
+        margin-bottom: 30px !important;
+        border-bottom: none !important;
+
+    }
+
+    /******************************
+          
+    
+    
+    
+    
+    Customed Globe Presence
+
+
+
+
+*******************************/
+
+
+    .RBUContainer * {
+        position: relative;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+
+    }
+
+    .RBUContainer a {
+        text-decoration: none;
+    }
+
+    .RBUContainer ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+
+
+
+    /* Container */
+
+    .RBUContainer {
+        width: 100%;
+        position: relative;
+        overflow: hidden;
+        background: transparent radial-gradient(closest-side at 50% 50%, #F8F8F8 0%, #DFDFDF 100%) 0% 0% no-repeat padding-box;
+        padding: 24px 0;
+    }
+
+    .pointContainer * {
+        transition: 1s !important;
+    }
+
+    .pointContainer {
+        width: 100%;
+        padding-top: 50%;
+        position: relative;
+
+        max-width: 1400px;
+        margin: auto;
+    }
+
+
+    .pointContainer .RBUh {
+        color: #01375b !important;
+        position: absolute;
+        top: 3%;
+        width: 100%;
+        text-align: center;
+        font-size: 2em !important;
+    }
+
+
+    .pointContainer .leber {
+        position: absolute;
+        top: 4%;
+        right: 3%;
+        width: 13%;
+    }
+
+    .pointContainer.map-open .leber {
+        top: 4.5%;
+        right: 4%;
+        width: 16%;
+    }
+
+
+
+    /* ********************************************************************
+
+    
+    map
+
+    
+    ******************************************************************** */
+
+
+
+    .pointContainer .mapBox {
+        width: 24%;
+        padding-top: 24%;
+        position: absolute;
+        top: 45%;
+        transform: translate(-50%, -50%);
+    }
+
+
+
+    .pointContainer .mapBox::before {
+        /* 陰影 */
+        content: "";
+        background-image: url(global_image/shadow.svg);
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        position: absolute;
+        width: 100%;
+        height: 20%;
+        bottom: -20%;
+        left: 0;
+    }
+
+    .pointContainer .mapBox .mapEearth {
+        /* 地球背景，需要動 所以獨立出來 */
+        background-size: cover;
+        background-position: center;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 50%;
+        left: 50%;
+        animation: float 12s;
+        animation-iteration-count: infinite;
+        transform: translate(-50%, -50%);
+        cursor: pointer;
+    }
+
+    .pointContainer .mapBox .mapEearth:hover {
+        width: 110%;
+        height: 110%;
+    }
+
+
+    @keyframes float {
+        0% {
+            transform: translate(-50%, -50%) translateY(0);
+        }
+
+        55% {
+            transform: translate(-50%, -50%) translateY(-10%);
+        }
+
+        100% {
+            transform: translate(-50%, -50%) translateY(0);
+        }
+    }
+
+
+
+
+
+    .pointContainer .mapBox.map_america {
+        left: 20%;
+    }
+
+    .pointContainer .mapBox.map_america .mapEearth {
+        background-image: url(global_image/earth0.svg);
+        /* background-image: url(//assets.aten.com/webpage/shared/about-aten/global-presence/earth0.svg); */
+        animation-duration: 17s;
+    }
+
+    .pointContainer .mapBox.map_asia {
+        left: 50%;
+    }
+
+    .pointContainer .mapBox.map_asia .mapEearth {
+        background-image: url(global_image/earth1.svg);
+        /* background-image: url(//assets.aten.com/webpage/shared/about-aten/global-presence/earth1.svg); */
+    }
+
+    .pointContainer .mapBox.map_eu {
+        left: 80%;
+    }
+
+    .pointContainer .mapBox.map_eu .mapEearth {
+        background-image: url(global_image/earth2.svg);
+        /* background-image: url(//assets.aten.com/webpage/shared/about-aten/global-presence/earth2.svg); */
+        animation-duration: 22s;
+    }
+
+    .pointContainer .earthName {
+        position: absolute;
+        top: 136%;
+        left: 50%;
+        width: 100%;
+        font-size: 20px;
+        color: #7b8c9c;
+        font-weight: 700;
+        text-align: center;
+        transform: translate(-50%, -50%);
+    }
+
+
+    /* 開啟時，地球樣式 */
+    .pointContainer.map-open .mapBox {
+        width: 10%;
+        padding-top: 10%;
+        opacity: 0.8;
+        z-index: 5;
+    }
+
+    .pointContainer.map-open .mapBox.center {
+        width: 32%;
+        padding-top: 32%;
+        left: 36%;
+        opacity: 1;
+        z-index: 10;
+    }
+
+    .pointContainer.map-open .mapBox.left {
+        left: 10%;
+    }
+
+    .pointContainer.map-open .mapBox.right {
+        left: 90%;
+    }
+
+
+    .pointContainer.map-open .mapBox.center .earthName {
+        top: 116%;
+        font-size: 22px;
+    }
+
+
+
+    .pointContainer.map-open .mapBox.center::before {
+        /* 陰影 */
+        bottom: -16%;
+    }
+
+    .pointContainer.map-open .mapBox.left .earthName,
+    .pointContainer.map-open .mapBox.right .earthName {
+        top: 130%;
+        font-size: 14px;
+    }
+
+    .pointContainer.map-open .mapBox.left .point,
+    .pointContainer.map-open .mapBox.right .point {
+        pointer-events: none !important;
+
+    }
+
+
+
+    .pointContainer.map-open .mapBox.center .mapEearth:hover {
+        cursor: auto;
+    }
+
+
+
+
+
+
+
+
+
+
+    /* ********************************************************************
+
+    
+    Point
+
+    
+    ******************************************************************** */
+
+
+
+
+
+    .pointContainer .point {
+        position: absolute;
+        border-radius: 50%;
+        transition: 1s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 12px #00000034;
+        z-index: 100;
+        transform: translate(-50%, -50%);
+        width: 3%;
+        height: 3%;
+    }
+
+    .pointContainer .point.xl {
+        width: 4.5%;
+        height: 4.5%;
+    }
+
+
+
+
+    .pointContainer .point .pointStyleColor {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        border-radius: 50%;
+    }
+
+
+
+    .pointContainer .point.pointHover {
+        width: 8%;
+        height: 8%;
+    }
+
+    .pointContainer.map-open .point {
+        cursor: pointer;
+    }
+
+
+    /* ************************************
+    
+    Point Name
+
+    ************************************ */
+
+    .pointContainer .pointName {
+        font-size: 14px;
+        color: rgba(255, 255, 255, 255);
+        position: absolute;
+        transform: translateX(-50%);
+        padding: 4px 12px;
+        margin-top: 5.5%;
+        background-color: rgba(0, 0, 0, 0.4);
+        border-radius: 4px;
+        box-shadow: 0 0 12px #00000054;
+        pointer-events: none;
+        white-space: nowrap;
+        opacity: 0;
+        z-index: 200;
+    }
+
+    .pointContainer .mapBox.center .pointName.showName {
+        opacity: 1;
+    }
+
+
+
+
+
+
+    /* ********************************************************************
+
+    
+    countryList
+
+    
+    ******************************************************************** */
+
+
+
+    .pointContainer .mapBox .countryList {
+        position: absolute;
+        left: 125%;
+        top: -10%;
+        height: 125%;
+        width: 60%;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        /* flex-wrap: wrap; */
+        opacity: 0;
+    }
+
+
+
+    /* Name tag */
+    .pointContainer .mapBox .countryList .nameTag {
+        position: absolute;
+        top: 0;
+        right: 100%;
+        height: 80%;
+        display: flex;
+        justify-content: end;
+        align-items: center;
+        padding-top: 10px;
+        overflow: visible !important;
+    }
+
+    .pointContainer .mapBox .countryList .nameTag .tagCircle {
+        width: 14px;
+        height: 14px;
+        margin: 0 2px 0 0;
+        border: 1px solid #fff;
+        border-radius: 50%;
+    }
+
+
+
+
+    .pointContainer .mapBox .countryList .mainName {
+        font-size: 17px;
+        font-weight: 600;
+        margin: 8px 0 2px 0;
+        cursor: pointer;
+    }
+
+
+    .pointContainer .mapBox .countryList .mainName a {
+        color: #191d3d;
+        display: inline-block;
+        margin: 10px 20px 10px 12px;
+    }
+
+
+
+
+
+    /* ************************************
+    
+    Name Dropdown
+
+    ************************************ */
+
+
+
+    .pointContainer .mapBox .countryList .nameDropdown {
+        transition: 1s;
+        overflow: hidden;
+    }
+
+
+    .pointContainer .mapBox .countryList .smName {
+        font-size: 14px;
+        font-weight: 300;
+
+        margin: 2px;
+        cursor: pointer;
+    }
+
+    .pointContainer .mapBox .countryList .smName a {
+        color: #262940;
+        display: inline-block;
+        margin: 4px 10px 4px 12px;
+    }
+
+
+
+    /* list hover */
+    .pointContainer .mapBox .countryList .mainName::after,
+    .pointContainer .mapBox .countryList .smName::after {
+        transition: 0.5s;
+        opacity: 0;
+        content: "";
+        background: linear-gradient(270deg, #FFFFFF00 0%, #B7B7B7C4 44%, #D8D8D8F0 82%, #FFFFFF00 100%);
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        right: 0;
+        mix-blend-mode: darken;
+        transition: 1s;
+    }
+
+
+
+    .pointContainer .mapBox .countryList .mainName.nameOpen::after {
+        opacity: 1;
+    }
+
+    .pointContainer .mapBox .countryList .smName.nameOpen::after {
+        opacity: 1;
+    }
+
+    /* 開啟時 */
+    .pointContainer.map-open .mapBox.center .countryList {
+        opacity: 1;
+    }
+
+
+
+    @media (max-width: 1400px) {
+        .pointContainer {
+            padding-top: 65%;
+        }
+
+        .pointContainer .mapBox .countryList {
+            left: 125%;
+            top: -80%;
+            height: 250%;
+            width: 80%;
+        }
+    }
+
+    @media (max-width: 1000px) {
+        .pointContainer {
+            padding-top: 80%;
+        }
+
+
+    }
+
+
+    @media (max-width: 768px) {
+
+
+        /* ... */
+        .pointContainer {
+            padding-top: 170%;
+        }
+
+
+        .pointContainer .RBUh {
+            top: 1%;
+            font-size: 1.25em !important;
+        }
+
+        .pointContainer .leber {
+            right: auto;
+            left: 8%;
+            width: 36%;
+            top: 8%;
+        }
+
+        .pointContainer.map-open .leber {
+            top: 8%;
+            right: auto;
+            width: 30%;
+            left: 6%;
+        }
+
+
+
+        .pointContainer .mapBox {
+            width: 45%;
+            padding-top: 45%;
+        }
+
+
+        .pointContainer .mapBox.map_asia {
+            top: 22.5%;
+            left: 70%;
+        }
+
+        .pointContainer .mapBox.map_america {
+            top: 48%;
+            left: 30%;
+        }
+
+        .pointContainer .mapBox.map_eu {
+            top: 75%;
+            left: 70%;
+        }
+
+        .pointContainer .mapBox::before {
+            bottom: -15%;
+        }
+
+        .pointContainer .earthName {
+            top: 120%;
+            width: 100%;
+            font-size: 14px;
+        }
+
+
+        /* 開啟時，地球樣式 */
+        .pointContainer.map-open .mapBox {
+            width: 10%;
+            padding-top: 10%;
+            opacity: 0.8;
+            z-index: 5;
+        }
+
+        .pointContainer.map-open .mapBox.center {
+            top: 40%;
+            width: 55%;
+            padding-top: 55%;
+            left: 30%;
+            opacity: 1;
+        }
+
+        .pointContainer.map-open .mapBox.center .earthName {
+            font-size: 18px;
+            top: 130%;
+        }
+
+
+        .pointContainer.map-open .mapBox.left {
+            top: 80%;
+            left: 30%;
+            z-index: 100;
+        }
+
+        .pointContainer.map-open .mapBox.right {
+            top: 80%;
+            left: 70%;
+            z-index: 100;
+        }
+
+        .pointContainer.map-open .mapBox.left .earthName,
+        .pointContainer.map-open .mapBox.right .earthName {
+            top: 170%;
+            width: 400%;
+        }
+
+        /* countryList */
+
+        .pointContainer .mapBox .countryList {
+            left: 125%;
+            top: -110%;
+            height: 300%;
+            width: 80%;
+        }
+
+
+        /* Name tag */
+        .pointContainer .mapBox .countryList .nameTag {
+            position: absolute;
+            top: 0;
+            right: 100%;
+        }
+
+        .pointContainer .mapBox .countryList .nameTag .tagCircle {
+            width: 10px;
+            height: 10px;
+        }
+
+
+        .pointContainer .mapBox .countryList .mainName {
+            font-size: 15px;
+            margin: 2px 0 1px 0;
+        }
+
+
+        .pointContainer .mapBox .countryList .mainName a {
+            margin: 6px 18px 6px 8px;
+        }
+
+        /* Name Dropdown */
+
+        .pointContainer .mapBox .countryList .nameDropdown {
+            /* transition: 1s;
+            overflow: hidden; */
+        }
+
+        .pointContainer .mapBox .countryList .smName {
+            /* font-size: 13px; */
+            margin: 2px;
+        }
+
+        .pointContainer .mapBox .countryList .smName a {
+            color: #262940;
+            display: inline-block;
+            margin: 2px 6px 2px 6px;
+        }
+
+    }
+
+
+
+
+    /* ********************************************************************
+
+    
+    Others 
+
+    
+    ******************************************************************** */
+
+
+    .pointContainer .op0 {
+        opacity: 0 !important;
+    }
+
+
+
+
+
+    /* back */
+
+
+    .pointContainer .map_back {
+        position: absolute;
+        top: 3%;
+        left: 2%;
+        padding: 4px 12px;
+        font-weight: 600;
+        font-size: 20px;
+        color: #100a2f;
+        background-color: #e8e8e8ea;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: 1s;
+        opacity: 0;
+        transform: scale(1);
+        box-shadow: 0 0 4px #00000014;
+        width: 40px;
+        height: 40px;
+        background-image: url(global_image/back.svg);
+        /* background-image: url(//assets.aten.com/webpage/shared/about-aten/global-presence/back.svg); */
+        background-position: center;
+        background-size: contain;
+    }
+
+
+
+    .pointContainer.map-open .map_back {
+        opacity: 1;
+    }
+
+
+    .pointContainer .map_back:hover {
+        background-color: #e8e8e8ea;
+        color: #0b73c7;
+        transform: scale(1.05);
+        box-shadow: 0 0 32px #00000034;
+    }

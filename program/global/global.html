@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="point.css">
+    <title>Document</title>
+</head>
+
+<!-- ***************
+    上傳CMS換圖片
+        global_image/ =>
+        //assets.aten.com/webpage/shared/about-aten/global-presence/ 
+******************* -->
+
+<body>
+    <div class="container">
+        <div class="RBUContainer">
+            <div class="pointContainer">
+                <h3 class="RBUh">Global Presence</h3>
+                <div class="mapBox map_america">
+                    <div class="mapEearth"></div>
+                    <div class="earthName">America</div>
+                    <div class="countryList"></div>
+                </div>
+                <div class="mapBox  map_asia">
+                    <div class="mapEearth"></div>
+                    <div class="earthName">Asia-Pacific / Oceania Region</div>
+                    <div class="countryList"></div>
+                </div>
+                <div class="mapBox map_eu">
+                    <div class="mapEearth"></div>
+                    <div class="earthName">Europe / Africa</div>
+                    <div class="countryList"></div>
+                </div>
+                <div class="map_back"></div>
+                <img src="global_image/map_leber.svg" alt="" class="leber">
+                <!-- <img src="//assets.aten.com/webpage/shared/about-aten/global-presence/map_leber.svg" alt="" class="leber"> -->
+            </div>
+
+        </div>
+    </div>
+</body>
+<script>
+
+    //
+    // To do list
+    // RWD
+    //
+    //
+    //
+    //
+    //
+    //
+
+    // var $ = function (name) {
+    //     return document.getElementById(name)
+    // }
+
+
+
+    // -----------------------------------------
+    //
+    //
+    //
+    //     Customed Globe Presence
+    //
+    //
+    //
+    // -----------------------------------------
+
+    var $css = function (name) {
+        return document.getElementsByClassName(name)
+    }
+    var $tag = function (name) {
+        return document.getElementsByTagName(name)
+    }
+
+
+    // const pointType = [HQ, F, RD, SRC, RBU]
+    const pointType = ["RBU", "SRC", "RD", "F", "HQ"]
+    const pointTypeColor = ["#83B41A", "#FABE00", "#00A1E9", "#920883", "#EA5405"]
+    const pointStyleColorSize = [85, 80, 80, 82, 75, 50]
+
+    var Point = function (id, name, from, continent, position, type, link) {
+
+        // ------------------------------------------
+        //
+        // 除錯
+        //
+        // ------------------------------------------
+
+
+
+        if (isNaN(continent)) {
+            console.log("continent 不是數字");
+            continent = 0
+        } else {
+            if (continent < 0 || continent > 2) {
+                console.log(name + " continent 不在 0 ~ 2 ");
+                continent = 0
+            }
+        }
+
+
+
+
+        // ------------------------------------------
+        //
+        // 創立地球上的點點
+        //
+        // ------------------------------------------
+
+        // Create a new div element
+        this.point = document.createElement("div");
+        this.x = position.x + '%';
+        this.y = position.y + '%';
+        this.from = from
+        this.id = id
+
+        // Set the point's properties
+        this.point.style.left = this.x;
+        this.point.style.top = this.y;
+        this.point.style.backgroundColor = "#ffffff";
+        this.point.classList = 'point';
+        if (type.length > 2) {
+            this.point.classList.add("xl")
+        }
+        this.point.setAttribute('data-name', name);
+
+
+        //創立地區點點顏色
+        this.pointStyleColor = []
+        this.colorTimes = 0
+        for (let i = 0; i < pointType.length; i++) {
+            if (type.includes(pointType[i])) {
+                this.pointStyleTemp = document.createElement("div")
+                this.pointStyleTemp.style.backgroundColor = pointTypeColor[i];
+                this.pointStyleTemp.style.width = pointStyleColorSize[this.colorTimes] + '%';
+                this.pointStyleTemp.style.height = pointStyleColorSize[this.colorTimes] + '%';
+
+                this.pointStyleTemp.classList = "pointStyleColor"
+
+                this.pointStyleColor.push(this.pointStyleTemp)
+                this.colorTimes = this.colorTimes + 1
+            }
+        }
+
+        for (let i = 0; i < this.pointStyleColor.length; i++) {
+            if (i == 0) {
+                this.point.appendChild(this.pointStyleColor[i]);
+            } else {
+                this.pointStyleColor[i - 1].appendChild(this.pointStyleColor[i]);
+            }
+        }
+
+
+        //內點點的屬性與互動
+        if (from != "main") {
+            this.point.style.opacity = 0.2
+            this.point.style.left = pointsMap[from].x;
+            this.point.style.top = pointsMap[from].y;
+            this.point.style.zIndex = 90
+
+            //點點擴散功能
+            this.openSmPoint = () => {
+                closeOtherSmPoint(this.from)
+
+                pointsMap[from].point.style.opacity = 0
+                pointsMap[from].pointName.classList.add("op0")
+                pointsMap[from].point.style.pointerEvents = "none"
+
+                this.point.style.opacity = 1
+                this.point.style.left = this.x;
+                this.point.style.top = this.y;
+            }
+
+        } else {
+            //該點點主要點內 click 時:
+            this.point.addEventListener("click", () => {
+                closeOtherSmPoint()
+                Object.values(pointsMap).filter(point => point.from == this.id).forEach(point => { point.openSmPoint() })
+                this.openDropdown()
+            })
+        }
+
+
+        // Add the new point to the point container
+        mapEearth[continent].appendChild(this.point);
+
+
+
+
+
+
+        // --------------------------------------------------------
+        //
+        // 創立國家與地區列表
+        //
+        // --------------------------------------------------------
+
+        // Create a new div element
+        this.name = document.createElement("div");
+        this.nameText = document.createElement("a");
+        this.nameTag = document.createElement("div");
+        this.nameTag.classList = "nameTag"
+        this.name.appendChild(this.nameText);
+        this.name.appendChild(this.nameTag);
+        this.nameText.textContent = name;
+
+
+        // 加入 Link
+        if (typeof link != 'undefined' && link != "") {
+            link = "#" + link
+            this.nameText.href = "#"
+            this.nameText.setAttribute("data-toggle", "modal");
+            this.nameText.setAttribute("data-target", link);
+            this.nameText.target = "_self"
+
+            this.nameText.style.zIndex = "9000"
+
+            // <a href="#" data-toggle="modal" data-target="#Test001" target="_self" >123</a>
+        }
+
+
+
+
+        //創立點點上的文字
+        this.pointName = this.nameText.cloneNode(true)
+        this.pointName.classList = "pointName"
+        this.pointName.style.left = this.x;
+        this.pointName.style.top = this.y;
+        mapEearth[continent].appendChild(this.pointName);
+
+
+
+        //---------------
+        //創立 name tag 地區點點顏色
+        //---------------
+        this.nameTagStyleBox = []
+        //創立
+        for (let i = pointType.length + 1; i > -1; i--) {
+            if (type.includes(pointType[i])) {
+                this.nameTagStyleTemp = document.createElement("div")
+                this.nameTagStyleTemp.style.backgroundColor = pointTypeColor[i];
+                this.nameTagStyleTemp.classList = "tagCircle"
+                this.nameTagStyleBox.push(this.nameTagStyleTemp)
+            }
+        }
+        //放入
+        for (let i = 0; i < this.nameTagStyleBox.length; i++) {
+            this.nameTag.appendChild(this.nameTagStyleBox[i]);
+        }
+
+
+
+
+        //---------------
+        // 新增選單功能，並放入頁面上
+        //---------------
+
+        // 創立主點點名字，和他的下拉選單容器
+        if (from == "main") {
+            this.name.classList = 'mainName';
+
+            this.nameDropdown = document.createElement("div");
+            this.nameDropdown.classList = 'nameDropdown';
+            this.nameDropdownHieight = 0
+            countryList[continent].appendChild(this.name);
+            countryList[continent].appendChild(this.nameDropdown);
+
+            this.nameDropdown.style.height = 0
+
+            // click > 打下拉選單
+            this.dropdownTag = 0
+            this.name.addEventListener("click", () => {
+                if (this.dropdownTag == 0) {
+
+                    this.openDropdown()
+
+                    //擴散點點
+                    closeOtherSmPoint(this.from)
+                    Object.values(pointsMap).filter(point => point.from == this.id).forEach(point => { point.openSmPoint() })
+
+                    this.dropdownTag = 1
+                } else {
+                    closeDropdown()
+                    this.dropdownTag = 0
+                }
+            })
+
+
+
+
+            // 創立小點點名字        
+        } else {
+            this.name.classList = 'smName';
+            pointsMap[from].nameDropdown.appendChild(this.name);
+            //每多一個小點點(地區)下拉選單長度增加
+            pointsMap[from].nameDropdownHieight = pointsMap[from].nameDropdownHieight + 30
+        }
+
+
+
+
+
+
+        //-----------------
+        //
+        // 共用互動
+        //
+        //-----------------
+
+
+        //-----------------
+        // hover
+        //-----------------
+        this.hoverAction = () => {
+            this.name.classList.add('nameOpen')
+            this.point.classList.add('pointHover')
+            this.pointName.classList.add('showName')
+        }
+        this.hoverOutAction = () => {
+            this.name.classList.remove('nameOpen')
+            this.point.classList.remove('pointHover')
+            this.pointName.classList.remove('showName')
+        }
+
+        this.point.addEventListener("mouseover", this.hoverAction)
+        this.point.addEventListener("mouseout", this.hoverOutAction)
+        this.name.addEventListener("mouseover", this.hoverAction)
+        this.name.addEventListener("mouseout", this.hoverOutAction)
+
+
+
+        //-----------------
+        // 選單功能
+        //-----------------
+
+        this.openDropdown = (openDropdown = this) => {
+            //下拉選單全關閉
+            closeDropdown()
+            //開啟選單
+            openDropdown.nameDropdown.style.height = openDropdown.nameDropdownHieight + "px"
+        }
+    }
+
+
+
+
+
+    // ----------------
+    //
+    //  Entering
+    //
+    // ----------------
+    var pointContainer = $css("pointContainer")[0];
+    var mapBoxes = Array.from($css('mapBox'));
+    var mapEearth = Array.from($css('mapEearth'));
+    var countryList = Array.from($css('countryList'));
+
+
+
+    // Set point attribute
+    var pointsData = [
+        // America
+        { 'id': "0000", 'name': 'point3', 'space': '         ', 'from': "main", 'continent': 0, 'position': { x: 12, y: 21 }, 'type': ['HQ'], 'space2': '                             ', 'link': "" },
+
+
+        // Asia-Pacific / Oceania Region
+        { 'id': "1000", 'name': 'Taiwan', 'space': '         ', 'from': "main", 'continent': 1, 'position': { x: 56.5, y: 52.5 }, 'type': ["RBU", "SRC", "RD", "F", "HQ"], 'space2': '', 'link': "" },
+        { 'id': "1001", 'name': 'Headquarters', 'space': '   ', 'from': "1000", 'continent': 1, 'position': { x: 58.2, y: 50.5 }, 'type': ["SRC", "RD", "F", "HQ"], 'space2': '       ', 'link': "tw_hq" },
+        { 'id': "1002", 'name': 'New Taipei City', 'space': '', 'from': "1000", 'continent': 1, 'position': { x: 57.0, y: 50.5 }, 'type': ["RBU"], 'space2': '                        ', 'link': "tw_ntc" },
+        { 'id': "1003", 'name': 'Koahslung', 'space': '      ', 'from': "1000", 'continent': 1, 'position': { x: 55.5, y: 53.5 }, 'type': ['RBU'], 'space2': '                        ', 'link': "tw_kh" },
+
+
+        { 'id': "1100", 'name': 'China', 'space': '          ', 'from': "main", 'continent': 1, 'position': { x: 46.0, y: 43.0 }, 'type': ["RBU", "SRC", "RD", "F"], 'space2': '      ', 'link': "" },
+        { 'id': "1101", 'name': 'Beijing', 'space': '        ', 'from': "1100", 'continent': 1, 'position': { x: 51.0, y: 37.0 }, 'type': ["RBU", "SRC"], 'space2': '                 ', 'link': "cn_bj" },
+        { 'id': "1102", 'name': 'Shanghai', 'space': '       ', 'from': "1100", 'continent': 1, 'position': { x: 53.0, y: 45.0 }, 'type': ["RBU", "SRC", "RD", "F"], 'space2': '      ', 'link': "cn_sh" },
+        { 'id': "1103", 'name': 'Guangzhou', 'space': '      ', 'from': "1100", 'continent': 1, 'position': { x: 49.0, y: 51.0 }, 'type': ["RBU", "SRC"], 'space2': '                 ', 'link': "cn_gh" },
+
+        { 'id': "1200", 'name': 'Japan', 'space': '          ', 'from': "main", 'continent': 1, 'position': { x: 67.5, y: 41.0 }, 'type': ["RBU", "SRC"], 'space2': '                 ', 'link': "" },
+        { 'id': "1201", 'name': 'Tokyo', 'space': '          ', 'from': "1200", 'continent': 1, 'position': { x: 68.5, y: 40.5 }, 'type': ["RBU", "SRC"], 'space2': '                 ', 'link': "jp_tk" },
+        { 'id': "1202", 'name': 'Osaka', 'space': '          ', 'from': "1200", 'continent': 1, 'position': { x: 67.5, y: 43.0 }, 'type': ["RBU", "SRC"], 'space2': '                 ', 'link': "jp_osk" },
+        { 'id': "1203", 'name': 'Kyushu', 'space': '         ', 'from': "1200", 'continent': 1, 'position': { x: 65.5, y: 44.0 }, 'type': ["RBU"], 'space2': '                        ', 'link': "jp_ks" },
+        { 'id': "1204", 'name': 'Nagoya', 'space': '         ', 'from': "1200", 'continent': 1, 'position': { x: 63.5, y: 45.0 }, 'type': ["RBU"], 'space2': '                        ', 'link': "jp_nga" },
+
+        { 'id': "1300", 'name': 'South Korea', 'space': '    ', 'from': "main", 'continent': 1, 'position': { x: 59.8, y: 42.5 }, 'type': ["RBU", "SRC"], 'space2': '                 ', 'link': "" },
+        { 'id': "1301", 'name': 'Seoul', 'space': '          ', 'from': "1300", 'continent': 1, 'position': { x: 59.8, y: 42.7 }, 'type': ["RBU", "SRC"], 'space2': '                 ', 'link': "kr_s" },
+        { 'id': "1302", 'name': 'Busan', 'space': '          ', 'from': "1300", 'continent': 1, 'position': { x: 60.3, y: 44.0 }, 'type': ["RBU", "SRC"], 'space2': '                 ', 'link': "kr_b" },
+
+
+        { 'id': "1400", 'name': 'India', 'space': '          ', 'from': "main", 'continent': 1, 'position': { x: 31.5, y: 52.5 }, 'type': ["RBU"], 'space2': '                        ', 'link': "in" },
+        { 'id': "1500", 'name': 'Theiland', 'space': '       ', 'from': "main", 'continent': 1, 'position': { x: 43.5, y: 59.5 }, 'type': ["F"], 'space2': '                          ', 'link': "tl" },
+        { 'id': "1600", 'name': 'Australia', 'space': '      ', 'from': "main", 'continent': 1, 'position': { x: 66.5, y: 83.5 }, 'type': ["RBU", "SRC"], 'space2': '                 ', 'link': "au" },
+        { 'id': "1700", 'name': 'Indonesia', 'space': '      ', 'from': "main", 'continent': 1, 'position': { x: 52.0, y: 69.5 }, 'type': ["RBU"], 'space2': '                        ', 'link': "id" },
+
+
+        // Europe / Africa
+        { 'id': "2100", 'name': 'point3', 'space': '         ', 'from': "main", 'continent': 2, 'position': { x: 42.0, y: 22.0 }, 'type': ["RBU", "SRC", "RD", "F", "HQ"], 'space2': '', 'link': "" },
+        { 'id': "2200", 'name': 'point3', 'space': '         ', 'from': "main", 'continent': 2, 'position': { x: 17.0, y: 42.0 }, 'type': ['HQ'], 'space2': '                         ', 'link': "" },
+
+    ];
+
+
+
+    // 讀出 json
+    // console.log(JSON.stringify(pointsData))
+
+    // 讀取 json
+    // fetch('point.json')
+    //     .then(response => {
+    //         if (!response.ok) {
+    //             throw new Error('Network response was not ok');
+    //         }
+    //         return response.json(); // 将 JSON 数据解析为 JavaScript 对象
+    //     })
+    //     .then(data => {
+    //         // 在这里使用解析后的数据（JavaScript 对象）
+    //         console.log(data);
+    //         pointsData = data
+    //     })
+    //     .catch(error => {
+    //         console.error('There was a problem with the fetch operation:', error);
+    //     });
+
+
+
+
+
+
+
+    // Create point
+    pointsMap = {}
+    for (var i = 0; i < pointsData.length; i++) {
+        var data = pointsData[i];
+        var point = new Point(data.id, data.name, data.from, data.continent, data.position, data.type, data.link);
+        pointsMap[data.id] = point;
+    }
+
+
+    smPoints = Object.values(pointsMap).filter(point => point.from !== 'main');
+    mainPoints = Object.values(pointsMap).filter(point => point.from == "main");
+
+
+
+
+
+
+
+
+    // ------------------------------------------------------
+    //
+    // 功能
+    //
+    // ------------------------------------------------------
+
+    //還原所有小點
+    closeOtherSmPoint = (from) => {
+        smOtherPoints = Object.values(pointsMap).filter(point => point.from !== from && point.from !== "main");
+        smOtherPoints.forEach(point => {
+
+            point.point.style.opacity = 0.3
+            point.point.style.left = pointsMap[point.from].x;
+            point.point.style.top = pointsMap[point.from].y;
+
+            //main point 還原
+            mainPoints.forEach(point => {
+                point.point.style.opacity = 1
+                point.pointName.classList.remove("op0")
+                point.point.style.pointerEvents = "auto"
+            })
+        });
+    }
+
+
+
+    //關閉所有下拉選單
+    closeDropdown = () => {
+        mainPoints.forEach(point => {
+            point.nameDropdown.style.height = 0
+            point.dropdownTag = 0
+        })
+    }
+
+
+
+
+
+
+    // ------------------------------------------------------
+    //
+    // 互動
+    //
+    // ------------------------------------------------------
+
+    var mapBack = $css('map_back')[0];
+
+
+
+    const earthPositions = {
+        0: { c: 0, r: 1, l: 2 },
+        1: { c: 1, r: 2, l: 0 },
+        2: { c: 2, r: 0, l: 1 },
+    };
+
+    for (let i = 0; i < mapBoxes.length; i++) {
+        mapBoxes[i].addEventListener('click', () => {
+            pointContainer.classList.add('map-open');
+
+            // 把地球位置歸0
+            mapBoxes.forEach(mb => mb.classList.remove('center', 'left', 'right'))
+
+            // 切換各地球位置
+            let { c, r, l } = earthPositions[i];
+            mapBoxes[c].classList.add('center');
+            mapBoxes[r].classList.add('right');
+            mapBoxes[l].classList.add('left');
+        });
+
+    }
+
+
+
+    mapBack.addEventListener('click', function () {
+        pointContainer.classList.remove('map-open');
+        mapBoxes.forEach(mb => mb.classList.remove('center', 'left', 'right'))
+    })
+
+
+
+</script>
+
+
+</html>

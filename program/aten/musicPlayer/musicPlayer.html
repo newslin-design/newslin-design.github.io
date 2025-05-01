@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="musicPlayer.css">
+
+</head>
+
+<body>
+    <div class="container home">
+        <div class="cdheader" style="background-image: url('cdHeader.png');"></div>
+
+        <div class="cdCover" style="background-image: url('cdCover.png');">
+            <div class="h1"></div>
+            <div class="h2"></div>
+            <div class="musicWave"></div>
+        </div>
+        <div class="cdSings">
+
+        </div>
+        <div class="videoPlayer">
+            <div class="videoBox">
+                <video class="video" src="music/[ CLIP ] 田馥甄《追梦人》《梦想的声音》第12期 20170113 _浙江卫视官方HD.mp4" controls></video>
+                <video class="video" src="music/王識賢《腳踏車》官方MV.mp4" controls></video>
+                <video class="video" src="music/黃明志 Ft. 鄧紫棋【漂向北方】KTV 包廂版 @2017.mp4" controls></video>
+                <video class="video" src="music/滅火器 Fire EX. - 長途夜車 Southbound Night Bus Lyric Video.mp4"
+                    controls></video>
+                <video class="video" src="music/孫燕姿 Sun Yan-Zi - 天黑黑 Cloudy Day (official 官方完整版MV).mp4"
+                    controls></video>
+                <video class="video" src="music/朱俐靜 Miu Chu - 存在的力量 Power Of Existence (官方版MV) - 韓劇『我的野蠻情人』片頭.mp4"
+                    controls></video>
+                <video class="video" src="music/邱振哲PikA 【 太陽 】 Official Music Video（官方MV）.mp4" controls></video>
+                <video class="video" src="music/南拳媽媽(Nan Quan Mama)-下雨天Xia Yu Tian (Official Music Video).mp4"
+                    controls></video>
+                <video class="video" src="music/五月天 Mayday【倔強 Stubborn】Official Music Video.mp4" controls></video>
+            </div>
+            <div class="maruBtnBox">
+                <div class="maruBtnOk" style="background-image: url('icon_ok.png');"></div>
+                <div class="maruBtnNo" style="background-image: url('icon_no.png');"></div>
+            </div>
+            <div class="backBtn" style="background-image: url('icon_back.png');"></div>
+        </div>
+        <div class="cd">
+            <div class="CDsudak"></div>
+        </div>
+    </div>
+    <div class="startMask"></div>
+</body>
+
+<script src="../library/voiceControl.js"></script>
+<script>
+
+
+
+
+    // ****************************************************************************************************
+    //
+    // 
+    //      基本功能
+    //      
+    // 
+    // ****************************************************************************************************
+
+    var $id = function (name) {
+        return document.getElementById(name)
+    }
+    var $css = function (name) {
+        return document.getElementsByClassName(name)
+    }
+    var $tag = function (name) {
+        return document.getElementsByTagName(name)
+    }
+
+    var test = function (test) {
+        console.log(test)
+    }
+
+    // ****************************************************************************************************
+
+    var container = $css("container")[0]
+    var h1 = $css("h1")[0]
+    var h2 = $css("h2")[0]
+
+
+
+    var cdSingBox = $css("cdSings")[0]
+    var cd = $css("cd")[0]
+    var CDsudak = $css("CDsudak")[0]
+
+    var backBtn = $css("    backBtn")[0]
+
+    var maruBtnOk = $css("maruBtnOk")[0]
+    var maruBtnNo = $css("maruBtnNo")[0]
+
+    var videoPlayerBox = $css("videoPlayer")[0]
+    var videos = $css("video")
+    var playerNow = 0
+
+
+
+
+
+    class SingCard {
+        constructor(index, data, where) {
+            this.index = index
+            this.defaultImage = data.defaultImage
+            this.singCover = data.singCover
+            this.cdCover = data.cdCover
+            this.video = videos[index]
+            this.musicLink = data.musicLink
+            this.hintMusic = data.hintMusic
+            this.where = where
+
+            this.isHintPlay = false
+        }
+        init() {
+            this.singCardContainer = document.createElement('div')
+            this.singCardContainer.classList = 'singCard'
+            this.singCardContainer.style.backgroundImage = `url(${this.defaultImage}.png)`
+
+            this.singCardOpenBtn = document.createElement('div')
+            this.singCardOpenBtn.classList = 'singCardOpenBtn'
+            this.singCardOpenBtn.addEventListener("click", () => { this.playVideo() })
+
+            this.hintPlayBtn = document.createElement('div')
+            this.hintPlayBtn.classList = 'hintPlayBtn'
+            this.hintPlayBtn.addEventListener("click", () => { this.hintTogglePlay() })
+
+
+            this.singCardOk = document.createElement('div')
+            this.singCardOk.classList = 'singCardOk'
+            this.singCardOk.style.backgroundImage = `url(icon_ok.png)`
+
+
+
+            this.singCardContainer.appendChild(this.hintPlayBtn)
+            this.singCardContainer.appendChild(this.singCardOk)
+            this.singCardContainer.appendChild(this.singCardOpenBtn)
+
+
+            this.where.appendChild(this.singCardContainer)
+        }
+
+
+        playHint() {
+            bgm[10 + this.index].play()
+            bgm[9].fadeStop(1.5)
+            this.isHintPlay = !this.isHintPlay
+        }
+        stopHint() {
+            bgm[10 + this.index].fadeStop()
+            bgm[9].play()
+            this.isHintPlay = !this.isHintPlay
+        }
+
+        hintTogglePlay() {
+            if (this.isHintPlay) {
+                this.stopHint()
+                this.hintPlayBtn.style.backgroundImage = `url(play.png)`
+            } else {
+                this.playHint()
+                this.hintPlayBtn.style.backgroundImage = `url(round-stop-circle.png)`
+            }
+        }
+
+        playVideo() {
+            this.openVideoPlayer()
+            bgm[this.index].play()
+            bgm[9].fadeStop()
+        }
+
+        openVideoPlayer() {
+            videoPlayerBox.classList.add("open")
+            cd.classList.add("open")
+            CDsudak.style.backgroundImage = `url(${this.cdCover})`
+            this.video.style.display = "inline-block"
+            playerNow = this.index
+            musicWaveBox.classList.add("open")
+        }
+
+        isOk() {
+            this.singCardContainer.style.backgroundImage = `url(${this.singCover}.png)`
+            this.singCardOk.style.backgroundImage = `url(icon_ok.png)`
+            this.singCardOk.style.opacity = 1
+        }
+        isNo() {
+            this.singCardContainer.style.backgroundImage = `url(${this.singCover}.png)`
+            this.singCardOk.style.backgroundImage = `url(icon_no.png)`
+            this.singCardOk.style.opacity = 1
+        }
+        reset() { }
+
+    }
+
+
+    // ----------------------------------
+    // 其他功能
+    // ----------------------------------
+
+    var closeVideoPlayer = () => {
+        videoPlayerBox.classList.remove("open")
+        cd.classList.remove("open")
+        CDsudak.style.backgroundImage = `url(CDsudak.png)`
+        musicWaveBox.classList.remove("open")
+
+        allMute()
+        allVideoHidden()
+        bgm[9].play("loop")
+    }
+    var musicWaveBox = $css("musicWave")[0]
+    var allVideoHidden = () => {
+        for (let i = 0; i < singCards.length; i++) {
+            singCards[i].video.style.display = "none"
+        }
+    }
+    var allMute = () => {
+        for (let i = 0; i < bgm.length; i++) {
+            bgm[i].fadeStop(1)
+        }
+    }
+
+
+    // ----------------------------------
+    // 環境設置
+    // ----------------------------------
+
+
+    container.addEventListener("click", () => {
+        container.classList.remove("home")
+    })
+
+
+    backBtn.addEventListener("click", () => {
+        closeVideoPlayer()
+    })
+
+    maruBtnOk.addEventListener("click", () => {
+        closeVideoPlayer()
+        singCards[playerNow].isOk()
+    })
+
+    maruBtnNo.addEventListener("click", () => {
+        closeVideoPlayer()
+        singCards[playerNow].isNo()
+    })
+
+
+
+    // ----------------------------------
+    // 資料
+    // ----------------------------------
+
+    singCardData = [{
+        defaultImage: "singIcon01",
+        singCover: "singCover01",
+        cdCover: "CDsudak_01.png",
+        videoLink: "",
+        musicLink: "",
+        hintMusic: "",
+    }, {
+        defaultImage: "singIcon02",
+        singCover: "singCover02",
+        cdCover: "CDsudak_02.png",
+        videoLink: "",
+        musicLink: "",
+        hintMusic: "",
+    }, {
+        defaultImage: "singIcon03",
+        singCover: "singCover03",
+        cdCover: "CDsudak_03.png",
+        videoLink: "",
+        musicLink: "",
+        hintMusic: "",
+    }, {
+        defaultImage: "singIcon04",
+        singCover: "singCover04",
+        cdCover: "CDsudak_04.png",
+        videoLink: "",
+        musicLink: "",
+        hintMusic: "",
+    }, {
+        defaultImage: "singIcon05",
+        singCover: "singCover05",
+        cdCover: "CDsudak_05.png",
+        videoLink: "",
+        musicLink: "",
+        hintMusic: "",
+    }, {
+        defaultImage: "singIcon06",
+        singCover: "singCover06",
+        cdCover: "CDsudak_06.png",
+        videoLink: "",
+        musicLink: "",
+        hintMusic: "",
+    }, {
+        defaultImage: "singIcon07",
+        singCover: "singCover07",
+        cdCover: "CDsudak_07.png",
+        videoLink: "",
+        musicLink: "",
+        hintMusic: "",
+    }, {
+        defaultImage: "singIcon08",
+        singCover: "singCover08",
+        cdCover: "CDsudak_08.png",
+        videoLink: "",
+        musicLink: "",
+        hintMusic: "",
+    }, {
+        defaultImage: "singIcon09",
+        singCover: "singCover09",
+        cdCover: "CDsudak_09.png",
+        videoLink: "",
+        musicLink: "",
+        hintMusic: "",
+    }]
+
+    singCards = singCardData.map((data, index) => {
+        const card = new SingCard(index, data, cdSingBox)
+        card.init()
+        return card
+    })
+
+
+
+
+
+
+
+
+
+
+
+
+    // 音樂控制
+    var bgmList = [
+        { voice: videos[0], drawColor: "#ffffff88", w: 100, h: 100, x: 100, y: 100 },
+        { voice: videos[1], drawColor: "#ffffff88", w: 100, h: 100, x: 100, y: 100 },
+        { voice: videos[2], drawColor: "#ffffff88", w: 100, h: 100, x: 100, y: 100 },
+        { voice: videos[3], drawColor: "#ffffff88", w: 100, h: 100, x: 100, y: 100 },
+        { voice: videos[4], drawColor: "#ffffff88", w: 100, h: 100, x: 100, y: 100 },
+        { voice: videos[5], drawColor: "#ffffff88", w: 100, h: 100, x: 100, y: 100 },
+        { voice: videos[6], drawColor: "#ffffff88", w: 100, h: 100, x: 100, y: 100 },
+        { voice: videos[7], drawColor: "#ffffff88", w: 100, h: 100, x: 100, y: 100 },
+        { voice: videos[8], drawColor: "#ffffff88", w: 100, h: 100, x: 100, y: 100 },
+        { voice: "beam by ottom Artlist.mp3", drawColor: "#ffffff88", w: 100, h: 100, x: 100, y: 100 },
+        // 10 -----------------------------------------------------------------
+        { voice: "music/[ CLIP ] 田馥甄《追梦人》《梦想的声音》第12期 20170113 _浙江卫视官方HD.mp3", drawColor: "#ffffff88", w: 100, h: 100, x: 100, y: 100 },
+        { voice: "music/王識賢《腳踏車》官方MV.mp3", drawColor: "#ffffff88", w: 100, h: 100, x: 100, y: 100 },
+        { voice: "music/黃明志 Ft. 鄧紫棋【漂向北方】KTV 包廂版 @2017.mp3", drawColor: "#ffffff88", w: 100, h: 100, x: 100, y: 100 },
+        { voice: "music/滅火器 Fire EX. - 長途夜車 Southbound Night Bus Lyric Video.mp3", drawColor: "#ffffff88", w: 100, h: 100, x: 100, y: 100 },
+        { voice: "music/孫燕姿 Sun Yan-Zi - 天黑黑 Cloudy Day (official 官方完整版MV).mp3", drawColor: "#ffffff88", w: 100, h: 100, x: 100, y: 100 },
+        { voice: "music/朱俐靜 Miu Chu - 存在的力量 Power Of Existence (官方版MV) - 韓劇『我的野蠻情人』片頭.mp3", drawColor: "#ffffff88", w: 100, h: 100, x: 100, y: 100 },
+        { voice: "music/邱振哲PikA 【 太陽 】 Official Music Video（官方MV）.mp3", drawColor: "#ffffff88", w: 100, h: 100, x: 100, y: 100 },
+        { voice: "music/南拳媽媽(Nan Quan Mama)-下雨天Xia Yu Tian (Official Music Video).mp3", drawColor: "#ffffff88", w: 100, h: 100, x: 100, y: 100 },
+        { voice: "music/五月天 Mayday【倔強 Stubborn】Official Music Video.mp3", drawColor: "#ffffff88", w: 100, h: 100, x: 100, y: 100 },
+    ]
+
+
+
+    var bgm = bgmList.map((item) => {
+        let musicInstance = new music(item.voice);
+        musicInstance.drawColor = "#4fedd088";
+        musicInstance.inputCanvas(musicWaveBox, item.w, item.h, item.x, item.y);
+        musicInstance.draw();
+        return musicInstance;
+    });
+
+
+
+
+    // 入場
+
+    // for (let i = 0; i < 9; i++) {
+    //     bgm[i].gainNode.gain.value = 1.2
+    // }
+
+
+    var startMask = $css("startMask")[0]
+    openCtx(startMask)
+    startMask.addEventListener("click", () => {
+
+        startMask.style.display = "none"
+        bgm[9].gainNode.gain.value = 0.4
+        bgm[9].play("loop")
+    })
+
+
+
+
+    // 鍵盤快捷鍵
+    window.addEventListener("keydown", keyboardListener, false);
+    function keyboardListener(e) {
+        var keyID = e.code;
+        if (keyID === 'KeyQ') {
+            singCards[0].openVideoPlayer()
+        }
+        if (keyID === 'KeyA') {
+            singCards[0].closeVideoPlayer()
+
+        }
+        if (keyID === 'KeyZ') {
+            allMute()
+        }
+
+        if (keyID === 'KeyW') {
+            allMute()
+        }
+        if (keyID === 'KeyS') {
+            allMute()
+        }
+    }
+
+
+</script>
+
+
+</html>

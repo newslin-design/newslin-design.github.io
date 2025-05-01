@@ -1,0 +1,186 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="343" height="216" viewBox="0 0 343 216">
+  <defs>
+    <filter id="Rectangle_763" x="0" y="0" width="343" height="216" filterUnits="userSpaceOnUse">
+      <feOffset input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feFlood flood-opacity="0.161"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <filter id="point" x="42" y="155" width="30" height="30" filterUnits="userSpaceOnUse">
+      <feOffset dy="2" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="2" result="blur-2"/>
+      <feFlood flood-opacity="0.239"/>
+      <feComposite operator="in" in2="blur-2"/>
+    </filter>
+    <filter id="point-2" x="42" y="155" width="30" height="30" filterUnits="userSpaceOnUse">
+      <feOffset dx="2" dy="2" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="0.5" result="blur-3"/>
+      <feFlood flood-opacity="0.161" result="color"/>
+      <feComposite operator="out" in="SourceGraphic" in2="blur-3"/>
+      <feComposite operator="in" in="color"/>
+      <feComposite operator="in" in2="SourceGraphic"/>
+    </filter>
+    <filter id="point-3" x="42" y="123" width="30" height="30" filterUnits="userSpaceOnUse">
+      <feOffset dy="2" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="2" result="blur-4"/>
+      <feFlood flood-opacity="0.239"/>
+      <feComposite operator="in" in2="blur-4"/>
+    </filter>
+    <filter id="point-4" x="42" y="123" width="30" height="30" filterUnits="userSpaceOnUse">
+      <feOffset dx="2" dy="2" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="0.5" result="blur-5"/>
+      <feFlood flood-opacity="0.161" result="color-2"/>
+      <feComposite operator="out" in="SourceGraphic" in2="blur-5"/>
+      <feComposite operator="in" in="color-2"/>
+      <feComposite operator="in" in2="SourceGraphic"/>
+    </filter>
+    <filter id="point-5" x="42" y="91" width="30" height="30" filterUnits="userSpaceOnUse">
+      <feOffset dy="2" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="2" result="blur-6"/>
+      <feFlood flood-opacity="0.239"/>
+      <feComposite operator="in" in2="blur-6"/>
+    </filter>
+    <filter id="point-6" x="42" y="91" width="30" height="30" filterUnits="userSpaceOnUse">
+      <feOffset dx="2" dy="2" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="0.5" result="blur-7"/>
+      <feFlood flood-opacity="0.161" result="color-3"/>
+      <feComposite operator="out" in="SourceGraphic" in2="blur-7"/>
+      <feComposite operator="in" in="color-3"/>
+      <feComposite operator="in" in2="SourceGraphic"/>
+    </filter>
+    <filter id="point-7" x="42" y="59" width="30" height="30" filterUnits="userSpaceOnUse">
+      <feOffset dy="2" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="2" result="blur-8"/>
+      <feFlood flood-opacity="0.239"/>
+      <feComposite operator="in" in2="blur-8"/>
+    </filter>
+    <filter id="point-8" x="42" y="59" width="30" height="30" filterUnits="userSpaceOnUse">
+      <feOffset dx="2" dy="2" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="0.5" result="blur-9"/>
+      <feFlood flood-opacity="0.161" result="color-4"/>
+      <feComposite operator="out" in="SourceGraphic" in2="blur-9"/>
+      <feComposite operator="in" in="color-4"/>
+      <feComposite operator="in" in2="SourceGraphic"/>
+    </filter>
+    <filter id="point-9" x="42" y="27" width="30" height="30" filterUnits="userSpaceOnUse">
+      <feOffset dy="2" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="2" result="blur-10"/>
+      <feFlood flood-opacity="0.239"/>
+      <feComposite operator="in" in2="blur-10"/>
+    </filter>
+    <filter id="point-10" x="42" y="27" width="30" height="30" filterUnits="userSpaceOnUse">
+      <feOffset dx="2" dy="2" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="0.5" result="blur-11"/>
+      <feFlood flood-opacity="0.161" result="color-5"/>
+      <feComposite operator="out" in="SourceGraphic" in2="blur-11"/>
+      <feComposite operator="in" in="color-5"/>
+      <feComposite operator="in" in2="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="map_leber" transform="translate(-2952 -6775)">
+    <g transform="matrix(1, 0, 0, 1, 2952, 6775)" filter="url(#Rectangle_763)">
+      <g id="Rectangle_763-2" data-name="Rectangle 763" transform="translate(12 12)" fill="#eeefef" stroke="#fff" stroke-width="4">
+        <rect width="319" height="192" rx="18" stroke="none"/>
+        <rect x="2" y="2" width="315" height="188" rx="16" fill="none"/>
+      </g>
+    </g>
+    <text id="headquarters_Subsidiary_R_D_Center_Factory_Service_Repair_Center" data-name="headquarters
+Subsidiary
+R&amp;D Center
+Factory
+Service &amp; Repair Center" transform="translate(3033 6823)" fill="#5a5a5a" font-size="18" font-family="NotoSans, Noto Sans"><tspan x="0" y="0">headquarters</tspan><tspan x="0" y="32">Subsidiary</tspan><tspan x="0" y="64">R&amp;D Center</tspan><tspan x="0" y="96">Factory</tspan><tspan x="0" y="128">Service &amp; Repair Center</tspan></text>
+    <g id="Group_1381" data-name="Group 1381" transform="translate(2335 6521)">
+      <g id="point-11" data-name="point" transform="translate(665 413)">
+        <g data-type="innerShadowGroup">
+          <g transform="matrix(1, 0, 0, 1, -48, -159)" filter="url(#point)">
+            <g id="point-12" data-name="point" transform="translate(48 159)" fill="#83b41a" stroke="#fff" stroke-width="1">
+              <circle cx="9" cy="9" r="9" stroke="none"/>
+              <circle cx="9" cy="9" r="8.5" fill="none"/>
+            </g>
+          </g>
+          <circle id="point-13" data-name="point" cx="9" cy="9" r="9" fill="#83b41a"/>
+          <g transform="matrix(1, 0, 0, 1, -48, -159)" filter="url(#point-2)">
+            <circle id="point-14" data-name="point" cx="9" cy="9" r="9" transform="translate(48 159)" fill="#fff"/>
+          </g>
+          <g id="point-15" data-name="point" fill="none" stroke="#fff" stroke-width="1">
+            <circle cx="9" cy="9" r="9" stroke="none"/>
+            <circle cx="9" cy="9" r="8.5" fill="none"/>
+          </g>
+        </g>
+      </g>
+      <g id="point-16" data-name="point" transform="translate(665 381)">
+        <g data-type="innerShadowGroup">
+          <g transform="matrix(1, 0, 0, 1, -48, -127)" filter="url(#point-3)">
+            <g id="point-17" data-name="point" transform="translate(48 127)" fill="#fabe00" stroke="#fff" stroke-width="1">
+              <circle cx="9" cy="9" r="9" stroke="none"/>
+              <circle cx="9" cy="9" r="8.5" fill="none"/>
+            </g>
+          </g>
+          <circle id="point-18" data-name="point" cx="9" cy="9" r="9" fill="#fabe00"/>
+          <g transform="matrix(1, 0, 0, 1, -48, -127)" filter="url(#point-4)">
+            <circle id="point-19" data-name="point" cx="9" cy="9" r="9" transform="translate(48 127)" fill="#fff"/>
+          </g>
+          <g id="point-20" data-name="point" fill="none" stroke="#fff" stroke-width="1">
+            <circle cx="9" cy="9" r="9" stroke="none"/>
+            <circle cx="9" cy="9" r="8.5" fill="none"/>
+          </g>
+        </g>
+      </g>
+      <g id="point-21" data-name="point" transform="translate(665 349)">
+        <g data-type="innerShadowGroup">
+          <g transform="matrix(1, 0, 0, 1, -48, -95)" filter="url(#point-5)">
+            <g id="point-22" data-name="point" transform="translate(48 95)" fill="#00a1e9" stroke="#fff" stroke-width="1">
+              <circle cx="9" cy="9" r="9" stroke="none"/>
+              <circle cx="9" cy="9" r="8.5" fill="none"/>
+            </g>
+          </g>
+          <circle id="point-23" data-name="point" cx="9" cy="9" r="9" fill="#00a1e9"/>
+          <g transform="matrix(1, 0, 0, 1, -48, -95)" filter="url(#point-6)">
+            <circle id="point-24" data-name="point" cx="9" cy="9" r="9" transform="translate(48 95)" fill="#fff"/>
+          </g>
+          <g id="point-25" data-name="point" fill="none" stroke="#fff" stroke-width="1">
+            <circle cx="9" cy="9" r="9" stroke="none"/>
+            <circle cx="9" cy="9" r="8.5" fill="none"/>
+          </g>
+        </g>
+      </g>
+      <g id="point-26" data-name="point" transform="translate(665 317)">
+        <g data-type="innerShadowGroup">
+          <g transform="matrix(1, 0, 0, 1, -48, -63)" filter="url(#point-7)">
+            <g id="point-27" data-name="point" transform="translate(48 63)" fill="#920883" stroke="#fff" stroke-width="1">
+              <circle cx="9" cy="9" r="9" stroke="none"/>
+              <circle cx="9" cy="9" r="8.5" fill="none"/>
+            </g>
+          </g>
+          <circle id="point-28" data-name="point" cx="9" cy="9" r="9" fill="#920883"/>
+          <g transform="matrix(1, 0, 0, 1, -48, -63)" filter="url(#point-8)">
+            <circle id="point-29" data-name="point" cx="9" cy="9" r="9" transform="translate(48 63)" fill="#fff"/>
+          </g>
+          <g id="point-30" data-name="point" fill="none" stroke="#fff" stroke-width="1">
+            <circle cx="9" cy="9" r="9" stroke="none"/>
+            <circle cx="9" cy="9" r="8.5" fill="none"/>
+          </g>
+        </g>
+      </g>
+      <g id="point-31" data-name="point" transform="translate(665 285)">
+        <g data-type="innerShadowGroup">
+          <g transform="matrix(1, 0, 0, 1, -48, -31)" filter="url(#point-9)">
+            <g id="point-32" data-name="point" transform="translate(48 31)" fill="#ea5405" stroke="#fff" stroke-width="1">
+              <circle cx="9" cy="9" r="9" stroke="none"/>
+              <circle cx="9" cy="9" r="8.5" fill="none"/>
+            </g>
+          </g>
+          <circle id="point-33" data-name="point" cx="9" cy="9" r="9" fill="#ea5405"/>
+          <g transform="matrix(1, 0, 0, 1, -48, -31)" filter="url(#point-10)">
+            <circle id="point-34" data-name="point" cx="9" cy="9" r="9" transform="translate(48 31)" fill="#fff"/>
+          </g>
+          <g id="point-35" data-name="point" fill="none" stroke="#fff" stroke-width="1">
+            <circle cx="9" cy="9" r="9" stroke="none"/>
+            <circle cx="9" cy="9" r="8.5" fill="none"/>
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

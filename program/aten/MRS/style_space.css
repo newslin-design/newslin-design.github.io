@@ -1,0 +1,548 @@
+/******************************
+			import
+*******************************/
+@import url(https://fonts.googleapis.com/earlyaccess/notosanstc.css);
+
+@font-face {
+    font-family: 'Material Symbols Outlined';
+    font-style: normal;
+    font-weight: 400;
+    src: url(https://fonts.gstatic.com/s/materialsymbolsoutlined/v76/kJF4BvYX7BgnkSrUwT8OhrdQw4oELdPIeeII9v6oDMzByHX9rA6RzaxHMPdY40KH8nGzv3fz_VFU22ZZLsYEpzC_1ver5Y0.woff2) format('woff2');
+}
+
+/*****************************************
+******************************************
+******************************************
+
+			Page
+
+******************************************
+******************************************
+******************************************/
+
+* {
+    position: relative;
+    box-sizing: border-box;
+    color: var(--text-color)
+}
+
+a {
+    text-decoration: none;
+    color: var(--text-color)
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+span.g-icon {
+    font-family: "Material Symbols Outlined"
+}
+
+:root {
+    --pri-color: #828278;
+    --sec-color: #65A9BF;
+    --bg-color: #333333;
+    --aug-light-color: #ececeb;
+    --aug-black-color: #3e3e3e;
+    --text-color: rgb(14, 26, 34);
+    --text-light-color: rgb(132, 144, 151);
+    --warn-color: #EA0F0F;
+}
+
+
+body,
+html {
+    background-color: #000;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    font-family: Noto Sans, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI',
+        Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    margin: 0;
+
+}
+
+
+.container {
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
+    perspective: 2000px;
+    transform-style: preserve-3d;
+}
+
+
+
+
+
+
+/*****************************************
+******************************************
+******************************************
+
+			Element
+
+******************************************
+******************************************
+******************************************/
+
+
+
+
+.space {
+    width: 100%;
+    padding-top: 50%;
+    background-color: var(--bg-color);
+    /* perspective-origin: 50% 50%; */
+    overflow: hidden;
+
+}
+
+.space>* {
+    position: absolute;
+}
+
+.space .camera {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    transform: translateZ(-50) rotate3d(0, 0, 0, 45deg);
+
+    transform-style: preserve-3d;
+    /* background-color: #ff000030; */
+    /* transition: 0.5s; */
+}
+
+.space .camera>* {
+    position: absolute;
+    transition: 0.6s;
+}
+
+.spaceWall {
+    /* background-color: #c4c4c408; */
+    transition: 1s;
+    border: 2px solid #cd157a95;
+    z-index: 10000;
+}
+
+.spaceWall.main {
+    /* background-color: #5e5e5eaf; */
+    border: 4px solid #cd157a95;
+}
+
+
+/*****************************************
+
+			display
+
+******************************************/
+
+.display {
+    box-sizing: content-box;
+    transform-style: preserve-3d;
+    transition: 3s;
+    background-color: #1d1d1d;
+}
+
+
+.display>* {
+    width: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.display.led::after,
+.display.shadow::before,
+.display.led::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.display.shadow::before,
+.display.led::before {
+    background-color: #00000086;
+    width: 105%;
+    height: 6%;
+    bottom: -5%;
+    border-radius: 50%;
+    filter: blur(5px);
+}
+
+.display.led::before {
+    bottom: -10%;
+}
+
+.display.led::after {
+    background-color: #e2e2e2;
+    width: 96%;
+    height: 2.4%;
+    top: 100%;
+    border-radius: 0 2px;
+    box-shadow: inset 0 3px 2px #00000074;
+}
+
+
+
+
+/*****************************************
+
+			ipad zI=8000
+
+******************************************/
+
+.ipad {
+    position: absolute;
+    top: auto;
+    /* bottom: 4%;
+    right: 4%;
+    width: 548px;
+    height: 380px; */
+    bottom: 15%;
+    right: 15%;
+    width: 360px;
+    height: 248px;
+    background-image: url(element/ipad_bg.png);
+    background-position: center;
+    background-size: cover;
+    /* transition: 1s; */
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6);
+    border-radius: 18px;
+    z-index: 8000;
+
+    opacity: 0;
+    transform: translate(600px, 200px) rotate(15deg);
+
+    transform-style: preserve-3d;
+}
+
+.ipad.on {
+    opacity: 1;
+    transform: translate(0, 0);
+}
+
+.ipad .page {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 88%;
+    height: 82%;
+    border-radius: 8px;
+    background-position: center;
+    background-size: cover;
+}
+
+.ipad .page .btn {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    background-position: center;
+    background-size: cover;
+
+    transition: 0.3s;
+}
+
+.ipad .page .btn.hover:hover {
+    opacity: 0.85;
+}
+
+
+
+.ipad .page .btn * {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    left: 50%;
+    top: 50%;
+    transition: 0.2s;
+    text-align: center;
+}
+
+.ipad .page .slider {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    border-radius: 100px;
+    padding: 0.6% 1%;
+}
+
+.ipad .page .slider .real {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    transform: translate(-50%, -50%);
+    -webkit-appearance: none;
+    outline: none;
+    background: none;
+    margin: 0;
+    padding: 0
+}
+
+.ipad .page .slider .real::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    position: relative;
+    width: 10%;
+    padding-top: 10%;
+    background: rgba(145, 145, 145, 0.417);
+    border-radius: 50%;
+    border: 2px solid #000;
+    box-sizing: content-box;
+    transition: .2s;
+    box-shadow: 0 0 16px rgba(0, 0, 0, 0.259);
+    cursor: pointer;
+}
+
+.ipad .page .slider .real::-webkit-slider-thumb:hover {
+    transform: scale(1.1);
+}
+
+.ipad .page .slider .bar {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: 100px;
+}
+
+.ipad .page .slider .bar>* {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 100px;
+}
+
+
+
+
+/*****************************************
+
+			VP
+
+******************************************/
+
+.vpBox,
+.vpOutput {
+    position: absolute;
+    overflow: hidden;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+}
+
+.vpBox>* {
+    width: 100%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.vpBox.coverH>* {
+    height: 100%;
+    width: auto;
+}
+
+
+
+/*****************************************
+
+   flow Menu
+
+******************************************/
+
+.flowMenuBoxs {
+    background-color: #000;
+    position: absolute;
+    top: 20px;
+    left: 50%;
+
+    padding: 8px 4px;
+    border-radius: 32px;
+    box-shadow: 0 0 20px #041b4148;
+    display: flex;
+    justify-self: center;
+    align-items: center;
+    transition: 0.8s;
+    box-shadow: 0 0 16px #0000008f;
+    opacity: 0;
+    transform: translate(-50%, -50%);
+}
+
+.flowMenuBoxs.active {
+    opacity: 1;
+    transform: translate(-50%, 0);
+}
+
+.flowMenuBoxs .flowMenu {
+    font-size: 16px;
+    margin: 0 4px;
+    padding: 12px 24px;
+    color: #fff;
+    background-color: rgb(0, 0, 0);
+    text-align: center;
+    border-radius: 50px;
+    transition: 0.4s;
+    cursor: pointer;
+}
+
+
+.flowMenuBoxs .flowMenu:hover {
+    background-color: rgb(42, 42, 42);
+}
+
+.flowMenuBoxs .flowMenu.active {
+    background-color: #00CBFF;
+    color: #000000d6;
+}
+
+/*****************************************
+
+   feature Menu
+
+******************************************/
+
+.featureMenu {
+    background-color: #fff;
+    width: 320px;
+    position: absolute;
+    bottom: 24px;
+    left: 16px;
+    padding: 16px 0;
+    display: flex;
+    flex-direction: column;
+    border-radius: 4px;
+    box-shadow: 0 0 20px #041b4148;
+    transition: 0.8s;
+    opacity: 0;
+    transform: translate(-200px, 0);
+}
+
+.featureMenu.active {
+    opacity: 1;
+    transform: translate(0, 0);
+}
+
+
+.featureMenu * {
+    transition: 0.8s;
+}
+
+
+.featureMenu .namebox {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 0 24px;
+    margin: 2px 0;
+    background-color: #fff;
+    border-top: 1px solid #00000021;
+    cursor: pointer;
+}
+
+.featureMenu .namebox:hover {
+    background-color: #d4d4d4;
+}
+
+.featureMenu .namebox::after {
+    content: "";
+    height: 100%;
+    background-color: #00CBFF;
+    width: 8px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+    transition: 1s;
+}
+
+
+.featureMenu .namebox p {
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.featureMenu .namebox img {
+    height: 36px;
+    width: 36px;
+    margin-right: 8px;
+}
+
+.featureMenu .describe {
+    color: #053763;
+    overflow: hidden;
+    margin: 0 0 0 32px;
+    height: 0;
+    font-size: 14px;
+}
+
+
+
+/* feature 開啟功能 */
+.featureMenu div.active .name {
+    height: auto;
+    background-color: #00ccff11;
+}
+
+.featureMenu div.active .name::after {
+    opacity: 1;
+}
+
+.featureMenu div.active .describe {
+    height: 90px;
+    padding-bottom: 8px;
+}
+
+
+
+
+
+
+
+
+.ipadBtn {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    background-color: #fffffff2;
+    border-radius: 50%;
+    right: 100px;
+    bottom: 100px;
+    box-shadow: 0 0 20px #00000021;
+    border: 4px solid #888;
+    animation-name: ipadBtn;
+    animation-duration: 3s;
+    animation-iteration-count: infinite;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    font-weight: 500;
+    opacity: 0.8;
+    transition: 0.5s;
+}
+
+.ipadBtn:hover {
+    opacity: 1;
+}
+
+@keyframes ipadBtn {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.2);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}

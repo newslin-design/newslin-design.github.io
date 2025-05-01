@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="meetingPlayer.css">
+
+</head>
+
+<body>
+    <div class="bgBtn"></div>
+
+    <div class="container">
+        <div class="meetingUI">
+            <div class="meetingUIImage"></div>
+            <div class="meetingVideos">
+                <div class="videoBox">
+                    <video src="" id="playingVideo"></video>
+                    <div class="videoClose">✖</div>
+                    <div class="videoOkBox">
+                        <div class="videoOk" id="videoOk">✔</div>
+                        <div class="videoNo" id="videoNo">✖</div>
+                        <div class="videoPlayBtn divid">
+                            ▶
+                            <div class="videoCount">1</div>
+                        </div>
+                        <div class="videoPlayBtn">▶</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="scoreBox">0</div>
+
+    </div>
+</body>
+
+<script src="../../library/voiceControl.js"></script>
+<script>
+
+
+
+
+    // ****************************************************************************************************
+    //
+    // 
+    //      基本功能
+    //      
+    // 
+    // ****************************************************************************************************
+
+    var $id = function (name) {
+        return document.getElementById(name)
+    }
+    var $css = function (name) {
+        return document.getElementsByClassName(name)
+    }
+    var $tag = function (name) {
+        return document.getElementsByTagName(name)
+    }
+
+    var test = function (test) {
+        console.log(test)
+    }
+
+    // ****************************************************************************************************
+
+    const container = $css("container")[0]
+    const meetingVideos = $css("meetingVideos")[0]
+    const meetingUI = $css("meetingUI")[0]
+
+    let gameScore = 0
+    let playNowIndex = 0
+    let playNowIndexNum = 0
+
+
+
+    const videoBox = $css("videoBox")[0]
+    const videoClose = $css("videoClose")[0]
+    const videoOkBox = $css("videoOkBox")[0]
+    const videoOk = $id("videoOk")
+    const videoNo = $id("videoNo")
+    const videoPlayBtn = $css("videoPlayBtn")
+    const videoCount = $css("videoCount")[0]
+    const scoreBox = $css("scoreBox")[0]
+    const bgBtn = $css("bgBtn")[0]
+
+
+    videoClose.addEventListener("click", () => { stopVideo() })
+    bgBtn.addEventListener("click", () => { stopVideo() })
+
+    videoOk.addEventListener("click", () => {
+        if (playNowIndexNum == 0) {
+            voiceCards[playNowIndex].newScore(1)
+        }
+        if (playNowIndexNum == 1) {
+            voiceCards[playNowIndex].newScore(0.5)
+        }
+    })
+
+
+    var stopVideo = () => {
+        playingVideo.pause();
+        playingVideo.autoplay = false
+        videoBox.classList.remove("open")
+        reScore()
+        voiceCards.map((card, index) => {
+            card.showScore()
+        })
+    }
+
+    videoNo.addEventListener("click", () => { voiceCards[playNowIndex].newScore(0) })
+    videoPlayBtn[0].addEventListener("click", () => { voiceCards[playNowIndex].playVideo(0) })
+    videoPlayBtn[1].addEventListener("click", () => { voiceCards[playNowIndex].playVideo(1) })
+
+    var reScore = (score) => {
+        gameScore = voiceCards.reduce((sum, card) => sum + (card.score || 0), 0);
+        scoreBox.innerHTML = gameScore
+    }
+
+
+    class voiceCard {
+        constructor(index, data, where) {
+            this.index = index
+            this.videoLinks = data.videoLink
+            this.playCount = 0
+            this.score = 0
+            this.where = where
+            this.openTag = false
+        }
+
+        init() {
+            this.cardContainer = document.createElement('div')
+            this.cardContainer.classList = 'cardContainer'
+            this.coverVideo = document.createElement('video')
+            this.coverVideo.src = this.videoLinks[0]
+            // this.coverVideo.autoplay = true
+            this.coverVideo.muted = true
+            this.coverVideo.loop = true
+
+            this.playBtnBox = document.createElement('div')
+            this.playBtnBox.classList = 'playBtnBox'
+
+            this.play01Btn = document.createElement('div')
+            this.play01Btn.classList = 'playBtn'
+            this.play01Btn.innerHTML = "▶"
+            this.play01Btn.addEventListener("click", () => {
+                this.openVideoDialog()
+                this.playVideo(0)
+            })
+
+            this.play03Btn = document.createElement('div')
+            this.play03Btn.classList = 'playBtn'
+            this.play03Btn.innerHTML = "<div>MV</div>"
+            this.play03Btn.addEventListener("click", () => {
+                this.openVideoDialog()
+                this.playVideo(2)
+
+            })
+
+
+            this.cardScore = document.createElement('div')
+            this.cardScore.classList = 'cardScore'
+
+            this.cardContainer.appendChild(this.coverVideo)
+            this.cardContainer.appendChild(this.playBtnBox)
+            this.cardContainer.appendChild(this.cardScore)
+            this.playBtnBox.appendChild(this.play01Btn)
+            this.playBtnBox.appendChild(this.play03Btn)
+
+
+
+            this.where.appendChild(this.cardContainer)
+        }
+
+        openVideoDialog() {
+            videoBox.classList.add("open")
+            playingVideo.src = this.videoLinks[0]
+            playNowIndexNum = 0
+            playNowIndex = this.index
+            this.openTag = true
+        }
+
+        playVideo(num) {
+            playingVideo.src = this.videoLinks[num]
+            playNowIndexNum = num
+            if (num == 2) {
+                playingVideo.volume = 0.3;
+            } else {
+                playingVideo.volume = 1;
+            }
+
+            // 隱藏播放bar
+            if (num == 2) {
+                videoOkBox.classList.add("hidden")
+            } else {
+                videoOkBox.classList.remove("hidden")
+
+            }
+
+
+
+
+            if (num > 0) {
+                playingVideo.play()
+            }
+            if (num == 0) {
+                if (this.playCount > 1) {
+                    videoPlayBtn[0].classList.add("disable")
+                } else {
+                    videoPlayBtn[0].classList.remove("disable")
+                }
+                if (this.playCount < 3) {
+                    playingVideo.play()
+                    this.playCount = this.playCount + 1
+                    videoCount.innerHTML = this.playCount
+
+                }
+            }
+        }
+
+
+
+        newScore(score) {
+            this.score = score
+            reScore()
+        }
+
+        showScore() {
+            if (this.openTag) {
+                this.cardScore.classList.add("open")
+                this.cardScore.innerHTML = this.score
+
+            } else {
+                this.cardScore.innerHTML = ""
+                this.cardScore.classList.remove("open")
+            }
+
+        }
+    }
+
+
+    // ----------------------------------
+    // 其他功能
+    // ----------------------------------
+
+
+    // ----------------------------------
+    // 環境設置
+    // ----------------------------------
+
+
+    // ----------------------------------
+    // 資料
+    // ----------------------------------
+
+    voiceCardData = [{
+        videoLink: ["element/Video_HR01_題目1.mp4", "element/Video_HR01_題目2.mp4", "element/Video_HR01_題目A.mp4"],
+    }, {
+        videoLink: ["element/Video_HR02_題目1.mp4", "element/Video_HR02_題目2.mp4", "element/Video_HR02_題目A.mp4"],
+    }, {
+        videoLink: ["element/Video_HR03_題目1.mp4", "element/Video_HR03_題目2.mp4", "element/Video_HR03_題目A.mp4"],
+    }, {
+        videoLink: ["element/Video_HR04_題目1.mp4", "element/Video_HR04_題目2.mp4", "element/Video_HR04_題目A.mp4"],
+    }, {
+        videoLink: ["element/Video_HR05_題目1.mp4", "element/Video_HR05_題目2.mp4", "element/Video_HR05_題目A.mp4"],
+    }, {
+        videoLink: ["element/Video_HR06_題目1.mp4", "element/Video_HR06_題目2.mp4", "element/Video_HR06_題目A.mp4"],
+    }, {
+        videoLink: ["element/Video_HR07_題目1.mp4", "element/Video_HR07_題目2.mp4", "element/Video_HR07_題目A.mp4"],
+    }, {
+        videoLink: ["element/Video_HR08_題目1.mp4", "element/Video_HR08_題目2.mp4", "element/Video_HR08_題目A.mp4"],
+    }, {
+        videoLink: ["element/Video_HR09_題目1.mp4", "element/Video_HR09_題目2.mp4", "element/Video_HR09_題目A.mp4"],
+    }]
+
+    voiceCards = voiceCardData.map((data, index) => {
+        const card = new voiceCard(index, data, meetingVideos)
+        card.init()
+        return card
+    })
+
+
+
+
+
+
+
+
+
+
+
+    // 鍵盤快捷鍵
+    window.addEventListener("keydown", keyboardListener, false);
+    function keyboardListener(e) {
+        var keyID = e.code;
+        if (keyID === 'KeyQ') {
+            singCards[0].openVideoPlayer()
+        }
+        if (keyID === 'KeyA') {
+            singCards[0].closeVideoPlayer()
+
+        }
+        if (keyID === 'KeyZ') {
+            allMute()
+        }
+
+        if (keyID === 'KeyW') {
+            allMute()
+        }
+        if (keyID === 'KeyS') {
+            allMute()
+        }
+    }
+
+
+</script>
+
+
+</html>

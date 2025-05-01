@@ -1,0 +1,404 @@
+* {
+    position: relative;
+    box-sizing: border-box;
+    color: var(--text-color)
+}
+
+a {
+    text-decoration: none;
+    color: var(--text-color)
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+body,
+html {
+    background-color: #000;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    font-family: Noto Sans, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI',
+        Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    margin: 0;
+}
+
+
+
+/* ****************************************
+
+    整體框架樣式
+
+ **************************************** */
+
+.container {
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    background-image: radial-gradient(circle at 24% 21%, #333538, #06090e 72%);
+}
+
+
+.cdCover,
+.cdheader,
+.cdSings,
+.cd {
+    height: 80%;
+    background-position: center;
+    background-size: cover;
+    transition: 1.2s;
+}
+
+.cdheader {
+    width: 3%;
+}
+
+.cdCover {
+    width: 40%;
+}
+
+.cdSings {
+    width: 50%;
+}
+
+
+/* ****************************************
+
+    唱片封面
+
+ **************************************** */
+
+.cdCover .musicWave {
+    width: 600px;
+    height: 300px;
+    position: absolute;
+    bottom: 180px;
+    left: -250px;
+    transition: 1s;
+}
+
+.cdCover .musicWave.open {
+    left: -500px;
+}
+
+
+
+.cdCover .h1,
+.cdCover .h2 {
+    width: 372px;
+    height: 108px;
+    position: absolute;
+    top: 20%;
+    left: 40%;
+    transform: translate(-50%, -50%);
+    background-image: url("cdName.png");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.cdCover .h2 {
+    width: 353px;
+    height: 76px;
+    top: 90%;
+    left: 30%;
+    background-image: url("cdSinger.png");
+}
+
+
+
+
+/* ****************************************
+
+    CD
+
+ **************************************** */
+.cd,
+.CDsudak {
+    height: 550px;
+    width: 550px;
+    background-image: url('CD.png');
+    position: absolute;
+    top: 50%;
+    left: 42%;
+    background-size: contain;
+    filter: drop-shadow(0px 0px 12px rgba(68, 83, 248, 0.077));
+
+    transition: 2s ease-in-out;
+    animation: spin 8s linear infinite;
+    pointer-events: none;
+
+}
+
+.cd.open {
+    left: 20%;
+    /* box-shadow: 0 0 24px #4b57da; */
+    filter: drop-shadow(0px 0px 20px #4ba3dab9);
+}
+
+
+
+.CDsudak {
+    background-image: url('CDsudak.png');
+    height: 430px;
+    width: 430px;
+    top: 50%;
+    left: 50%;
+}
+
+
+/* .cd:hover {
+    animation: spin 40s linear infinite;
+} */
+
+@keyframes spin {
+    from {
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+
+    to {
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
+}
+
+
+
+
+
+/* ****************************************
+
+    歌單
+
+ **************************************** */
+
+.cdSings {
+    background-color: #55555524;
+    padding: 24px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.singCard {
+    width: 30%;
+    height: 30%;
+    margin: 12px;
+    background-color: #2F2F2F;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    opacity: 1;
+    transform: scale(1);
+    box-shadow: 0 0 24px #12121254, 0 0 0px #94ff0929;
+    border-radius: 4px;
+    transition: 1s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.singCard:hover {
+    transform: scale(1.07);
+    box-shadow: 0 0 12px #09deff90, 0 0 38px #a1ff138a;
+    border-radius: 16px;
+}
+
+.singCardOpenBtn {
+    cursor: pointer;
+    width: 75%;
+    height: 75%;
+}
+
+
+.singCardOk {
+    width: 60px;
+    height: 60px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    opacity: 0;
+    transition: 0.5s;
+}
+
+
+.hintPlayBtn {
+    width: 24px;
+    height: 24px;
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-image: url("play.png");
+    background-size: contain;
+    opacity: 0.4;
+    transition: 0.5s;
+    cursor: pointer;
+}
+
+.hintPlayBtn:hover {
+    opacity: 1;
+    transform: scale(1.2);
+}
+
+
+/* ****************************************
+
+    Video Player
+
+ **************************************** */
+
+.videoPlayer {
+    width: 80%;
+    height: 90%;
+    position: absolute;
+    right: -1800px;
+    background-color: #000000d6;
+    border-radius: 12px;
+    border: 2px solid #33333391;
+    transition: 1.5s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.videoPlayer.open {
+    right: -100px;
+
+}
+
+.videoPlayer .videoBox {
+    margin: 12px;
+}
+
+.videoPlayer video {
+    width: 100%;
+
+    display: none;
+
+}
+
+
+
+
+.videoPlayer .backBtn {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    width: 48px;
+    height: 48px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    cursor: pointer;
+    transition: 0.8s;
+}
+
+.videoPlayer .backBtn:hover {
+    opacity: 1;
+    transform: scale(1.2);
+}
+
+.maruBtnBox {
+    border: 2px solid #33333399;
+    background-color: #00000075;
+    position: absolute;
+    top: 8px;
+    right: 100px;
+    display: flex;
+    align-items: center;
+    padding: 4px;
+    border-radius: 200px;
+
+}
+
+.maruBtnOk,
+.maruBtnNo {
+    width: 60px;
+    height: 60px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    margin: 12px;
+    cursor: pointer;
+    transition: 0.3s;
+    opacity: 0.9;
+
+}
+
+.maruBtnOk:hover,
+.maruBtnNo:hover {
+    opacity: 1;
+    transform: scale(1.2);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/* -****************
+
+    In Home 
+
+-**************** */
+
+
+.home .cdCover {
+    width: 90%;
+}
+
+.home .cdSings {
+    width: 25%;
+}
+
+.home .cd {
+    left: 80%;
+    transform: translate(-50%, -50%) scale(2);
+}
+
+.home .singCard {
+    width: 30%;
+    height: 30%;
+    margin: 2px;
+    opacity: 0;
+}
+
+
+.home .cdCover .musicWave {
+    bottom: 280px;
+}
+
+.home .cdCover .h2 {
+
+    left: 15%;
+}
+
+
+
+
+.startMask {
+    background-color: #00000070;
+    width: 100vw;
+    height: 100vw;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
