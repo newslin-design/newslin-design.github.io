@@ -32,12 +32,10 @@ body {
 
 .tables {
     width: 70%;
-    mix-blend-mode: lighten;
     mix-blend-mode: screen;
     position: absolute;
-    top: 45%;
+    top: 48%;
     left: -5%;
-    /* opacity: 0.6; */
 }
 
 
@@ -63,17 +61,31 @@ tv-wall
 .video-wall {
     position: absolute;
     left: 50%;
-    top: 38%;
+    top: 32%;
     width: 120%;
     display: flex;
     flex-wrap: wrap;
     transform-style: preserve-3d;
     background-color: #000;
+    box-shadow: 12px 24px 56px #000000a2;
+
     border: 8px solid #111;
     border-radius: 12px;
     transform: translate3d(-20%, -90%, -1800px) rotateX(-5deg) rotateY(-25deg) rotateZ(-2deg);
     transition: transform 1s ease;
 }
+
+.video-wall.open {
+    transform: translate3d(-50%, -50%, -1500px) rotateX(0deg) rotateY(0deg);
+}
+
+
+
+
+
+
+
+
 
 
 .tv-screen {
@@ -100,8 +112,63 @@ tv-wall
     pointer-events: none;
 }
 
+@media (min-width: 500px) {
+
+    .tv-screen:hover,
+    .tv-screen.hover {
+        z-index: 10;
+        box-shadow: 0 0 32px rgba(0, 255, 255, 1);
+        transform: translate3d(-50%, -50%, 150px) rotateX(0deg) rotateY(0deg) scale(1.2);
+        border: 1px solid #00ffff;
+    }
+
+    .tv-screen:hover .screen-text,
+    .tv-screen.hover .screen-text {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        opacity: 1;
+        font-size: 32px;
+        text-shadow: 0 0 24px #000, 0 0 12px #000, 0 0 8px #000000;
+    }
+
+    .tv-screen.open:hover .screen-text,
+    .tv-screen.open.hover .screen-text {
+
+        font-size: 22px;
+    }
+
+}
+
+
+
+.tv-screen.open {
+    z-index: 10;
+    box-shadow: 0 0 25px rgba(0, 0, 0, 0.8);
+    transform: translate3d(-50%, 0%, 2185px) rotateX(0deg) rotateY(0deg) scale(1);
+    border-radius: 8px;
+    opacity: 0.9;
+    border: 0px solid #000000;
+
+}
+
+
+
+.tv-screen.open:hover {
+    transform: translate3d(-50%, 0%, 2200px) rotateX(0deg) rotateY(0deg) scale(1);
+    box-shadow: 0 0 28px rgb(3, 247, 255);
+
+}
+
+
+
+
 .tv-screen .screen-text {
     position: absolute;
+    font-weight: 700;
+    width: 90%;
+    text-align: center;
+    font-size: 18px;
     top: 109%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -109,6 +176,8 @@ tv-wall
     opacity: 0;
     transition: 1.5s;
 }
+
+
 
 .tv-screen.open .screen-text {
     opacity: 1;
@@ -135,7 +204,8 @@ tv-wall
 
 
 
-.tv-screen video {
+.tv-screen video,
+.tv-screen img {
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -144,25 +214,12 @@ tv-wall
 
 
 
-.tv-screen:hover {
-    z-index: 10;
-    box-shadow: 0 0 32px rgba(0, 255, 255, 0.5);
-    transform: translate3d(-50%, -50%, 150px) rotateX(0deg) rotateY(0deg) scale(1.2);
-}
-
-.tv-screen.open {
-    z-index: 10;
-    box-shadow: 0 0 25px rgba(0, 0, 0, 0.8);
-    transform: translate3d(-50%, -20%, 2200px) rotateX(0deg) rotateY(0deg) scale(1);
-    border-radius: 8px;
-    opacity: 0.9;
-    border: 0px solid #000000;
-    /* box-sizing: content-box; */
-}
 
 .tv-screen.open video {
     border-radius: 8px;
 }
+
+
 
 .tv-screen:hover::after {
     border-color: #00ffff;
@@ -173,15 +230,14 @@ tv-wall
 
 
 
-.video-wall.open {
-    transform: translate3d(-50%, -50%, -1500px) rotateX(0deg) rotateY(0deg);
-}
+
+
 
 
 .close-btn {
     position: absolute;
-    right: -10%;
-    top: -18%;
+    right: -20%;
+    top: -22%;
     width: 22px;
     height: 22px;
     font-size: 10px;
@@ -193,17 +249,19 @@ tv-wall
     cursor: pointer;
     transform: translate3d(-50%, -50%, 0px);
     opacity: 0;
-    transition: 1s;
+    transition: 0.5s;
 }
 
 .close-btn.open {
     right: 37.4%;
-    top: 46.2%;
+    top: 53.5%;
     transform: translate3d(-50%, -50%, 2201px);
     opacity: 1;
-
 }
 
+.close-btn.open:hover {
+    transform: translate3d(-50%, -50%, 2201px) scale(1.15);
+}
 
 
 /* Desktop hover effect */
@@ -261,8 +319,8 @@ tv-wall
         height: 17px;
         opacity: 1;
         font-size: 8px;
-
     }
+
 
     .tv-screen .screen-link {
         pointer-events: all
@@ -276,6 +334,11 @@ tv-wall
         opacity: 1;
         text-shadow: 0 0 3px #000;
     }
+
+
+
+
+
 }
 
 
@@ -298,12 +361,17 @@ tv-wall 動畫
     position: absolute;
     background-color: #34f5ffd0;
     transition: transform 0.4s ease;
-
 }
+
+.video-wall.open .border-line {
+    background-color: #34f5ff00;
+}
+
+
 
 .border-line.bottom,
 .border-line.top {
-    height: 2px;
+    height: 6px;
     left: 0;
     right: 0;
     transform: scaleX(0);
@@ -311,7 +379,7 @@ tv-wall 動畫
 
 .border-line.left,
 .border-line.right {
-    width: 2px;
+    width: 6px;
     top: 0;
     bottom: 0;
     transform: scaleY(0);
