@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>互動式電視牆</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style03.css">
 
 
 </head>
@@ -13,36 +13,35 @@
 <body>
 
     <div class="tv-wall-main-container">
-        <!-- 背景影片 -->
-        <img class="tables" src="elements/table.png" alt="">
-
-        <video class="background-video" autoplay loop muted>
-            <source src="elements/Background.mp4" type="video/mp4">
+        <img id="tv-wall-tables" class="tables" src="elements/table.png" alt="">
+        <video class="tv-wall-background-video" autoplay loop muted>
+            <source id="tv-wall-background-video-source" src="elements/tv-wall-Background.mp4" type="video/mp4">
         </video>
         <div class="tv-wall-container">
             <div class="video-wall" id="videoWall"></div>
-            <a href="" data-toggle="modal" data-target="#lightBox_webpage_solution-page-1" rel="noopener"></a>
         </div>
     </div>
-
+    <script src="js.js"></script>
+    <!-- 
     <script>
         let openedScreen = null;
         let originalLeft = "";
         let originalTop = "";
-        let isMobile = window.innerWidth < 500;
+        let isTvWallMobile = window.innerWidth < 500;
         const elementsLink = "elements/"
         const unClickableScreenIndexs = [0, 1, 4, 5]
 
-
+        document.getElementById("tv-wall-tables").src = `${elementsLink}table.png`
+        document.getElementById("tv-wall-background-video-source").src = `${elementsLink}tv-wall-Background.mp4`
 
         function createVideoWall() {
-            isMobile = window.innerWidth < 500; // 每次建牆時重新判定
-            const columns = isMobile ? 2 : 4;
-            const rows = isMobile ? 4 : 3;
+            isTvWallMobile = window.innerWidth < 500; // 每次建牆時重新判定
+            const columns = isTvWallMobile ? 2 : 4;
+            const rows = isTvWallMobile ? 4 : 3;
             const videoList = [
-                "ControlRoom01", "ControlRoom02", "Control Room", "Signage",
-                "ControlRoom03", "ControlRoom04", "Dashboard", "Meeting Room",
-                "Work Station", "Broadcast", "Conference Suit", "Server Room"
+                "ControlRoom01", "ControlRoom02", "Control Center", "Digital Signage",
+                "ControlRoom03", "ControlRoom04", "AI Voice", "VIP Conference Suite",
+                "Personal Workstation", "Broadcast Center", "Web Conferencing", "Server Room"
             ];
 
             const videoWall = document.getElementById("videoWall");
@@ -50,7 +49,7 @@
             videoWall.style.aspectRatio = (16 * columns) / (9 * rows);
             videoWall.style.setProperty('--columns', columns);
             videoList.forEach((name, index) => {
-                if (isMobile && unClickableScreenIndexs.includes(index)) {
+                if (isTvWallMobile && unClickableScreenIndexs.includes(index)) {
                     return;
                 }
 
@@ -116,7 +115,7 @@
             // 先移除之前的 listener，避免重複綁定
             videoWall.onclick = null;
 
-            if (isMobile) {
+            if (isTvWallMobile) {
                 return; // 手機版直接不綁 click
             }
 
@@ -202,32 +201,27 @@
 
 
 
-        let hoverIndex = 0;
-        let intervalId = null;
-        let isPaused = false;
+        let HovertvWallIndex = 0;
+        let intervaltvWallId = null;
+        let isTvWallPaused = false;
 
         function rotateHover() {
-            if (isPaused) return;
-
+            if (isTvWallPaused) return;
             const screens = Array.from(document.querySelectorAll('.tv-screen'))
                 .filter((_, i) => !unClickableScreenIndexs.includes(i));
-
             if (screens.length === 0) return;
-
             screens.forEach((el, i) => {
-                el.classList.toggle('hover', i === hoverIndex);
+                el.classList.toggle('hover', i === HovertvWallIndex);
             });
-
-            hoverIndex = (hoverIndex + 1) % screens.length;
+            HovertvWallIndex = (HovertvWallIndex + 1) % screens.length;
         }
-
         // 啟動輪播
-        intervalId = setInterval(rotateHover, 2000);
+        intervaltvWallId = setInterval(rotateHover, 2000);
 
         // 滑鼠移入移出控制暫停
         document.addEventListener('mouseover', (e) => {
             if (e.target.closest('.tv-screen')) {
-                isPaused = true;
+                isTvWallPaused = true;
                 // 清除所有 hover 樣式
                 document.querySelectorAll('.tv-screen.hover').forEach(el => {
                     el.classList.remove('hover');
@@ -236,10 +230,10 @@
         });
         document.addEventListener('mouseout', (e) => {
             if (e.target.closest('.tv-screen')) {
-                isPaused = false;
+                isTvWallPaused = false;
             }
         });
-    </script>
+    </script> -->
 </body>
 
 </html>

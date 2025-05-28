@@ -1,16 +1,29 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+/******************************
+******************************
+******************************
+
+
+
+		tv start
+
+
+
+
+
+******************************
+******************************
+*******************************/
+
+@font-face {
+    font-family: 'Material Symbols Outlined';
+    font-style: normal;
+    font-weight: 400;
+    src: url(https://fonts.gstatic.com/s/materialsymbolsoutlined/v76/kJF4BvYX7BgnkSrUwT8OhrdQw4oELdPIeeII9v6oDMzByHX9rA6RzaxHMPdY40KH8nGzv3fz_VFU22ZZLsYEpzC_1ver5Y0.woff2) format('woff2');
 }
 
-body {
-    font-family: Arial, sans-serif;
-    overflow: hidden;
-    background-color: #333;
+.icon-text {
+    font-family: Material Symbols Outlined;
 }
-
-
 
 .tv-wall-main-container {
     max-width: 1440px;
@@ -31,11 +44,11 @@ body {
 
 
 .tables {
-    width: 70%;
+    width: 54%;
     mix-blend-mode: screen;
     position: absolute;
-    top: 48%;
-    left: -5%;
+    top: 57%;
+    left: 4%;
 }
 
 
@@ -48,7 +61,7 @@ tv-wall
 
 .tv-wall-container {
     width: 100%;
-    padding-top: 60%;
+    padding-top: 48%;
     -webkit-transform-style: preserve-3d;
     transform-style: preserve-3d;
     -webkit-perspective: 1300px;
@@ -60,9 +73,9 @@ tv-wall
 
 .video-wall {
     position: absolute;
-    left: 50%;
-    top: 32%;
-    width: 120%;
+    left: 40%;
+    top: 62%;
+    width: 145%;
     display: flex;
     flex-wrap: wrap;
     transform-style: preserve-3d;
@@ -71,8 +84,8 @@ tv-wall
 
     border: 8px solid #111;
     border-radius: 12px;
-    transform: translate3d(-20%, -90%, -1800px) rotateX(-5deg) rotateY(-25deg) rotateZ(-2deg);
-    transition: transform 1s ease;
+    transform: translate3d(-20%, -90%, -1700px) rotateX(-5deg) rotateY(-25deg) rotateZ(-2deg);
+    transition: transform 0.5s ease;
 }
 
 .video-wall.open {
@@ -81,11 +94,19 @@ tv-wall
 
 
 
+/*  1920 以上 */
+@Media (min-width: 1920px) {
 
+    .tv-wall-main-container {
+        max-width: 1580px;
+    }
 
+    .video-wall {
+        width: 130%;
+        width: 119%;
+    }
 
-
-
+}
 
 
 .tv-screen {
@@ -104,7 +125,7 @@ tv-wall
     display: flex;
     justify-content: center;
     align-items: center;
-    transition: all 0.5s ease;
+    transition: all 1s ease;
     cursor: pointer;
 }
 
@@ -113,31 +134,41 @@ tv-wall
 }
 
 @media (min-width: 500px) {
+    .video-wall:hover {
+
+        transform: translate3d(-36%, -75%, -1350px) rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+
+    }
 
     .tv-screen:hover,
     .tv-screen.hover {
         z-index: 10;
-        box-shadow: 0 0 32px rgba(0, 255, 255, 1);
-        transform: translate3d(-50%, -50%, 150px) rotateX(0deg) rotateY(0deg) scale(1.2);
+        box-shadow: 0 0 24px rgba(0, 255, 255, 1);
+        transform: translate3d(-50%, -50%, 250px) rotateX(0deg) rotateY(0deg) scale(1.4);
         border: 1px solid #00ffff;
     }
 
     .tv-screen:hover .screen-text,
     .tv-screen.hover .screen-text {
         position: absolute;
-        top: 50%;
+        top: 40%;
         left: 50%;
         opacity: 1;
         font-size: 32px;
         text-shadow: 0 0 24px #000, 0 0 12px #000, 0 0 8px #000000;
     }
 
+
+
     .tv-screen.open:hover .screen-text,
     .tv-screen.open.hover .screen-text {
         font-size: 22px;
     }
 
+
 }
+
+
 
 
 
@@ -161,6 +192,11 @@ tv-wall
 
 
 
+.tv-screen.open>video {
+    pointer-events: none;
+}
+
+
 
 .tv-screen .screen-text {
     position: absolute;
@@ -169,12 +205,46 @@ tv-wall
     text-align: center;
     font-size: 18px;
     left: 50%;
+    top: 40%;
     transform: translate(-50%, -50%);
     color: #fff;
     opacity: 0;
     transition: 1.5s;
 
 }
+
+
+
+.tv-screen::before {
+    content: "chevron_right";
+    font-family: Material Symbols Outlined;
+    color: #000000;
+    font-size: 32px;
+    width: 48px;
+    height: 48px;
+    background-color: #5edc2c;
+    /* border: 1px solid #000000; */
+    position: absolute;
+    bottom: 12%;
+    left: 50%;
+    border-radius: 50%;
+    transform: translate(-50%, -50%) scale(0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: 1.2s ease-out;
+}
+
+.tv-screen:hover::before {
+    box-shadow: 0 0 8px #025858, 0 0 20px #00ffff;
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.9;
+}
+
+
+
+
 
 
 
@@ -195,17 +265,20 @@ tv-wall
     position: absolute;
     top: 0;
     left: 0;
-    pointer-events: none;
+    /* pointer-events: none; */
+    z-index: 1;
 
 }
 
-
 .tv-screen.open .screen-link {
+    z-index: 1;
     pointer-events: all
 }
 
 
-
+.tv-screen>video {
+    pointer-events: none;
+}
 
 
 
@@ -255,6 +328,8 @@ tv-wall
     transform: translate3d(-50%, -50%, 0px);
     opacity: 0;
     transition: 0.5s;
+    font-family: noto sans;
+    font-weight: 600;
 }
 
 .close-btn.open {
@@ -332,21 +407,46 @@ tv-wall
     }
 
     .tv-screen .screen-text {
-        font-size: 12px;
-        top: 85%;
         left: 50%;
         color: #fff;
         opacity: 1;
-        text-shadow: 0 0 3px #000;
+        font-size: 16px;
+        top: 40%;
+        text-shadow: 0 0 4px #000, 0 0 2px #000;
+    }
+
+
+    .tv-screen::before {
+        font-size: 24px;
+        width: 32px;
+        height: 32px;
+        bottom: -8%;
+        opacity: 1;
     }
 
 
 
 
+    .tv-screen.hover {
+        z-index: 10;
+        box-shadow: 0 0 24px rgba(0, 255, 255, 1);
+        transform: translate3d(-50%, -50%, 0px) rotateX(0deg) rotateY(0deg) scale(1.1);
+        border: 2px solid #00ffff;
+    }
+
+    .tv-screen.hover::before {
+        box-shadow: 0 0 24px rgba(0, 255, 255, 1);
+    }
+
 
 }
 
+@media (max-width: 400px) {
+    .tv-screen .screen-text {
+        font-size: 14px;
+    }
 
+}
 
 
 
@@ -437,3 +537,19 @@ tv-wall 動畫
     transform-origin: bottom left;
     transform: scaleY(1);
 }
+
+/******************************
+    ******************************
+    ******************************
+    
+    
+
+    
+           tv END
+    
+    
+
+    
+    ******************************
+    ******************************
+    *******************************/
