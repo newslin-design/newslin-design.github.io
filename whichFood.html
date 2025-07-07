@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>你的美食人格是？</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #333;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 2rem;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            text-align: center;
+        }
+
+        .header {
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .header p {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #ecf0f1;
+            border-radius: 4px;
+            margin: 1rem 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(45deg, #ff6b6b, #ffa726);
+            border-radius: 4px;
+            transition: width 0.5s ease;
+            width: 0%;
+        }
+
+        .question-container {
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .question-container.active {
+            display: block;
+        }
+
+        .question-emoji {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            animation: bounce 2s infinite;
+        }
+
+        .question h2 {
+            font-size: 1.5rem;
+            color: #2c3e50;
+            margin-bottom: 1.5rem;
+            line-height: 1.4;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .option {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 15px;
+            padding: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .option:hover {
+            background: #e3f2fd;
+            border-color: #2196f3;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(33, 150, 243, 0.3);
+        }
+
+        .option.selected {
+            background: linear-gradient(45deg, #ff6b6b, #ffa726);
+            border-color: #ff6b6b;
+            color: white;
+            transform: scale(1.02);
+        }
+
+        .btn {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 1rem 2rem;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .result-container {
+            display: none;
+            text-align: center;
+            animation: fadeIn 0.8s ease-in-out;
+        }
+
+        .result-container.active {
+            display: block;
+        }
+
+        .result-avatar {
+            font-size: 6rem;
+            margin-bottom: 1rem;
+            animation: pulse 2s infinite;
+        }
+
+        .result-title {
+            font-size: 2rem;
+            color: #2c3e50;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .result-food {
+            background: linear-gradient(45deg, #ff6b6b, #ffa726);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            margin: 1rem 0;
+            font-weight: bold;
+            display: inline-block;
+        }
+
+        .result-desc {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #5a6c7d;
+            margin: 1.5rem 0;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 15px;
+            border-left: 4px solid #667eea;
+        }
+
+        .restart-btn {
+            background: linear-gradient(45deg, #36d1dc, #5b86e5);
+            margin-top: 1rem;
+        }
+
+        .compatibility-section {
+            margin: 2rem 0;
+            display: grid;
+            gap: 1rem;
+        }
+
+        .compatibility-item {
+            padding: 1.5rem;
+            border-radius: 15px;
+            text-align: left;
+        }
+
+        .compatibility-item.good {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            border-left: 5px solid #00d4aa;
+        }
+
+        .compatibility-item.bad {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fab1a0 100%);
+            border-left: 5px solid #fd79a8;
+        }
+
+        .compatibility-item h4 {
+            margin: 0 0 0.8rem 0;
+            font-size: 1.1rem;
+            color: #2c3e50;
+            font-weight: bold;
+        }
+
+        .compatibility-item p {
+            margin: 0;
+            color: #34495e;
+            font-size: 1rem;
+            line-height: 1.4;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes bounce {
+
+            0%,
+            20%,
+            50%,
+            80%,
+            100% {
+                transform: translateY(0);
+            }
+
+            40% {
+                transform: translateY(-10px);
+            }
+
+            60% {
+                transform: translateY(-5px);
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .question-counter {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .food-icon {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: white;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .option:hover .food-icon {
+            opacity: 1;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1.5rem;
+                margin: 1rem;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .question-emoji {
+                font-size: 3rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🍽️ 美食人格測驗</h1>
+            <p>發現你的專屬美食風格</p>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+
+        <div class="question-counter" id="questionCounter">問題 1 / 8</div>
+
+        <!-- 題目 1 -->
+        <div class="question-container active" id="q1">
+            <div class="question-emoji">🏪</div>
+            <div class="question">
+                <h2>你會選哪間餐廳？</h2>
+                <div class="options">
+                    <div class="option" data-value="T" onclick="selectOption(this)">
+                        <span class="food-icon">🥩</span>
+                        食材講究、味道極致
+                    </div>
+                    <div class="option" data-value="I" onclick="selectOption(this)">
+                        <span class="food-icon">🎨</span>
+                        主廚有理念，整套菜像體驗
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 題目 2 -->
+        <div class="question-container" id="q2">
+            <div class="question-emoji">🍱</div>
+            <div class="question">
+                <h2>兩道菜你選哪一道？</h2>
+                <div class="options">
+                    <div class="option" data-value="T" onclick="selectOption(this)">
+                        <span class="food-icon">👑</span>
+                        經典好吃款
+                    </div>
+                    <div class="option" data-value="I" onclick="selectOption(this)">
+                        <span class="food-icon">✨</span>
+                        創意文化轉化版
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 題目 3 -->
+        <div class="question-container" id="q3">
+            <div class="question-emoji">🌃</div>
+            <div class="question">
+                <h2>週五晚上你會選？</h2>
+                <div class="options">
+                    <div class="option" data-value="S" onclick="selectOption(this)">
+                        <span class="food-icon">👥</span>
+                        和朋友聚餐熱鬧吃
+                    </div>
+                    <div class="option" data-value="L" onclick="selectOption(this)">
+                        <span class="food-icon">🏠</span>
+                        一個人點外送配劇
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 題目 4 -->
+        <div class="question-container" id="q4">
+            <div class="question-emoji">🍲</div>
+            <div class="question">
+                <h2>吃火鍋時你怕什麼？</h2>
+                <div class="options">
+                    <div class="option" data-value="S" onclick="selectOption(this)">
+                        <span class="food-icon">😰</span>
+                        沒人聊天太尷尬
+                    </div>
+                    <div class="option" data-value="L" onclick="selectOption(this)">
+                        <span class="food-icon">🤔</span>
+                        要配合他人口味太麻煩
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 題目 5 -->
+        <div class="question-container" id="q5">
+            <div class="question-emoji">🌍</div>
+            <div class="question">
+                <h2>新開異國餐廳你會？</h2>
+                <div class="options">
+                    <div class="option" data-value="D" onclick="selectOption(this)">
+                        <span class="food-icon">🔒</span>
+                        還是吃我熟悉的店就好
+                    </div>
+                    <div class="option" data-value="E" onclick="selectOption(this)">
+                        <span class="food-icon">🔍</span>
+                        馬上查評價然後試看看！
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 題目 6 -->
+        <div class="question-container" id="q6">
+            <div class="question-emoji">🧁</div>
+            <div class="question">
+                <h2>甜點兩選一？</h2>
+                <div class="options">
+                    <div class="option" data-value="D" onclick="selectOption(this)">
+                        <span class="food-icon">🍰</span>
+                        奶油草莓蛋糕
+                    </div>
+                    <div class="option" data-value="E" onclick="selectOption(this)">
+                        <span class="food-icon">🌶️</span>
+                        抹茶辣椒起司泡芙
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 題目 7 -->
+        <div class="question-container" id="q7">
+            <div class="question-emoji">🌅</div>
+            <div class="question">
+                <h2>早餐點餐時你？</h2>
+                <div class="options">
+                    <div class="option" data-value="M" onclick="selectOption(this)">
+                        <span class="food-icon">📋</span>
+                        有固定選項，營養均衡
+                    </div>
+                    <div class="option" data-value="F" onclick="selectOption(this)">
+                        <span class="food-icon">💭</span>
+                        看心情選
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 題目 8 -->
+        <div class="question-container" id="q8">
+            <div class="question-emoji">🍛</div>
+            <div class="question">
+                <h2>吃到飽時你會？</h2>
+                <div class="options">
+                    <div class="option" data-value="M" onclick="selectOption(this)">
+                        <span class="food-icon">🚶</span>
+                        先繞一圈再決定
+                    </div>
+                    <div class="option" data-value="F" onclick="selectOption(this)">
+                        <span class="food-icon">🏃</span>
+                        想吃什麼就先拿！
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <button class="btn" id="nextBtn" onclick="nextQuestion()" disabled>下一題</button>
+
+        <!-- 結果頁面 -->
+        <div class="result-container" id="result">
+            <div class="result-avatar" id="resultAvatar">🍽️</div>
+            <div class="result-title" id="resultTitle"></div>
+            <div class="result-food" id="resultFood"></div>
+            <div class="result-desc" id="resultDesc"></div>
+
+            <div class="compatibility-section">
+                <div class="compatibility-item good">
+                    <h4>✅ 最適合一起吃飯</h4>
+                    <p id="compatibleTypes"></p>
+                </div>
+                <div class="compatibility-item bad">
+                    <h4>❌ 最不適合一起吃飯</h4>
+                    <p id="incompatibleTypes"></p>
+                </div>
+            </div>
+
+            <button class="btn restart-btn" onclick="restartQuiz()">重新測驗</button>
+        </div>
+    </div>
+
+    <script>
+        const types = {
+            "TSDM": {
+                name: "經典社交饕客",
+                food: "🦆 烤鴨、🥟 港點、🍜 熱炒",
+                desc: "你是朋友聚會中的點餐主導者，對味道有絕對的堅持，更懂得如何營造用餐氛圍。你相信好食物能連結人心，總是能帶領大家發現美味的經典選擇。",
+                avatar: "👑",
+                compatible: "經典社交饕客、文化宴策展人",
+                incompatible: "味覺幻想家"
+            },
+            "TSDF": {
+                name: "熱情直覺吃貨",
+                food: "🍲 火鍋、🥩 燒肉、🍗 滷味",
+                desc: "你是天生的美食直覺派！不需要太多思考，憑著本能就能找到最棒的美食。你享受與朋友分享美食的快樂時光，相信吃得開心比什麼都重要！",
+                avatar: "🔥",
+                compatible: "衝動冒險家、熱情直覺吃貨",
+                incompatible: "靜默文化味職人"
+            },
+            "TSEM": {
+                name: "理性冒險領隊",
+                food: "🍽️ 創意套餐、🧪 分子料理",
+                desc: "你是團體中的美食探險家！會仔細研究每家餐廳的特色，然後帶領朋友們一起嘗試新奇的美食體驗。你相信美食需要冒險精神，但也要有理性的規劃。",
+                avatar: "🎯",
+                compatible: "理性冒險領隊、食藝引導者",
+                incompatible: "味覺幻想家"
+            },
+            "TSEF": {
+                name: "衝動冒險家",
+                food: "🌮 異國街頭小吃、🍭 新奇甜點",
+                desc: "你是最勇敢的美食冒險家！看到沒試過的美食就想立刻嘗試，總是能發現意想不到的美味驚喜。你的美食人生充滿驚奇與樂趣！",
+                avatar: "🚀",
+                compatible: "熱情直覺吃貨、味覺幻想家",
+                incompatible: "靜默文化味職人、經典社交饕客"
+            },
+            "TLDM": {
+                name: "安定系美食守護者",
+                food: "🍣 壽司、🍲 雞湯、🍱 定食",
+                desc: "你喜歡在熟悉的美食中找到內心的平靜。雖然偏愛經典口味，但你對食物品質有著極高的要求，能在簡單中品味出深層的美好。",
+                avatar: "🏮",
+                compatible: "靜默文化味職人、經典社交饕客",
+                incompatible: "衝動冒險家"
+            },
+            "TLDF": {
+                name: "宅系感官派",
+                food: "🍱 家常便當、🍜 泡麵",
+                desc: "你最享受一個人安靜品嘗美食的時光。簡單的料理在你眼中也能成為美味佳餚，你相信美食的真諦在於內心的滿足感。",
+                avatar: "🏠",
+                compatible: "記憶味蒐藏家、熱情直覺吃貨",
+                incompatible: "文化宴策展人"
+            },
+            "TLEM": {
+                name: "孤獨嚐鮮測試員",
+                food: "🍱 便當創新組合、🥟 冷凍新品",
+                desc: "你是一個人的美食實驗家！喜歡在安靜的環境中慢慢品味新口味，每次嘗試都是一次個人的美食探索之旅。",
+                avatar: "🔬",
+                compatible: "食藝引導者、孤獨嚐鮮測試員",
+                incompatible: "熱情直覺吃貨"
+            },
+            "TLEF": {
+                name: "自由品味浪人",
+                food: "🥞 早午餐、☕ 旅途中邂逅的小店",
+                desc: "你的美食之旅就像一場自由的冒險！跟著直覺與心情選擇美食，每一餐都是人生旅程中的美好邂逅。",
+                avatar: "🎒",
+                compatible: "味覺幻想家、衝動冒險家",
+                incompatible: "經典社交饕客、靜默文化味職人"
+            },
+            "ISDM": {
+                name: "文化宴策展人",
+                food: "🍜 辦桌、🥘 眷村菜",
+                desc: "你將用餐視為一場文化的盛宴！每道菜背後的故事與文化內涵都深深吸引著你，你相信美食是傳承文化的最好媒介。",
+                avatar: "🎭",
+                compatible: "經典社交饕客、文化宴策展人",
+                incompatible: "味覺幻想家"
+            },
+            "ISDF": {
+                name: "溫柔說菜人",
+                food: "🍲 媽媽味、🥟 懷舊小吃",
+                desc: "你是美食故事的溫柔敘述者，能將每道菜的情感與記憶娓娓道來。你相信美食不只是味覺享受，更是情感的載體。",
+                avatar: "💝",
+                compatible: "記憶味蒐藏家、溫柔說菜人",
+                incompatible: "衝動冒險家"
+            },
+            "ISEM": {
+                name: "食藝引導者",
+                food: "🍽️ 當代創意料理",
+                desc: "你是美食藝術的引路人！用深厚的知識與美學眼光，帶領他人領略創意料理的精妙之處。你相信美食是一門需要學習與品味的藝術。",
+                avatar: "🎨",
+                compatible: "理性冒險領隊、孤獨嚐鮮測試員",
+                incompatible: "宅系感官派"
+            },
+            "ISEF": {
+                name: "體驗式吃派",
+                food: "🎪 沉浸式餐廳、🦄 奇幻甜點",
+                desc: "你追求的是完整的美食體驗！不只是味覺，更要有視覺、聽覺、觸覺的全方位感受。每頓飯都是一場感官的盛宴。",
+                avatar: "🎪",
+                compatible: "衝動冒險家、味覺幻想家",
+                incompatible: "安定系美食守護者"
+            },
+            "ILDM": {
+                name: "靜默文化味職人",
+                food: "🥒 手作醃漬、🍜 地方乾麵",
+                desc: "你是美食文化的默默守護者，對食物的內涵有著深厚的理解與情感。你享受在安靜中品味傳統美食的深層韻味。",
+                avatar: "🥋",
+                compatible: "安定系美食守護者、溫柔說菜人",
+                incompatible: "熱情直覺吃貨、衝動冒險家"
+            },
+            "ILDF": {
+                name: "記憶味蒐藏家",
+                food: "🍦 冰淇淋、🍪 零食、🧁 甜點",
+                desc: "你用味覺來收藏人生的美好時光！每一種美食都承載著特殊的記憶與情感，你的美食日記就是最珍貴的人生收藏。",
+                avatar: "📸",
+                compatible: "溫柔說菜人、宅系感官派",
+                incompatible: "衝動冒險家、自由品味浪人"
+            },
+            "ILEM": {
+                name: "美食創作型導演",
+                food: "🥞 自創早餐、🔍 神秘小店",
+                desc: "你是一個人的美食電影導演！即使獨自用餐，也要讓每一餐都充滿創意與設計感。你相信美食是生活美學的重要表現。",
+                avatar: "🎬",
+                compatible: "食藝引導者、孤獨嚐鮮測試員",
+                incompatible: "熱情直覺吃貨"
+            },
+            "ILEF": {
+                name: "味覺幻想家",
+                food: "🧁 DIY甜點、🎨 藝術料理",
+                desc: "你是美食界的詩人！用味覺創作人生的詩篇，每一口都是想像力的體現。你相信美食與藝術之間有著神秘的連結。",
+                avatar: "🌙",
+                compatible: "衝動冒險家、體驗式吃派",
+                incompatible: "經典社交饕客、文化宴策展人"
+            }
+        };
+
+        let currentQuestion = 1;
+        let answers = {};
+        const totalQuestions = 8;
+
+        function selectOption(option) {
+            // 清除同組其他選項的選中狀態
+            const siblings = option.parentElement.querySelectorAll('.option');
+            siblings.forEach(s => s.classList.remove('selected'));
+
+            // 選中當前選項
+            option.classList.add('selected');
+
+            // 記錄答案
+            answers[`q${currentQuestion}`] = option.dataset.value;
+
+            // 啟用下一題按鈕
+            document.getElementById('nextBtn').disabled = false;
+
+            // 如果是最後一題，改變按鈕文字
+            if (currentQuestion === totalQuestions) {
+                document.getElementById('nextBtn').textContent = '查看結果';
+            }
+        }
+
+        function nextQuestion() {
+            if (currentQuestion < totalQuestions) {
+                // 隱藏當前題目
+                document.getElementById(`q${currentQuestion}`).classList.remove('active');
+
+                // 顯示下一題
+                currentQuestion++;
+                document.getElementById(`q${currentQuestion}`).classList.add('active');
+
+                // 更新進度條
+                updateProgress();
+
+                // 更新問題計數器
+                document.getElementById('questionCounter').textContent = `問題 ${currentQuestion} / ${totalQuestions}`;
+
+                // 重置按鈕狀態
+                document.getElementById('nextBtn').disabled = true;
+
+            } else {
+                // 顯示結果
+                showResult();
+            }
+        }
+
+        function updateProgress() {
+            const progress = (currentQuestion / totalQuestions) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+
+        function showResult() {
+            // 隱藏最後一題
+            document.getElementById(`q${currentQuestion}`).classList.remove('active');
+
+            // 隱藏按鈕和進度條
+            document.getElementById('nextBtn').style.display = 'none';
+            document.getElementById('questionCounter').style.display = 'none';
+            document.querySelector('.progress-bar').style.display = 'none';
+
+            // 計算結果
+            const resultCode = calculateResult();
+            const result = types[resultCode];
+
+            // 顯示結果
+            if (result) {
+                document.getElementById('resultAvatar').textContent = result.avatar;
+                document.getElementById('resultTitle').textContent = result.name;
+                document.getElementById('resultFood').textContent = result.food;
+                document.getElementById('resultDesc').textContent = result.desc;
+                document.getElementById('compatibleTypes').textContent = result.compatible;
+                document.getElementById('incompatibleTypes').textContent = result.incompatible;
+            }
+
+            // 顯示結果頁面
+            document.getElementById('result').classList.add('active');
+        }
+
+        function calculateResult() {
+            let code = "";
+            // 根據原始邏輯，只有偶數題目影響結果
+            for (let i = 2; i <= 8; i += 2) {
+                code += answers[`q${i}`];
+            }
+            return code;
+        }
+
+        function restartQuiz() {
+            // 重置所有狀態
+            currentQuestion = 1;
+            answers = {};
+
+            // 重置UI
+            document.getElementById('result').classList.remove('active');
+            document.getElementById('q1').classList.add('active');
+            document.getElementById('nextBtn').style.display = 'block';
+            document.getElementById('nextBtn').textContent = '下一題';
+            document.getElementById('nextBtn').disabled = true;
+            document.getElementById('questionCounter').style.display = 'block';
+            document.getElementById('questionCounter').textContent = '問題 1 / 8';
+            document.querySelector('.progress-bar').style.display = 'block';
+            document.getElementById('progressFill').style.width = '0%';
+
+            // 清除所有選項
+            document.querySelectorAll('.option').forEach(option => {
+                option.classList.remove('selected');
+            });
+
+            // 隱藏其他題目
+            for (let i = 2; i <= 8; i++) {
+                document.getElementById(`q${i}`).classList.remove('active');
+            }
+        }
+
+        // 初始化進度條
+        updateProgress();
+    </script>
+</body>
+
+</html>
