@@ -10,10 +10,6 @@
 
 <body>
     <div class="container">
-        <!-- <div class="header">
-            <h1> 你是哪種🍽️美食生物</h1>
-        </div> -->
-
         <div class="progress-bar">
             <div class="progress-fill" id="progressFill"></div>
         </div>
@@ -39,24 +35,23 @@
                     <div class="result-quote" id="resultQuote"></div>
                     <div class="result-desc" id="resultDesc"></div>
                     <div class="result-food" id="resultFood"></div>
-
                 </div>
             </div>
 
             <div class="compatibility-section">
                 <div class="compatibility-item good">
                     <h4>最適合一起吃飯</h4>
-                    <p id="compatibleTypes"></p>
+                    <div class="compatibility-types" id="compatibleTypes"></div>
                 </div>
                 <div class="compatibility-item bad">
                     <h4>最不適合一起吃飯</h4>
-                    <p id="incompatibleTypes"></p>
+                    <div class="compatibility-types" id="incompatibleTypes"></div>
                 </div>
-
-
             </div>
 
             <button class="btn restart-btn" onclick="restartQuiz()">重新測驗</button>
+            <button class="btn restart-btn" style="margin-top: 12px;" onclick="showNextPersonality()">下個動物是?</button>
+
         </div>
     </div>
 
@@ -314,9 +309,12 @@
 
         };
 
+
         let currentQuestion = 0;
         let scores = [0, 0, 0, 0]; // [T/I, S/L, D/E, M/F]
+        let currentResultType = null;
         const totalQuestions = questions.length;
+        const typeKeys = Object.keys(types);
 
         function generateQuestions() {
             const container = document.getElementById('questionContainer');
@@ -407,9 +405,11 @@
             document.getElementById('progressFill').style.width = progress + '%';
         }
 
-        function showResult() {
-            // 隱藏最後一題
-            document.getElementById(`q${currentQuestion}`).classList.remove('active');
+        function showResult(resultType = null) {
+            // 隱藏題目區域
+            if (currentQuestion < totalQuestions) {
+                document.getElementById(`q${currentQuestion}`).classList.remove('active');
+            }
 
             // 隱藏按鈕和進度條
             document.getElementById('nextBtn').style.display = 'none';
@@ -417,7 +417,8 @@
             document.querySelector('.progress-bar').style.display = 'none';
 
             // 計算結果
-            const resultCode = calculateResult();
+            const resultCode = resultType || calculateResult();
+            currentResultType = resultCode;
             const result = types[resultCode];
 
             // 顯示結果
@@ -429,12 +430,52 @@
                 document.getElementById('resultQuote').textContent = `${result.quote}`;
                 document.getElementById('resultFood').textContent = result.food;
                 document.getElementById('resultDesc').textContent = result.desc;
-                document.getElementById('compatibleTypes').textContent = result.compatible;
-                document.getElementById('incompatibleTypes').textContent = result.incompatible;
+
+                // 處理相容性顯示，使其可點擊
+                displayCompatibilityTypes('compatibleTypes', result.compatible);
+                displayCompatibilityTypes('incompatibleTypes', result.incompatible);
             }
 
             // 顯示結果頁面
             document.getElementById('result').classList.add('active');
+        }
+
+        function displayCompatibilityTypes(elementId, typesString) {
+            const element = document.getElementById(elementId);
+            const typeNames = typesString.split('、');
+
+            element.innerHTML = '';
+            typeNames.forEach((typeName, index) => {
+                const span = document.createElement('span');
+                span.className = 'personality-type';
+                span.textContent = typeName;
+                span.onclick = () => showPersonalityByName(typeName);
+                element.appendChild(span);
+
+                // 如果不是最後一個，添加分隔符
+                if (index < typeNames.length - 1) {
+                    const separator = document.createTextNode('、');
+                    element.appendChild(separator);
+                }
+            });
+        }
+
+        function showPersonalityByName(personalityName) {
+            // 根據人格名稱找到對應的代碼
+            const typeCode = Object.keys(types).find(key => types[key].name === personalityName);
+            if (typeCode) {
+                showResult(typeCode);
+            }
+        }
+
+        function showNextPersonality() {
+            // 找到當前人格在列表中的位置
+            const currentIndex = typeKeys.indexOf(currentResultType);
+            // 獲取下一個人格（循環到開頭）
+            const nextIndex = (currentIndex + 1) % typeKeys.length;
+            const nextType = typeKeys[nextIndex];
+
+            showResult(nextType);
         }
 
         function calculateResult() {
@@ -455,6 +496,7 @@
             // 重置所有狀態
             currentQuestion = 0;
             scores = [0, 0, 0, 0];
+            currentResultType = null;
 
             // 重置UI
             document.getElementById('result').classList.remove('active');
@@ -463,9 +505,9 @@
             document.getElementById('nextBtn').textContent = '下一題';
             document.getElementById('nextBtn').disabled = true;
             document.getElementById('questionCounter').style.display = 'block';
-            document.getElementById('questionCounter').textContent = '問題 1 / 8';
+            document.getElementById('questionCounter').textContent = `問題 1 / ${totalQuestions}`;
             document.querySelector('.progress-bar').style.display = 'block';
-            document.getElementById('progressFill').style.width = '12.5%';
+            document.getElementById('progressFill').style.width = `${100 / totalQuestions}%`;
 
             // 清除所有選項
             document.querySelectorAll('.option').forEach(option => {
@@ -482,15 +524,12 @@
         function init() {
             generateQuestions();
             updateProgress();
-
-            // scores = [-2, -1, -2, -3]
+            // scores = [0, 0, 0, 0];
             // showResult()
         }
 
         // 頁面載入完成後初始化
         document.addEventListener('DOMContentLoaded', init);
-
-
     </script>
 </body>
 
