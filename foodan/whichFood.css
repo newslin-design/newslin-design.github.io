@@ -339,3 +339,27 @@
           font-size: 3rem;
       }
   }
+
+  @media (max-width: 400px) {
+      .question-emoji {
+          display: none;
+      }
+
+      .question h2 {
+          font-size: 1.3rem;
+          width: 100%;
+          color: #ffffff;
+          margin-bottom: 1.2rem;
+          line-height: 1.4;
+      }
+
+      .options {
+          gap: 0.2em;
+      }
+
+      .option {
+          padding: 0.8rem;
+          font-size: 1.1rem;
+      }
+
+  }
