@@ -27,12 +27,12 @@
 
         <!-- 結果頁面 -->
         <div class="result-container" id="result">
-            <div style="display: flex;">
-                <div class="result-avatar-container" style="width: 55%;">
+            <div class="imgHeader">
+                <div class="result-avatar-container">
                     <img class="result-avatar" id="resultAvatar" src="" alt="美食人格頭像">
                 </div>
 
-                <div class="result-text-container" style="width: 45%;">
+                <div class="result-text-container">
                     <div class="result-type" id="resultType"></div>
                     <div class="result-title" id="resultTitle"></div>
                     <div class="result-subtitle" id="resultSubtitle"></div>
@@ -483,8 +483,8 @@
             generateQuestions();
             updateProgress();
 
-            // scores = [-2, 1, 2, 3]
-            // showResult()
+            scores = [-2, -1, -2, -3]
+            showResult()
         }
 
         // 頁面載入完成後初始化

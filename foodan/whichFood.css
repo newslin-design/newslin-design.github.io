@@ -342,7 +342,46 @@
 
 
 
+  .imgHeader {
+      display: flex;
+  }
 
+  .result-avatar-container {
+      width: 55%;
+  }
+
+  .result-text-container {
+      width: 45%;
+  }
+
+  @media (max-width: 460px) {
+      .result-type {
+          font-size: 15px;
+      }
+
+      .result-title {
+          font-size: 25px;
+          margin-bottom: 8px;
+      }
+
+
+      .imgHeader {
+          flex-direction: column;
+      }
+
+      .result-avatar-container {
+          width: 100%;
+      }
+
+      .result-text-container {
+          width: 100%;
+      }
+
+  }
+
+  .result-quote {
+      font-size: 16px;
+  }
 
   @media (max-width: 425px) {
 
