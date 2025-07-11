@@ -14,18 +14,17 @@
             <div class="progress-fill" id="progressFill"></div>
         </div>
 
-        <div class="question-counter" id="questionCounter">問題 1 / 10</div>
 
-        <!-- 問題容器會動態生成 -->
+        <!-- 問題容器動態生成 -->
+        <div class="question-counter" id="questionCounter"></div>
         <div id="questionContainer"></div>
-
         <button class="btn" id="nextBtn" onclick="nextQuestion()" disabled>下一題</button>
 
         <!-- 結果頁面 -->
         <div class="result-container" id="result">
             <div class="imgHeader">
-                <div class="result-avatar-container">
-                    <img class="result-avatar" id="resultAvatar" src="" alt="美食人格頭像">
+                <div class="result-image-container">
+                    <img class="result-image" id="resultAvatar" src="" alt="Avatar">
                 </div>
 
                 <div class="result-text-container">
@@ -54,482 +53,310 @@
 
         </div>
     </div>
-
+    <script src="foodanData.js"></script>
     <script>
-        // 問題數據
-        const questions = [
-            {
-                "emoji": "🍽️",
-                "question": "朋友揪你吃一家很貴的料理餐廳，你最在意的是哪一點？",
-                "options": [
-                    { "text": "聽說那家的食材超講究、味道超好吃！", "icon": "🥩", "score": [1, 0, 0, 0] },
-                    { "text": "他們主廚有自己的理念，整套菜是「台灣高山森林走一圈」的體驗！", "icon": "🎨", "score": [-1, 0, 0, 0] }
-                ]
-            }, {
-                "emoji": "🧁",
-                "question": "公司附近的人氣甜點店裡有兩款新品，你選：",
-                "options": [
-                    { "text": "巧克力甜甜圈啊～這才是真正的甜點！", "icon": "🍰", "score": [0, 0, 1, 0] },
-                    { "text": "抹茶辣椒起司泡芙？光聽就想知道它是什麼味道！", "icon": "🌶️", "score": [0, 0, -1, 0] }
-                ]
-            },
 
-            {
-                "emoji": "🌃",
-                "question": "上了一周很累的班，終於到了週五，晚上肚子餓你會想要",
-                "options": [
-                    { "text": "找朋友揪一攤熱炒或居酒屋，一邊吃一邊聊天", "icon": "👥", "score": [0, 1, 0, 0] },
-                    { "text": "點自己最愛的餐廳外送，一個人配劇吃超爽", "icon": "🏠", "score": [0, -1, 0, 0] }
-                ]
-            },
-            {
-                "emoji": "🍱",
-                "question": "中午辦公室同事揪你一起去吃飯，你的直覺反應是：",
-                "options": [
-                    { "text": "太好了！一起吃比較有氣氛，還能聊聊最近的事", "icon": "😊", "score": [0, 1, 0, 0] },
-                    { "text": "有點想自己靜靜吃便當，順便滑個手機放空一下", "icon": "📱", "score": [0, -1, 0, 0] }
-                ]
-            }, {
-                "emoji": "🎉",
-                "question": "週末想犒賞自己，你會選擇：",
-                "options": [
-                    { "text": "約朋友去那家超好吃的燒肉店，大家一起享受頂級和牛！", "icon": "🥩", "score": [1, 1, 0, 0] },
-                    { "text": "一個人去體驗那家「孤獨美食」主題餐廳，靜靜品味主廚的人生故事", "icon": "🍜", "score": [-1, -1, 0, 0] },
-                    { "text": "揪朋友去新開的「台灣夜市環島」主題餐廳，一起體驗創意料理", "icon": "🎪", "score": [-1, 1, 0, 0] },
-                    { "text": "自己在家點最愛的鹽酥雞配可樂，享受熟悉的美味", "icon": "🍗", "score": [1, -1, 0, 0] }
-                ]
-            }, {
-                "emoji": "🍛",
-                "question": "公司的午餐時間，你在自助餐前排隊時會怎麼挑？",
-                "options": [
-                    { "text": "依照今天的需求安排食物比例，例如昨天重訓所以蛋白質要多一些", "icon": "⚖️", "score": [0, 0, 0, 1] },
-                    { "text": "想吃什麼就夾什麼，今天想來點炸物加奶茶，完全看心情", "icon": "🎲", "score": [0, 0, 0, -1] }
-                ]
-            },
-            {
-                "emoji": "🌍",
-                "question": "中午走在超熱馬路上找餐廳時，看到沒吃過的異國餐廳新開張，你會：",
-                "options": [
-                    { "text": "不太確定…等過陣子有評論再說，先去我熟悉的義大利麵店好了", "icon": "🔒", "score": [0, 0, 1, 0] },
-                    { "text": "超想試看看耶！馬上進去看看！", "icon": "🚀", "score": [0, 0, -1, 0] }
-                ]
-            },
-            {
-                "emoji": "🍝",
-                "question": "遠雄地下街有兩家店出了義大利燉飯，你會選：",
-                "options": [
-                    { "text": "經典款，我就是要吃最對味的版本！", "icon": "👑", "score": [1, 0, 0, 0] },
-                    { "text": "創意款，好奇它怎麼詮釋傳統食物", "icon": "✨", "score": [-1, 0, 0, 0] }
-                ]
-            },
-            {
-                "emoji": "🌅",
-                "question": "又到了一如往常的早餐時間，你通常點餐時的方式是：",
-                "options": [
-                    { "text": "通常都有固定的選擇，營養要均衡", "icon": "📋", "score": [0, 0, 0, 1] },
-                    { "text": "看今天心情想吃什麼就點什麼", "icon": "💭", "score": [0, 0, 0, -1] }
-                ]
-            },
-            {
-                "emoji": "✈️",
-                "question": "出國旅遊時，你的用餐方式是：",
-                "options": [
-                    { "text": "事先查好當地必吃經典美食，按計畫逐一品嚐", "icon": "📋", "score": [0, 0, 1, 1] },
-                    { "text": "看到奇特的路邊攤就停下來試試，完全隨緣", "icon": "🎲", "score": [0, 0, -1, -1] },
-                    { "text": "規劃好要挑戰各種沒吃過的料理，列清單一一達成", "icon": "✅", "score": [0, 0, -1, 1] },
-                    { "text": "找熟悉口味的餐廳，看心情決定要不要進去", "icon": "🤔", "score": [0, 0, 1, -1] }
-                ]
-            }
-        ]
 
-        // 人格類型資料
-        const types = {
+        class FoodPersonalityQuiz {
+            constructor(questions, types) {
+                this.questions = questions;
+                this.types = types;
+                this.currentQuestion = 0;
+                this.scores = [0, 0, 0, 0]; // [T/I, S/L, D/E, M/F]
+                this.currentResultType = null;
+                this.totalQuestions = questions.length;
+                this.typeKeys = Object.keys(types);
 
-            "TSDM": {
-                name: "領導象",
-                title: "職人味覺社交家",
-                quote: "「我不是龜毛，我只是覺得這道菜應該排第3道上比較合理…」",
-                food: "港點拼盤、和牛套餐、桌菜組合",
-                desc: "懂吃也懂場面，講究味道與場域配合，是同事聚餐的點菜領袖。飲食有邏輯，吃飯要吃對也要吃好。",
-                avatar: "images/TSDM.png",
-                compatible: "領導象、文化龍",
-                incompatible: "幻想獨角獸"
-            },
-            "TSDF": {
-                name: "熱情狗",
-                title: "爽感系同樂吃貨",
-                quote: "「吃火鍋沒人搶菜就不刺激啊～（嗑辣椒中）」",
-                food: "麻辣鍋、燒肉拼盤、夜市全制霸",
-                desc: "跟朋友吃才開胃！熱愛大份量、重口味，跟心情一起吃出爽感。不計熱量、不問意義，就是爽。",
-                avatar: "images/TSDF.png",
-                compatible: "熱情狗、狂吃水獺",
-                incompatible: "靜味貓頭鷹"
-            },
-            "TSEM": {
-                name: "理性鴞",
-                title: "理性冒險吃導師",
-                quote: "「這家我研究過食材來源和熱量分布，可以吃」",
-                food: "異國拼盤、Buffet、健身餐",
-                desc: "吃飯前會先查好功課、安排分量與順序，精準探索新口味，不浪費任何一口熱量。",
-                avatar: "images/TSEM.png",
-                compatible: "理性鴞、儀式天鵝",
-                incompatible: "幻想獨角獸"
-            },
-            "TSEF": {
-                name: "狂吃水獺",
-                title: "探索系即興吃霸",
-                quote: "「欸！那個章魚燒攤剛剛在發光欸我先衝」",
-                food: "夜市串燒、甜辣組合、限量便當",
-                desc: "走到哪吃到哪，看到有趣就點！吃得開心最重要，是吃飯版的冒險家＋派對靈魂。",
-                avatar: "images/TSEF.png",
-                compatible: "熱情狗、幻想獨角獸",
-                incompatible: "靜味貓頭鷹、領導象"
-            },
-            "TLDM": {
-                name: "穩陸龜",
-                title: "安定系飲食控",
-                quote: "「每天吃一樣的雞腿便當讓我很安心」",
-                food: "雞腿便當、日式定食、早餐三明治",
-                desc: "吃飯是生活節奏的一部分，熟悉的味道讓人安心。營養要平衡，菜色最好可以提前決定。",
-                avatar: "images/TLDM.png",
-                compatible: "靜味貓頭鷹、領導象",
-                incompatible: "狂吃水獺"
-            },
-            "TLDF": {
-                name: "慢熟貓",
-                title: "宅系味覺療癒師",
-                quote: "「今天就是要炸雞配奶茶配連續劇，誰都別吵我」",
-                food: "咖哩飯、蛋包飯、宅宅甜食",
-                desc: "吃飯是自我照顧的儀式，憑感覺選食物，只求「吃完很舒服」，懶得社交也懶得配菜。",
-                avatar: "images/TLDF.png",
-                compatible: "追憶無尾熊、熱情狗",
-                incompatible: "文化龍"
-            },
-            "TLEM": {
-                name: "孤食刺蝟",
-                title: "孤僻型風味研究員",
-                quote: "「健身完的蛋白質怎麼搭碳水，這是門科學」",
-                food: "高蛋白便當、自製沙拉、自配風味",
-                desc: "自己吃得剛剛好，不需配合別人。會按身體狀態安排菜色，重視食物的功能與體感反饋。",
-                avatar: "images/TLEM.png",
-                compatible: "儀式天鵝、孤食刺蝟",
-                incompatible: "熱情狗"
-            },
-            "TLEF": {
-                name: "自由狐狸",
-                title: "直覺派口感漂流者",
-                quote: "「今天甜的配辣的，明天冰的包熱的，我就這樣任性！」",
-                food: "Brunch、Tapas、混搭風味",
-                desc: "今天想吃什麼？就吃什麼。邊走邊吃、邊看邊選，是自由靈魂派吃貨代表。",
-                avatar: "images/TLEF.png",
-                compatible: "幻想獨角獸、狂吃水獺",
-                incompatible: "領導象、靜味貓頭鷹"
-            },
-            "ISDM": {
-                name: "文化龍",
-                title: "文化儀式食策展人",
-                quote: "「這不是菜單，這是土地記憶的時間軸」",
-                food: "無菜單料理、節氣料理、地方再詮釋套餐",
-                desc: "吃飯不是只是「吃」，而是場關於地方、文化與敘事的參與。餐桌就是展場。",
-                avatar: "images/ISDM.png",
-                compatible: "領導象、文化龍",
-                incompatible: "幻想獨角獸"
-            },
-            "ISDF": {
-                name: "療癒鴿",
-                title: "暖系說菜人",
-                quote: "「這道紅燒魚是我外婆的味道，配這個菜才對」",
-                food: "媽媽便當、滷味拼盤、情感連結料理",
-                desc: "吃飯與情感密不可分，一口食物一段故事。最會邊吃邊聊「這道菜我阿嬤以前也煮」。",
-                avatar: "images/ISDF.png",
-                compatible: "追憶無尾熊、療癒鴿",
-                incompatible: "狂吃水獺"
-            },
-            "ISEM": {
-                name: "儀式天鵝",
-                title: "嚴謹型創食向導",
-                quote: "「主菜先上還是甜點先上，我有個 Excel 表可以解釋」",
-                food: "主廚套餐、低碳便當、風格套餐",
-                desc: "從不亂吃新東西，一定先研究菜單背後的設計理念與文化關聯。嘴巴開之前，腦袋先動過。",
-                avatar: "images/ISEM.png",
-                compatible: "理性鴞、孤食刺蝟",
-                incompatible: "慢熟貓"
-            },
-            "ISEF": {
-                name: "美味妃蝶",
-                title: "體驗系味覺旅人",
-                quote: "「吃飯就要沈浸式，最好還有香氛＋背景音樂」",
-                food: "食物劇場、聯名甜點、氣味搭配料理",
-                desc: "吃東西像看展覽，是一場旅程。對食物意義與體感超敏銳，吃完還能寫出心得。",
-                avatar: "images/ISEF.png",
-                compatible: "狂吃水獺、幻想獨角獸",
-                incompatible: "穩陸龜"
-            },
-            "ILDM": {
-                name: "靜味貓頭鷹",
-                title: "沈靜系滋味守護人",
-                quote: "「我只吃一間滷味攤，而且只在週四晚上」",
-                food: "古早味便當、一人壽司、靜靜吃的角落美食",
-                desc: "討厭吵雜吃飯環境，對熟悉的味道非常執著，內心儀式感豐富，是慢食、靜食派擁護者。",
-                avatar: "images/ILDM.png",
-                compatible: "穩陸龜、療癒鴿",
-                incompatible: "熱情狗、狂吃水獺"
-            },
-            "ILDF": {
-                name: "追憶無尾熊",
-                title: "記憶味道蒐藏家",
-                quote: "「每次吃起司蛋糕我都會想起某個人…」",
-                food: "泡麵配蛋、療癒甜點、夜晚點心",
-                desc: "吃的是心情、記的是回憶。你最愛的食物，可能來自一段對話、一個地點或一場分手。",
-                avatar: "images/ILDF.png",
-                compatible: "療癒鴿、慢熟貓",
-                incompatible: "狂吃水獺、自由狐狸"
-            },
-            "ILEM": {
-                name: "工程河狸",
-                title: "自導型創食設計師",
-                quote: "「這個便當是我用4種醬料自己調的，超有成就感」",
-                food: "自組便當、自煮拼盤、旅行靈感餐",
-                desc: "不太吃現成的，喜歡設計每一口的排列組合。吃飯像策展，喜歡自己組出新東西。",
-                avatar: "images/ILEM.png",
-                compatible: "儀式天鵝、孤食刺蝟",
-                incompatible: "熱情狗"
-            },
-            "ILEF": {
-                name: "幻想獨角獸",
-                title: "感性味覺幻想家",
-                quote: "「如果草莓蛋糕能飄起來就好了（咬第一口）」",
-                food: "夢幻聯名款、色彩甜點、飲品仙境",
-                desc: "腦中浮現食物與感覺的聯想，吃東西是一種表演、一種療癒、一種內在的藝術展演。",
-                avatar: "images/ILEF.png",
-                compatible: "狂吃水獺、美味妃蝶",
-                incompatible: "領導象、文化龍"
+                // DOM 元素引用
+                this.elements = {
+                    container: document.getElementById('questionContainer'),
+                    nextBtn: document.getElementById('nextBtn'),
+                    progressFill: document.getElementById('progressFill'),
+                    questionCounter: document.getElementById('questionCounter'),
+                    progressBar: document.querySelector('.progress-bar'),
+                    result: document.getElementById('result'),
+                    resultAvatar: document.getElementById('resultAvatar'),
+                    resultType: document.getElementById('resultType'),
+                    resultTitle: document.getElementById('resultTitle'),
+                    resultSubtitle: document.getElementById('resultSubtitle'),
+                    resultQuote: document.getElementById('resultQuote'),
+                    resultDesc: document.getElementById('resultDesc'),
+                    resultFood: document.getElementById('resultFood'),
+                    compatibleTypes: document.getElementById('compatibleTypes'),
+                    incompatibleTypes: document.getElementById('incompatibleTypes')
+                };
+
+                this.init();
             }
 
+            init() {
+                this.generateQuestions();
+                this.updateProgress();
+                this.updateQuestionCounter();
+                this.scores = [0, 0, 0, 0];
 
-        };
+                // 綁定事件
+                this.elements.nextBtn.onclick = () => this.nextQuestion();
 
+                // 直接顯示結果(測試用)
+                // this.showResult();
+            }
 
-        let currentQuestion = 0;
-        let scores = [0, 0, 0, 0]; // [T/I, S/L, D/E, M/F]
-        let currentResultType = null;
-        const totalQuestions = questions.length;
-        const typeKeys = Object.keys(types);
+            generateQuestions() {
+                this.elements.container.innerHTML = '';
 
-        function generateQuestions() {
-            const container = document.getElementById('questionContainer');
-            container.innerHTML = '';
+                this.questions.forEach((q, index) => {
+                    const questionDiv = document.createElement('div');
+                    questionDiv.className = 'question-container';
+                    questionDiv.id = `q${index}`;
+                    if (index === 0) questionDiv.classList.add('active');
 
-            questions.forEach((q, index) => {
-                const questionDiv = document.createElement('div');
-                questionDiv.className = 'question-container';
-                questionDiv.id = `q${index}`;
-                if (index === 0) questionDiv.classList.add('active');
+                    const optionsHtml = q.options.map((option, optionIndex) => `
+                            <div class="option" data-score='${JSON.stringify(option.score)}' onclick="quiz.selectOption(this)">
+                                <span class="food-icon">${option.icon}</span>
+                                ${option.text}
+                            </div>
+                        `).join('');
 
-                const optionsHtml = q.options.map((option, optionIndex) => `
-                    <div class="option" data-score='${JSON.stringify(option.score)}' onclick="selectOption(this)">
-                        <span class="food-icon">${option.icon}</span>
-                        ${option.text}
-                    </div>
-                `).join('');
+                    questionDiv.innerHTML = `
+                            <div class="question-image" >
+                                <img src="${q.img}" alt="q">
+                            </div>
+                            <div class="question">
+                                <h2>${q.question}</h2>
+                                <div class="options">
+                                    ${optionsHtml}
+                                </div>
+                            </div>
+                        `;
 
-                questionDiv.innerHTML = `
-                    <div class="question-emoji">${q.emoji}</div>
-                    <div class="question">
-                        <h2>${q.question}</h2>
-                        <div class="options">
-                            ${optionsHtml}
-                        </div>
-                    </div>
-                `;
+                    this.elements.container.appendChild(questionDiv);
+                });
+            }
 
-                container.appendChild(questionDiv);
-            });
+            selectOption(option) {
+                // 清除同組其他選項的選中狀態
+                const siblings = option.parentElement.querySelectorAll('.option');
+                siblings.forEach(s => s.classList.remove('selected'));
+                option.classList.add('selected');
+
+                // 啟用下一題按鈕
+                this.elements.nextBtn.disabled = false;
+
+                // 如果是最後一題，按鈕顯示:查看結果
+                if (this.currentQuestion === this.totalQuestions - 1) {
+                    this.elements.nextBtn.textContent = '查看結果';
+                }
+            }
+
+            nextQuestion() {
+                // 獲取當前選中的選項並累加分數
+                const selectedOption = document.querySelector(`#q${this.currentQuestion} .option.selected`);
+                if (selectedOption) {
+                    const score = JSON.parse(selectedOption.dataset.score);
+                    for (let i = 0; i < 4; i++) {
+                        this.scores[i] += score[i];
+                    }
+                }
+
+                if (this.currentQuestion < this.totalQuestions - 1) {
+                    // 隱藏當前題目
+                    document.getElementById(`q${this.currentQuestion}`).classList.remove('active');
+
+                    // 顯示下一題
+                    this.currentQuestion++;
+                    document.getElementById(`q${this.currentQuestion}`).classList.add('active');
+
+                    // 更新進度條、問題計數器
+                    this.updateProgress();
+                    this.updateQuestionCounter();
+
+                    // 重置按鈕狀態
+                    this.elements.nextBtn.disabled = true;
+                } else {
+                    // 顯示結果
+                    this.showResult();
+                }
+            }
+
+            updateProgress() {
+                const progress = ((this.currentQuestion + 1) / this.totalQuestions) * 100;
+                this.elements.progressFill.style.width = progress + '%';
+            }
+
+            updateQuestionCounter() {
+                this.elements.questionCounter.textContent = `問題 ${this.currentQuestion + 1} / ${this.totalQuestions}`;
+            }
+
+            calculateResult() {
+                let code = "";
+                // 根據分數計算人格類型
+                code += this.scores[0] >= 0 ? "T" : "I";
+                code += this.scores[1] >= 0 ? "S" : "L";
+                code += this.scores[2] >= 0 ? "D" : "E";
+                code += this.scores[3] >= 0 ? "M" : "F";
+
+                console.log("最終分數:", this.scores);
+                console.log("結果代碼:", code);
+
+                return code;
+            }
+
+            showResult(resultType = null) {
+                // 隱藏題目區域
+                if (this.currentQuestion < this.totalQuestions) {
+                    document.getElementById(`q${this.currentQuestion}`).classList.remove('active');
+                }
+
+                // 隱藏按鈕和進度條
+                this.elements.nextBtn.style.display = 'none';
+                this.elements.questionCounter.style.display = 'none';
+                this.elements.progressBar.style.display = 'none';
+
+                // 計算結果
+                const resultCode = resultType || this.calculateResult();
+                this.currentResultType = resultCode;
+                const result = this.types[resultCode];
+
+                // 顯示結果
+                if (result) {
+                    this.elements.resultAvatar.src = result.avatar;
+                    this.elements.resultType.textContent = resultCode;
+                    this.elements.resultTitle.textContent = result.name;
+                    this.elements.resultSubtitle.textContent = result.title;
+                    this.elements.resultQuote.textContent = `${result.quote}`;
+                    this.elements.resultFood.textContent = result.food;
+                    this.elements.resultDesc.textContent = result.desc;
+
+                    // 處理相容性顯示，使其可點擊
+                    this.displayCompatibilityTypes('compatibleTypes', result.compatible);
+                    this.displayCompatibilityTypes('incompatibleTypes', result.incompatible);
+                }
+
+                // 顯示結果頁面
+                this.elements.result.classList.add('active');
+            }
+
+            displayCompatibilityTypes(elementId, typesString) {
+                const element = document.getElementById(elementId);
+                const typeNames = typesString.split('、');
+
+                element.innerHTML = '';
+                typeNames.forEach((typeName, index) => {
+                    const span = document.createElement('span');
+                    span.className = 'personality-type';
+                    span.textContent = typeName;
+                    span.onclick = () => this.showPersonalityByName(typeName);
+                    element.appendChild(span);
+
+                    // 如果不是最後一個，添加分隔符
+                    if (index < typeNames.length - 1) {
+                        const separator = document.createTextNode('、');
+                        element.appendChild(separator);
+                    }
+                });
+            }
+
+            showPersonalityByName(personalityName) {
+                // 根據人格名稱找到對應的代碼
+                const typeCode = Object.keys(this.types).find(key => this.types[key].name === personalityName);
+                if (typeCode) {
+                    this.showResult(typeCode);
+                }
+            }
+
+            showNextPersonality() {
+                // 找到當前人格在列表中的位置
+                const currentIndex = this.typeKeys.indexOf(this.currentResultType);
+                // 獲取下一個人格（循環到開頭）
+                const nextIndex = (currentIndex + 1) % this.typeKeys.length;
+                const nextType = this.typeKeys[nextIndex];
+
+                this.showResult(nextType);
+            }
+
+            restartQuiz() {
+                // 重置所有狀態
+                this.currentQuestion = 0;
+                this.scores = [0, 0, 0, 0];
+                this.currentResultType = null;
+
+                // 重置UI
+                this.elements.result.classList.remove('active');
+                document.getElementById('q0').classList.add('active');
+                this.elements.nextBtn.style.display = 'block';
+                this.elements.nextBtn.textContent = '下一題';
+                this.elements.nextBtn.disabled = true;
+                this.elements.questionCounter.style.display = 'block';
+                this.elements.questionCounter.textContent = `問題 1 / ${this.totalQuestions}`;
+                this.elements.progressBar.style.display = 'block';
+                this.elements.progressFill.style.width = `${100 / this.totalQuestions}%`;
+
+                // 清除所有選項
+                document.querySelectorAll('.option').forEach(option => {
+                    option.classList.remove('selected');
+                });
+
+                // 隱藏其他題目
+                for (let i = 1; i < this.totalQuestions; i++) {
+                    document.getElementById(`q${i}`).classList.remove('active');
+                }
+            }
+
+            // 靜態方法：創建實例的工廠方法
+            static create(questions, types) {
+                return new FoodPersonalityQuiz(questions, types);
+            }
+
+            // 獲取當前狀態的方法
+            getCurrentState() {
+                return {
+                    currentQuestion: this.currentQuestion,
+                    scores: [...this.scores],
+                    currentResultType: this.currentResultType,
+                    isCompleted: this.currentQuestion >= this.totalQuestions
+                };
+            }
+
+            // 設置狀態的方法（用於復原測驗進度）
+            setState(state) {
+                this.currentQuestion = state.currentQuestion;
+                this.scores = [...state.scores];
+                this.currentResultType = state.currentResultType;
+
+                // 更新UI以反映狀態
+                this.updateProgress();
+                this.updateQuestionCounter();
+            }
         }
 
+        // 使用方式：
+        // 1. 初始化測驗
+        let quiz;
+
+        function initQuiz() {
+            quiz = new FoodPersonalityQuiz(questions, types);
+        }
+
+        // 2. 全域函數（保持與原始 HTML 的兼容性）
         function selectOption(option) {
-            // 清除同組其他選項的選中狀態
-            const siblings = option.parentElement.querySelectorAll('.option');
-            siblings.forEach(s => s.classList.remove('selected'));
-
-            // 選中當前選項
-            option.classList.add('selected');
-
-            // 記錄分數
-            const score = JSON.parse(option.dataset.score);
-
-            // 啟用下一題按鈕
-            document.getElementById('nextBtn').disabled = false;
-
-            // 如果是最後一題，改變按鈕文字
-            if (currentQuestion === totalQuestions - 1) {
-                document.getElementById('nextBtn').textContent = '查看結果';
-            }
+            if (quiz) quiz.selectOption(option);
         }
 
         function nextQuestion() {
-            // 獲取當前選中的選項並累加分數
-            const selectedOption = document.querySelector(`#q${currentQuestion} .option.selected`);
-            if (selectedOption) {
-                const score = JSON.parse(selectedOption.dataset.score);
-                for (let i = 0; i < 4; i++) {
-                    scores[i] += score[i];
-                }
-            }
-
-            if (currentQuestion < totalQuestions - 1) {
-                // 隱藏當前題目
-                document.getElementById(`q${currentQuestion}`).classList.remove('active');
-
-                // 顯示下一題
-                currentQuestion++;
-                document.getElementById(`q${currentQuestion}`).classList.add('active');
-
-                // 更新進度條
-                updateProgress();
-
-                // 更新問題計數器
-                document.getElementById('questionCounter').textContent = `問題 ${currentQuestion + 1} / ${totalQuestions}`;
-
-                // 重置按鈕狀態
-                document.getElementById('nextBtn').disabled = true;
-
-            } else {
-                // 顯示結果
-                showResult();
-            }
-        }
-
-        function updateProgress() {
-            const progress = ((currentQuestion + 1) / totalQuestions) * 100;
-            document.getElementById('progressFill').style.width = progress + '%';
-        }
-
-        function showResult(resultType = null) {
-            // 隱藏題目區域
-            if (currentQuestion < totalQuestions) {
-                document.getElementById(`q${currentQuestion}`).classList.remove('active');
-            }
-
-            // 隱藏按鈕和進度條
-            document.getElementById('nextBtn').style.display = 'none';
-            document.getElementById('questionCounter').style.display = 'none';
-            document.querySelector('.progress-bar').style.display = 'none';
-
-            // 計算結果
-            const resultCode = resultType || calculateResult();
-            currentResultType = resultCode;
-            const result = types[resultCode];
-
-            // 顯示結果
-            if (result) {
-                document.getElementById('resultAvatar').src = result.avatar;
-                document.getElementById('resultType').textContent = resultCode;
-                document.getElementById('resultTitle').textContent = result.name;
-                document.getElementById('resultSubtitle').textContent = result.title;
-                document.getElementById('resultQuote').textContent = `${result.quote}`;
-                document.getElementById('resultFood').textContent = result.food;
-                document.getElementById('resultDesc').textContent = result.desc;
-
-                // 處理相容性顯示，使其可點擊
-                displayCompatibilityTypes('compatibleTypes', result.compatible);
-                displayCompatibilityTypes('incompatibleTypes', result.incompatible);
-            }
-
-            // 顯示結果頁面
-            document.getElementById('result').classList.add('active');
-        }
-
-        function displayCompatibilityTypes(elementId, typesString) {
-            const element = document.getElementById(elementId);
-            const typeNames = typesString.split('、');
-
-            element.innerHTML = '';
-            typeNames.forEach((typeName, index) => {
-                const span = document.createElement('span');
-                span.className = 'personality-type';
-                span.textContent = typeName;
-                span.onclick = () => showPersonalityByName(typeName);
-                element.appendChild(span);
-
-                // 如果不是最後一個，添加分隔符
-                if (index < typeNames.length - 1) {
-                    const separator = document.createTextNode('、');
-                    element.appendChild(separator);
-                }
-            });
-        }
-
-        function showPersonalityByName(personalityName) {
-            // 根據人格名稱找到對應的代碼
-            const typeCode = Object.keys(types).find(key => types[key].name === personalityName);
-            if (typeCode) {
-                showResult(typeCode);
-            }
-        }
-
-        function showNextPersonality() {
-            // 找到當前人格在列表中的位置
-            const currentIndex = typeKeys.indexOf(currentResultType);
-            // 獲取下一個人格（循環到開頭）
-            const nextIndex = (currentIndex + 1) % typeKeys.length;
-            const nextType = typeKeys[nextIndex];
-
-            showResult(nextType);
-        }
-
-        function calculateResult() {
-            let code = "";
-            // 根據分數計算人格類型
-            code += scores[0] >= 0 ? "T" : "I";
-            code += scores[1] >= 0 ? "S" : "L";
-            code += scores[2] >= 0 ? "D" : "E";
-            code += scores[3] >= 0 ? "M" : "F";
-
-            console.log("最終分數:", scores);
-            console.log("結果代碼:", code);
-
-            return code;
+            if (quiz) quiz.nextQuestion();
         }
 
         function restartQuiz() {
-            // 重置所有狀態
-            currentQuestion = 0;
-            scores = [0, 0, 0, 0];
-            currentResultType = null;
-
-            // 重置UI
-            document.getElementById('result').classList.remove('active');
-            document.getElementById('q0').classList.add('active');
-            document.getElementById('nextBtn').style.display = 'block';
-            document.getElementById('nextBtn').textContent = '下一題';
-            document.getElementById('nextBtn').disabled = true;
-            document.getElementById('questionCounter').style.display = 'block';
-            document.getElementById('questionCounter').textContent = `問題 1 / ${totalQuestions}`;
-            document.querySelector('.progress-bar').style.display = 'block';
-            document.getElementById('progressFill').style.width = `${100 / totalQuestions}%`;
-
-            // 清除所有選項
-            document.querySelectorAll('.option').forEach(option => {
-                option.classList.remove('selected');
-            });
-
-            // 隱藏其他題目
-            for (let i = 1; i < totalQuestions; i++) {
-                document.getElementById(`q${i}`).classList.remove('active');
-            }
+            if (quiz) quiz.restartQuiz();
         }
 
-        // 初始化
-        function init() {
-            generateQuestions();
-            updateProgress();
-            // scores = [0, 0, 0, 0];
-            // showResult()
+        function showNextPersonality() {
+            if (quiz) quiz.showNextPersonality();
         }
 
-        // 頁面載入完成後初始化
-        document.addEventListener('DOMContentLoaded', init);
+        // 3. 頁面載入完成後初始化
+        document.addEventListener('DOMContentLoaded', initQuiz);
     </script>
 </body>
 

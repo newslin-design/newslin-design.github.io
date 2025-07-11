@@ -2,10 +2,11 @@
       margin: 0;
       padding: 0;
       box-sizing: border-box;
+      position: relative;
   }
 
   html {
-      background-color: #222;
+      background-color: #eaebec;
   }
 
   body,
@@ -20,41 +21,68 @@
   }
 
   .container {
-      background: rgba(53, 53, 53, 0.95);
       border-radius: 20px;
       padding: 12px;
-      max-width: 600px;
+      max-width: 1000px;
       width: 100%;
-      height: 100%;
-      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.391);
-      border: 3px solid #00000069;
-      text-align: center;
-      overflow: auto;
+      display: flex;
+      flex-direction: column;
+  }
+
+  @media (max-width: 460px) {}
+
+
+  button {
+      background: linear-gradient(45deg, #33333a, rgb(71, 80, 87));
+      color: white;
+      border: none;
+      border-radius: 50px;
+      padding: 1rem 2rem;
+      font-size: 1rem;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      width: 100%;
+      opacity: 0.85;
+      transition: all 0.3s ease;
+
 
   }
 
-  .header {
-      margin-bottom: 2rem;
+  button:hover {
+      opacity: 1;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
   }
 
-  .header h1 {
-      font-size: 1.5rem;
-      color: #5a4e39;
-      font-weight: 100;
-      margin-bottom: 0.5rem;
-      letter-spacing: 1.05em;
+  button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
   }
 
-  .header p {
-      color: #7f8c8d;
-      font-size: 1.1rem;
-  }
+
+
+  /*  *********************************************
+  *************************************************
+
+
+    Question 
+
+
+  ************************************************
+  ********************************************* */
+
+
+
+  /* --------------------------------
+    progress 
+    -------------------------------- */
 
   .progress-bar {
-      width: 100%;
-      height: 8px;
-      background: #ecf0f1;
-      border-radius: 4px;
+      width: 55%;
+      height: 14px;
+      background: #ffffff;
+      border: 2px solid #d4d4d4;
+      border-radius: 12px;
       margin: 1rem 0;
       overflow: hidden;
   }
@@ -67,25 +95,59 @@
       width: 0%;
   }
 
+
+  @media (max-width: 768px) {
+
+      .progress-bar {
+          width: 100%;
+      }
+  }
+
+
+  /* --------------------------------
+    question
+    -------------------------------- */
+
+
+  .question-counter {
+      color: #60878a;
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+  }
+
   .question-container {
       display: none;
       animation: fadeIn 0.5s ease-in-out;
+      margin-bottom: 1rem;
+
   }
 
   .question-container.active {
-      display: block;
+      display: flex;
   }
 
-  .question-emoji {
-      font-size: 4rem;
-      margin-bottom: 1rem;
-      animation: bounce 2s infinite;
+
+  .question-image {
+      width: 60%;
+      padding-right: 12px;
+  }
+
+  .question-image img {
+      width: 100%;
+      border-radius: 12px;
+      margin-bottom: 24px;
+
+  }
+
+
+  .question {
+      width: 45%;
+
   }
 
   .question h2 {
-      font-size: 1.8rem;
+      font-size: 2rem;
       width: 100%;
-      color: #ffffff;
       margin-bottom: 1.7rem;
       line-height: 1.4;
   }
@@ -94,70 +156,99 @@
       display: flex;
       flex-direction: column;
       gap: 0.8rem;
-      margin-bottom: 2rem;
-      color: #999;
+      margin-bottom: 24px;
+
   }
 
   .option {
-      background: #000000;
-      border: 2px solid #2c2c2c;
+      border: 2px solid #b4c0c3;
       border-radius: 15px;
       padding: 0.8rem;
       cursor: pointer;
+      font-size: 1.3rem;
+      box-shadow: 0 0 0 #a8fcff00;
       transition: all 0.3s ease;
-      font-size: 1.4rem;
-      position: relative;
-      overflow: hidden;
   }
 
   .option:hover {
-      background: #202020;
       box-shadow: 0 4px 12px rgba(33, 150, 243, 0.3);
   }
 
   .option.selected {
-      background: #332d2d;
-
-      border-color: #ff6b6b;
-      color: white;
-      transform: scale(1.02);
+      background: #d1e5ed;
+      box-shadow: 0 4px 12px rgba(5, 201, 255, 0.646);
+      border-color: #5a6e94;
   }
 
-  .btn {
-      background: linear-gradient(45deg, #667eea, #764ba2);
-      color: white;
-      border: none;
-      border-radius: 50px;
-      padding: 1rem 2rem;
+
+  .option .food-icon {
+      position: absolute;
+      top: 50%;
+      left: 100%;
+      background: white;
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       font-size: 1rem;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-      width: 100%;
+      border: 2px solid #b4c0c3;
+
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      transform: translate(-50%, -50%);
   }
 
-  .btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-  }
-
-  .btn:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-      transform: none;
+  .option:hover .food-icon {
+      opacity: 1;
   }
 
 
+  #nextBtn {
+      width: 45%;
+      align-self: flex-end;
+      margin-bottom: 48px;
+
+  }
+
+
+
+  @media (max-width: 768px) {
+
+      .question-container.active {
+          flex-direction: column;
+      }
+
+      .question-image {
+          width: 100%;
+          padding-right: 12px;
+      }
+
+      .question {
+          width: 100%;
+
+      }
+
+      #nextBtn {
+          width: 100%;
+      }
+
+  }
 
 
 
 
+  /*  *********************************************
+  *************************************************
 
-  /*  *********************
 
     result 
 
-    ********************* */
+
+  ************************************************
+  ********************************************* */
+
 
 
 
@@ -178,7 +269,7 @@
       display: flex;
   }
 
-  .result-avatar {
+  .result-image {
       font-size: 6rem;
       margin-bottom: 0.2rem;
       width: 100%;
@@ -268,6 +359,16 @@
       line-height: 1.4;
   }
 
+
+
+
+
+
+
+
+
+
+
   @keyframes fadeIn {
       from {
           opacity: 0;
@@ -300,45 +401,6 @@
   }
 
 
-
-  .question-counter {
-      color: #7f8c8d;
-      font-size: 0.9rem;
-      margin-bottom: 1rem;
-  }
-
-  .food-icon {
-      position: absolute;
-      top: 50%;
-      right: 4px;
-      background: white;
-      border-radius: 50%;
-      width: 30px;
-      height: 30px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.2rem;
-      opacity: 0;
-      transition: opacity 0.3s ease;
-      transform: translate(-50%, -50%);
-  }
-
-  .option:hover .food-icon {
-      opacity: 1;
-  }
-
-  @media (max-width: 768px) {
-      .container {}
-
-      .header h1 {
-          font-size: 2rem;
-      }
-
-      .question-emoji {
-          font-size: 3rem;
-      }
-  }
 
 
 
