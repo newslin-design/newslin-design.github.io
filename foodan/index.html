@@ -14,7 +14,6 @@
             <div class="progress-fill" id="progressFill"></div>
         </div>
 
-
         <!-- 問題容器動態生成 -->
         <div class="question-counter" id="questionCounter"></div>
         <div id="questionContainer"></div>
@@ -95,7 +94,7 @@
                 this.generateQuestions();
                 this.updateProgress();
                 this.updateQuestionCounter();
-                this.scores = [0, 0, 0, -1];
+                this.scores = [0, 0, 0, 0];
 
                 // 綁定事件
                 this.elements.nextBtn.onclick = () => this.nextQuestion();
@@ -204,6 +203,41 @@
                 return code;
             }
 
+            // 新增：添加人格代碼CSS類名到html標籤
+            addPersonalityClass(personalityCode) {
+                const htmlElement = document.documentElement;
+
+                // 移除之前的人格類名（如果存在）
+                this.removePersonalityClass();
+
+                // 添加新的人格類名
+                htmlElement.classList.add(`personality-${personalityCode.toLowerCase()}`);
+
+                // 也可以分別添加每個字母的類名，提供更細粒度的控制
+                // for (let i = 0; i < personalityCode.length; i++) {
+                //     const trait = personalityCode[i].toLowerCase();
+                //     htmlElement.classList.add(`trait-${trait}`);
+                // }
+
+                console.log(`添加CSS類名: personality-${personalityCode.toLowerCase()}`);
+            }
+
+            // 新增：移除人格代碼CSS類名
+            removePersonalityClass() {
+                const htmlElement = document.documentElement;
+
+                // 移除所有可能的人格類名
+                this.typeKeys.forEach(typeCode => {
+                    htmlElement.classList.remove(`personality-${typeCode.toLowerCase()}`);
+                });
+
+                // 移除所有特徵類名
+                const traits = ['t', 'i', 's', 'l', 'd', 'e', 'm', 'f'];
+                traits.forEach(trait => {
+                    htmlElement.classList.remove(`trait-${trait}`);
+                });
+            }
+
             showResult(resultType = null) {
                 // 隱藏題目區域
                 if (this.currentQuestion < this.totalQuestions) {
@@ -220,13 +254,16 @@
                 this.currentResultType = resultCode;
                 const result = this.types[resultCode];
 
+                // 添加人格代碼CSS類名到html標籤
+                this.addPersonalityClass(resultCode);
+
                 // 顯示結果
                 if (result) {
                     this.elements.resultAvatar.src = result.avatar;
                     this.elements.resultType.textContent = resultCode;
                     this.elements.resultTitle.textContent = result.name;
                     this.elements.resultSubtitle.textContent = result.title;
-                    this.elements.resultQuote.textContent = `${result.quote}`;
+                    this.elements.resultQuote.innerHTML = result.quote;
                     this.elements.resultFood.textContent = result.food;
                     this.elements.resultDesc.textContent = result.desc;
 
@@ -278,6 +315,9 @@
             }
 
             restartQuiz() {
+                // 移除人格代碼CSS類名
+                this.removePersonalityClass();
+
                 // 重置所有狀態
                 this.currentQuestion = 0;
                 this.scores = [0, 0, 0, 0];

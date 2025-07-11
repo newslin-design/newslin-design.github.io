@@ -9,13 +9,14 @@
       background-color: #eaebec;
   }
 
+
   body,
   html {
       font-family: 'Arial', sans-serif;
       height: 100%;
       display: flex;
-      /* align-items: center; */
       justify-content: center;
+      align-items: center;
       color: #333;
       padding: 8px;
   }
@@ -260,17 +261,87 @@
       animation: fadeIn 0.8s ease-in-out;
   }
 
-  html {
-      background-color: #CDB87F;
-      background-color: #F77069;
-      /* background-color: #EFD9B0; */
-
-  }
 
   .result-container.active {
       display: flex;
-      /* display: block; */
   }
+
+
+  /* 16種人格類型的背景色樣式 */
+
+  .personality-tsdm {
+      background-color: #CDB67C;
+  }
+
+  .personality-tsdf {
+      background-color: #F77069;
+  }
+
+  .personality-tsem {
+      background-color: #5D9EB1;
+  }
+
+  .personality-tsef {
+      background-color: #E6BB9A;
+  }
+
+  /* ----------------------- */
+
+
+
+  .personality-tldm {
+      background-color: #E2C37A;
+  }
+
+  .personality-tldf {
+      background-color: #aa665e;
+  }
+
+  .personality-tlem {
+      background-color: #E6C785;
+  }
+
+  .personality-tlef {
+      background-color: #D6BC85;
+  }
+
+  /* ----------------------- */
+
+  .personality-isdm {
+      background-color: #EFD9B0;
+  }
+
+  .personality-isdf {
+      background-color: #e7dda1;
+  }
+
+  .personality-isem {
+      background-color: #d6918a;
+  }
+
+  .personality-isef {
+      background-color: #B0AB8A;
+  }
+
+  /* ----------------------- */
+  .personality-ildm {
+      background-color: #beb590;
+  }
+
+  .personality-ildf {
+      background-color: #F57979;
+  }
+
+
+  .personality-ilem {
+      background-color: #F1D399;
+  }
+
+  .personality-ilef {
+      background-color: #E7C37C;
+  }
+
+
 
 
 
@@ -280,73 +351,198 @@
   }
 
 
-
-
   .result-image {
-      width: 50%;
+      width: 30%;
       margin-bottom: 0.2rem;
       border-radius: 16px;
   }
 
   .result-image>img {
-      width: 100%;
-      /* max-height: 100vh; */
+      /* width: 100%; */
+      position: fixed;
+      left: 0;
+      top: 0;
+      max-height: 100vh;
   }
 
   .result-text-container {
-      width: 50%;
+      width: 65%;
       padding: 12px;
   }
 
 
 
 
+  @media (max-width: 768px) {
+
+      body,
+      html {
+          align-items: start;
+      }
+
+      .result-content-container {
+          flex-direction: column;
+      }
+
+      .result-image {
+          width: 100%;
+          height: 100vh;
+      }
+
+      .result-text-container {
+          width: 100%;
+          /* background-color: #ffffffe4; */
+          padding: 10%;
+          height: 100vh;
+          /* margin-bottom: 10vh; */
+          border-radius: 16px
+      }
+
+
+
+      .personality-tsdm .result-text-container {
+          background-color: #CDB67Cbb;
+      }
+
+      .personality-tsdf .result-text-container {
+          background-color: #F77069bb;
+      }
+
+      .personality-tsem .result-text-container {
+          background-color: #5D9EB1bb;
+      }
+
+      .personality-tsef .result-text-container {
+          background-color: #E6BB9Abb;
+      }
+
+      /* ----------------------- */
+
+
+
+      .personality-tldm .result-text-container {
+          background-color: #E2C37Abb;
+      }
+
+      .personality-tldf .result-text-container {
+          background-color: #aa665ebb;
+      }
+
+      .personality-tlem .result-text-container {
+          background-color: #E6C785bb;
+      }
+
+      .personality-tlef .result-text-container {
+          background-color: #D6BC85bb;
+      }
+
+      /* ----------------------- */
+
+      .personality-isdm .result-text-container {
+          background-color: #EFD9B0bb;
+      }
+
+      .personality-isdf .result-text-container {
+          background-color: #e7dda1bb;
+      }
+
+      .personality-isem .result-text-container {
+          background-color: #d6918abb;
+      }
+
+      .personality-isef .result-text-container {
+          background-color: #B0AB8Abb;
+      }
+
+      /* ----------------------- */
+      .personality-ildm .result-text-container {
+          background-color: #beb590bb;
+      }
+
+      .personality-ildf .result-text-container {
+          background-color: #F57979bb;
+      }
+
+
+      .personality-ilem .result-text-container {
+          background-color: #F1D399bb;
+      }
+
+      .personality-ilef .result-text-container {
+          background-color: #E7C37Cbb;
+      }
+
+
+
+  }
+
+
+
+
+
+
+
+
+
+
+
+
   .result-type {
-      color: #4c82ff;
+      color: #547ad1;
   }
 
 
   .result-title {
       font-size: 2rem;
-      color: #ffffff;
-      margin-bottom: 1.1rem;
+      color: #00000089;
+      margin-bottom: 0.5rem;
   }
 
   .result-subtitle {
-      color: #b7c2c6;
+      color: #00000068;
+      letter-spacing: 0.2em;
       margin-bottom: 1.2rem;
-
   }
 
   .result-quote {
-      background-color: #6b6a64;
-      color: #fff;
-      font-size: 1.2em;
-      padding: 16px 8px;
+      color: #0e214296;
+      font-size: 30px;
+      font-weight: 200;
       letter-spacing: 0.1em;
-      border-radius: 16px;
   }
 
+  .result-quote::before {
+      content: "『";
+      position: absolute;
+      top: 0;
+      left: -8%;
+  }
 
-
-  .result-food {
-      color: rgb(201, 201, 201);
-      padding: 0.8rem 1.5rem;
-      border-radius: 16px;
-      margin: 1rem 0;
-      font-size: 15px;
-      font-weight: 300;
+  .result-quote::after {
+      content: "』";
+      position: absolute;
+      bottom: 0;
+      right: -8%;
   }
 
   .result-desc {
       font-size: 1.1rem;
       line-height: 1.6;
-      color: #94a6b6;
+      color: #1517193d;
       margin: 1.5rem 0;
-      padding: 1rem;
-      background: rgba(82, 82, 82, 0.7);
+      padding: 0 6%;
       border-radius: 15px;
   }
+
+
+  .result-food {
+      color: #ffffff69;
+      border-radius: 16px;
+      margin: 1rem 0;
+      font-size: 18px;
+      font-weight: 800;
+  }
+
 
   .restart-btn {
       background: #000000;
@@ -359,11 +555,12 @@
   }
 
   .compatibility-item {
-      padding: 1.5rem;
+      padding: 12px;
       border-radius: 15px;
-      color: #b7b7b7;
-      text-align: left;
-      background: #606060;
+      color: #0000003c;
+      /* text-align: left; */
+      background: #00000012;
+      border: 2px solid #00000018;
       width: 49%;
   }
 
@@ -372,22 +569,17 @@
   .compatibility-item.bad {}
 
   .compatibility-item h4 {
-      margin: 0 0 0.8rem 0;
-      font-size: 1.1rem;
+      margin: 0 0 0.6rem 0;
+      font-size: 16px;
       font-weight: bold;
   }
 
-  .compatibility-item p {
+  .compatibility-item span {
       margin: 0;
-      font-size: 1rem;
+      font-size: 18px;
       line-height: 1.4;
+      cursor: pointer;
   }
-
-  .result-quote {
-      font-size: 20px;
-  }
-
-
 
 
 
@@ -426,7 +618,7 @@
 
 
 
-
+  /* 
   @media (max-width: 460px) {
       .result-type {
           font-size: 15px;
@@ -492,4 +684,4 @@
           font-size: 1.1rem;
       }
 
-  }
+  } */
