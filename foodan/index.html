@@ -22,11 +22,11 @@
 
         <!-- 結果頁面 -->
         <div class="result-container" id="result">
-            <div class="imgHeader">
-                <div class="result-image-container">
-                    <img class="result-image" id="resultAvatar" src="" alt="Avatar">
-                </div>
+            <div class="result-content-container">
 
+                <div class="result-image">
+                    <img id="resultAvatar" src="" alt="Avatar">
+                </div>
                 <div class="result-text-container">
                     <div class="result-type" id="resultType"></div>
                     <div class="result-title" id="resultTitle"></div>
@@ -34,22 +34,24 @@
                     <div class="result-quote" id="resultQuote"></div>
                     <div class="result-desc" id="resultDesc"></div>
                     <div class="result-food" id="resultFood"></div>
+                    <div class="compatibility-section">
+                        <div class="compatibility-item good">
+                            <h4>最適合一起吃飯</h4>
+                            <div class="compatibility-types" id="compatibleTypes"></div>
+                        </div>
+                        <div class="compatibility-item bad">
+                            <h4>最不適合一起吃飯</h4>
+                            <div class="compatibility-types" id="incompatibleTypes"></div>
+                        </div>
+                    </div>
+                    <button class="btn restart-btn" onclick="restartQuiz()">重新測驗</button>
+                    <button class="btn restart-btn" style="margin-top: 12px;"
+                        onclick="showNextPersonality()">下個動物是?</button>
+
                 </div>
             </div>
 
-            <div class="compatibility-section">
-                <div class="compatibility-item good">
-                    <h4>最適合一起吃飯</h4>
-                    <div class="compatibility-types" id="compatibleTypes"></div>
-                </div>
-                <div class="compatibility-item bad">
-                    <h4>最不適合一起吃飯</h4>
-                    <div class="compatibility-types" id="incompatibleTypes"></div>
-                </div>
-            </div>
 
-            <button class="btn restart-btn" onclick="restartQuiz()">重新測驗</button>
-            <button class="btn restart-btn" style="margin-top: 12px;" onclick="showNextPersonality()">下個動物是?</button>
 
         </div>
     </div>
@@ -93,13 +95,13 @@
                 this.generateQuestions();
                 this.updateProgress();
                 this.updateQuestionCounter();
-                this.scores = [0, 0, 0, 0];
+                this.scores = [0, 0, 0, -1];
 
                 // 綁定事件
                 this.elements.nextBtn.onclick = () => this.nextQuestion();
 
                 // 直接顯示結果(測試用)
-                // this.showResult();
+                this.showResult();
             }
 
             generateQuestions() {
