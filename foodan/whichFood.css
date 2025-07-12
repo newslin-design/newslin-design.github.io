@@ -349,386 +349,387 @@
       .result-container {
           align-items: center;
 
-
-          .result-image img {
-              position: relative;
-              padding-left: 6%;
-              max-height: 700px;
-          }
-
-          .result-text-container {
-              height: auto;
-          }
-
-          .result-text-container .header {
-              position: fixed;
-              left: 50%;
-              width: 80%;
-              transform: translate(-50%, 0);
-          }
-
-
       }
 
-
-
-      @media (max-width: 480px) {
-
-          .result-btn-container {
-              flex-direction: column;
-          }
-
-          .result-btn-container>button {
-              width: 100% !important;
-              margin-top: 24px;
-          }
+      .result-image img {
+          position: relative;
+          padding-left: 6%;
+          max-height: 700px;
       }
 
-
-
-
-
+      .result-text-container {
+          height: auto;
+      }
 
       .result-text-container .header {
-          top: 2%;
-          animation: fadeIn 0.8s ease-in-out;
+          position: fixed;
+          left: 50%;
+          width: 80%;
+          transform: translate(-50%, 0);
       }
 
 
-
-      .result-type {
-          color: #547ad1;
-      }
+  }
 
 
-      .result-title {
-          font-size: 2rem;
-          color: #000000a2;
-          margin-bottom: 0.5rem;
 
-      }
-
-      .result-subtitle {
-          color: #00000068;
-          letter-spacing: 0.2em;
-          margin-bottom: 1.2rem;
-      }
-
-      .result-quote {
-          color: #0e214296;
-          font-size: 30px;
-          font-weight: 200;
-          letter-spacing: 0.1em;
-      }
-
-      .result-quote::before {
-          content: "『";
-          position: absolute;
-          top: 0;
-          left: -8%;
-      }
-
-      .result-quote::after {
-          content: "』";
-          position: absolute;
-          bottom: 0;
-          right: -8%;
-      }
-
-      .result-desc {
-          font-size: 1.1rem;
-          line-height: 1.6;
-          color: #1517196c;
-          margin: 1.5rem 0;
-          padding: 0 6%;
-          border-radius: 15px;
-      }
-
-
-      .result-food {
-          color: #ffffff69;
-          display: inline-block;
-          background-color: #00000017;
-          padding: 8px 16%;
-          border-radius: 16px;
-          margin: 1rem 0;
-          font-size: 18px;
-          font-weight: 400;
-      }
-
-
-      .restart-btn {
-          background: #000000;
-          margin-top: 3rem;
-      }
-
-      .compatibility-section {
-          display: flex;
-          justify-content: space-around;
-      }
-
-      .compatibility-item {
-          padding: 12px;
-          border-radius: 15px;
-          color: #0000006b;
-          background: #00000012;
-          border: 2px solid #00000018;
-          width: 49%;
-      }
-
-      .compatibility-item.good {}
-
-      .compatibility-item.bad {}
-
-      .compatibility-item h4 {
-          margin: 0 0 0.6rem 0;
-          font-size: 16px;
-          font-weight: bold;
-      }
-
-      .compatibility-item span {
-          margin: 0;
-          font-size: 18px;
-          line-height: 1.4;
-          cursor: pointer;
-      }
-
-
+  @media (max-width: 480px) {
 
       .result-btn-container {
-          display: flex;
-          margin-top: 12px;
-          justify-content: space-around;
+          flex-direction: column;
       }
 
+      .result-btn-container>button {
+          width: 100% !important;
+          margin-top: 24px;
+      }
+  }
 
-      .result-btn-container :first-child {
-          width: 60%;
+
+
+
+
+
+  .result-text-container .header {
+      top: 2%;
+      animation: fadeIn 0.8s ease-in-out;
+  }
+
+
+
+  .result-type {
+      color: #547ad1;
+  }
+
+
+  .result-title {
+      font-size: 2rem;
+      color: #000000a2;
+      margin-bottom: 0.5rem;
+
+  }
+
+  .result-subtitle {
+      color: #00000068;
+      letter-spacing: 0.2em;
+      margin-bottom: 1.2rem;
+  }
+
+  .result-quote {
+      color: #0e214296;
+      font-size: 30px;
+      font-weight: 200;
+      letter-spacing: 0.1em;
+  }
+
+  .result-quote::before {
+      content: "『";
+      position: absolute;
+      top: 0;
+      left: -8%;
+  }
+
+  .result-quote::after {
+      content: "』";
+      position: absolute;
+      bottom: 0;
+      right: -8%;
+  }
+
+  .result-desc {
+      font-size: 1.1rem;
+      line-height: 1.6;
+      color: #1517196c;
+      margin: 1.5rem 0;
+      padding: 0 6%;
+      border-radius: 15px;
+  }
+
+
+  .result-food {
+      color: #ffffff69;
+      display: inline-block;
+      background-color: #00000017;
+      padding: 8px 16%;
+      border-radius: 16px;
+      margin: 1rem 0;
+      font-size: 18px;
+      font-weight: 400;
+  }
+
+
+  .restart-btn {
+      background: #000000;
+      margin-top: 3rem;
+  }
+
+  .compatibility-section {
+      display: flex;
+      justify-content: space-around;
+  }
+
+  .compatibility-item {
+      padding: 12px;
+      border-radius: 15px;
+      color: #0000006b;
+      background: #00000012;
+      border: 2px solid #00000018;
+      width: 49%;
+  }
+
+  .compatibility-item.good {}
+
+  .compatibility-item.bad {}
+
+  .compatibility-item h4 {
+      margin: 0 0 0.6rem 0;
+      font-size: 16px;
+      font-weight: bold;
+  }
+
+  .compatibility-item span {
+      margin: 0;
+      font-size: 18px;
+      line-height: 1.4;
+      cursor: pointer;
+  }
+
+
+
+  .result-btn-container {
+      display: flex;
+      margin-top: 12px;
+      justify-content: space-around;
+  }
+
+
+  .result-btn-container :first-child {
+      width: 60%;
+  }
+
+  .result-btn-container :last-child {
+      width: 35%;
+  }
+
+
+  /* 16種人格類型的背景色樣式 */
+
+  .personality-tsdm {
+      background-color: #CDB67C;
+  }
+
+  .personality-tsdf {
+      background-color: #F77069;
+  }
+
+  .personality-tsem {
+      background-color: #5D9EB1;
+  }
+
+  .personality-tsef {
+      background-color: #E6BB9A;
+  }
+
+  /* ----------------------- */
+
+
+
+  .personality-tldm {
+      background-color: #E2C37A;
+  }
+
+  .personality-tldf {
+      background-color: #aa665e;
+  }
+
+  .personality-tlem {
+      background-color: #E6C785;
+  }
+
+  .personality-tlef {
+      background-color: #D6BC85;
+  }
+
+  /* ----------------------- */
+
+  .personality-isdm {
+      background-color: #EFD9B0;
+  }
+
+  .personality-isdf {
+      background-color: #e7dda1;
+  }
+
+  .personality-isem {
+      background-color: #d6918a;
+  }
+
+  .personality-isef {
+      background-color: #B0AB8A;
+  }
+
+  /* ----------------------- */
+  .personality-ildm {
+      background-color: #beb590;
+  }
+
+  .personality-ildf {
+      background-color: #F57979;
+  }
+
+
+  .personality-ilem {
+      background-color: #F1D399;
+  }
+
+  .personality-ilef {
+      background-color: #E7C37C;
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  /* Animations */
+  @keyframes spin {
+      0% {
+          transform: rotate(0deg);
       }
 
-      .result-btn-container :last-child {
-          width: 35%;
+      100% {
+          transform: rotate(360deg);
+      }
+  }
+
+  @keyframes pulse {
+
+      0%,
+      100% {
+          opacity: 1;
       }
 
+      50% {
+          opacity: 0.6;
+      }
+  }
 
-      /* 16種人格類型的背景色樣式 */
-
-      .personality-tsdm {
-          background-color: #CDB67C;
+  @keyframes dots {
+      0% {
+          content: "";
       }
 
-      .personality-tsdf {
-          background-color: #F77069;
+      33% {
+          content: ".";
       }
 
-      .personality-tsem {
-          background-color: #5D9EB1;
+      66% {
+          content: "..";
       }
 
-      .personality-tsef {
-          background-color: #E6BB9A;
+      100% {
+          content: "...";
+      }
+  }
+
+  @keyframes fadeIn {
+      from {
+          opacity: 0;
+          transform: translateY(20px);
       }
 
-      /* ----------------------- */
+      to {
+          opacity: 1;
+          transform: translateY(0);
+      }
+  }
 
-
-
-      .personality-tldm {
-          background-color: #E2C37A;
+  @keyframes fadeInScale {
+      from {
+          opacity: 0;
+          transform: scale(0.8);
       }
 
-      .personality-tldf {
-          background-color: #aa665e;
+      to {
+          opacity: 1;
+          transform: scale(1);
+      }
+  }
+
+  @keyframes slideInFromTop {
+      from {
+          opacity: 0;
+          transform: translateY(-50px);
       }
 
-      .personality-tlem {
-          background-color: #E6C785;
+      to {
+          opacity: 1;
+          transform: translateY(0);
+      }
+  }
+
+  @keyframes slideInFromLeft {
+      from {
+          opacity: 0;
+          transform: translateX(-50px);
       }
 
-      .personality-tlef {
-          background-color: #D6BC85;
+      to {
+          opacity: 1;
+          transform: translateX(0);
+      }
+  }
+
+  @keyframes slideInFromRight {
+      from {
+          opacity: 0;
+          transform: translateX(50px);
       }
 
-      /* ----------------------- */
+      to {
+          opacity: 1;
+          transform: translateX(0);
+      }
+  }
 
-      .personality-isdm {
-          background-color: #EFD9B0;
+  @keyframes fadeInUp {
+      from {
+          opacity: 0;
+          transform: translateY(30px);
       }
 
-      .personality-isdf {
-          background-color: #e7dda1;
+      to {
+          opacity: 1;
+          transform: translateY(0);
+      }
+  }
+
+  @keyframes bounceIn {
+      0% {
+          opacity: 0;
+          transform: scale(0.3);
       }
 
-      .personality-isem {
-          background-color: #d6918a;
+      50% {
+          opacity: 1;
+          transform: scale(1.05);
       }
 
-      .personality-isef {
-          background-color: #B0AB8A;
+      70% {
+          transform: scale(0.9);
       }
 
-      /* ----------------------- */
-      .personality-ildm {
-          background-color: #beb590;
+      100% {
+          opacity: 1;
+          transform: scale(1);
       }
-
-      .personality-ildf {
-          background-color: #F57979;
-      }
-
-
-      .personality-ilem {
-          background-color: #F1D399;
-      }
-
-      .personality-ilef {
-          background-color: #E7C37C;
-      }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      /* Animations */
-      @keyframes spin {
-          0% {
-              transform: rotate(0deg);
-          }
-
-          100% {
-              transform: rotate(360deg);
-          }
-      }
-
-      @keyframes pulse {
-
-          0%,
-          100% {
-              opacity: 1;
-          }
-
-          50% {
-              opacity: 0.6;
-          }
-      }
-
-      @keyframes dots {
-          0% {
-              content: "";
-          }
-
-          33% {
-              content: ".";
-          }
-
-          66% {
-              content: "..";
-          }
-
-          100% {
-              content: "...";
-          }
-      }
-
-      @keyframes fadeIn {
-          from {
-              opacity: 0;
-              transform: translateY(20px);
-          }
-
-          to {
-              opacity: 1;
-              transform: translateY(0);
-          }
-      }
-
-      @keyframes fadeInScale {
-          from {
-              opacity: 0;
-              transform: scale(0.8);
-          }
-
-          to {
-              opacity: 1;
-              transform: scale(1);
-          }
-      }
-
-      @keyframes slideInFromTop {
-          from {
-              opacity: 0;
-              transform: translateY(-50px);
-          }
-
-          to {
-              opacity: 1;
-              transform: translateY(0);
-          }
-      }
-
-      @keyframes slideInFromLeft {
-          from {
-              opacity: 0;
-              transform: translateX(-50px);
-          }
-
-          to {
-              opacity: 1;
-              transform: translateX(0);
-          }
-      }
-
-      @keyframes slideInFromRight {
-          from {
-              opacity: 0;
-              transform: translateX(50px);
-          }
-
-          to {
-              opacity: 1;
-              transform: translateX(0);
-          }
-      }
-
-      @keyframes fadeInUp {
-          from {
-              opacity: 0;
-              transform: translateY(30px);
-          }
-
-          to {
-              opacity: 1;
-              transform: translateY(0);
-          }
-      }
-
-      @keyframes bounceIn {
-          0% {
-              opacity: 0;
-              transform: scale(0.3);
-          }
-
-          50% {
-              opacity: 1;
-              transform: scale(1.05);
-          }
-
-          70% {
-              transform: scale(0.9);
-          }
-
-          100% {
-              opacity: 1;
-              transform: scale(1);
-          }
-      }
+  }
