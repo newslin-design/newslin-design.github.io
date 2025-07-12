@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>美食是什麼生物？</title>
+    <title>你是什麼美食動物?</title>
     <link rel="stylesheet" href="whichFood.css">
 </head>
 
@@ -18,36 +18,43 @@
         <div class="question-counter" id="questionCounter"></div>
         <div id="questionContainer"></div>
         <button class="btn" id="nextBtn" onclick="nextQuestion()" disabled>下一題</button>
-
+        <!-- 載入動畫 -->
+        <div class="loading-container" id="loadingContainer">
+            <div class="loading-spinner"></div>
+            <div class="loading-text">正在分析...<br>你是哪種美食動物</div>
+            <div class="loading-dots">.</div>
+        </div>
         <!-- 結果頁面 -->
         <div class="result-container" id="result">
-            <div class="result-content-container">
-
-                <div class="result-image">
-                    <img id="resultAvatar" src="" alt="Avatar">
-                </div>
-                <div class="result-text-container">
+            <div class="result-image">
+                <img id="resultAvatar" src="" alt="Avatar">
+            </div>
+            <div class="result-text-container">
+                <div class="header">
                     <div class="result-type" id="resultType"></div>
                     <div class="result-title" id="resultTitle"></div>
                     <div class="result-subtitle" id="resultSubtitle"></div>
                     <div class="result-quote" id="resultQuote"></div>
-                    <div class="result-desc" id="resultDesc"></div>
-                    <div class="result-food" id="resultFood"></div>
-                    <div class="compatibility-section">
-                        <div class="compatibility-item good">
-                            <h4>最適合一起吃飯</h4>
-                            <div class="compatibility-types" id="compatibleTypes"></div>
-                        </div>
-                        <div class="compatibility-item bad">
-                            <h4>最不適合一起吃飯</h4>
-                            <div class="compatibility-types" id="incompatibleTypes"></div>
-                        </div>
-                    </div>
-                    <button class="btn restart-btn" onclick="restartQuiz()">重新測驗</button>
-                    <button class="btn restart-btn" style="margin-top: 12px;"
-                        onclick="showNextPersonality()">下個動物是?</button>
-
                 </div>
+                <div class="result-desc" id="resultDesc"></div>
+                <div class="result-food" id="resultFood"></div>
+                <div class="compatibility-section">
+                    <div class="compatibility-item good">
+                        <h4>最適合一起吃飯</h4>
+                        <div class="compatibility-types" id="compatibleTypes"></div>
+                    </div>
+                    <div class="compatibility-item bad">
+                        <h4>最不適合一起吃飯</h4>
+                        <div class="compatibility-types" id="incompatibleTypes"></div>
+                    </div>
+                </div>
+                <div class="result-btn-container">
+                    <button class="btn restart-btn" onclick="restartQuiz()">重新測驗</button>
+                    <button class="btn restart-btn" onclick="showNextPersonality()">下個動物是?</button>
+                </div>
+
+
+
             </div>
 
 
@@ -75,6 +82,7 @@
                     progressFill: document.getElementById('progressFill'),
                     questionCounter: document.getElementById('questionCounter'),
                     progressBar: document.querySelector('.progress-bar'),
+                    loadingContainer: document.getElementById('loadingContainer'),
                     result: document.getElementById('result'),
                     resultAvatar: document.getElementById('resultAvatar'),
                     resultType: document.getElementById('resultType'),
@@ -176,9 +184,28 @@
                     this.elements.nextBtn.disabled = true;
                 } else {
                     // 顯示結果
-                    this.showResult();
+                    this.showLoadingAndResult();
                 }
             }
+
+            showLoadingAndResult() {
+                // 隱藏測驗界面
+                document.getElementById(`q${this.currentQuestion}`).classList.remove('active');
+                this.elements.nextBtn.style.display = 'none';
+                this.elements.questionCounter.style.display = 'none';
+                this.elements.progressBar.style.display = 'none';
+
+                // 顯示載入動畫
+                this.elements.loadingContainer.classList.add('active');
+
+                // 2秒後顯示結果
+                setTimeout(() => {
+                    this.elements.loadingContainer.classList.remove('active');
+                    this.showResult();
+                }, 3000);
+            }
+
+
 
             updateProgress() {
                 const progress = ((this.currentQuestion + 1) / this.totalQuestions) * 100;
@@ -213,11 +240,6 @@
                 // 添加新的人格類名
                 htmlElement.classList.add(`personality-${personalityCode.toLowerCase()}`);
 
-                // 也可以分別添加每個字母的類名，提供更細粒度的控制
-                // for (let i = 0; i < personalityCode.length; i++) {
-                //     const trait = personalityCode[i].toLowerCase();
-                //     htmlElement.classList.add(`trait-${trait}`);
-                // }
 
                 console.log(`添加CSS類名: personality-${personalityCode.toLowerCase()}`);
             }
