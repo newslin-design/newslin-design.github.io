@@ -105,7 +105,7 @@ const types = {
         desc: "懂吃也懂場面，講究味道與場域配合，可以當同事聚餐的點菜領袖。飲食有邏輯，吃飯要吃對也要吃好。",
         avatar: "images/TSDM.png",
         compatible: "文化龍、理性鴞、儀式天鵝",
-        incompatible: "狂吃水獺、自由狐狸、幻想獨角獸",
+        incompatible: "覓味水獺、自由狐狸、幻想獨角獸",
         dimensions: ["味道", "社交", "傳統", "結構"]
     },
     "TSDF": {
@@ -115,7 +115,7 @@ const types = {
         food: "麻辣鍋、燒肉拼盤、夜市全制霸",
         desc: "跟朋友吃才開胃！熱愛重口味，跟心情一起吃出爽感。不計熱量、不問意義，就是爽。",
         avatar: "images/TSDF.png",
-        compatible: "狂吃水獺、美味妃蝶、自由狐狸",
+        compatible: "覓味水獺、美味妃蝶、自由狐狸",
         incompatible: "靜味貓頭鷹、穩定陸龜、孤食刺蝟",
         dimensions: ["味道", "社交", "傳統", "感覺"]
     },
@@ -149,7 +149,7 @@ const types = {
         desc: "吃飯是生活節奏的一部分，熟悉的味道讓人安心。營養要平衡，菜色最好可以提前決定。",
         avatar: "images/TLDM.png",
         compatible: "靜味貓頭鷹、孤食刺蝟、格局象",
-        incompatible: "狂吃水獺、美味妃蝶、熱情狗",
+        incompatible: "覓味水獺、美味妃蝶、熱情狗",
         dimensions: ["味道", "私密", "傳統", "結構"]
     },
     "TLDF": {
@@ -171,7 +171,7 @@ const types = {
         desc: "自己吃得剛剛好，不需配合別人。會按身體狀態安排菜色，重視食物的功能與體感反饋。",
         avatar: "images/TLEM.png",
         compatible: "理性鴞、儀式天鵝、穩定陸龜",
-        incompatible: "熱情狗、狂吃水獺、自由狐狸",
+        incompatible: "熱情狗、覓味水獺、自由狐狸",
         dimensions: ["味道", "私密", "冒險", "結構"]
     },
     "TLEF": {
@@ -181,7 +181,7 @@ const types = {
         food: "Brunch、Tapas、混搭風味",
         desc: "今天想吃什麼？就吃什麼。邊走邊吃、邊看邊選，是自由靈魂派吃貨代表。",
         avatar: "images/TLEF.png",
-        compatible: "幻想獨角獸、狂吃水獺、熱情狗",
+        compatible: "幻想獨角獸、覓味水獺、熱情狗",
         incompatible: "格局象、靜味貓頭鷹、工程河狸",
         dimensions: ["味道", "私密", "冒險", "感覺"]
     },
@@ -204,7 +204,7 @@ const types = {
         desc: "吃飯與情感密不可分，一口食物一段故事。最會邊吃邊聊這道菜我阿嬤以前也煮。",
         avatar: "images/ISDF.png",
         compatible: "追憶無尾熊、慢熟貓、文化龍",
-        incompatible: "狂吃水獺、理性鴞、孤食刺蝟",
+        incompatible: "覓味水獺、理性鴞、孤食刺蝟",
         dimensions: ["概念", "社交", "傳統", "感覺"]
     },
     "ISEM": {
@@ -225,7 +225,7 @@ const types = {
         food: "食物劇場、聯名甜點、氣味搭配料理",
         desc: "吃東西像看展覽，是一場旅程。對食物意義與體感超敏銳，吃完還能寫出心得。",
         avatar: "images/ISEF.png",
-        compatible: "狂吃水獺、幻想獨角獸、熱情狗",
+        compatible: "覓味水獺、幻想獨角獸、熱情狗",
         incompatible: "穩定陸龜、靜味貓頭鷹、工程河狸",
         dimensions: ["概念", "社交", "冒險", "感覺"]
     },
@@ -237,7 +237,7 @@ const types = {
         desc: "討厭吵雜吃飯環境，對熟悉的味道非常執著，內心儀式感豐富，是慢食、靜食派擁護者。",
         avatar: "images/ILDM.png",
         compatible: "穩定陸龜、追憶無尾熊、療癒鴿",
-        incompatible: "熱情狗、狂吃水獺、自由狐狸",
+        incompatible: "熱情狗、覓味水獺、自由狐狸",
         dimensions: ["概念", "私密", "傳統", "結構"]
     },
     "ILDF": {
@@ -248,7 +248,7 @@ const types = {
         desc: "吃的是心情、記的是回憶。你最愛的食物，可能來自一段對話、一個地點或一場分手。",
         avatar: "images/ILDF.png",
         compatible: "療癒鴿、慢熟貓、靜味貓頭鷹",
-        incompatible: "狂吃水獺、理性鴞、美味妃蝶",
+        incompatible: "覓味水獺、理性鴞、美味妃蝶",
         dimensions: ["概念", "私密", "傳統", "感覺"]
     },
     "ILEM": {
@@ -259,7 +259,7 @@ const types = {
         desc: "喜歡設計每一口的排列組合，買現成的料理也會搭配自己組合。吃飯像策展，喜歡自己組出新東西。",
         avatar: "images/ILEM.png",
         compatible: "儀式天鵝、孤食刺蝟、理性鴞",
-        incompatible: "熱情狗、狂吃水獺、自由狐狸",
+        incompatible: "熱情狗、覓味水獺、自由狐狸",
         dimensions: ["概念", "私密", "冒險", "結構"]
     },
     "ILEF": {
@@ -269,7 +269,7 @@ const types = {
         food: "夢幻聯名款、色彩甜點、飲品仙境",
         desc: "腦中浮現食物與感覺的聯想，吃東西是一種表演、一種療癒、一種內在的藝術展演。",
         avatar: "images/ILEF.png",
-        compatible: "狂吃水獺、美味妃蝶、自由狐狸",
+        compatible: "覓味水獺、美味妃蝶、自由狐狸",
         incompatible: "格局象、文化龍、儀式天鵝",
         dimensions: ["概念", "私密", "冒險", "感覺"]
     }
