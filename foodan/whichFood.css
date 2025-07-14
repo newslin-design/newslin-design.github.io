@@ -41,7 +41,7 @@
       color: white;
       border: none;
       border-radius: 50px;
-      padding: 1rem 2rem;
+      padding: 0.8rem 1rem;
       font-size: 1rem;
       cursor: pointer;
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
@@ -334,7 +334,7 @@
   .result-text-container {
       right: 0;
       width: 100%;
-      height: 90vh;
+      height: 95vh;
       max-width: 500px;
       padding: 20px;
       overflow: hidden;
@@ -412,7 +412,7 @@
   .result-subtitle {
       color: #00000068;
       letter-spacing: 0.2em;
-      margin-bottom: 1.2rem;
+      margin-bottom: 0.7rem;
   }
 
   .result-quote {
@@ -445,16 +445,36 @@
       border-radius: 15px;
   }
 
+  .result-dimensions {
+      margin-bottom: 1.3rem;
+
+  }
+
+  .result-dimensions>span {
+      display: inline-block;
+      padding: 4px 12px;
+      margin: 2px 4px;
+      font-size: 12px;
+      font-weight: 500;
+      color: #00000071;
+      border-radius: 16px;
+
+
+  }
+
+
+
 
   .result-food {
-      color: #ffffff69;
+      color: #ffffffac;
       display: inline-block;
-      background-color: #00000017;
+      background-color: rgba(0, 0, 0, 0.177);
       padding: 8px 16%;
       border-radius: 16px;
       margin: 1rem 0;
       font-size: 18px;
-      font-weight: 400;
+      font-weight: 200;
+
   }
 
 
@@ -502,13 +522,16 @@
       justify-content: space-around;
   }
 
+  .result-btn-container>button {
+      width: 10%;
+  }
 
   .result-btn-container :first-child {
       width: 60%;
   }
 
   .result-btn-container :last-child {
-      width: 35%;
+      width: 25%;
   }
 
 

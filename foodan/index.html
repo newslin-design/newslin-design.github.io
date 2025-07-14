@@ -31,16 +31,19 @@
             </div>
             <div class="result-text-container">
                 <div class="header">
-                    <div class="result-type" id="resultType"></div>
+                    <div class="result-type" id="resultType" 　></div>
                     <div class="result-title" id="resultTitle"></div>
+
                     <div class="result-subtitle" id="resultSubtitle"></div>
+                    <div class="result-dimensions" id="dimensions"></div>
+
                     <div class="result-quote" id="resultQuote"></div>
                 </div>
                 <div class="result-desc" id="resultDesc"></div>
                 <div class="result-food" id="resultFood"></div>
                 <div class="compatibility-section">
                     <div class="compatibility-item good">
-                        <h4>最適合一起吃飯</h4>
+                        <h4　>最適合一起吃飯</h4>
                         <div class="compatibility-types" id="compatibleTypes"></div>
                     </div>
                     <div class="compatibility-item bad">
@@ -50,15 +53,11 @@
                 </div>
                 <div class="result-btn-container">
                     <button class="btn restart-btn" onclick="restartQuiz()">重新測驗</button>
-                    <button class="btn restart-btn" onclick="showNextPersonality()">下個動物是?</button>
+                    <button class="btn restart-btn" onclick="showNextPersonality(-1)">﹤</button>
+
+                    <button class="btn restart-btn" onclick="showNextPersonality()">下個動物</button>
                 </div>
-
-
-
             </div>
-
-
-
         </div>
     </div>
     <script src="foodanData.js"></script>
@@ -91,6 +90,7 @@
                     resultQuote: document.getElementById('resultQuote'),
                     resultDesc: document.getElementById('resultDesc'),
                     resultFood: document.getElementById('resultFood'),
+                    dimensions: document.getElementById('dimensions'),
                     compatibleTypes: document.getElementById('compatibleTypes'),
                     incompatibleTypes: document.getElementById('incompatibleTypes')
                 };
@@ -108,6 +108,7 @@
                 this.elements.nextBtn.onclick = () => this.nextQuestion();
 
                 // 直接顯示結果(測試用)
+                // this.scores = [1, 2, -1, -3];
                 // this.showResult();
             }
 
@@ -253,11 +254,11 @@
                     htmlElement.classList.remove(`personality-${typeCode.toLowerCase()}`);
                 });
 
-                // 移除所有特徵類名
-                const traits = ['t', 'i', 's', 'l', 'd', 'e', 'm', 'f'];
-                traits.forEach(trait => {
-                    htmlElement.classList.remove(`trait-${trait}`);
-                });
+                // // 移除所有特徵類名
+                // const traits = ['t', 'i', 's', 'l', 'd', 'e', 'm', 'f'];
+                // traits.forEach(trait => {
+                //     htmlElement.classList.remove(`trait-${trait}`);
+                // });
             }
 
             showResult(resultType = null) {
@@ -287,7 +288,24 @@
                     this.elements.resultSubtitle.textContent = result.title;
                     this.elements.resultQuote.innerHTML = result.quote;
                     this.elements.resultFood.textContent = result.food;
+
                     this.elements.resultDesc.textContent = result.desc;
+
+
+
+                    this.elements.dimensions.innerHTML = result.dimensions.map((dimension, index) => {
+                        const score = this.scores[index];
+
+                        const getColor = (s) => {
+                            const abs = Math.abs(s);
+                            return abs >= 3 ? '#00000099' : abs >= 2 ? '#00000055' : abs >= 1 ? '#00000025' : '#00000011';
+                        };
+
+                        return `<span  style=" background-color: ${getColor(score)};color: ${Math.abs(score) >= 2 ? '#ffffffaa' : ''}">${dimension}</span>`;
+                    }).join('');
+
+
+
 
                     // 處理相容性顯示，使其可點擊
                     this.displayCompatibilityTypes('compatibleTypes', result.compatible);
@@ -326,11 +344,11 @@
                 }
             }
 
-            showNextPersonality() {
+            showNextPersonality(num = 1) {
                 // 找到當前人格在列表中的位置
                 const currentIndex = this.typeKeys.indexOf(this.currentResultType);
                 // 獲取下一個人格（循環到開頭）
-                const nextIndex = (currentIndex + 1) % this.typeKeys.length;
+                const nextIndex = (currentIndex + num) % this.typeKeys.length;
                 const nextType = this.typeKeys[nextIndex];
 
                 this.showResult(nextType);
