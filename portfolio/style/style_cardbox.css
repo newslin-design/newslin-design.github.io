@@ -1,0 +1,131 @@
+/******************************
+
+		Cardbox home page
+
+*******************************/
+
+.cardbox {
+	margin-bottom: 4px;
+}
+
+.cardbox.workcard a {
+	display: flex;
+	flex-wrap: wrap;
+	align-content: flex-end;
+	height: 300px;
+	padding: 4px 12px;
+	margin: 8px 0;
+	border-radius: 4px;
+	background-color: rgb(180, 180, 180);
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: cover;
+	overflow: hidden;
+
+}
+
+
+
+
+
+.cardbox.workcard a::before {
+	content: '';
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+	background: #000;
+	background: linear-gradient(2deg, #000000ee 0%, #0000002a 60%, #00000000 90%);
+	opacity: 0.1;
+	transition: 0.5s;
+}
+
+.cardbox.workcard a:Hover::before {
+	opacity: 0.9;
+}
+
+.workcard h3 {
+	font-weight: 600;
+	letter-spacing: -0.03em;
+	transition: 0.4s;
+	opacity: 0.65;
+	width: 100%;
+}
+
+.cardbox.workcard a:Hover h3 {
+	color: #fff;
+	opacity: 0.9;
+}
+
+
+
+.workcard p.tag {
+	color: #fff;
+	font-size: 13px;
+	font-weight: 350;
+	padding: 4px 6px;
+	margin: 4px 8px 4px 0;
+	background-color: rgba(0, 0, 0, 0.55);
+	border-radius: 4px;
+	border: 1px rgba(255, 255, 255, 0.193) solid;
+}
+
+.workcard p.tag::before {
+	content: "# ";
+}
+
+.workcard p.ctx {
+	margin: 0;
+}
+
+
+.workcard .detail_box {
+	width: 100%;
+	bottom: -30px;
+	opacity: 0;
+	transition: 1s;
+	max-width: 400px;
+}
+
+.cardbox.workcard a:Hover .detail_box {
+	bottom: 0;
+	opacity: 1;
+}
+
+
+
+.cardbox.workcard .more a::before {
+	content: "More";
+	font-size: 18px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background: rgb(20, 21, 22);
+	opacity: 0.9;
+}
+
+.cardbox.workcard .more a:hover::before {
+	color: rgb(236, 236, 236);
+	opacity: 1;
+}
+
+@media (max-width: 480px) {
+	.cardbox.workcard a {
+		padding: 12px;
+	}
+
+	.workcard h2 {
+		font-size: 24px;
+	}
+
+	.workcard p.tag {
+		font-size: 14px;
+		margin: 3px;
+	}
+
+	.workcard p.ctx {
+		display: none;
+	}
+
+}

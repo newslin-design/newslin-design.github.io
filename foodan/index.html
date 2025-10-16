@@ -53,15 +53,16 @@
                 </div>
                 <div class="result-btn-container">
                     <button class="btn restart-btn" onclick="restartQuiz()">重新測驗</button>
-                    <button class="btn restart-btn" onclick="showNextPersonality(-1)">﹤</button>
-
-                    <button class="btn restart-btn" onclick="showNextPersonality()">下個動物</button>
+                    <div class="nav-buttons">
+                        <button class="btn restart-btn" onclick="showNextPersonality(-1)">﹤</button>
+                        <button class="btn restart-btn" onclick="showNextPersonality()">下個動物</button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
     <script src="foodanData.js"></script>
-    <script>
+    <script type="text/javascript">
 
 
         class FoodPersonalityQuiz {
@@ -254,11 +255,7 @@
                     htmlElement.classList.remove(`personality-${typeCode.toLowerCase()}`);
                 });
 
-                // // 移除所有特徵類名
-                // const traits = ['t', 'i', 's', 'l', 'd', 'e', 'm', 'f'];
-                // traits.forEach(trait => {
-                //     htmlElement.classList.remove(`trait-${trait}`);
-                // });
+
             }
 
             showResult(resultType = null) {
@@ -347,11 +344,23 @@
             showNextPersonality(num = 1) {
                 // 找到當前人格在列表中的位置
                 const currentIndex = this.typeKeys.indexOf(this.currentResultType);
-                // 獲取下一個人格（循環到開頭）
-                const nextIndex = (currentIndex + num) % this.typeKeys.length;
+                // 獲取下一個人格（循環到開頭或結尾）
+                let nextIndex = (currentIndex + num) % this.typeKeys.length;
+
+                // 處理負數的情況
+                if (nextIndex < 0) {
+                    nextIndex += this.typeKeys.length;
+                }
+
                 const nextType = this.typeKeys[nextIndex];
 
                 this.showResult(nextType);
+
+                // 滾動到頁面頂端
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
             }
 
             restartQuiz() {
@@ -433,12 +442,83 @@
             if (quiz) quiz.restartQuiz();
         }
 
-        function showNextPersonality() {
-            if (quiz) quiz.showNextPersonality();
+        function showNextPersonality(num) {
+            if (quiz) quiz.showNextPersonality(num);
         }
 
-        // 3. 頁面載入完成後初始化
-        document.addEventListener('DOMContentLoaded', initQuiz);
+        // 4. 手機版滾動時控制result-quote透明度
+        function initScrollEffect() {
+            const resultQuote = document.getElementById('resultQuote');
+            const resultDimensions = document.getElementById('dimensions');
+            const resultSubtitle = document.getElementById('resultSubtitle');
+            const resultTitle = document.getElementById('resultTitle');
+            let lastScrollTop = 0;
+            let quoteOpacity = 1;
+            let otherOpacity = 1;
+
+            window.addEventListener('scroll', function () {
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                const windowHeight = window.innerHeight;
+
+                // 只在手機版啟用此效果
+                if (window.innerWidth <= 768) {
+                    // 計算滾動方向和距離
+                    const scrollDirection = scrollTop > lastScrollTop ? 'down' : 'up';
+                    const scrollDistance = Math.abs(scrollTop - lastScrollTop);
+
+                    if (scrollDirection === 'down' && scrollTop > 50) {
+                        // 下滑時先減少result-quote透明度
+                        quoteOpacity = Math.max(0, quoteOpacity - (scrollDistance * 0.01));
+
+                        // 當result-quote完全透明後，開始減少其他元素透明度
+                        if (quoteOpacity <= 0) {
+                            otherOpacity = Math.max(0, otherOpacity - (scrollDistance * 0.01));
+                        }
+                    } else if (scrollDirection === 'up') {
+                        // 上滑時先恢復其他元素透明度
+                        otherOpacity = Math.min(1, otherOpacity + (scrollDistance * 0.01));
+
+                        // 當其他元素完全不透明後，開始恢復result-quote透明度
+                        if (otherOpacity >= 1) {
+                            quoteOpacity = Math.min(1, quoteOpacity + (scrollDistance * 0.01));
+                        }
+                    }
+
+                    // 應用透明度
+                    if (resultQuote) {
+                        resultQuote.style.opacity = quoteOpacity;
+                        resultQuote.style.transition = 'opacity 0.1s ease';
+                    }
+
+                    const otherElements = [resultDimensions, resultSubtitle, resultTitle];
+                    otherElements.forEach(element => {
+                        if (element) {
+                            element.style.opacity = otherOpacity;
+                            element.style.transition = 'opacity 0.1s ease';
+                        }
+                    });
+                } else {
+                    // 桌面版保持完全不透明
+                    if (resultQuote) {
+                        resultQuote.style.opacity = 1;
+                    }
+                    const otherElements = [resultDimensions, resultSubtitle, resultTitle];
+                    otherElements.forEach(element => {
+                        if (element) {
+                            element.style.opacity = 1;
+                        }
+                    });
+                }
+
+                lastScrollTop = scrollTop;
+            });
+        }
+
+        // 初始化滾動效果
+        document.addEventListener('DOMContentLoaded', function () {
+            initQuiz();
+            initScrollEffect();
+        });
     </script>
 </body>
 
