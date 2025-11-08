@@ -1,34 +1,62 @@
-/******************************
+.home-header {
+	border: 2px solid #e3e9eb;
+	background-color: #edf1f3;
+	padding: 32px 8px;
+	border-radius: 8px;
 
-		Cardbox home page
-
-*******************************/
-
-.cardbox {
 	margin-bottom: 4px;
 }
 
-.cardbox.workcard a {
+
+/******************************
+
+		workCard home page
+
+*******************************/
+
+.workCards {
+	margin-bottom: 4px;
+	background-color: #e3e9eb;
+	border: 1px solid #e3e9eb;
+	border-radius: 8px;
+}
+
+
+.workCards .workCard {
 	display: flex;
 	flex-wrap: wrap;
-	align-content: flex-end;
-	height: 300px;
-	padding: 4px 12px;
-	margin: 8px 0;
-	border-radius: 4px;
-	background-color: rgb(180, 180, 180);
-	background-repeat: no-repeat;
-	background-position: center;
-	background-size: cover;
+	height: 320px;
+	padding: 4px;
+	background-color: #ffffff;
+	border: 1px solid #e3e9eb;
+	border-radius: 6px;
 	overflow: hidden;
+}
 
+
+.workCards .workCard:hover {
+	z-index: 100;
+	border: 1px solid #ffffff;
+	box-shadow: 0 0 18px #50afee77;
 }
 
 
 
 
 
-.cardbox.workcard a::before {
+/* -----------------
+	work image 
+----------------- */
+.workCards .work-image {
+	height: 70%;
+	width: 100%;
+	background-color: rgb(165, 165, 165);
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: cover;
+}
+
+.workCards .work-image-box .workCards .workCard::before {
 	content: '';
 	width: 100%;
 	height: 100%;
@@ -41,26 +69,9 @@
 	transition: 0.5s;
 }
 
-.cardbox.workcard a:Hover::before {
-	opacity: 0.9;
-}
-
-.workcard h3 {
-	font-weight: 600;
-	letter-spacing: -0.03em;
-	transition: 0.4s;
-	opacity: 0.65;
-	width: 100%;
-}
-
-.cardbox.workcard a:Hover h3 {
-	color: #fff;
-	opacity: 0.9;
-}
 
 
-
-.workcard p.tag {
+.workCards p.tag {
 	color: #fff;
 	font-size: 13px;
 	font-weight: 350;
@@ -71,31 +82,80 @@
 	border: 1px rgba(255, 255, 255, 0.193) solid;
 }
 
-.workcard p.tag::before {
+.workCards p.tag::before {
 	content: "# ";
 }
 
-.workcard p.ctx {
+.workCards p.ctx {
 	margin: 0;
 }
 
 
-.workcard .detail_box {
+.workCards .detail_box {
 	width: 100%;
-	bottom: -30px;
 	opacity: 0;
-	transition: 1s;
 	max-width: 400px;
+	position: absolute;
+	left: 4px;
+	bottom: -30px;
+	transition: 1s;
+
+
 }
 
-.cardbox.workcard a:Hover .detail_box {
+.workCards .workCard:Hover .detail_box {
 	bottom: 0;
 	opacity: 1;
 }
 
 
 
-.cardbox.workcard .more a::before {
+
+
+
+
+
+
+
+/* -----------------
+	work textBox
+----------------- */
+
+.workCards .textBox {
+	height: 30%;
+	width: 100%;
+	padding: 8px 12px;
+	background-color: #F2F7F8;
+
+}
+
+
+.workCards h3 {
+	font-size: 17px;
+	font-weight: 600;
+	margin: 0 0 4px 0;
+	letter-spacing: -0.03em;
+	transition: 0.4s;
+	opacity: 0.65;
+	width: 100%;
+}
+
+.workCards .workCard:Hover h3 {
+	/* color: #fff; */
+	opacity: 0.9;
+}
+
+.workCards p {
+	font-size: 14px;
+	font-weight: 350;
+	margin: 0;
+	letter-spacing: -0.03em;
+}
+
+
+
+
+.workCards .more .workCard::before {
 	content: "More";
 	font-size: 18px;
 	display: flex;
@@ -105,26 +165,78 @@
 	opacity: 0.9;
 }
 
-.cardbox.workcard .more a:hover::before {
+.workCards .more .workCard:hover::before {
 	color: rgb(236, 236, 236);
 	opacity: 1;
 }
 
+
+/* -----------------
+	star-project
+----------------- */
+
+.star-project {
+	background-color: #d5dddf;
+}
+
+
+.workCards .star-project .work-image {
+	background-color: #e9ecee;
+	height: 100%;
+}
+
+.workCards .star-project .textBox {
+	background-color: #ffffff00;
+	position: absolute;
+	width: 50%;
+	left: 2%;
+	top: 30%;
+	transform: translate(0, -50%);
+}
+
+.workCards .star-project .textBox>h3>span {
+	font-size: 20px;
+	line-height: 1.68em;
+	color: #000;
+}
+
+.workCards .star-project .detail_box {
+	left: 2%;
+}
+
+.workCards .star-project a:Hover .detail_box {
+	bottom: 10%;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 @media (max-width: 480px) {
-	.cardbox.workcard a {
+	.workCards .workCard {
 		padding: 12px;
 	}
 
-	.workcard h2 {
+	.workCards h2 {
 		font-size: 24px;
 	}
 
-	.workcard p.tag {
+	.workCards p.tag {
 		font-size: 14px;
 		margin: 3px;
 	}
 
-	.workcard p.ctx {
+	.workCards p.ctx {
 		display: none;
 	}
 

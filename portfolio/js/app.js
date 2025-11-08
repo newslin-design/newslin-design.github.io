@@ -14,160 +14,185 @@ var $tag = function (name) {
 // ============================================
 // 作品類別配置
 // ============================================
-const categoryConfig = {
-	design: {
-		title: null // 設計類不需要標題
-	},
-	development: {
-		title: "Development",
-		titleClass: "hightlight ml-sm"
-	}
-	// 可以繼續新增其他類別...
-};
+// const categoryConfig = {
+// 	design: {
+// 		title: null // 設計類不需要標題
+// 	},
+// 	development: {
+// 		title: "Development",
+// 		titleClass: "hightlight ml-sm"
+// 	}
+// 	// 可以繼續新增其他類別...
+// };
 
 // ============================================
 // 作品資料定義 - 使用物件陣列格式
 // ============================================
-const portfolioData = [
-	{
-		id: "d_uc",
-		title: "All-in-One Streaming Studio </br> Solution Application",
-		tags: ["Scenario Definition", "Software PRD", "iPad UI Design", "Design Library"],
-		category: "design",
-		cardConfig: { colClass: "col-6 col-md-6 col-xs-12" }
+const portfolioData = {
+	design: {
+		title: "",
+		titleClass: "",
+		cards: [
+			{
+				id: "a_builder",
+				title: "Product and Diagran design Tool <br> <span>Solution Builder</span>",
+				desc: "Solution Builder comes with a library of optimized connection templates for various scenarios, allowing you to quickly apply standard designs",
+				tags: ["Scenario Definition", "Software PRD", "iPad UI Design", "Design Library"],
+				cardConfig: { colClass: "col-8 col-md-6 col-xs-12 star-project" }
+			},
+			{
+				id: "a_foodAnimal",
+				title: "Dining Persona Profiler Website",
+				desc: "An interactive personality test website themed around dietary habits to Uncover Your Dining Persona.",
+				tags: ["AI Interact Design", "Website", "B2B Solution"],
+				cardConfig: { colClass: "col-4 col-md-6 col-xs-12" }
+			},
+			{
+				id: "d_uc",
+				title: "All-in-One Streaming Studio </br> Solution Application",
+				desc: "This project aimed to develop a new product series to expand ",
+				tags: ["Scenario Definition", "Software PRD", "iPad UI Design", "Design Library"],
+				cardConfig: { colClass: "col-6 col-md-6 col-xs-12" }
+			},
+			{
+				id: "d_tts",
+				title: "Text-to-Speech </br> AI Solution",
+				desc: "This project aimed to develop a new product series to expand sale",
+				tags: ["AI Interact Design", "Website", "B2B Solution"],
+				cardConfig: { colClass: "col-6 col-md-6 col-xs-12" }
+			},
+			{
+				id: "d_ftr",
+				title: "Future Training Room",
+				desc: "",
+				tags: ["Scenario Definition", "IoT Control System Design"],
+				cardConfig: {}
+			},
+			{
+				id: "d_uvc",
+				title: "Virtual USB Video Streaming </br>Windows Tool",
+				desc: "",
+				tags: ["Window AP Design", "Streaming", "UI Flow"],
+			},
+			{
+				id: "d_ds",
+				title: "Design system",
+				desc: "",
+				tags: ["UI Library", "APP icon", "interaction flow library"],
+			},
+			{
+				id: "d_so",
+				title: "SO!Eyewear Website",
+				desc: "",
+				tags: ["Website", "Frond-end", "SEO", "Google Analysis"],
+				cardConfig: {}
+			},
+			{
+				id: "d_ofweb",
+				title: "Official Website Optimization",
+				desc: "",
+				tags: ["User Research", "Re-design", "User Journey Map"],
+				cardConfig: {}
+			},
+			{
+				id: "d_game",
+				title: "Gaming KVM Adapter Application",
+				desc: "",
+				tags: ["Gaming", "First Use", " Tutorial"],
+				cardConfig: {}
+			},
+			{
+				id: "d_wall",
+				title: "Road Construction </br>Noise Control System",
+				desc: "",
+				tags: ["Product design", "Field research"],
+				cardConfig: {}
+			},
+			{
+				id: "d_vrbot",
+				title: "Remote VR Interactive Robot",
+				desc: "",
+				tags: ["Product design", "VR"],
+				cardConfig: {}
+			},
+			{
+				id: "d_ar",
+				title: "Reality Plus",
+				desc: "",
+				tags: ["AR", "Concept Design"],
+				cardConfig: { whiteText: true, }
+			},
+			{
+				id: "v_vis",
+				title: "VIS / Visual Design",
+				desc: "",
+				tags: ["Visual System", "Poster", "Illustration", "Animations"],
+				cardConfig: {}
+			},
+			{
+				id: "v_ino",
+				title: "Infographic Design",
+				desc: "",
+				tags: ["Infographic", "Flow", "Scenario Illustration"],
+				cardConfig: {}
+			},
+			{
+				id: "v_3d",
+				title: "3D Render",
+				tags: ["3D max", "V-ray", "Industral Design"],
+				cardConfig: {}
+			}]
 	},
-	{
-		id: "d_tts",
-		title: "Text-to-Speech </br> AI Solution",
-		tags: ["AI Interact Design", "Website", "B2B Solution"],
-		category: "design",
-		cardConfig: { colClass: "col-6 col-md-6 col-xs-12" }
-	},
-	{
-		id: "d_ftr",
-		title: "Future Training Room",
-		tags: ["Scenario Definition", "IoT Control System Design"],
-		category: "design",
-		cardConfig: { whiteText: true }
-	},
-	{
-		id: "d_uvc",
-		title: "Virtual USB Video Streaming </br>Windows Tool",
-		tags: ["Window AP Design", "Streaming", "UI Flow"],
-		category: "design"
-	},
-	{
-		id: "d_ds",
-		title: "Design system",
-		tags: ["UI Library", "APP icon", "interaction flow library"],
-		category: "design"
-	},
-	{
-		id: "d_so",
-		title: "SO!Eyewear Website",
-		tags: ["Website", "Frond-end", "SEO", "Google Analysis"],
-		category: "design",
-		cardConfig: { whiteText: true }
-	},
-	{
-		id: "d_ofweb",
-		title: "Official Website Optimization",
-		tags: ["User Research", "Re-design", "User Journey Map"],
-		category: "design",
-		cardConfig: { whiteText: true }
-	},
-	{
-		id: "d_game",
-		title: "Gaming KVM Adapter Application",
-		tags: ["Gaming", "First Use", " Tutorial"],
-		category: "design",
-		cardConfig: { whiteText: true }
-	},
-	{
-		id: "d_wall",
-		title: "Road Construction </br>Noise Control System",
-		tags: ["Product design", "Field research"],
-		category: "design",
-		cardConfig: {}
-	},
-	{
-		id: "d_vrbot",
-		title: "Remote VR Interactive Robot",
-		tags: ["Product design", "VR"],
-		category: "design",
-		cardConfig: {}
-	},
-	{
-		id: "d_ar",
-		title: "Reality Plus",
-		tags: ["AR", "Concept Design"],
-		category: "design",
-		cardConfig: { whiteText: true, }
-	},
-	{
-		id: "v_vis",
-		title: "VIS / Visual Design",
-		tags: ["Visual System", "Poster", "Illustration", "Animations"],
-		category: "design",
-		cardConfig: {}
-	},
-	{
-		id: "v_ino",
-		title: "Infographic Design",
-		tags: ["Infographic", "Flow", "Scenario Illustration"],
-		category: "design",
-		cardConfig: {}
-	},
-	{
-		id: "v_3d",
-		title: "3D Render",
-		tags: ["3D max", "V-ray", "Industral Design"],
-		category: "design",
-		cardConfig: {}
-	},
-	{
-		id: "c_auto_tag",
-		title: "Experimentation of Structuring  <br> Unstructured Data,	and Visualization",
-		tags: ["python", "AI", "data"],
-		category: "development",
-		cardConfig: {}
-	},
-	{
-		id: "c_auto-matome",
-		title: "Automated Tool for Interview Transcript <br>and Summary Generation",
-		tags: ["python", "AI"],
-		category: "development",
-		cardConfig: {}
-	},
-	{
-		id: "c_demo",
-		title: "Overcoming Costly On-Site Demos: <br>Virtual Demo Room Solution for Pro AV Sales",
-		tags: ["JavaScript", "After Effects"],
-		category: "development",
-		cardConfig: { whiteText: true, }
-	},
-	{
-		id: "c_party",
-		title: "Party Game",
-		tags: ["JavaScript", "Web Audio API"],
-		category: "development",
-		cardConfig: { whiteText: true, }
-	},
-	{
-		id: "c_test",
-		title: "Prototypes and Tools",
-		tags: ["JavaScript", "Usability test Tools"],
-		category: "development",
-		cardConfig: { whiteText: true, }
-	},
-	{
-		id: "c_an",
-		title: "The interactive animation</br>for a marketing campaign",
-		tags: ["JavaScript", "After Effects"],
-		category: "development",
-		cardConfig: {}
+	development: {
+		title: "Development",
+		titleClass: "",
+		cards: [
+			{
+				id: "c_auto_tag",
+				title: "Experimentation of Structuring  <br> Unstructured Data,	and Visualization",
+				desc: "",
+				tags: ["python", "AI", "data"],
+				cardConfig: {}
+			},
+			{
+				id: "c_auto-matome",
+				title: "Automated Tool for Interview Transcript <br>and Summary Generation",
+				desc: "",
+				tags: ["python", "AI"],
+				cardConfig: {}
+			},
+			{
+				id: "c_demo",
+				title: "Overcoming Costly On-Site Demos: <br>Virtual Demo Room Solution for Pro AV Sales",
+				desc: "",
+				tags: ["JavaScript", "After Effects"],
+				cardConfig: { whiteText: true, }
+			},
+			{
+				id: "c_party",
+				title: "Party Game",
+				desc: "",
+				tags: ["JavaScript", "Web Audio API"],
+				cardConfig: { whiteText: true, }
+			},
+			{
+				id: "c_test",
+				title: "Prototypes and Tools",
+				desc: "",
+				tags: ["JavaScript", "Usability test Tools"],
+				cardConfig: { whiteText: true, }
+			},
+			{
+				id: "c_an",
+				title: "The interactive animation</br>for a marketing campaign",
+				desc: "",
+				tags: ["JavaScript", "After Effects"],
+				cardConfig: {}
+			}
+		]
 	}
-];
+
+};
 
 // ============================================
 // 輔助函數 - 取得作品資訊
@@ -210,13 +235,13 @@ try {
 	if (coverMe) {
 		let scrollX = document.documentElement.scrollTop / 60 - 80
 		let scrollY = document.documentElement.scrollTop / 10 - 100
-		let rotate = document.documentElement.scrollTop / 100
+		let rotate = document.documentElement.scrollTop / 10
 		let x = 0
 		coverMe.style = "transform: translate(" + scrollX + "px," + scrollY + "px) "
 
 		window.addEventListener("mousemove", function (e) {
-			x = (e.x + e.y) / 30
-			coverMe.style = "filter: hue-rotate(" + x + "deg);transform: translate(" + scrollX + "px," + scrollY + "px) rotate(" + rotate + "deg);"
+			x = (e.x + e.y) / 15
+			coverMe.style = "filter: hue-rotate(" + x + "deg);transform: translate(" + scrollX + "px," + scrollY + "px) rotate(" + rotate * 2 + "deg);"
 		})
 
 		window.addEventListener("scroll", function (e) {
