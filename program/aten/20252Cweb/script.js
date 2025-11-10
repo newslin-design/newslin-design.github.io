@@ -1,3 +1,29 @@
+
+
+// =====================================================
+// 
+// ATEN Essentials Website DATA
+// 
+// =====================================================
+
+
+const productData = [
+    {
+        modelName: "",
+        name: "",
+        image: {
+            main: "",
+            45: ""
+        },
+        price: 1200,
+        currency: "NT$",
+        link: "#",
+        eShopLink: "#"
+    }
+]
+
+
+
 // =====================================================
 // 
 // ATEN Essentials Website JavaScript
