@@ -34,7 +34,7 @@
 	<header></header>
 	<div id="sidebar"></div>
 	<div class="container mt-xl">
-		<div class="session-border pb-lg pt-lg mb-lg">
+		<div class="home-header ptb-md mb-sm">
 			<div class="row">
 				<div class="col-2 col-sm-3 col-xsm-12 col-xs-12 plr-sm mb-md">
 					<div class="imgbox circle"><img id="cover-me" src="../image/cover_me.png" alt=""></div>
@@ -104,7 +104,7 @@
 				</div>
 			</div>
 		</div>
-		<div id="workCards">
+		<div id="workCardsContainer">
 
 		</div>
 	</div>
@@ -118,65 +118,63 @@
 	// 首頁卡片渲染
 	// ============================================
 	function renderPortfolioCards() {
-		const workCardsContainer = document.getElementById('workCards');
+		const workCardsContainer = document.getElementById('workCardsContainer');
 		if (!workCardsContainer) {
 			console.log('workCards container not found');
 			return;
 		}
 
 		let cardsHtml = '';
-		let currentCategory = '';
 
-		portfolioData.forEach((work) => {
-			const category = work.category || 'uncategorized';
 
-			// 檢查是否需要開始新的類別區塊
-			if (category !== currentCategory) {
-				// 關閉前一個區塊
-				if (currentCategory !== '') {
-					cardsHtml += '</div>';
-				}
 
-				// 加入類別標題（如果有設定）
-				const catConfig = categoryConfig[category];
-				if (catConfig && catConfig.title) {
-					cardsHtml += `
-					<div class="session-border pt-xs pb-xs">
-						<h2 class="${catConfig.titleClass || ''}">${catConfig.title}</h2>
-					</div>
-				`;
-				}
+		Object.keys(portfolioData).forEach((category) => {
+			const categoryData = portfolioData[category];
 
-				// 開始新的卡片區塊
-				cardsHtml += '<div class="row cardbox workcard">';
-				currentCategory = category;
+			//----------------
+			// 加入類別標題
+			//----------------
+			if (categoryData.title) {
+				cardsHtml += `
+				<div class="session-border pt-xs pb-xs">
+					<h2 class="${categoryData.titleClass || ''}">${categoryData.title}</h2>
+				</div>
+			`;
 			}
 
-			// 決定卡片樣式配置
-			const config = work.cardConfig || {};
-			const colClass = config.colClass || 'col-4 col-md-6 col-xs-12';
-			const h3Class = config.whiteText ? 'class="f-white"' : '';
+			//----------------
+			// 卡片區塊
+			//----------------
+			cardsHtml += '<div class="row workCards">';
+			// 渲染類別下的所有卡片
+			categoryData.cards.forEach((work) => {
+				const config = work.cardConfig || {};
+				const colClass = config.colClass || 'col-4 col-md-6 col-xs-12 m-0';
+				const h3Class = config.whiteText ? 'class="f-white"' : '';
 
-			const tagsHtml = work.tags.map(tag => `<p class="tag">${tag}</p>`).join('');
+				const tagsHtml = work.tags.map(tag => `<p class="tag">${tag}</p>`).join('');
 
-			cardsHtml += `
-			<div class="${colClass}">
-				<a class="card-link" href="${work.id}.html#img00" style="background-image: url(../image/cover_${work.id}.png);">
-					<div class="detail_box row flex-c">${tagsHtml}</div>
-					<h3 ${h3Class}>${work.title}</h3>
-				</a>
-			</div>
-		`;
+				cardsHtml += `
+				<div class="${colClass}">
+					<a class="workCard" href="${work.id}.html#img00" >
+						<div class="work-image" style="background-image: url(../image/cover_${work.id}.png);">
+							<div class="detail_box row flex-c">${tagsHtml}</div>							
+						</div>
+						<div class="textBox">
+							<h3 ${h3Class}>${work.title}</h3>
+							<p >${work.desc}</h3>
+						</div>
+					</a>
+				</div>
+			`;
+			});
+
+			// 關閉當前類別的卡片區塊
+			cardsHtml += '</div>';
 		});
-
-		// 關閉最後一個區塊
-		cardsHtml += '</div>';
 
 		workCardsContainer.innerHTML = cardsHtml;
 	}
-
-
-
 </script>
 
 </html>
