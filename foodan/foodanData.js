@@ -17,7 +17,6 @@ const questions = [
             { "text": "辣椒起司泡芙？沒吃過的味道！我想試試看", "icon": "🌶️", "score": [0, 0, -1, 0] }
         ]
     },
-
     {
         "emoji": "🌃",
         "img": "images/0100.png",

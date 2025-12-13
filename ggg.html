@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>塔羅牌占卜</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft JhengHei', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .screen {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #312e81 0%, #581c87 50%, #831843 100%);
+            display: none;
+            padding: 2rem;
+        }
+
+        .screen.active {
+            display: flex;
+        }
+
+        /* 開始頁面 */
+        #start-screen {
+            align-items: center;
+            justify-content: center;
+        }
+
+        .start-content {
+            text-align: center;
+        }
+
+        .sparkle-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 2rem;
+            font-size: 80px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 0.8;
+                transform: scale(1.05);
+            }
+        }
+
+        h1 {
+            font-size: 3rem;
+            color: white;
+            margin-bottom: 1rem;
+            font-weight: bold;
+        }
+
+        .subtitle {
+            font-size: 1.25rem;
+            color: #d8b4fe;
+            margin-bottom: 2rem;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #a855f7 0%, #ec4899 100%);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 9999px;
+            font-size: 1.25rem;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn:hover {
+            background: linear-gradient(135deg, #9333ea 0%, #db2777 100%);
+            transform: scale(1.05);
+        }
+
+        .btn-start {
+            animation: pulse-btn 2s infinite;
+        }
+
+        @keyframes pulse-btn {
+
+            0%,
+            100% {
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            }
+
+            50% {
+                box-shadow: 0 10px 40px rgba(251, 191, 36, 0.4);
+            }
+        }
+
+        /* 選牌頁面 */
+        #selecting-screen {
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        h2 {
+            font-size: 2rem;
+            color: white;
+            margin-bottom: 1rem;
+            font-weight: bold;
+        }
+
+        .card-counter {
+            color: #d8b4fe;
+            margin-bottom: 3rem;
+            font-size: 1.1rem;
+        }
+
+        .cards-container {
+            position: relative;
+            height: 550px;
+            width: 1200px;
+            max-width: 95vw;
+        }
+
+        .card {
+            position: absolute;
+            width: 176px;
+            height: 256px;
+            cursor: pointer;
+            transition: all 0.5s ease-out;
+        }
+
+        .card-inner {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #7c3aed 0%, #4f46e5 100%);
+            border-radius: 1rem;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.5s;
+            border: 2px solid rgba(196, 181, 253, 0.3);
+        }
+
+        .card.selected .card-inner {
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+            box-shadow: 0 25px 70px rgba(251, 191, 36, 0.6);
+            transform: translateY(-80px) scale(1.1);
+            border: 2px solid rgba(254, 240, 138, 0.4);
+        }
+
+        .card:not(.selected):hover .card-inner {
+            transform: translateY(-50px);
+        }
+
+        .card-back {
+            width: 112px;
+            height: 176px;
+            border: 4px solid #d8b4fe;
+            border-radius: 0.75rem;
+        }
+
+        .card-symbol {
+            font-size: 3.75rem;
+        }
+
+        .reveal-btn {
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+            margin-top: 2rem;
+        }
+
+        .reveal-btn:hover {
+            background: linear-gradient(135deg, #f59e0b 0%, #ea580c 100%);
+        }
+
+        /* 結果頁面 */
+        #reading-screen {
+            flex-direction: column;
+        }
+
+        .reading-container {
+            max-width: 1400px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .overall-reading {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(12px);
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .overall-title {
+            font-size: 1.5rem;
+            color: #fcd34d;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .sparkle-small {
+            font-size: 1.5rem;
+            margin: 0 0.5rem;
+        }
+
+        .overall-text {
+            color: white;
+            font-size: 1.125rem;
+            line-height: 1.75;
+        }
+
+        .card-reading {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            opacity: 0;
+            transform: translateX(-100px);
+        }
+
+        .card-reading.show {
+            animation: slideIn 0.8s ease-out forwards;
+        }
+
+        .card-reading:nth-child(2) {
+            animation-delay: 0.3s;
+        }
+
+        .card-reading:nth-child(3) {
+            animation-delay: 0.6s;
+        }
+
+        @keyframes slideIn {
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .card-display {
+            flex-shrink: 0;
+            width: 160px;
+            height: 224px;
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+            border-radius: 1rem;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            border: 2px solid rgba(254, 240, 138, 0.4);
+        }
+
+        .card-display:hover {
+            transform: scale(1.05);
+        }
+
+        .card-emoji {
+            font-size: 4.5rem;
+        }
+
+        .card-info {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(12px);
+            border-radius: 1rem;
+            padding: 1.5rem;
+        }
+
+        .card-name {
+            font-size: 1.875rem;
+            color: #fcd34d;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        .card-meaning {
+            color: #d8b4fe;
+            font-size: 1.125rem;
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+        }
+
+        .card-description {
+            color: white;
+            line-height: 1.625;
+        }
+
+        .reset-btn {
+            display: block;
+            margin: 2rem auto 0;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 開始頁面 -->
+    <div id="start-screen" class="screen active">
+        <div class="start-content">
+            <div class="sparkle-icon">✨</div>
+            <h1>塔羅牌占卜333</h1>
+            <p class="subtitle">探索你的命運之路</p>
+            <button class="btn btn-start" onclick="startReading()">開始占卜</button>
+        </div>
+    </div>
+
+    <!-- 選牌頁面 -->
+    <div id="selecting-screen" class="screen">
+        <div style="text-align: center;">
+            <h2>請選擇三張牌</h2>
+            <p class="card-counter">已選擇: <span id="selected-count">0</span> / 3</p>
+
+            <div class="cards-container" id="cards-container"></div>
+
+            <div style="text-align: center;">
+                <button id="reveal-btn" class="btn reveal-btn" style="display: none;" onclick="revealReading()">
+                    開始占卜 ✨
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 占卜中頁面 -->
+    <div id="divining-screen" class="screen">
+        <div class="divining-content">
+            <div class="crystal-ball">
+                <div class="crystal-inner">
+                    <div class="crystal-shine"></div>
+                    <div class="crystal-glow"></div>
+                </div>
+            </div>
+            <h2 class="divining-text">正在占卜中...</h2>
+            <p class="divining-subtext">✨ 聆聽宇宙的訊息 ✨</p>
+        </div>
+    </div>
+
+    <!-- 結果頁面 -->
+    <div id="reading-screen" class="screen">
+        <div class="reading-container">
+            <h2 style="text-align: center; margin-bottom: 2rem;">你的塔羅解讀</h2>
+
+            <div class="overall-reading">
+                <h3 class="overall-title">
+                    <span class="sparkle-small">✨</span>
+                    總體解讀
+                    <span class="sparkle-small">✨</span>
+                </h3>
+                <p class="overall-text">
+                    這三張牌組合展現了一個非常積極的訊息。太陽、星星和世界的組合預示著你正處於一個充滿希望和成就的時期。你過去的努力正在開花結果，而未來充滿了光明的可能性。保持信心，相信自己的能力，你將會迎來人生的重要里程碑。這是一個適合慶祝成就、展望未來的時刻。記住，宇宙正在支持你的每一步。
+                </p>
+            </div>
+
+            <div id="cards-result"></div>
+
+            <button class="btn reset-btn" onclick="reset()">重新占卜</button>
+        </div>
+    </div>
+
+    <script>
+        // 固定的三張牌結果
+        const fixedResult = [
+            {
+                name: '太陽',
+                meaning: '代表成功、喜悅和光明',
+                description: '太陽牌象徵著積極的能量和成功。這是一張非常正面的牌，預示著你即將迎來快樂、成就和清晰的時刻。你的努力會得到回報,困難會被克服。',
+                image: '☀️'
+            },
+            {
+                name: '星星',
+                meaning: '代表希望、靈感和平靜',
+                description: '星星牌帶來希望和治癒的訊息。它提醒你要對未來保持信心，相信宇宙的安排。這是一個恢復和重新找到內心平靜的時期。',
+                image: '⭐'
+            },
+            {
+                name: '世界',
+                meaning: '代表完成、成就和圓滿',
+                description: '世界牌象徵著一個重要階段的完成和新開始。你已經完成了一個重要的人生課題，現在是時候慶祝你的成就，並準備迎接新的冒險。',
+                image: '🌍'
+            }
+        ];
+
+        const totalCards = 10;
+        let selectedCards = [];
+
+        funcon startReading() {
+            document.getElementById('start-screen').classList.remove('active');
+            document.getElementById('selecting-screen').classList.add('active');
+            createCards();
+        }
+
+        function createCards() {
+            const container = document.getElementById('cards-container');
+            container.innerHTML = '';
+            selectedCards = [];
+
+            for (let i = 0; i < totalCards; i++) {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.dataset.index = i;
+
+                const totalSpread = 100;
+                const rotation = ((i / (totalCards - 1)) - 0.5) * totalSpread;
+                const radiusY = 450;
+                const angleRad = (rotation * Math.PI) / 180;
+                const translateX = Math.sin(angleRad) * radiusY;
+                const translateY = Math.cos(angleRad) * radiusY - 220;
+
+                card.style.left = '50%';
+                card.style.top = '50%';
+                card.style.transformOrigin = 'center center';
+                card.style.transform = `translate(calc(-50% + ${translateX}px), calc(-50% - ${translateY}px)) rotate(${rotation}deg)`;
+                card.style.zIndex = 50 - Math.abs(i - totalCards / 2);
+
+                card.innerHTML = `
+          <div class="card-inner">
+            <div class="card-back"></div>
+          </div>
+        `;
+
+                card.onclick = () => selectCard(i);
+                container.appendChild(card);
+            }
+        }
+
+        function selectCard(index) {
+            if (selectedCards.length >= 3 && !selectedCards.includes(index)) {
+                return;
+            }
+
+            const card = document.querySelector(`.card[data-index="${index}"]`);
+
+            if (selectedCards.includes(index)) {
+                selectedCards = selectedCards.filter(i => i !== index);
+                card.classList.remove('selected');
+                card.querySelector('.card-inner').innerHTML = '<div class="card-back"></div>';
+            } else if (selectedCards.length < 3) {
+                selectedCards.push(index);
+                card.classList.add('selected');
+                const resultIndex = selectedCards.length - 1;
+                card.querySelector('.card-inner').innerHTML = `
+          <div class="card-symbol">${fixedResult[resultIndex].image}</div>
+        `;
+                card.style.zIndex = 100;
+            }
+
+            document.getElementById('selected-count').textContent = selectedCards.length;
+            document.getElementById('reveal-btn').style.display = selectedCards.length === 3 ? 'block' : 'none';
+        }
+
+        function revealReading() {
+            setTimeout(() => {
+                document.getElementById('selecting-screen').classList.remove('active');
+                document.getElementById('reading-screen').classList.add('active');
+                displayResults();
+            }, 800);
+        }
+
+        function displayResults() {
+            const container = document.getElementById('cards-result');
+            container.innerHTML = '';
+
+            fixedResult.forEach((card, index) => {
+                const cardReading = document.createElement('div');
+                cardReading.className = 'card-reading';
+                cardReading.innerHTML = `
+          <div class="card-display">
+            <div class="card-emoji">${card.image}</div>
+          </div>
+          <div class="card-info">
+            <h3 class="card-name">${card.name}</h3>
+            <p class="card-meaning">${card.meaning}</p>
+            <p class="card-description">${card.description}</p>
+          </div>
+        `;
+                container.appendChild(cardReading);
+
+                setTimeout(() => {
+                    cardReading.classList.add('show');
+                }, index * 300);
+            });
+        }
+
+        function reset() {
+            selectedCards = [];
+            document.getElementById('reading-screen').classList.remove('active');
+            document.getElementById('start-screen').classList.add('active');
+        }
+    </script>
+</body>
+
+</html>

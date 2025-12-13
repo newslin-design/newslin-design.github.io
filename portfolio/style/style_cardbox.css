@@ -204,7 +204,22 @@
 	left: 2%;
 }
 
+.workCards .star-project a .detail_box {
+	opacity: 0.7;
+	bottom: 10%;
+}
+
+.workCards .star-project a .detail_box .tag {
+	/* color: #112a61;
+	background-color: rgba(95, 166, 187, 0.212);
+	border: 1px solid #7781a763; */
+}
+
+
+
 .workCards .star-project a:Hover .detail_box {
+	opacity: 1;
+
 	bottom: 10%;
 }
 
@@ -212,17 +227,7 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-@media (max-width: 480px) {
+.workCards .star-project .detail_box @media (max-width: 480px) {
 	.workCards .workCard {
 		padding: 12px;
 	}

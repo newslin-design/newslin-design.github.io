@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="ATEN essentials - 專業KVM切換器、延長器及專業影音解決方案，提供企業級高品質產品與服務">
+    <meta name="keywords" content="ATEN, KVM, 切換器, 延長器, 專業影音, 企業解決方案">
+    <meta name="author" content="ATEN">
+    <meta property="og:title" content="ATEN essentials - 專業影音解決方案">
+    <meta property="og:description" content="探索ATEN essentials系列產品，提供專業的KVM切換器與影音解決方案">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="./images/og-image.jpg">
+    <title>ATEN essentials - 專業影音解決方案</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="./images/favicon.png">
+
+    <!-- Google Material Symbols -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- Preload critical resources -->
+    <link rel="preload" href="./images/aten_logo.png" as="image">
+
+    <!-- 媒體路徑配置 -->
+    <script>
+        // 統一管理媒體路徑,方便校稿時更動
+        window.MEDIA_PATH = './images/';
+    </script>
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header" role="banner">
+        <div class="header-container">
+            <div class="header-left">
+                <img src="./images/aten_logo.png" alt="ATEN Logo" class="header-logo">
+            </div>
+            <div class="header-right">
+                <a href="#" class="btn btn-outline btn-sm" aria-label="前往企業網站">to 2B website</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Session 1: Hero Banner -->
+        <section class="hero-section" id="hero" aria-label="主要橫幅">
+            <video class="hero-video" autoplay muted loop playsinline poster="./images/hero-poster.jpg"
+                aria-label="ATEN產品展示影片">
+                <source src="./videos/hero-video.mp4" type="video/mp4">
+                您的瀏覽器不支援影片播放
+            </video>
+            <div class="hero-overlay" aria-hidden="true"></div>
+            <div class="hero-content">
+                <h1 class="hero-title">ATEN essentials</h1>
+                <div class="hero-buttons">
+                    <a href="#video" class="btn btn-outline-white btn-lg" aria-label="觀看產品影片">
+                        Watch Video
+                    </a>
+                    <a href="#buy" class="btn btn-primary btn-lg" aria-label="立即購買">
+                        Buy Now
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Session 2: Product Bar -->
+        <section class="product-bar-section" id="products" aria-label="產品列表">
+            <div class="product-bar-container">
+                <!-- 左箭頭 -->
+                <button class="product-scroll-btn product-scroll-left" aria-label="向左滑動查看更多產品">
+                    <span class="material-symbols-outlined">chevron_left</span>
+                </button>
+
+                <!-- 右箭頭 -->
+                <button class="product-scroll-btn product-scroll-right" aria-label="向右滑動查看更多產品">
+                    <span class="material-symbols-outlined">chevron_right</span>
+                </button>
+
+                <div class="product-bar" role="list">
+                    <div class="product-list">
+                        <!-- Product Item 1 -->
+                        <article class="product-item" role="listitem" tabindex="0">
+                            <div class="product-image-circle">
+                                <img src="./images/product-1.jpg" alt="KVM切換器產品圖片">
+                            </div>
+                            <h3 class="product-name">KVM 切換器</h3>
+                        </article>
+
+                        <!-- Product Item 2 -->
+                        <article class="product-item" role="listitem" tabindex="0">
+                            <div class="product-image-circle">
+                                <img src="./images/product-2.jpg" alt="延長器產品圖片">
+                            </div>
+                            <h3 class="product-name">延長器</h3>
+                        </article>
+
+                        <!-- Product Item 3 -->
+                        <article class="product-item" role="listitem" tabindex="0">
+                            <div class="product-image-circle">
+                                <img src="./images/product-3.jpg" alt="影音切換器產品圖片">
+                            </div>
+                            <h3 class="product-name">影音切換器</h3>
+                        </article>
+
+                        <!-- Product Item 4 -->
+                        <article class="product-item" role="listitem" tabindex="0">
+                            <div class="product-image-circle">
+                                <img src="./images/product-4.jpg" alt="HDMI分配器產品圖片">
+                            </div>
+                            <h3 class="product-name">HDMI 分配器</h3>
+                        </article>
+
+                        <!-- Product Item 5 -->
+                        <article class="product-item" role="listitem" tabindex="0">
+                            <div class="product-image-circle">
+                                <img src="./images/product-5.jpg" alt="視訊轉換器產品圖片">
+                            </div>
+                            <h3 class="product-name">視訊轉換器</h3>
+                        </article>
+
+                        <!-- Product Item 6 -->
+                        <article class="product-item" role="listitem" tabindex="0">
+                            <div class="product-image-circle">
+                                <img src="./images/product-6.jpg" alt="控制系統產品圖片">
+                            </div>
+                            <h3 class="product-name">控制系統</h3>
+                        </article>
+
+                        <!-- Product Item 7 -->
+                        <article class="product-item" role="listitem" tabindex="0">
+                            <div class="product-image-circle">
+                                <img src="./images/product-7.jpg" alt="矩陣切換器產品圖片">
+                            </div>
+                            <h3 class="product-name">矩陣切換器</h3>
+                        </article>
+
+                        <!-- Product Item 8 -->
+                        <article class="product-item" role="listitem" tabindex="0">
+                            <div class="product-image-circle">
+                                <img src="./images/product-8.jpg" alt="專業線材產品圖片">
+                            </div>
+                            <h3 class="product-name">專業線材</h3>
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 更多 Sessions 將在這裡新增 -->
+
+        <!-- Session 3: Three Key Features -->
+        <section class="features-section" id="features" aria-label="產品三大特色">
+            <div class="container">
+                <div class="features-header text-center">
+                    <p class="features-subtitle">The essentials Mission</p>
+                    <h2 class="features-title">Professional Sync Made Simple</h2>
+                </div>
+
+                <div class="features-grid">
+                    <!-- Feature 1: EDID Sync -->
+                    <article class="feature-card">
+                        <img src="./images/feature-edid-sync.jpg" alt="EDID Sync 特色背景" class="feature-bg">
+                        <div class="feature-content">
+                            <h3 class="feature-name">EDID Sync™</h3>
+                            <p class="feature-description">Smooth start-ups, resolutions in harmony.</p>
+                        </div>
+                    </article>
+
+                    <!-- Feature 2: RapidSync -->
+                    <article class="feature-card">
+                        <img src="./images/feature-rapid-sync.jpg" alt="RapidSync 特色背景" class="feature-bg">
+                        <div class="feature-content">
+                            <h3 class="feature-name">RapidSync™</h3>
+                            <p class="feature-description">Swift AV switching, always in rhythm.</p>
+                        </div>
+                    </article>
+
+                    <!-- Feature 3: InstaSync -->
+                    <article class="feature-card">
+                        <img src="./images/feature-insta-sync.jpg" alt="InstaSync 特色背景" class="feature-bg">
+                        <div class="feature-content">
+                            <h3 class="feature-name">InstaSync™</h3>
+                            <p class="feature-description">Instant USB switching, right when you need it.</p>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- JavaScript -->
+    <script src="script.js"></script>
+</body>
+
+</html>
