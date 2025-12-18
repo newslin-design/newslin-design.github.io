@@ -369,14 +369,53 @@ a:hover {
         0 4px 16px rgba(0, 0, 0, 0.6);
 }
 
-.hero-cta {
+.hero-buttons {
     display: flex;
     gap: var(--spacing-md);
     justify-content: center;
+    align-items: center;
     flex-wrap: wrap;
 }
 
-/* ===== Floating Play Button ===== */
+.hero-buttons .btn-outline-orange {
+    background: linear-gradient(135deg, var(--primary-orange) 0%, rgba(255, 107, 53, 0) 100%);
+    border: 2px solid var(--primary-orange);
+    color: #ffffff;
+}
+
+.hero-buttons .btn-outline-orange:hover {
+    background: linear-gradient(135deg, var(--primary-orange-hover) 0%, rgba(255, 107, 53, 0.2) 100%);
+    border-color: var(--primary-orange-hover);
+    transform: translateY(-2px);
+}
+
+/* ===== Hero Play Button ===== */
+.hero-play-btn {
+    width: 70px;
+    height: 70px;
+    background: transparent;
+    border: 2px solid var(--primary-orange);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    box-shadow: 0 4px 20px rgba(255, 107, 53, 0.4);
+}
+
+.hero-play-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 30px rgba(255, 107, 53, 0.6);
+    background: rgba(255, 107, 53, 0.1);
+}
+
+.hero-play-btn .material-symbols-outlined {
+    font-size: 36px;
+    color: var(--primary-orange);
+}
+
+/* ===== Floating Play Button (保留舊樣式以防萬一) ===== */
 .floating-play-btn {
     position: fixed;
     bottom: 40px;
@@ -415,6 +454,15 @@ a:hover {
         margin-bottom: var(--spacing-lg);
     }
 
+    .hero-play-btn {
+        width: 60px;
+        height: 60px;
+    }
+
+    .hero-play-btn .material-symbols-outlined {
+        font-size: 30px;
+    }
+
     .floating-play-btn {
         bottom: 30px;
         right: 30px;
@@ -438,6 +486,15 @@ a:hover {
         margin-bottom: var(--spacing-lg);
     }
 
+    .hero-play-btn {
+        width: 56px;
+        height: 56px;
+    }
+
+    .hero-play-btn .material-symbols-outlined {
+        font-size: 28px;
+    }
+
     .floating-play-btn {
         bottom: 20px;
         right: 20px;
@@ -447,6 +504,120 @@ a:hover {
 
     .floating-play-btn .material-symbols-outlined {
         font-size: 28px;
+    }
+}
+
+
+/* ===== ===== 
+
+   Section 1.5: Overview
+   
+===== ===== */
+
+/* ===== Header ===== */
+.overview-section {
+    background-color: #000000;
+    padding: var(--spacing-xxl) 0;
+}
+
+.overview-header {
+    margin-bottom: var(--spacing-xl);
+}
+
+.overview-title {
+    font-size: clamp(1.8rem, 2.5vw, 3rem);
+    color: #ffffff;
+    font-weight: 700;
+}
+
+/* ===== Overview Cards ===== */
+.overview-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-lg);
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.overview-card {
+    background-color: var(--bg-dark-secondary);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    transition: all var(--transition-normal);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.overview-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 40px rgba(255, 107, 53, 0.3);
+    border-color: rgba(255, 107, 53, 0.3);
+}
+
+.overview-card-image {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background-color: var(--bg-dark-tertiary);
+}
+
+.overview-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--transition-normal);
+}
+
+.overview-card:hover .overview-img {
+    transform: scale(1.05);
+}
+
+.overview-card-content {
+    padding: var(--spacing-lg);
+}
+
+.overview-card-title {
+    font-size: clamp(1.25rem, 2vw, 1.5rem);
+    color: var(--primary-orange);
+    font-weight: 700;
+    margin-bottom: var(--spacing-xs);
+    line-height: 1.2;
+}
+
+.overview-card-subtitle {
+    font-size: clamp(0.875rem, 1vw, 1rem);
+    color: var(--text-primary);
+    font-weight: 500;
+    margin-bottom: var(--spacing-sm);
+    line-height: 1.4;
+}
+
+.overview-card-description {
+    font-size: clamp(0.8125rem, 0.9vw, 0.875rem);
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* ===== Responsive: 768px ===== */
+@media (max-width: 768px) {
+    .overview-cards {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-md);
+    }
+}
+
+/* ===== Responsive: 480px ===== */
+@media (max-width: 480px) {
+    .overview-card-content {
+        padding: var(--spacing-md);
+    }
+
+    .overview-card-title {
+        margin-bottom: 4px;
+    }
+
+    .overview-card-subtitle {
+        margin-bottom: var(--spacing-xs);
     }
 }
 
@@ -1260,7 +1431,219 @@ a:hover {
 
 /* ===== ===== 
 
-   Section 8: Technology
+   Section 8: Product Gallery
+   
+===== ===== */
+
+/* ===== Header ===== */
+.product-gallery-section {
+    background-color: #000000;
+    padding: var(--spacing-xxl) 0;
+}
+
+.product-gallery-header {
+    margin-bottom: var(--spacing-xl);
+}
+
+.product-gallery-title {
+    font-size: clamp(1.5rem, 2.5vw, 2.5rem);
+    color: #ffffff;
+    font-weight: 700;
+    max-width: 900px;
+    margin: 0 auto;
+    line-height: 1.3;
+}
+
+/* ===== Product Categories ===== */
+.product-categories {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xl);
+}
+
+.product-category {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: var(--spacing-xl);
+}
+
+.product-category:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.category-name {
+    font-size: clamp(1.125rem, 1.5vw, 1.375rem);
+    color: var(--primary-orange);
+    font-weight: 600;
+    margin-bottom: var(--spacing-md);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* ===== Product Carousel ===== */
+.product-carousel-wrapper {
+    position: relative;
+}
+
+.product-carousel {
+    display: flex;
+    gap: var(--spacing-md);
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    padding: var(--spacing-xs) 0;
+}
+
+.product-carousel::-webkit-scrollbar {
+    display: none;
+}
+
+/* ===== Product Mini Card ===== */
+.product-mini-card {
+    flex: 0 0 auto;
+    width: 200px;
+    background-color: transparent;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+}
+
+.product-mini-card:hover {
+    transform: translateY(-4px);
+}
+
+.product-mini-image-wrapper {
+    width: 100%;
+    aspect-ratio: 1;
+    background-color: transparent;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    margin-bottom: var(--spacing-sm);
+    transition: all var(--transition-normal);
+    border: 1px solid rgba(255, 107, 53, 0.15);
+}
+
+.product-mini-card:hover .product-mini-image-wrapper {
+    box-shadow: 0 0 30px rgba(255, 107, 53, 0.6),
+        0 0 60px rgba(255, 107, 53, 0.3);
+}
+
+.product-mini-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.product-mini-id {
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.4);
+    text-align: center;
+    margin-bottom: 2px;
+}
+
+.product-mini-name {
+    font-size: var(--font-size-base);
+    color: #ffffff;
+    line-height: 1.4;
+    text-align: center;
+    font-weight: 400;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* ===== Carousel Navigation ===== */
+.carousel-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 40px;
+    height: 40px;
+    background-color: rgba(255, 107, 53, 0.9);
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    z-index: 2;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.product-carousel-wrapper:hover .carousel-nav {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.carousel-nav:hover {
+    background-color: var(--primary-orange-hover);
+    transform: translateY(-50%) scale(1.1);
+}
+
+.carousel-nav.prev {
+    left: -20px;
+}
+
+.carousel-nav.next {
+    right: -20px;
+}
+
+.carousel-nav .material-symbols-outlined {
+    color: #ffffff;
+    font-size: 24px;
+}
+
+/* ===== Responsive: 768px ===== */
+@media (max-width: 768px) {
+    .product-mini-card {
+        width: 160px;
+    }
+
+    .carousel-nav {
+        width: 36px;
+        height: 36px;
+    }
+
+    .carousel-nav .material-symbols-outlined {
+        font-size: 20px;
+    }
+}
+
+/* ===== Responsive: 480px ===== */
+@media (max-width: 480px) {
+    .product-mini-card {
+        width: 140px;
+    }
+
+    .product-carousel {
+        gap: var(--spacing-sm);
+    }
+
+    .carousel-nav {
+        display: none;
+    }
+
+    .product-mini-id {
+        font-size: 0.75rem;
+    }
+
+    .product-mini-name {
+        font-size: 0.875rem;
+    }
+}
+
+
+/* ===== ===== 
+
+   Section 9: Technology
    
 ===== ===== */
 

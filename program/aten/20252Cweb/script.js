@@ -550,9 +550,77 @@ const init = () => {
     initScrollAnimations();     // Session 3: Scroll animations
     initProductShowcase();      // Session 3: Product showcase
     initScenariosTabs();        // Session 7: Scenarios tabs
+    initProductGallery();       // Session 8: Product gallery
 
     // Initialize global functionality
     initSmoothScroll();         // Smooth scrolling
+};
+
+// =====================================================
+// 
+// Session 8: Product Gallery
+// Dynamic product gallery with categories and carousel
+// 
+// =====================================================
+
+const initProductGallery = () => {
+    const categoriesContainer = document.querySelector('.product-categories');
+    if (!categoriesContainer) return;
+
+    // Group products by category
+    const productsByCategory = {};
+    productData.forEach(product => {
+        if (!productsByCategory[product.category]) {
+            productsByCategory[product.category] = [];
+        }
+        productsByCategory[product.category].push(product);
+    });
+
+    // Generate HTML for each category
+    Object.entries(productsByCategory).forEach(([category, products]) => {
+        const categoryDiv = document.createElement('div');
+        categoryDiv.className = 'product-category';
+
+        categoryDiv.innerHTML = `
+            <h3 class="category-name">${category}</h3>
+            <div class="product-carousel-wrapper">
+                <button class="carousel-nav prev" aria-label="Previous products">
+                    <span class="material-symbols-outlined">chevron_left</span>
+                </button>
+                <div class="product-carousel">
+                    ${products.map(product => `
+                        <a href="${product.url || '#'}" class="product-mini-card" target="_blank" rel="noopener noreferrer">
+                            <div class="product-mini-image-wrapper">
+                                <img src="${product.imageUrl}" alt="${product.name}" class="product-mini-image">
+                            </div>
+                            <div class="product-mini-id">${product.id}</div>
+                            <div class="product-mini-name">${product.name}</div>
+                        </a>
+                    `).join('')}
+                </div>
+                <button class="carousel-nav next" aria-label="Next products">
+                    <span class="material-symbols-outlined">chevron_right</span>
+                </button>
+            </div>
+        `;
+
+        categoriesContainer.appendChild(categoryDiv);
+
+        // Add carousel navigation functionality
+        const carousel = categoryDiv.querySelector('.product-carousel');
+        const prevBtn = categoryDiv.querySelector('.carousel-nav.prev');
+        const nextBtn = categoryDiv.querySelector('.carousel-nav.next');
+
+        if (prevBtn && nextBtn && carousel) {
+            prevBtn.addEventListener('click', () => {
+                carousel.scrollBy({ left: -400, behavior: 'smooth' });
+            });
+
+            nextBtn.addEventListener('click', () => {
+                carousel.scrollBy({ left: 400, behavior: 'smooth' });
+            });
+        }
+    });
 };
 
 // ===== DOM Ready =====

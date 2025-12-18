@@ -60,12 +60,73 @@
             </video>
             <div class="hero-overlay" aria-hidden="true"></div>
             <div class="hero-content">
-                <img src="./images/essentials.svg" alt="ATEN essentials" class="hero-logo">
+                <img src="./images/logo_orange.svg" alt="ATEN essentials" class="hero-logo">
                 <p class="hero-subtitle">Clean Desk. Clear Mind.</p>
                 <div class="hero-buttons">
-                    <a href="#quote" class="btn btn-outline-orange btn-lg" aria-label="Get a quote">
-                        Get Quote
+                    <a href="#products" class="btn btn-outline-orange btn-lg" aria-label="Shop now">
+                        Shop Now
                     </a>
+                    <button class="hero-play-btn" aria-label="Play video" id="playButton">
+                        <span class="material-symbols-outlined">play_arrow</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Session 1.5: Overview -->
+        <section class="overview-section" id="overview" aria-label="Product overview">
+            <div class="container">
+                <!-- Header -->
+                <div class="overview-header text-center">
+                    <h2 class="overview-title">Overview</h2>
+                </div>
+
+                <!-- Overview Cards -->
+                <div class="overview-cards">
+                    <!-- Card 1 - HDMI Splitter -->
+                    <div class="overview-card">
+                        <div class="overview-card-image">
+                            <img src="./images/overview_Vsplitter.png" alt="HDMI Splitter" class="overview-img">
+                        </div>
+                        <div class="overview-card-content">
+                            <h3 class="overview-card-title">HDMI Splitter</h3>
+                            <p class="overview-card-subtitle">One Source, Multiple Displays</p>
+                            <p class="overview-card-description">Distribute a single HDMI signal to multiple displays
+                                simultaneously with pristine 4K quality. Perfect for presentations, digital signage, and
+                                entertainment setups. Experience crystal-clear visuals across all connected screens
+                                without signal degradation.</p>
+                        </div>
+                    </div>
+
+                    <!-- Card 2 - HDMI Switch -->
+                    <div class="overview-card">
+                        <div class="overview-card-image">
+                            <img src="./images/overview_Vswitch.png" alt="HDMI Switch" class="overview-img">
+                        </div>
+                        <div class="overview-card-content">
+                            <h3 class="overview-card-title">HDMI Switch</h3>
+                            <p class="overview-card-subtitle">Multiple Sources, One Display</p>
+                            <p class="overview-card-description">Seamlessly switch between multiple HDMI sources on a
+                                single display with one-touch operation. Ideal for gaming setups, workstations, and home
+                                theaters. Enjoy instant switching without unplugging cables or compromising video
+                                quality.</p>
+                        </div>
+                    </div>
+
+                    <!-- Card 3 - USB Switch -->
+                    <div class="overview-card">
+                        <div class="overview-card-image">
+                            <img src="./images/overview_Uswitch.png" alt="USB Switch" class="overview-img">
+                        </div>
+                        <div class="overview-card-content">
+                            <h3 class="overview-card-title">USB Switch</h3>
+                            <p class="overview-card-subtitle">Share Peripherals Effortlessly</p>
+                            <p class="overview-card-description">Control multiple computers with a single set of USB
+                                peripherals. Switch between systems instantly while sharing keyboards, mice, and other
+                                devices. Maximize productivity and minimize desk clutter with seamless device sharing.
+                            </p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -261,7 +322,22 @@
             </div>
         </section>
 
-        <!-- Session 8: Technology -->
+        <!-- Session 8: Product Gallery -->
+        <section class="product-gallery-section" id="product-gallery" aria-label="Product gallery">
+            <div class="container">
+                <!-- Header -->
+                <div class="product-gallery-header text-center">
+                    <h2 class="product-gallery-title">Find your flow with the all-new ATEN essentials.</h2>
+                </div>
+
+                <!-- Product Categories -->
+                <div class="product-categories">
+                    <!-- Category groups will be dynamically generated -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Session 9: Technology -->
         <section class="technology-section" id="technology" aria-label="Technology features">
             <div class="container">
                 <!-- Header -->
@@ -314,11 +390,6 @@
             </div>
         </section>
     </main>
-
-    <!-- Floating Play Button -->
-    <button class="floating-play-btn" aria-label="Play video" id="playButton">
-        <span class="material-symbols-outlined">play_arrow</span>
-    </button>
 
     <!-- JavaScript -->
     <script src="script.js"></script>
