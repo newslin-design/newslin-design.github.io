@@ -246,6 +246,52 @@ const productData = [
         id: "UC3022",
         category: "Video Capture",
         name: "CAMLIVE™ PRO Dual HDMI to USB-C UVC Video Capture",
+
+        url: "#detail-uc3022",
+        eShopUrl: "#eshop-uc3022",
+        icons: "./images/productIcon.png",
+        imageUrl: "./images/product01.png",
+
+        currency: "NT$",
+        price: 4500,
+
+
+        features: [
+            "Mix and capture two non-HDCP HDMI videos",
+            "Intuitive Android / iOS App control",
+            "Supports real-time video editing"
+        ],
+
+        table: [
+            {
+                row: "connectors",
+                content: ""
+            }, {
+                row: "Selected",
+                content: ""
+            }, {
+                row: "Housing",
+                content: ""
+            }, {
+                row: "weight",
+                content: ""
+            }, {
+                row: "Dimensions(LxWxH)",
+                content: ""
+            }, {
+                row: "Compatible OS.",
+                content: ""
+            },
+        ]
+
+
+
+
+
+    }, {
+        id: "UC3022",
+        category: "Video Capture",
+        name: "CAMLIVE™ PRO Dual HDMI to USB-C UVC Video Capture",
         description: "Capture unencrypted HDMI video signal from your camcorder or DSLR up to 1080P @ 60Hz with two separate channels.",
         imageUrl: "./images/product01.png",
         url: "#detail-uc3022",
