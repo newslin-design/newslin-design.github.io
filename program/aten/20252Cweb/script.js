@@ -584,9 +584,6 @@ const initProductGallery = () => {
         categoryDiv.innerHTML = `
             <h3 class="category-name">${category}</h3>
             <div class="product-carousel-wrapper">
-                <button class="carousel-nav prev" aria-label="Previous products">
-                    <span class="material-symbols-outlined">chevron_left</span>
-                </button>
                 <div class="product-carousel">
                     ${products.map(product => `
                         <a href="${product.url || '#'}" class="product-mini-card" target="_blank" rel="noopener noreferrer">
@@ -598,29 +595,26 @@ const initProductGallery = () => {
                         </a>
                     `).join('')}
                 </div>
-                <button class="carousel-nav next" aria-label="Next products">
-                    <span class="material-symbols-outlined">chevron_right</span>
-                </button>
             </div>
         `;
 
         categoriesContainer.appendChild(categoryDiv);
-
-        // Add carousel navigation functionality
-        const carousel = categoryDiv.querySelector('.product-carousel');
-        const prevBtn = categoryDiv.querySelector('.carousel-nav.prev');
-        const nextBtn = categoryDiv.querySelector('.carousel-nav.next');
-
-        if (prevBtn && nextBtn && carousel) {
-            prevBtn.addEventListener('click', () => {
-                carousel.scrollBy({ left: -400, behavior: 'smooth' });
-            });
-
-            nextBtn.addEventListener('click', () => {
-                carousel.scrollBy({ left: 400, behavior: 'smooth' });
-            });
-        }
     });
+
+    // Add global navigation functionality
+    const galleryContent = document.querySelector('.product-gallery-content');
+    const prevBtn = galleryContent?.querySelector('.gallery-nav.prev');
+    const nextBtn = galleryContent?.querySelector('.gallery-nav.next');
+
+    if (prevBtn && nextBtn && categoriesContainer) {
+        prevBtn.addEventListener('click', () => {
+            categoriesContainer.scrollBy({ left: -600, behavior: 'smooth' });
+        });
+
+        nextBtn.addEventListener('click', () => {
+            categoriesContainer.scrollBy({ left: 600, behavior: 'smooth' });
+        });
+    }
 };
 
 // ===== DOM Ready =====

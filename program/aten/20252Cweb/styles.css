@@ -1455,20 +1455,38 @@ a:hover {
 }
 
 /* ===== Product Categories ===== */
+.product-gallery-content {
+    position: relative;
+}
+
 .product-categories {
     display: flex;
-    flex-direction: column;
-    gap: var(--spacing-xl);
+    flex-direction: row;
+    gap: 0;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.product-categories::-webkit-scrollbar {
+    display: none;
 }
 
 .product-category {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    padding-bottom: var(--spacing-xl);
+    flex: 0 0 auto;
+    padding: 0 var(--spacing-xl);
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+    min-width: fit-content;
+}
+
+.product-category:first-child {
+    padding-left: 0;
 }
 
 .product-category:last-child {
-    border-bottom: none;
-    padding-bottom: 0;
+    border-right: none;
+    padding-right: 0;
 }
 
 .category-name {
@@ -1478,21 +1496,62 @@ a:hover {
     margin-bottom: var(--spacing-md);
     text-transform: uppercase;
     letter-spacing: 0.05em;
+    white-space: nowrap;
+}
+
+/* ===== Global Navigation Buttons ===== */
+.gallery-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 50px;
+    height: 50px;
+    background-color: rgba(255, 107, 53, 0.9);
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    z-index: 10;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.product-gallery-content:hover .gallery-nav {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.gallery-nav:hover {
+    background-color: var(--primary-orange-hover);
+    transform: translateY(-50%) scale(1.1);
+}
+
+.gallery-nav.prev {
+    left: -25px;
+}
+
+.gallery-nav.next {
+    right: -25px;
+}
+
+.gallery-nav .material-symbols-outlined {
+    color: #ffffff;
+    font-size: 28px;
 }
 
 /* ===== Product Carousel ===== */
 .product-carousel-wrapper {
-    position: relative;
+    width: 100%;
 }
 
 .product-carousel {
     display: flex;
     gap: var(--spacing-md);
-    overflow-x: auto;
-    scroll-behavior: smooth;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
     padding: var(--spacing-xs) 0;
+    flex-wrap: nowrap;
 }
 
 .product-carousel::-webkit-scrollbar {
@@ -1558,62 +1617,45 @@ a:hover {
     overflow: hidden;
 }
 
-/* ===== Carousel Navigation ===== */
-.carousel-nav {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 40px;
-    height: 40px;
-    background-color: rgba(255, 107, 53, 0.9);
-    border: none;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all var(--transition-normal);
-    z-index: 2;
-    opacity: 0;
-    pointer-events: none;
-}
-
-.product-carousel-wrapper:hover .carousel-nav {
-    opacity: 1;
-    pointer-events: auto;
-}
-
-.carousel-nav:hover {
-    background-color: var(--primary-orange-hover);
-    transform: translateY(-50%) scale(1.1);
-}
-
-.carousel-nav.prev {
-    left: -20px;
-}
-
-.carousel-nav.next {
-    right: -20px;
-}
-
-.carousel-nav .material-symbols-outlined {
-    color: #ffffff;
-    font-size: 24px;
-}
-
 /* ===== Responsive: 768px ===== */
 @media (max-width: 768px) {
+    .product-categories {
+        flex-direction: column;
+        gap: var(--spacing-xl);
+    }
+
+    .product-category {
+        padding: 0;
+        border-right: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        padding-bottom: var(--spacing-xl);
+    }
+
+    .product-category:first-child {
+        padding-left: 0;
+    }
+
+    .product-category:last-child {
+        border-bottom: none;
+        padding-bottom: 0;
+    }
+
+    .product-carousel {
+        overflow-x: auto;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+
+    .product-carousel::-webkit-scrollbar {
+        display: none;
+    }
+
+    .gallery-nav {
+        display: none;
+    }
+
     .product-mini-card {
         width: 160px;
-    }
-
-    .carousel-nav {
-        width: 36px;
-        height: 36px;
-    }
-
-    .carousel-nav .material-symbols-outlined {
-        font-size: 20px;
     }
 }
 
@@ -1625,10 +1667,6 @@ a:hover {
 
     .product-carousel {
         gap: var(--spacing-sm);
-    }
-
-    .carousel-nav {
-        display: none;
     }
 
     .product-mini-id {
