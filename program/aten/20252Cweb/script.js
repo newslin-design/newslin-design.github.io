@@ -246,6 +246,52 @@ const productData = [
         id: "UC3022",
         category: "Video Capture",
         name: "CAMLIVE™ PRO Dual HDMI to USB-C UVC Video Capture",
+
+        url: "#detail-uc3022",
+        eShopUrl: "#eshop-uc3022",
+        icons: "./images/productIcon.png",
+        imageUrl: "./images/product01.png",
+
+        currency: "NT$",
+        price: 4500,
+
+
+        features: [
+            "Mix and capture two non-HDCP HDMI videos",
+            "Intuitive Android / iOS App control",
+            "Supports real-time video editing"
+        ],
+
+        table: [
+            {
+                row: "connectors",
+                content: ""
+            }, {
+                row: "Selected",
+                content: ""
+            }, {
+                row: "Housing",
+                content: ""
+            }, {
+                row: "weight",
+                content: ""
+            }, {
+                row: "Dimensions(LxWxH)",
+                content: ""
+            }, {
+                row: "Compatible OS.",
+                content: ""
+            },
+        ]
+
+
+
+
+
+    }, {
+        id: "UC3022",
+        category: "Video Capture",
+        name: "CAMLIVE™ PRO Dual HDMI to USB-C UVC Video Capture",
         description: "Capture unencrypted HDMI video signal from your camcorder or DSLR up to 1080P @ 60Hz with two separate channels.",
         imageUrl: "./images/product01.png",
         url: "#detail-uc3022",
@@ -550,9 +596,71 @@ const init = () => {
     initScrollAnimations();     // Session 3: Scroll animations
     initProductShowcase();      // Session 3: Product showcase
     initScenariosTabs();        // Session 7: Scenarios tabs
+    initProductGallery();       // Session 8: Product gallery
 
     // Initialize global functionality
     initSmoothScroll();         // Smooth scrolling
+};
+
+// =====================================================
+// 
+// Session 8: Product Gallery
+// Dynamic product gallery with categories and carousel
+// 
+// =====================================================
+
+const initProductGallery = () => {
+    const categoriesContainer = document.querySelector('.product-categories');
+    if (!categoriesContainer) return;
+
+    // Group products by category
+    const productsByCategory = {};
+    productData.forEach(product => {
+        if (!productsByCategory[product.category]) {
+            productsByCategory[product.category] = [];
+        }
+        productsByCategory[product.category].push(product);
+    });
+
+    // Generate HTML for each category
+    Object.entries(productsByCategory).forEach(([category, products]) => {
+        const categoryDiv = document.createElement('div');
+        categoryDiv.className = 'product-category';
+
+        categoryDiv.innerHTML = `
+            <h3 class="category-name">${category}</h3>
+            <div class="product-carousel-wrapper">
+                <div class="product-carousel">
+                    ${products.map(product => `
+                        <a href="${product.url || '#'}" class="product-mini-card" target="_blank" rel="noopener noreferrer">
+                            <div class="product-mini-image-wrapper">
+                                <img src="${product.imageUrl}" alt="${product.name}" class="product-mini-image">
+                            </div>
+                            <div class="product-mini-id">${product.id}</div>
+                            <div class="product-mini-name">${product.name}</div>
+                        </a>
+                    `).join('')}
+                </div>
+            </div>
+        `;
+
+        categoriesContainer.appendChild(categoryDiv);
+    });
+
+    // Add global navigation functionality
+    const galleryContent = document.querySelector('.product-gallery-content');
+    const prevBtn = galleryContent?.querySelector('.gallery-nav.prev');
+    const nextBtn = galleryContent?.querySelector('.gallery-nav.next');
+
+    if (prevBtn && nextBtn && categoriesContainer) {
+        prevBtn.addEventListener('click', () => {
+            categoriesContainer.scrollBy({ left: -600, behavior: 'smooth' });
+        });
+
+        nextBtn.addEventListener('click', () => {
+            categoriesContainer.scrollBy({ left: 600, behavior: 'smooth' });
+        });
+    }
 };
 
 // ===== DOM Ready =====

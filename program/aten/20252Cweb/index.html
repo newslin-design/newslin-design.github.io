@@ -60,12 +60,73 @@
             </video>
             <div class="hero-overlay" aria-hidden="true"></div>
             <div class="hero-content">
-                <img src="./images/essentials.svg" alt="ATEN essentials" class="hero-logo">
-                <p class="hero-subtitle">Easy Control. Pro Living.</p>
+                <img src="./images/logo_orange.svg" alt="ATEN essentials" class="hero-logo">
+                <p class="hero-subtitle">Clean Desk. Clear Mind.</p>
                 <div class="hero-buttons">
-                    <a href="#quote" class="btn btn-outline-orange btn-lg" aria-label="Get a quote">
-                        Get Quote
+                    <a href="#products" class="btn btn-outline-orange btn-lg" aria-label="Shop now">
+                        Shop Now
                     </a>
+                    <button class="hero-play-btn" aria-label="Play video" id="playButton">
+                        <span class="material-symbols-outlined">play_arrow</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Session 1.5: Overview -->
+        <section class="overview-section" id="overview" aria-label="Product overview">
+            <div class="container">
+                <!-- Header -->
+                <div class="overview-header text-center">
+                    <h2 class="overview-title">Overview</h2>
+                </div>
+
+                <!-- Overview Cards -->
+                <div class="overview-cards">
+                    <!-- Card 1 - HDMI Splitter -->
+                    <div class="overview-card">
+                        <div class="overview-card-image">
+                            <img src="./images/overview_Vsplitter.png" alt="HDMI Splitter" class="overview-img">
+                        </div>
+                        <div class="overview-card-content">
+                            <h3 class="overview-card-title">HDMI Splitter</h3>
+                            <p class="overview-card-subtitle">One Source, Multiple Displays</p>
+                            <p class="overview-card-description">Distribute a single HDMI signal to multiple displays
+                                simultaneously with pristine 4K quality. Perfect for presentations, digital signage, and
+                                entertainment setups. Experience crystal-clear visuals across all connected screens
+                                without signal degradation.</p>
+                        </div>
+                    </div>
+
+                    <!-- Card 2 - HDMI Switch -->
+                    <div class="overview-card">
+                        <div class="overview-card-image">
+                            <img src="./images/overview_Vswitch.png" alt="HDMI Switch" class="overview-img">
+                        </div>
+                        <div class="overview-card-content">
+                            <h3 class="overview-card-title">HDMI Switch</h3>
+                            <p class="overview-card-subtitle">Multiple Sources, One Display</p>
+                            <p class="overview-card-description">Seamlessly switch between multiple HDMI sources on a
+                                single display with one-touch operation. Ideal for gaming setups, workstations, and home
+                                theaters. Enjoy instant switching without unplugging cables or compromising video
+                                quality.</p>
+                        </div>
+                    </div>
+
+                    <!-- Card 3 - USB Switch -->
+                    <div class="overview-card">
+                        <div class="overview-card-image">
+                            <img src="./images/overview_Uswitch.png" alt="USB Switch" class="overview-img">
+                        </div>
+                        <div class="overview-card-content">
+                            <h3 class="overview-card-title">USB Switch</h3>
+                            <p class="overview-card-subtitle">Share Peripherals Effortlessly</p>
+                            <p class="overview-card-description">Control multiple computers with a single set of USB
+                                peripherals. Switch between systems instantly while sharing keyboards, mice, and other
+                                devices. Maximize productivity and minimize desk clutter with seamless device sharing.
+                            </p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -135,35 +196,39 @@
 
         <!-- Session 4: Compact Design -->
         <section class="feature-section" id="compact-design" aria-label="Compact design feature">
-            <div class="feature-background">
-                <img src="./images/essentials_landingpage_4.jpg" alt="Compact design" class="feature-bg-image">
-            </div>
             <div class="container">
                 <div class="feature-content text-center">
                     <h2 class="feature-title">Compact & Aesthetic Design</h2>
                     <p class="feature-subtitle">Tiny but Mighty — Sleeker Than an iPhone, Fits in Your Hand.</p>
+                </div>
+                <div class="feature-media">
+                    <img src="./images/essentials_landingpage_4.png" alt="Compact design" class="feature-media-image">
                 </div>
             </div>
         </section>
 
         <!-- Session 5: Easy Switch -->
         <section class="feature-section" id="easy-switch" aria-label="Easy switch feature">
-            <div class="feature-background">
-                <img src="./images/essentials_landingpage_5.jpg" alt="Easy switch" class="feature-bg-image">
-            </div>
             <div class="container">
                 <div class="feature-content text-center">
                     <h2 class="feature-title">One Touch. Easy Switch</h2>
                     <p class="feature-subtitle">LED-guided switching between 2 to 4 video sources on one display, <span
                             class="text-orange">with seamless USB device sharing across two PCs.</span></p>
                 </div>
+                <div class="feature-media">
+                    <video class="feature-media-video" autoplay loop muted playsinline>
+                        <source src="./images/VID_onetouch.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
             </div>
         </section>
 
         <!-- Session 6: Visual Quality -->
-        <section class="feature-section" id="visual-quality" aria-label="Visual quality feature">
+        <section class="feature-section feature-section-fullscreen" id="visual-quality"
+            aria-label="Visual quality feature">
             <div class="feature-background">
-                <img src="./images/essentials_landingpage_6.jpg" alt="Visual quality" class="feature-bg-image">
+                <img src="./images/essentials_landingpage_6.png" alt="Visual quality" class="feature-bg-image">
             </div>
             <div class="container">
                 <div class="feature-content text-center">
@@ -260,12 +325,102 @@
                 </div>
             </div>
         </section>
-    </main>
 
-    <!-- Floating Play Button -->
-    <button class="floating-play-btn" aria-label="Play video" id="playButton">
-        <span class="material-symbols-outlined">play_arrow</span>
-    </button>
+        <!-- Session 8: Product Gallery -->
+        <section class="product-gallery-section" id="product-gallery" aria-label="Product gallery">
+            <div class="container">
+                <!-- Header -->
+                <div class="product-gallery-header text-center">
+                    <h2 class="product-gallery-title">Find your flow with the all-new ATEN essentials.</h2>
+                </div>
+
+                <!-- Product Categories with Global Navigation -->
+                <div class="product-gallery-content">
+                    <button class="gallery-nav prev" aria-label="Scroll left">
+                        <span class="material-symbols-outlined">chevron_left</span>
+                    </button>
+                    <div class="product-categories">
+                        <!-- Category groups will be dynamically generated -->
+                    </div>
+                    <button class="gallery-nav next" aria-label="Scroll right">
+                        <span class="material-symbols-outlined">chevron_right</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Session 9: Technology -->
+        <section class="technology-section" id="technology" aria-label="Technology features">
+            <div class="container">
+                <!-- Header -->
+                <div class="technology-header text-center">
+                    <h2 class="technology-title">Professional Sync Made Simple</h2>
+                    <p class="technology-subtitle">Your essentials series is infused with unique technological
+                        capabilities, utilizing a strong technical foundation to deliver an elevated user experience.
+                    </p>
+                </div>
+
+                <!-- Technology Grid -->
+                <div class="technology-grid">
+                    <!-- Left Column - Tech 01 -->
+                    <div class="tech-card tech-card-large">
+                        <div class="tech-card-bg">
+                            <img src="./images/tech01.png" alt="EDID Sync technology" class="tech-bg-image">
+                        </div>
+                        <div class="tech-card-content">
+                            <h3 class="tech-name">EDID Sync<sup class="tech-tm">TM</sup></h3>
+                            <p class="tech-description">Seamless display compatibility with automatic EDID
+                                synchronization.</p>
+                        </div>
+                    </div>
+
+                    <!-- Right Column -->
+                    <div class="tech-card-group">
+                        <!-- Tech 02 - Top -->
+                        <div class="tech-card">
+                            <div class="tech-card-bg">
+                                <img src="./images/tech02.png" alt="RapidSync technology" class="tech-bg-image">
+                            </div>
+                            <div class="tech-card-content">
+                                <h3 class="tech-name">RapidSync<sup class="tech-tm">TM</sup></h3>
+                                <p class="tech-description">Lightning-fast source switching with near-zero latency.</p>
+                            </div>
+                        </div>
+
+                        <!-- Tech 03 - Bottom -->
+                        <div class="tech-card">
+                            <div class="tech-card-bg">
+                                <img src="./images/tech03.png" alt="InstaSync technology" class="tech-bg-image">
+                            </div>
+                            <div class="tech-card-content">
+                                <h3 class="tech-name">InstaSync<sup class="tech-tm">TM</sup></h3>
+                                <p class="tech-description">Instant plug-and-play with auto device recognition.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Session 10: Core Message -->
+        <section class="core-section" id="core-message" aria-label="ATEN essentials core message">
+            <div class="container">
+                <div class="core-image">
+                    <img src="./images/ess_core.png" alt="ATEN essentials core" class="core-image-img">
+                </div>
+                <div class="core-content">
+                    <p class="core-intro">ATEN essentials brings pro-grade tech into everyday life, creating stable,
+                        elegant connections that feel effortless.</p>
+                    <p class="core-description">Guided by the belief that great connections should be simple, our Video
+                        Switches, Video Splitters, and USB Switches make every setup feel natural and easy. Compact yet
+                        powerful, each device moves with you — from one-touch focus at your desk to flawless visual
+                        moments at home. Low-profile but reliable, essential technology that makes every connection
+                        smoother and every moment more meaningful.</p>
+                    <p class="core-tagline">Life can be professional, too.</p>
+                </div>
+            </div>
+        </section>
+    </main>
 
     <!-- JavaScript -->
     <script src="script.js"></script>
