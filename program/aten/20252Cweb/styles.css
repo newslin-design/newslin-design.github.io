@@ -865,15 +865,12 @@ a:hover {
     }
 
     .product-thumbnails {
-        gap: var(--spacing-sm);
+        gap: 6px;
     }
 
     .product-thumbnail {
-        width: calc(33.333% - var(--spacing-sm));
-    }
-
-    .product-thumbnails {
-        gap: 4px;
+        width: calc(33.333% - 12px);
+        min-width: auto;
     }
 
     .product-thumbnail-name {
