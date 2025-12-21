@@ -134,15 +134,15 @@ const initSunriseAnimation = () => {
         const scrollProgress = Math.max(0, Math.min(1, (scrollPosition - scrollStart) / scrollRange));
 
         // Animation timeline:
-        // 0.0 - 0.3: Sun rises from bottom
-        // 0.3 - 0.5: Text fades in and moves up
-        // 0.7 - 1.0: Everything fades out
+        // 0.0 - 0.6: Sun rises from bottom
+        // 0.0 - 0.8: Text fades in and moves up
+        // 0.8+: Text continues moving up and fades out
 
-        // Sun animation (0.0 - 0.7)
+        // Sun animation (0.0 - 0.6)
         if (scrollProgress < 0.6) {
             // Phase 1: Sun rising
             const sunProgress = scrollProgress / 0.3;
-            const sunY = -80 + (sunProgress * 25); // From 50% to 0% (bottom to visible)
+            const sunY = -80 + (sunProgress * 25); // From -80% to -55%
             sunWrapper.style.bottom = `${sunY}%`;
             sunWrapper.style.opacity = sunProgress;
         } else if (scrollProgress < 0.6) {
@@ -156,11 +156,7 @@ const initSunriseAnimation = () => {
             sunWrapper.style.opacity = 1 - fadeProgress;
         }
 
-        console.log(sunWrapper.style.bottom, sunriseText.style.transform, scrollProgress)
-
-
-
-        // Text animation (0.3 - 0.7)
+        // Text animation
         if (scrollProgress < 0) {
             // Before text appears
             sunriseText.style.opacity = '0';
@@ -171,17 +167,11 @@ const initSunriseAnimation = () => {
             const textY = -450 + (textProgress * 120);
             sunriseText.style.opacity = textProgress;
             sunriseText.style.transform = `translate(-50%, ${textY}%)`;
-        } else if (scrollProgress < 0.8) {
-
-
         } else {
-            // Phase 3: Text fading out
-
+            // Phase 3: Text continues moving up and fades out
             const textProgress = (scrollProgress - 0.4) / 0.2;
-
             const textY = -130 - (textProgress * 50);
             sunriseText.style.transform = `translate(-50%, ${textY}%)`;
-
         }
     };
 
@@ -273,7 +263,7 @@ const productData = [
     {
         id: "UC3022",
         category: "Video Capture",
-        name: `CAMLIVE™ PRO Dual HDMI to USB-C UVC Video Capture`,
+        name: "CAMLIVE™ PRO Dual HDMI to USB-C UVC Video Capture",
         url: "#detail-uc3022",
         eShopUrl: "#eshop-uc3022",
         icons: "./images/productIcon.png",
@@ -288,7 +278,7 @@ const productData = [
         table: [
             {
                 row: "Connectors",
-                content: "2 x HDMI Type-A Female 1 x USB Type-C Female"
+                content: "2 x HDMI Type-A Female<br>1 x USB Type-C Female"
             },
             {
                 row: "Max Resolution",
