@@ -136,7 +136,7 @@ const initSunriseAnimation = () => {
         // Animation timeline:
         // 0.0 - 0.6: Sun rises from bottom
         // 0.0 - 0.8: Text fades in and moves up
-        // 0.8+: Text continues moving up and fades out
+        // 0.85 - 1.0: Text fades out (delayed)
 
         // Sun animation (0.0 - 0.6)
         if (scrollProgress < 0.6) {
@@ -145,13 +145,13 @@ const initSunriseAnimation = () => {
             const sunY = -80 + (sunProgress * 25); // From -80% to -55%
             sunWrapper.style.bottom = `${sunY}%`;
             sunWrapper.style.opacity = sunProgress;
-        } else if (scrollProgress < 0.6) {
+        } else if (scrollProgress < 0.5) {
             // Phase 2: Sun fully risen
             sunWrapper.style.bottom = '-50%';
             sunWrapper.style.opacity = '0.6';
         } else {
             // Phase 3: Sun fading out
-            const fadeProgress = (scrollProgress - 0.7) / 0.3;
+            const fadeProgress = (scrollProgress - 0.7) / 0.1;
             sunWrapper.style.bottom = '0%';
             sunWrapper.style.opacity = 1 - fadeProgress;
         }
@@ -161,16 +161,18 @@ const initSunriseAnimation = () => {
             // Before text appears
             sunriseText.style.opacity = '0';
             sunriseText.style.transform = 'translate(-50%, -40%)';
-        } else if (scrollProgress < 0.8) {
-            // Phase 2: Text fading in and moving up
-            const textProgress = (scrollProgress - 0.4) / 0.2;
+        } else if (scrollProgress < 0.85) {
+            // Phase 1: Text fading in and moving up (0.0 - 0.85)
+            const textProgress = (scrollProgress - 0.4) / 0.35;
             const textY = -450 + (textProgress * 120);
-            sunriseText.style.opacity = textProgress;
+            sunriseText.style.opacity = Math.min(1, textProgress);
             sunriseText.style.transform = `translate(-50%, ${textY}%)`;
         } else {
-            // Phase 3: Text continues moving up and fades out
+            // Phase 2: Text fading out (0.85 - 1.0) - delayed fadeout
+            const fadeProgress = (scrollProgress - 0.85) / 0.1;
             const textProgress = (scrollProgress - 0.4) / 0.2;
-            const textY = -130 - (textProgress * 50);
+            const textY = -230 - (textProgress * 25);
+            sunriseText.style.opacity = 1 - fadeProgress; // Fade out
             sunriseText.style.transform = `translate(-50%, ${textY}%)`;
         }
     };
@@ -959,14 +961,12 @@ const generateComparisonTable = (category) => {
     let html = '<thead><tr>';
 
     // Header row with product images
-    html += '<th></th>'; // Empty cell for row labels
     products.forEach(product => {
         html += `<th><img src="${product.imageUrl}" alt="${product.name}" class="spec-product-image"></th>`;
     });
     html += '</tr><tr>';
 
     // Product names row
-    html += '<th class="spec-row-label">Product</th>';
     products.forEach(product => {
         html += `<th><div class="spec-product-name">${product.name}</div></th>`;
     });
@@ -975,12 +975,14 @@ const generateComparisonTable = (category) => {
     // Specification rows
     rowLabels.forEach(rowLabel => {
         html += '<tr>';
-        html += `<td class="spec-row-label">${rowLabel}</td>`;
 
         products.forEach(product => {
             const tableItem = product.table?.find(item => item.row === rowLabel);
             const content = tableItem ? tableItem.content : '—';
-            html += `<td class="spec-row-content">${content}</td>`;
+            html += `<td class="spec-cell">
+                <div class="spec-row-label">${rowLabel}</div>
+                <div class="spec-row-content">${content}</div>
+            </td>`;
         });
 
         html += '</tr>';
