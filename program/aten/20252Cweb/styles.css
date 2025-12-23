@@ -653,7 +653,7 @@ a:hover {
     bottom: -50%;
     left: 50%;
     transform: translateX(-50%);
-    width: 3800px;
+    width: 5000px;
     height: 3200px;
     opacity: 0;
     transition: none;
@@ -770,6 +770,11 @@ a:hover {
 
 /* ===== Responsive: 768px ===== */
 @media (max-width: 768px) {
+    .sun-wrapper {
+        width: 3500px;
+        height: 2400px;
+    }
+
     .sun-glow {
         filter: blur(40px);
     }
@@ -780,6 +785,11 @@ a:hover {
     .sunrise-section {
         height: 150vh;
         margin-bottom: -150vw;
+    }
+
+    .sun-wrapper {
+        width: 2500px;
+        height: 1800px;
     }
 }
 
