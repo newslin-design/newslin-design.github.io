@@ -145,13 +145,13 @@ const initSunriseAnimation = () => {
             const sunY = -80 + (sunProgress * 25); // From -80% to -55%
             sunWrapper.style.bottom = `${sunY}%`;
             sunWrapper.style.opacity = sunProgress;
-        } else if (scrollProgress < 0.5) {
+        } else if (scrollProgress < 0.6) {
             // Phase 2: Sun fully risen
             sunWrapper.style.bottom = '-50%';
             sunWrapper.style.opacity = '0.6';
         } else {
             // Phase 3: Sun fading out
-            const fadeProgress = (scrollProgress - 0.7) / 0.1;
+            const fadeProgress = (scrollProgress - 0.7) / 0.3;
             sunWrapper.style.bottom = '0%';
             sunWrapper.style.opacity = 1 - fadeProgress;
         }
@@ -163,7 +163,7 @@ const initSunriseAnimation = () => {
             sunriseText.style.transform = 'translate(-50%, -40%)';
         } else if (scrollProgress < 0.85) {
             // Phase 1: Text fading in and moving up (0.0 - 0.85)
-            const textProgress = (scrollProgress - 0.4) / 0.35;
+            const textProgress = (scrollProgress - 0.4) / 0.2;
             const textY = -450 + (textProgress * 120);
             sunriseText.style.opacity = Math.min(1, textProgress);
             sunriseText.style.transform = `translate(-50%, ${textY}%)`;
@@ -171,7 +171,7 @@ const initSunriseAnimation = () => {
             // Phase 2: Text fading out (0.85 - 1.0) - delayed fadeout
             const fadeProgress = (scrollProgress - 0.85) / 0.1;
             const textProgress = (scrollProgress - 0.4) / 0.2;
-            const textY = -230 - (textProgress * 25);
+            const textY = -130 - (textProgress * 25);
             sunriseText.style.opacity = 1 - fadeProgress; // Fade out
             sunriseText.style.transform = `translate(-50%, ${textY}%)`;
         }
@@ -261,165 +261,36 @@ const initScrollAnimations = () => {
 
 // Product Data
 const productData = [
-    // Video Capture Category
+    // HDMI Splitter Category
     {
-        id: "UC3022",
-        category: "Video Capture",
-        name: "CAMLIVE™ PRO Dual HDMI to USB-C UVC Video Capture",
-        url: "#detail-uc3022",
-        eShopUrl: "#eshop-uc3022",
+        id: "VS4812",
+        category: "HDMI Splitter",
+        name: "2-Port True 4K HDMI Splitter",
+        url: "#detail-vs4812",
+        eShopUrl: "#eshop-vs4812",
         icons: "./images/productIcon.png",
         imageUrl: "./images/product01.png",
         currency: "NT$",
-        price: 4500,
-        features: [
-            "Mix and capture two non-HDCP HDMI videos",
-            "Intuitive Android / iOS App control",
-            "Supports real-time video editing"
-        ],
-        table: [
-            {
-                row: "Connectors",
-                content: "2 x HDMI Type-A Female<br>1 x USB Type-C Female"
-            },
-            {
-                row: "Max Resolution",
-                content: "1080p @ 60Hz"
-            },
-            {
-                row: "Housing",
-                content: "Plastic"
-            },
-            {
-                row: "Weight",
-                content: "150g"
-            },
-            {
-                row: "Dimensions (L×W×H)",
-                content: "6.1 x 5.65 x 1.52 cm"
-            },
-            {
-                row: "Compatible OS",
-                content: "Windows | macOS | Linux"
-            }
-        ]
-    },
-    {
-        id: "UC3020",
-        category: "Video Capture",
-        name: "CAMLIVE™ HDMI to USB-C UVC Video Capture",
-        url: "#detail-uc3020",
-        eShopUrl: "#eshop-uc3020",
-        icons: "./images/productIcon.png",
-        imageUrl: "./images/product02.png",
-        currency: "NT$",
         price: 3200,
         features: [
-            "4K HDMI input support",
-            "Zero latency pass-through",
-            "Compatible with major streaming software"
+            "EDID Sync™ – avoids boot-up display issues & optimizes resolutions",
+            "One HDMI source shares two True 4K displays",
+            "LPCM 7.1, Dolby® & DTS-HD Master Audio™",
+            "HDMI out 2 on/off via pushbutton"
         ],
+        description: "Your go-to HDMI splitter for home entertainment, workstation, and professional AV.",
         table: [
             {
                 row: "Connectors",
-                content: "1 x HDMI Type-A Female<br>1 x USB Type-C Female"
-            },
-            {
-                row: "Max Resolution",
-                content: "4K @ 30Hz"
-            },
-            {
-                row: "Housing",
-                content: "Aluminum"
-            },
-            {
-                row: "Weight",
-                content: "95g"
-            },
-            {
-                row: "Dimensions (L×W×H)",
-                content: "5.2 x 4.8 x 1.3 cm"
-            },
-            {
-                row: "Compatible OS",
-                content: "Windows | macOS | Linux"
-            }
-        ]
-    },
-    {
-        id: "UC3025",
-        category: "Video Capture",
-        name: "StreamLIVE™ HD Multi-Format Video Capture",
-        url: "#detail-uc3025",
-        eShopUrl: "#eshop-uc3025",
-        icons: "./images/productIcon.png",
-        imageUrl: "./images/product03.png",
-        currency: "NT$",
-        price: 5800,
-        features: [
-            "Multi-format input support (HDMI, SDI, Component)",
-            "Hardware encoding for smooth performance",
-            "Professional audio mixing capabilities"
-        ],
-        table: [
-            {
-                row: "Connectors",
-                content: "1 x HDMI<br>1 x SDI<br>1 x Component<br>1 x USB 3.0"
-            },
-            {
-                row: "Max Resolution",
-                content: "1080p @ 60Hz"
-            },
-            {
-                row: "Housing",
-                content: "Metal"
-            },
-            {
-                row: "Weight",
-                content: "420g"
-            },
-            {
-                row: "Dimensions (L×W×H)",
-                content: "14.5 x 10.2 x 3.8 cm"
-            },
-            {
-                row: "Compatible OS",
-                content: "Windows | macOS"
-            }
-        ]
-    },
-    // KVM Switches Category
-    {
-        id: "CS1922",
-        category: "KVM Switches",
-        name: "2-Port USB 3.0 4K DisplayPort KVMP™ Switch",
-        url: "#detail-cs1922",
-        eShopUrl: "#eshop-cs1922",
-        icons: "./images/productIcon.png",
-        imageUrl: "./images/product04.png",
-        currency: "NT$",
-        price: 6500,
-        features: [
-            "4K @ 60Hz DisplayPort support",
-            "USB 3.0 SuperSpeed hub",
-            "Audio mixing and switching"
-        ],
-        table: [
-            {
-                row: "Computer Connections",
-                content: "2"
-            },
-            {
-                row: "Port Selection",
-                content: "Pushbutton | Hotkey"
+                content: "1 x HDMI Input<br>2 x HDMI Output"
             },
             {
                 row: "Max Resolution",
                 content: "4K @ 60Hz (4:4:4)"
             },
             {
-                row: "USB Ports",
-                content: "4 x USB 3.0"
+                row: "Audio Support",
+                content: "LPCM 7.1, Dolby®, DTS-HD"
             },
             {
                 row: "Housing",
@@ -427,49 +298,43 @@ const productData = [
             },
             {
                 row: "Weight",
-                content: "680g"
+                content: "280g"
             },
             {
                 row: "Dimensions (L×W×H)",
-                content: "27.8 x 8.3 x 5.2 cm"
-            },
-            {
-                row: "Compatible OS",
-                content: "Windows | macOS | Linux"
+                content: "13.2 x 7.5 x 2.4 cm"
             }
         ]
     },
     {
-        id: "CS1942DP",
-        category: "KVM Switches",
-        name: "4-Port USB 3.0 Dual Display KVMP™ Switch",
-        url: "#detail-cs1942dp",
-        eShopUrl: "#eshop-cs1942dp",
+        id: "VS4814",
+        category: "HDMI Splitter",
+        name: "4-Port True 4K HDMI Splitter",
+        url: "#detail-vs4814",
+        eShopUrl: "#eshop-vs4814",
         icons: "./images/productIcon.png",
-        imageUrl: "./images/product05.png",
+        imageUrl: "./images/product02.png",
         currency: "NT$",
-        price: 8900,
+        price: 4500,
         features: [
-            "Dual 4K display support",
-            "4-port USB 3.0 hub",
-            "Independent audio switching"
+            "EDID Sync™ – avoids boot-up display issues & optimizes resolutions",
+            "One HDMI source shares four True 4K displays",
+            "LPCM 7.1, Dolby® & DTS-HD Master Audio™",
+            "Compact and aesthetic design with slick accent light"
         ],
+        description: "Your go-to HDMI splitter for home entertainment, commercial, and professional AV.",
         table: [
             {
-                row: "Computer Connections",
-                content: "4"
-            },
-            {
-                row: "Port Selection",
-                content: "Pushbutton | Hotkey | RS-232"
+                row: "Connectors",
+                content: "1 x HDMI Input<br>4 x HDMI Output"
             },
             {
                 row: "Max Resolution",
-                content: "Dual 4K @ 60Hz (4:4:4)"
+                content: "4K @ 60Hz (4:4:4)"
             },
             {
-                row: "USB Ports",
-                content: "4 x USB 3.0"
+                row: "Audio Support",
+                content: "LPCM 7.1, Dolby®, DTS-HD"
             },
             {
                 row: "Housing",
@@ -477,146 +342,96 @@ const productData = [
             },
             {
                 row: "Weight",
-                content: "1.2kg"
+                content: "350g"
             },
             {
                 row: "Dimensions (L×W×H)",
-                content: "43.5 x 16.2 x 5.5 cm"
-            },
-            {
-                row: "Compatible OS",
-                content: "Windows | macOS | Linux"
+                content: "21.8 x 7.5 x 2.4 cm"
             }
         ]
     },
     {
-        id: "CS782DP",
-        category: "KVM Switches",
-        name: "2-Port USB DisplayPort Cable KVM Switch",
-        url: "#detail-cs782dp",
-        eShopUrl: "#eshop-cs782dp",
+        id: "VS5812",
+        category: "HDMI Splitter",
+        name: "2-Port 8K HDMI Splitter",
+        url: "#detail-vs5812",
+        eShopUrl: "#eshop-vs5812",
         icons: "./images/productIcon.png",
-        imageUrl: "./images/product06.png",
+        imageUrl: "./images/product03.png",
+        currency: "NT$",
+        price: 5800,
+        features: [
+            "EDID Sync™ – avoids boot-up display issues & optimizes resolutions",
+            "One HDMI source shares two 8K@60 Hz / 4K@120 Hz displays",
+            "LPCM 7.1, Dolby® & DTS-HD Master Audio™",
+            "Supports VRR & ALLM"
+        ],
+        description: "Your go-to HDMI splitter for home theater, gaming, and professional AV.",
+        table: [
+            {
+                row: "Connectors",
+                content: "1 x HDMI Input<br>2 x HDMI Output"
+            },
+            {
+                row: "Max Resolution",
+                content: "8K @ 60Hz / 4K @ 120Hz"
+            },
+            {
+                row: "Audio Support",
+                content: "LPCM 7.1, Dolby®, DTS-HD"
+            },
+            {
+                row: "Gaming Features",
+                content: "VRR, ALLM"
+            },
+            {
+                row: "Housing",
+                content: "Metal"
+            },
+            {
+                row: "Weight",
+                content: "295g"
+            },
+            {
+                row: "Dimensions (L×W×H)",
+                content: "13.2 x 7.5 x 2.4 cm"
+            }
+        ]
+    },
+    // HDMI Switch Category
+    {
+        id: "VS4841",
+        category: "HDMI Switch",
+        name: "4-Port True 4K HDMI Switch",
+        url: "#detail-vs4841",
+        eShopUrl: "#eshop-vs4841",
+        icons: "./images/productIcon.png",
+        imageUrl: "./images/product04.png",
         currency: "NT$",
         price: 3800,
         features: [
-            "DisplayPort 1.2 compliant",
-            "Compact cable design",
-            "Hotkey and pushbutton switching"
+            "RapidSync™ – high-speed AV switching",
+            "Switches among four HDMI sources on a single True 4K display",
+            "Dolby® & DTS-HD Master Audio™",
+            "Video switching via pushbutton or IR remote"
         ],
+        description: "Your go-to HDMI switch for home entertainment, professional AV, and efficient source management.",
         table: [
             {
-                row: "Computer Connections",
-                content: "2"
-            },
-            {
-                row: "Port Selection",
-                content: "Pushbutton | Hotkey"
+                row: "Connectors",
+                content: "4 x HDMI Input<br>1 x HDMI Output"
             },
             {
                 row: "Max Resolution",
-                content: "4K @ 60Hz (4:2:0)"
+                content: "4K @ 60Hz (4:4:4)"
             },
             {
-                row: "USB Ports",
-                content: "2 x USB 2.0"
+                row: "Audio Support",
+                content: "Dolby®, DTS-HD"
             },
             {
-                row: "Housing",
-                content: "Plastic"
-            },
-            {
-                row: "Weight",
-                content: "180g"
-            },
-            {
-                row: "Dimensions (L×W×H)",
-                content: "7.06 x 7.37 x 2.54 cm"
-            },
-            {
-                row: "Compatible OS",
-                content: "Windows | macOS | Linux"
-            }
-        ]
-    },
-    // Video Converters Category
-    {
-        id: "VC480",
-        category: "Video Converters",
-        name: "DisplayPort to HDMI 4K Converter",
-        url: "#detail-vc480",
-        eShopUrl: "#eshop-vc480",
-        icons: "./images/productIcon.png",
-        imageUrl: "./images/product07.png",
-        currency: "NT$",
-        price: 2100,
-        features: [
-            "4K @ 30Hz conversion",
-            "HDCP compliant",
-            "Compact and portable design"
-        ],
-        table: [
-            {
-                row: "Input",
-                content: "1 x DisplayPort Female"
-            },
-            {
-                row: "Output",
-                content: "1 x HDMI Type-A Female"
-            },
-            {
-                row: "Max Resolution",
-                content: "4K @ 30Hz"
-            },
-            {
-                row: "HDCP Support",
-                content: "HDCP 1.4"
-            },
-            {
-                row: "Housing",
-                content: "Plastic"
-            },
-            {
-                row: "Weight",
-                content: "48g"
-            },
-            {
-                row: "Dimensions (L×W×H)",
-                content: "5.59 x 5.33 x 1.78 cm"
-            }
-        ]
-    },
-    {
-        id: "VC986",
-        category: "Video Converters",
-        name: "4K HDMI to 3G-SDI Converter",
-        url: "#detail-vc986",
-        eShopUrl: "#eshop-vc986",
-        icons: "./images/productIcon.png",
-        imageUrl: "./images/product08.png",
-        currency: "NT$",
-        price: 4200,
-        features: [
-            "4K HDMI to 3G-SDI conversion",
-            "Supports embedded audio",
-            "Loop-through output"
-        ],
-        table: [
-            {
-                row: "Input",
-                content: "1 x HDMI Type-A Female"
-            },
-            {
-                row: "Output",
-                content: "2 x SDI BNC Female (Loop-through)"
-            },
-            {
-                row: "Max Resolution",
-                content: "4K @ 30Hz"
-            },
-            {
-                row: "HDCP Support",
-                content: "HDCP 1.4"
+                row: "Switching",
+                content: "Pushbutton, IR Remote"
             },
             {
                 row: "Housing",
@@ -624,57 +439,63 @@ const productData = [
             },
             {
                 row: "Weight",
-                content: "285g"
+                content: "320g"
             },
             {
                 row: "Dimensions (L×W×H)",
-                content: "11.2 x 7.4 x 2.8 cm"
+                content: "21.8 x 7.5 x 2.4 cm"
             }
         ]
     },
     {
-        id: "VC882",
-        category: "Video Converters",
-        name: "HDMI to VGA Scaler with Audio",
-        url: "#detail-vc882",
-        eShopUrl: "#eshop-vc882",
+        id: "VS5821",
+        category: "HDMI Switch",
+        name: "2-Port 8K HDMI Switch",
+        url: "#detail-vs5821",
+        eShopUrl: "#eshop-vs5821",
         icons: "./images/productIcon.png",
-        imageUrl: "./images/product09.png",
+        imageUrl: "./images/product05.png",
         currency: "NT$",
-        price: 2800,
+        price: 4200,
         features: [
-            "HDMI to VGA conversion with scaling",
-            "3.5mm audio output",
-            "Multiple resolution support"
+            "RapidSync™ – high-speed AV switching",
+            "8K@60 Hz / 4K@120 Hz exquisite visual clarity",
+            "LPCM 7.1, Dolby Digital & DTS-HD Master Audio",
+            "Supports VRR & ALLM"
         ],
+        description: "Your go-to HDMI switch for modern gaming, personal entertainment, and professional AV.",
         table: [
             {
-                row: "Input",
-                content: "1 x HDMI Type-A Female"
-            },
-            {
-                row: "Output",
-                content: "1 x VGA Female<br>1 x 3.5mm Audio Jack"
+                row: "Connectors",
+                content: "2 x HDMI Input<br>1 x HDMI Output"
             },
             {
                 row: "Max Resolution",
-                content: "1080p @ 60Hz"
+                content: "8K @ 60Hz / 4K @ 120Hz"
             },
             {
-                row: "HDCP Support",
-                content: "HDCP 1.2"
+                row: "Audio Support",
+                content: "LPCM 7.1, Dolby, DTS-HD"
+            },
+            {
+                row: "Gaming Features",
+                content: "VRR, ALLM"
+            },
+            {
+                row: "Switching",
+                content: "Pushbutton, Auto"
             },
             {
                 row: "Housing",
-                content: "Plastic"
+                content: "Metal"
             },
             {
                 row: "Weight",
-                content: "135g"
+                content: "265g"
             },
             {
                 row: "Dimensions (L×W×H)",
-                content: "8.9 x 5.6 x 2.2 cm"
+                content: "13.2 x 7.5 x 2.4 cm"
             }
         ]
     }
@@ -720,7 +541,9 @@ const initProductShowcase = () => {
         productThumbnails.innerHTML = filteredProducts.map((product, index) => `
             <div class="product-thumbnail ${index === currentProductIndex ? 'active' : ''}" 
                  data-index="${index}">
-                <img src="${product.imageUrl}" alt="${product.name}" class="product-thumbnail-image">
+                <div class="product-thumbnail-image-wrapper">
+                    <img src="${product.imageUrl}" alt="${product.name}" class="product-thumbnail-image">
+                </div>
                 <div class="product-thumbnail-id">${product.id}</div>
                 <div class="product-thumbnail-name">${product.name}</div>
             </div>
@@ -962,7 +785,11 @@ const generateComparisonTable = (category) => {
 
     // Header row with product images
     products.forEach(product => {
-        html += `<th><img src="${product.imageUrl}" alt="${product.name}" class="spec-product-image"></th>`;
+        html += `<th>
+            <div class="spec-product-image-wrapper">
+                <img src="${product.imageUrl}" alt="${product.name}" class="spec-product-image">
+            </div>
+        </th>`;
     });
     html += '</tr><tr>';
 
