@@ -224,6 +224,21 @@ const initScenariosTabs = () => {
             }
         });
     });
+
+    // Add click event to scenario dots for product navigation
+    const scenarioDots = document.querySelectorAll('.scenario-dot');
+    scenarioDots.forEach(dot => {
+        dot.addEventListener('click', (e) => {
+            e.stopPropagation(); // Prevent event bubbling
+            const productUrl = dot.getAttribute('data-product-url');
+            if (productUrl) {
+                window.location.href = productUrl;
+            }
+        });
+
+        // Add cursor pointer style
+        dot.style.cursor = 'pointer';
+    });
 };
 
 // =====================================================
@@ -268,7 +283,7 @@ const productData = [
         name: "2-Port True 4K HDMI Splitter",
         url: "#detail-vs4812",
         eShopUrl: "#eshop-vs4812",
-        icons: "./images/productIcon.png",
+        icons: "./images/VS4812_Icons.png",
         imageUrl: "./images/product01.png",
         currency: "NT$",
         price: 3200,
@@ -312,7 +327,7 @@ const productData = [
         name: "4-Port True 4K HDMI Splitter",
         url: "#detail-vs4814",
         eShopUrl: "#eshop-vs4814",
-        icons: "./images/productIcon.png",
+        icons: "./images/VS4814_Icons.png",
         imageUrl: "./images/product02.png",
         currency: "NT$",
         price: 4500,
@@ -356,7 +371,7 @@ const productData = [
         name: "2-Port 8K HDMI Splitter",
         url: "#detail-vs5812",
         eShopUrl: "#eshop-vs5812",
-        icons: "./images/productIcon.png",
+        icons: "./images/VS5812_Icons.png",
         imageUrl: "./images/product03.png",
         currency: "NT$",
         price: 5800,
@@ -405,7 +420,7 @@ const productData = [
         name: "4-Port True 4K HDMI Switch",
         url: "#detail-vs4841",
         eShopUrl: "#eshop-vs4841",
-        icons: "./images/productIcon.png",
+        icons: "./images/VS4841_Icons.png",
         imageUrl: "./images/product04.png",
         currency: "NT$",
         price: 3800,
@@ -453,7 +468,7 @@ const productData = [
         name: "2-Port 8K HDMI Switch",
         url: "#detail-vs5821",
         eShopUrl: "#eshop-vs5821",
-        icons: "./images/productIcon.png",
+        icons: "./images/VS5821_Icons.png",
         imageUrl: "./images/product05.png",
         currency: "NT$",
         price: 4200,

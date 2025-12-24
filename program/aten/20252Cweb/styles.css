@@ -67,6 +67,11 @@
     box-sizing: border-box;
 }
 
+html {
+    width: 100vw;
+    overflow-x: hidden;
+}
+
 body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     font-size: var(--font-size-base);
@@ -682,8 +687,8 @@ a:hover {
             rgba(60, 40, 30, 0.8) 35%,
             rgba(100, 50, 20, 0.75) 42%,
             rgba(150, 70, 20, 0.7) 47%,
-            rgba(200, 90, 30, 0.65) 49%,
-            rgba(240, 96, 0, 0.6) 50.1%,
+            rgba(200, 90, 30, 0.65) 49.5%,
+            rgba(240, 96, 0, 0.825) 50.1%,
             transparent 50.3%);
     z-index: 3;
 }
@@ -697,14 +702,14 @@ a:hover {
     height: 100%;
     border-radius: 50%;
     background: radial-gradient(ellipse at 50% 65%,
-            rgba(240, 96, 0, 0) 48%,
-            rgba(255, 150, 60, 0.5) 49%,
+            rgba(240, 96, 0, 0) 30%,
+            rgba(255, 150, 60, 0.5) 40%,
             rgba(255, 180, 100, 0.75) 49.5%,
             rgba(255, 200, 120, 0.85) 49.9%,
             rgba(255, 220, 150, 0.9) 50.3%,
             rgba(255, 240, 200, 0.7) 50.7%,
-            rgba(255, 250, 220, 0.4) 51.5%,
-            transparent 52%);
+            rgba(255, 250, 220, 0.4) 55.5%,
+            transparent 70%);
     z-index: 2;
 }
 
@@ -783,8 +788,8 @@ a:hover {
 /* ===== Responsive: 480px ===== */
 @media (max-width: 480px) {
     .sunrise-section {
-        height: 150vh;
-        margin-bottom: -150vw;
+        height: 100vh;
+        margin-bottom: 0;
     }
 
     .sun-wrapper {
@@ -805,7 +810,7 @@ a:hover {
     background-color: #000000;
     padding: var(--spacing-xxl) 0;
     overflow: hidden;
-    margin-top: -500px;
+    margin-top: 0;
 }
 
 .showcase-header {
@@ -1155,6 +1160,7 @@ a:hover {
 @media (max-width: 480px) {
     .product-display {
         padding: var(--spacing-sm);
+        margin-top: -50px;
     }
 
     .product-info {
@@ -1217,7 +1223,7 @@ a:hover {
 }
 
 .feature-content {
-    padding-top: var(--spacing-md);
+    /* padding-top: var(--spacing-md); */
     margin-bottom: var(--spacing-lg);
 }
 
@@ -1293,7 +1299,7 @@ a:hover {
 .feature-section-fullscreen .feature-content {
     position: relative;
     z-index: 1;
-    padding: var(--spacing-xxl) var(--spacing-lg);
+    /* padding: var(--spacing-xxl) var(--spacing-lg); */
     margin-top: 4vh;
 }
 
