@@ -2202,7 +2202,7 @@ a:hover {
 }
 
 .aten-logo {
-    height: 60px;
+    height: 80px;
     width: auto;
 }
 
@@ -2212,7 +2212,7 @@ a:hover {
 }
 
 .achievements-tagline p {
-    font-size: clamp(1rem, 1.5vw, 1.25rem);
+    font-size: clamp(1.25rem, 2vw, 1.75rem);
     color: #000000;
     font-weight: 700;
     margin: 0;
@@ -2310,7 +2310,7 @@ a:hover {
 /* ===== Responsive: 480px ===== */
 @media (max-width: 480px) {
     .aten-logo {
-        height: 40px;
+        height: 50px;
     }
 
     .achievements-stats {
