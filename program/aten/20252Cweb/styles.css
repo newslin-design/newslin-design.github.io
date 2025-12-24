@@ -788,8 +788,9 @@ a:hover {
 /* ===== Responsive: 480px ===== */
 @media (max-width: 480px) {
     .sunrise-section {
-        height: 100vh;
-        margin-bottom: 0;
+        height: 150vh;
+        margin-bottom: -400px;
+        margin-top: 100px;
     }
 
     .sun-wrapper {
