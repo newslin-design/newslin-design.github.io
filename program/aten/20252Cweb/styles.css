@@ -661,7 +661,7 @@ a:hover {
     width: 5000px;
     height: 3200px;
     opacity: 0;
-    transition: none;
+    transition: 1s;
 }
 
 /* ===== Sun Body ===== */
@@ -750,7 +750,7 @@ a:hover {
     text-align: center;
     z-index: 10;
     opacity: 0;
-    transition: none;
+    transition: 0.5s;
 }
 
 .sunrise-title {
