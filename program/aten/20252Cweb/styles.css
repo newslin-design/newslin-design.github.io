@@ -708,7 +708,8 @@ a:hover {
             rgba(255, 200, 120, 0.85) 49.9%,
             rgba(255, 220, 150, 0.9) 50.3%,
             rgba(255, 240, 200, 0.7) 50.7%,
-            rgba(255, 250, 220, 0.4) 55.5%,
+            rgba(255, 255, 255, 0.682) 51.8%,
+            rgba(255, 250, 220, 0.4) 58.5%,
             transparent 70%);
     z-index: 2;
 }
@@ -1868,7 +1869,6 @@ a:hover {
         scrollbar-width: none;
         -ms-overflow-style: none;
         width: 100%;
-        margin: 0 calc(-1 * var(--spacing-sm));
         padding: 0 var(--spacing-sm);
     }
 
@@ -1899,7 +1899,7 @@ a:hover {
 /* ===== Responsive: 480px ===== */
 @media (max-width: 480px) {
     .product-mini-card {
-        width: 140px;
+        width: 33.33%;
     }
 
     .product-carousel {
