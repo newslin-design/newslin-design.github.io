@@ -161,17 +161,20 @@ const initSunriseAnimation = () => {
             // Before text appears
             sunriseText.style.opacity = '0';
             sunriseText.style.transform = 'translate(-50%, -40%)';
-        } else if (scrollProgress < 0.85) {
+        } else if (scrollProgress < 0.95) {
             // Phase 1: Text fading in and moving up (0.0 - 0.85)
             const textProgress = (scrollProgress - 0.4) / 0.2;
-            const textY = -450 + (textProgress * 120);
+            const textY = -500 + (textProgress * 100);
             sunriseText.style.opacity = Math.min(1, textProgress);
             sunriseText.style.transform = `translate(-50%, ${textY}%)`;
+            console.log(textY)
         } else {
             // Phase 2: Text fading out (0.85 - 1.0) - delayed fadeout
             const fadeProgress = (scrollProgress - 0.85) / 0.1;
-            const textProgress = (scrollProgress - 0.4) / 0.2;
-            const textY = -130 - (textProgress * 25);
+            // const textProgress = (scrollProgress - 0.4) / 0.2;
+            // const textY = -150 - (textProgress * 20);
+
+            const textY = -300
             sunriseText.style.opacity = 1 - fadeProgress; // Fade out
             sunriseText.style.transform = `translate(-50%, ${textY}%)`;
         }

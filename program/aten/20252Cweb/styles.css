@@ -640,7 +640,7 @@ a:hover {
     height: 150vh;
     z-index: 1000;
     pointer-events: none;
-    margin-bottom: -10vw;
+    margin-bottom: -20vw;
 }
 
 .sunrise-container {
@@ -658,11 +658,64 @@ a:hover {
     bottom: -50%;
     left: 50%;
     transform: translateX(-50%);
-    width: 5000px;
-    height: 3200px;
+    /* width: 5000px; */
+    /* height: 3200px; */
+    width: 280%;
+    height: 160%;
     opacity: 0;
     transition: 1s;
 }
+
+@media (orientation: portrait) {
+    .sunrise-section {
+        margin-bottom: -50vw;
+        margin-top: -40vw;
+    }
+
+    .sun-wrapper {
+        width: 480%;
+        height: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .sunrise-section {
+        height: 40vh;
+
+        /* margin-bottom: -70vw; */
+        /* margin-top: -40vw; */
+    }
+
+
+
+
+    /* .sun-wrapper {
+        width: 480%;
+        height: 100%;
+    } */
+}
+
+@media (max-width: 480px) {
+    .sunrise-section {
+        height: 50vh;
+
+        margin-bottom: -70vw;
+        /* margin-top: -40vw; */
+    }
+
+    .sunrise-container {
+        /* height: 40vh; */
+
+    }
+
+    .sun-wrapper {
+        width: 580%;
+        height: 100%;
+    }
+}
+
+
+
 
 /* ===== Sun Body ===== */
 .sun-body {
@@ -750,7 +803,7 @@ a:hover {
     text-align: center;
     z-index: 10;
     opacity: 0;
-    transition: 0.5s;
+    transition: 1s;
 }
 
 .sunrise-title {
@@ -776,10 +829,10 @@ a:hover {
 
 /* ===== Responsive: 768px ===== */
 @media (max-width: 768px) {
-    .sun-wrapper {
+    /* .sun-wrapper {
         width: 3500px;
         height: 2400px;
-    }
+    } */
 
     .sun-glow {
         filter: blur(40px);
@@ -794,10 +847,10 @@ a:hover {
         margin-top: 100px;
     }
 
-    .sun-wrapper {
+    /* .sun-wrapper {
         width: 2500px;
         height: 1800px;
-    }
+    } */
 }
 
 
