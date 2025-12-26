@@ -287,7 +287,7 @@ const productData = [
         url: "#detail-vs4812",
         eShopUrl: "#eshop-vs4812",
         icons: "./images/VS4812_Icons.png",
-        imageUrl: "./images/product01.png",
+        imageUrl: "./images/VS4812.jpg",
         currency: "NT$",
         price: 3200,
         features: [
@@ -331,7 +331,7 @@ const productData = [
         url: "#detail-vs4814",
         eShopUrl: "#eshop-vs4814",
         icons: "./images/VS4814_Icons.png",
-        imageUrl: "./images/product02.png",
+        imageUrl: "./images/VS4814.jpg",
         currency: "NT$",
         price: 4500,
         features: [
@@ -375,7 +375,7 @@ const productData = [
         url: "#detail-vs5812",
         eShopUrl: "#eshop-vs5812",
         icons: "./images/VS5812_Icons.png",
-        imageUrl: "./images/product03.png",
+        imageUrl: "./images/VS5812.jpg",
         currency: "NT$",
         price: 5800,
         features: [
@@ -424,7 +424,7 @@ const productData = [
         url: "#detail-vs4841",
         eShopUrl: "#eshop-vs4841",
         icons: "./images/VS4841_Icons.png",
-        imageUrl: "./images/product04.png",
+        imageUrl: "./images/VS4841.jpg",
         currency: "NT$",
         price: 3800,
         features: [
@@ -472,7 +472,7 @@ const productData = [
         url: "#detail-vs5821",
         eShopUrl: "#eshop-vs5821",
         icons: "./images/VS5821_Icons.png",
-        imageUrl: "./images/product05.png",
+        imageUrl: "./images/VS5821.jpg",
         currency: "NT$",
         price: 4200,
         features: [
