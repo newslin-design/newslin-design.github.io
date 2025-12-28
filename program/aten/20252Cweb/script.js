@@ -285,11 +285,11 @@ const productData = [
         category: "HDMI Splitter",
         name: "2-Port True 4K HDMI Splitter",
         url: "#detail-vs4812",
-        eShopUrl: "#eshop-vs4812",
+        eShopUrl: "11",
         icons: "./images/VS4812_Icons.png",
         imageUrl: "./images/VS4812.jpg",
         currency: "NT$",
-        price: 3200,
+        price: 1200,
         features: [
             "EDID Sync™ – avoids boot-up display issues & optimizes resolutions",
             "One HDMI source shares two True 4K displays",
@@ -329,11 +329,11 @@ const productData = [
         category: "HDMI Splitter",
         name: "4-Port True 4K HDMI Splitter",
         url: "#detail-vs4814",
-        eShopUrl: "#eshop-vs4814",
+        eShopUrl: "",
         icons: "./images/VS4814_Icons.png",
         imageUrl: "./images/VS4814.jpg",
         currency: "NT$",
-        price: 4500,
+        price: null,
         features: [
             "EDID Sync™ – avoids boot-up display issues & optimizes resolutions",
             "One HDMI source shares four True 4K displays",
@@ -373,11 +373,11 @@ const productData = [
         category: "HDMI Splitter",
         name: "2-Port 8K HDMI Splitter",
         url: "#detail-vs5812",
-        eShopUrl: "#eshop-vs5812",
+        eShopUrl: "",
         icons: "./images/VS5812_Icons.png",
         imageUrl: "./images/VS5812.jpg",
         currency: "NT$",
-        price: 5800,
+        price: null,
         features: [
             "EDID Sync™ – avoids boot-up display issues & optimizes resolutions",
             "One HDMI source shares two 8K@60 Hz / 4K@120 Hz displays",
@@ -422,11 +422,11 @@ const productData = [
         category: "HDMI Switch",
         name: "4-Port True 4K HDMI Switch",
         url: "#detail-vs4841",
-        eShopUrl: "#eshop-vs4841",
+        eShopUrl: "",
         icons: "./images/VS4841_Icons.png",
         imageUrl: "./images/VS4841.jpg",
         currency: "NT$",
-        price: 3800,
+        price: null,
         features: [
             "RapidSync™ – high-speed AV switching",
             "Switches among four HDMI sources on a single True 4K display",
@@ -470,11 +470,11 @@ const productData = [
         category: "HDMI Switch",
         name: "2-Port 8K HDMI Switch",
         url: "#detail-vs5821",
-        eShopUrl: "#eshop-vs5821",
+        eShopUrl: "",
         icons: "./images/VS5821_Icons.png",
         imageUrl: "./images/VS5821.jpg",
         currency: "NT$",
-        price: 4200,
+        price: null,
         features: [
             "RapidSync™ – high-speed AV switching",
             "8K@60 Hz / 4K@120 Hz exquisite visual clarity",
@@ -522,6 +522,10 @@ const productData = [
 const initProductShowcase = () => {
     const categoryButtons = document.getElementById('categoryButtons');
     const productThumbnails = document.getElementById('productThumbnails');
+    const productPrice = document.getElementById('product-price');
+
+
+
 
     if (!categoryButtons || !productThumbnails) return;
 
@@ -615,7 +619,21 @@ const initProductShowcase = () => {
         if (linkElement) linkElement.href = product.url;
 
         const shopElement = document.getElementById('displayProductShop');
-        if (shopElement) shopElement.href = product.eShopUrl;
+
+        if (shopElement) {
+            if (!product.eShopUrl) {
+                shopElement.style.display = "none";
+            } else {
+                shopElement.style.display = "";
+            }
+            if (product.price) {
+                productPrice.innerHTML = `<span style="font-size:16px">${product.currency}</span> <strong>${product.price}</strong>`
+            } else {
+                productPrice.innerHTML = "";
+            }
+
+            shopElement.href = product.eShopUrl;
+        }
     };
 
     // Initialize
