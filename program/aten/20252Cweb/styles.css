@@ -157,6 +157,11 @@ a:hover {
     white-space: nowrap;
 }
 
+.btn-sm {
+    font-size: 14px;
+    padding: 4px 18px;
+}
+
 .btn-primary {
     background-color: var(--primary-orange);
     color: #ffffff;
@@ -173,13 +178,16 @@ a:hover {
 .btn-outline-orange {
     background-color: transparent;
     color: var(--primary-orange);
-    border: 2px solid var(--primary-orange);
+    border: 1px solid var(--primary-orange);
 }
 
 .btn-outline-orange:hover {
     background-color: var(--primary-orange);
     color: #ffffff;
 }
+
+
+
 
 /* ===== Utility Classes ===== */
 .text-center {
@@ -195,7 +203,7 @@ a:hover {
     z-index: 1000;
     background-color: rgba(26, 26, 26, 0.95);
     backdrop-filter: blur(10px);
-    padding: var(--spacing-sm) 0;
+    padding: var(--spacing-xs) 0;
     box-shadow: var(--shadow-sm);
 }
 
@@ -209,7 +217,7 @@ a:hover {
 }
 
 .header-logo {
-    height: 40px;
+    height: 20px;
     width: auto;
 }
 
@@ -896,7 +904,7 @@ a:hover {
     justify-content: center;
     background-color: #000000;
     min-height: 500px;
-    margin-top: -200px;
+    margin-top: -240px;
 }
 
 .product-image-display {
@@ -2255,6 +2263,41 @@ a:hover {
    Section 11: Achievements & Awards
    
 ===== ===== */
+
+
+.achievements-section02 {
+    background-color: #000000;
+}
+
+.achievements-section02 img {
+    width: 100%;
+    max-width: none;
+    position: relative;
+}
+
+@media (max-width: 1500px) {
+    .achievements-section02 img {
+        width: 120%;
+        left: -10%;
+    }
+}
+
+@media (max-width: 1200px) {
+    .achievements-section02 img {
+        width: 160%;
+        left: -24%;
+    }
+}
+
+@media (max-width: 900px) {
+    .achievements-section02 img {
+        width: 180%;
+        left: -32%;
+    }
+}
+
+
+
 
 /* ===== Main Styles ===== */
 .achievements-section {
