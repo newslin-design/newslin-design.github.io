@@ -279,12 +279,11 @@ const initScrollAnimations = () => {
 
 // Product Data
 const productData = [
-    // HDMI Splitter Category
     {
         id: "VS4812",
         category: "HDMI Splitter",
         name: "2-Port True 4K HDMI Splitter",
-        url: "#detail-vs4812",
+        url: "https://www.aten.com/global/en/products/consumer-electronics/splitters--switches/vs4812/",
         eShopUrl: "11",
         icons: "./images/VS4812_Icons.png",
         imageUrl: "./images/VS4812.jpg",
@@ -328,7 +327,7 @@ const productData = [
         id: "VS4814",
         category: "HDMI Splitter",
         name: "4-Port True 4K HDMI Splitter",
-        url: "#detail-vs4814",
+        url: "https://www.aten.com/global/en/products/consumer-electronics/splitters--switches/vs4814/",
         eShopUrl: "",
         icons: "./images/VS4814_Icons.png",
         imageUrl: "./images/VS4814.jpg",
@@ -372,7 +371,7 @@ const productData = [
         id: "VS5812",
         category: "HDMI Splitter",
         name: "2-Port 8K HDMI Splitter",
-        url: "#detail-vs5812",
+        url: "https://www.aten.com/global/en/products/consumer-electronics/splitters--switches/vs5812/",
         eShopUrl: "",
         icons: "./images/VS5812_Icons.png",
         imageUrl: "./images/VS5812.jpg",
@@ -416,12 +415,11 @@ const productData = [
             }
         ]
     },
-    // HDMI Switch Category
     {
         id: "VS4841",
         category: "HDMI Switch",
         name: "4-Port True 4K HDMI Switch",
-        url: "#detail-vs4841",
+        url: "https://www.aten.com/global/en/products/consumer-electronics/splitters--switches/vs4841/",
         eShopUrl: "",
         icons: "./images/VS4841_Icons.png",
         imageUrl: "./images/VS4841.jpg",
@@ -469,7 +467,7 @@ const productData = [
         id: "VS5821",
         category: "HDMI Switch",
         name: "2-Port 8K HDMI Switch",
-        url: "#detail-vs5821",
+        url: "https://www.aten.com/global/en/products/consumer-electronics/splitters--switches/vs5821/",
         eShopUrl: "",
         icons: "./images/VS5821_Icons.png",
         imageUrl: "./images/VS5821.jpg",
