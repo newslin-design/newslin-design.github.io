@@ -1650,19 +1650,14 @@ a:hover {
 
 /* ===== 向上版本的 Tooltip（可選用） ===== */
 .scenario-tooltip.tooltip-upward {
-    top: auto;
-    bottom: 100%;
+    top: 100%;
+    bottom: auto;
     margin-top: 0;
     margin-bottom: 16px;
 }
 
-.scenario-tooltip.tooltip-upward::before {
-    content: '';
-    position: absolute;
-    top: 100%;
-    bottom: auto;
-    border-bottom: none;
-    border-top: 10px solid var(--primary-orange);
+.scenario-tooltip.tooltip-upward::after {
+    display: none;
 }
 
 
