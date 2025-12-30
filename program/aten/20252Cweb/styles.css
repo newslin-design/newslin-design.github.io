@@ -967,8 +967,8 @@ a:hover {
     position: relative;
     padding-left: 20px;
     margin-bottom: var(--spacing-xs);
-    color: var(--text-secondary);
-    font-size: 14px;
+    color: #fff;
+    font-size: 16px;
     line-height: 1.5;
 }
 
