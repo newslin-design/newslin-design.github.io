@@ -15,8 +15,8 @@ const productData = [
         eShopUrl: "11",
         icons: "./images/VS4812_Icons.png",
         imageUrl: "./images/VS4812.jpg",
-        currency: "NT$",
-        price: 12000,
+        currency: "",
+        price: null,
         features: [
             "EDID Sync™ – avoids boot-up display issues & optimizes resolutions",
             "One HDMI source shares two True 4K displays",

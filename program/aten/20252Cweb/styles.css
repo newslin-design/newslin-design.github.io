@@ -2246,7 +2246,7 @@ a:hover {
 }
 
 .core-intro {
-    font-size: clamp(1.2rem, 1.8vw, 2.2rem);
+    font-size: clamp(1.2rem, 1.6vw, 2.1rem);
     color: #ffffff;
     font-weight: 700;
     line-height: 1.6;
