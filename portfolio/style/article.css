@@ -1,0 +1,215 @@
+/******************************
+
+		article
+
+*******************************/
+
+.article {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    position: relative;
+
+}
+
+.article P {
+    max-width: 1000px;
+}
+
+.article h2,
+.article h3 {
+    max-width: 1000px;
+}
+
+.article img {
+    width: 100%;
+    margin: 32px auto 64px auto;
+    max-width: 1000px;
+}
+
+.article img.left {
+    margin-left: 0;
+}
+
+.article img.right {
+    margin-right: 0;
+}
+
+.article .session {
+    color: #5C5C5C;
+    margin: 64px 0 12px 0;
+    background-color: #EBEBEB;
+}
+
+
+.article .icon-btn {
+    font-family: Material Symbols Outlined;
+    font-size: 24px;
+    background-color: #f0f0f0;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 8px;
+    width: 42px;
+    height: 42px;
+    transition: 0.3s;
+    box-shadow: 0 2px 24px #0000004b;
+}
+
+.article .icon-btn:hover {
+    background-color: var(--sec-color);
+    color: #ffffff;
+}
+
+
+.article .move-by-scroll-box {
+    overflow: hidden;
+}
+
+.article .move-by-scroll {
+    position: absolute;
+    padding: 0;
+    margin: 0;
+    right: 16px;
+}
+
+
+
+
+
+
+
+/* 專案流程導覽目錄 - 改為右上方固定水平顯示 */
+.project-nav {
+    position: fixed;
+    top: 50px;
+    /* 預設位置，配合 Header */
+    right: 40px;
+    display: flex;
+    flex-direction: row;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    padding: 10px 24px;
+    border-radius: 50px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    z-index: 1001;
+    gap: 30px;
+    width: auto;
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    z-index: 5001;
+}
+
+/* 配合 Header 狀態：下滑時不消失，僅往上移動到頂部 */
+.project-nav.hide {
+    top: 0px;
+    /* 往上移至頂部 */
+    background: rgba(255, 255, 255, 0.98);
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
+    border-top: none;
+    border-radius: 0 0 20px 20px;
+    /* 貼頂部時僅下方圓角 */
+}
+
+.nav-item {
+    text-decoration: none;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.nav-item .step {
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: #999;
+    margin-bottom: 2px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.nav-item .label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #222;
+}
+
+.nav-item:hover {
+    transform: translateY(-2px);
+}
+
+.nav-item:hover .label {
+    color: #007bff;
+}
+
+.nav-item::after {
+    content: "";
+    position: absolute;
+    bottom: -5px;
+    width: 0;
+    height: 2px;
+    background: #007bff;
+    transition: width 0.3s ease;
+}
+
+.nav-item:hover::after {
+    width: 100%;
+}
+
+/* 手機版適應性調整：固定在螢幕最上方置中 */
+@media (max-width: 1024px) {
+    .project-nav {
+        top: 50px;
+        right: 20px;
+        gap: 20px;
+        padding: 8px 20px;
+    }
+
+    .project-nav.hide {
+        top: 0;
+    }
+}
+
+@media (max-width: 768px) {
+    .project-nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+        border-radius: 0;
+        padding: 12px 10px;
+        justify-content: center;
+        gap: 15px;
+        background: white;
+        border: none;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    .nav-item .step {
+        display: none;
+    }
+
+    .nav-item .label {
+        font-size: 0.85rem;
+    }
+
+    .nav-item:hover {
+        transform: none;
+    }
+
+    .project-nav.hide {
+        top: 0;
+        /* 手機版下滑時依然維持在最上方 */
+        border-radius: 0;
+    }
+}
+
+/* 順滑捲動效果 */
+html {
+    scroll-behavior: smooth;
+}

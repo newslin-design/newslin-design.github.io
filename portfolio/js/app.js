@@ -11,19 +11,6 @@ var $tag = function (name) {
 	return document.getElementsByTagName(name)
 }
 
-// ============================================
-// 作品類別配置
-// ============================================
-// const categoryConfig = {
-// 	design: {
-// 		title: null // 設計類不需要標題
-// 	},
-// 	development: {
-// 		title: "Development",
-// 		titleClass: "hightlight ml-sm"
-// 	}
-// 	// 可以繼續新增其他類別...
-// };
 
 // ============================================
 // 作品資料定義 - 使用物件陣列格式
@@ -37,7 +24,7 @@ const portfolioData = {
 				id: "a_builder",
 				title: "Product and Diagran design Tool <br> <span>Solution Builder</span>",
 				desc: "Solution Builder comes with a library of optimized connection templates for various scenarios, allowing you to quickly apply standard designs",
-				tags: ["Scenario Definition", "Software PRD", "iPad UI Design", "Design Library"],
+				tags: ["Software PRD", "iPad UI Design", "Design Library", "Scenario Definition"],
 				cardConfig: { colClass: "col-8 col-md-6 col-xs-12 star-project" }
 			},
 			{
@@ -200,32 +187,38 @@ const portfolioData = {
 
 // 根據 ID 取得作品
 function getWorkById(id) {
-	return portfolioData.find(work => work.id === id);
+	// 在 design 和 development 中搜尋
+	for (let category in portfolioData) {
+		const work = portfolioData[category].cards.find(card => card.id === id);
+		if (work) return work;
+	}
+	return null;
 }
 
-// 根據索引取得作品
-function getWorkByIndex(index) {
-	return portfolioData[index];
-}
-
-// 取得上一個作品
 function getPreviousWork(currentId) {
-	const currentIndex = portfolioData.findIndex(work => work.id === currentId);
+	// 將所有作品攤平成一個陣列
+	const allWorks = [
+		...portfolioData.design.cards,
+		...portfolioData.development.cards
+	];
+	const currentIndex = allWorks.findIndex(work => work.id === currentId);
 	if (currentIndex > 0) {
-		return portfolioData[currentIndex - 1];
+		return allWorks[currentIndex - 1];
 	}
 	return null;
 }
 
-// 取得下一個作品
 function getNextWork(currentId) {
-	const currentIndex = portfolioData.findIndex(work => work.id === currentId);
-	if (currentIndex >= 0 && currentIndex < portfolioData.length - 1) {
-		return portfolioData[currentIndex + 1];
+	const allWorks = [
+		...portfolioData.design.cards,
+		...portfolioData.development.cards
+	];
+	const currentIndex = allWorks.findIndex(work => work.id === currentId);
+	if (currentIndex >= 0 && currentIndex < allWorks.length - 1) {
+		return allWorks[currentIndex + 1];
 	}
 	return null;
 }
-
 
 // ============================================
 // Cover Me 互動效果
@@ -359,20 +352,21 @@ try {
 // ============================================
 try {
 	var header = $tag("header")
+	var nav = $css("project-nav")[0] // 取得導覽列，用於與 Header 同步
 	var headerHtml = `
-		<div class="container">
-			<a href="index.html">
-				<div class="logo">
-					<div></div>
-				</div>
-			</a>
-			<ul class="row flex-jus-end">
-				<li><a href="index.html">Design</a></li>
-				<li><a href="index.html">Project</a></li>
-				<li><a href="index.html">Development</a></li>
-				<li><a href="about.html">Resume</a></li>
-			</ul>
-		</div>`
+                    <div class="container">
+                        <a href="index.html">
+                            <div class="logo">
+                                <div></div>
+                            </div>
+                        </a>
+                        <ul class="row flex-jus-end">
+                            <li><a href="index.html">Design</a></li>
+                            <li><a href="index.html">Project</a></li>
+                            <li><a href="index.html">Development</a></li>
+                            <li><a href="about.html">Resume</a></li>
+                        </ul>
+                    </div>`
 	header[0].innerHTML = headerHtml;
 
 	// Header smaller on scroll
@@ -382,15 +376,18 @@ try {
 		if (scrollY == 0) {
 			header[0].classList.remove("sm");
 			header[0].classList.remove("md");
+			if (nav) nav.classList.remove("hide"); // 回復原位
 		} else if (scrollY > LastScrollY) {
 			header[0].classList.remove("md");
 			header[0].classList.add("sm");
+			if (nav) nav.classList.add("hide"); // 往上移動至頂部
 		} else {
 			header[0].classList.remove("sm");
 			header[0].classList.add("md");
+			if (nav) nav.classList.remove("hide"); // 回復原位
 		}
 		LastScrollY = scrollY
-	})
+	}, { passive: true }) // 優化效能，解決 console warning
 } catch {
 	console.log("no header")
 }

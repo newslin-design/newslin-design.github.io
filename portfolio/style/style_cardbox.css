@@ -210,9 +210,9 @@
 }
 
 .workCards .star-project a .detail_box .tag {
-	/* color: #112a61;
-	background-color: rgba(95, 166, 187, 0.212);
-	border: 1px solid #7781a763; */
+	color: #112a61;
+	background-color: rgba(182, 207, 213, 0.564);
+	border: 1px solid #7781a763;
 }
 
 
@@ -227,7 +227,8 @@
 
 
 
-.workCards .star-project .detail_box @media (max-width: 480px) {
+/* .workCards .star-project .detail_box  */
+@media (max-width: 480px) {
 	.workCards .workCard {
 		padding: 12px;
 	}
