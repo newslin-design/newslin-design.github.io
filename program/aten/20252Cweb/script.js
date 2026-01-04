@@ -4,6 +4,340 @@
 // 
 // =====================================================
 
+
+// Product Data
+const productData = [
+    {
+        id: "VS4812",
+        category: "HDMI Splitter",
+        name: "2-Port True 4K HDMI Splitter",
+        url: "https://www.aten.com/global/en/products/consumer-electronics/splitters--switches/vs4812/",
+        eShopUrl: "11",
+        icons: "./images/VS4812_Icons.png",
+        imageUrl: "./images/VS4812.jpg",
+        currency: "",
+        price: null,
+        features: [
+            "EDID Sync™ – avoids boot-up display issues & optimizes resolutions",
+            "One HDMI source shares two True 4K displays",
+            "LPCM 7.1, Dolby® & DTS-HD Master Audio™",
+            "HDMI out 2 on/off via pushbutton"
+        ],
+        description: "Your go-to HDMI splitter for home entertainment, workstation, and professional AV.",
+        table: [
+            {
+                row: "Max. Resolution",
+                content: "3840 x 2160 @ 60Hz (4:4:4)"
+            },
+            {
+                row: "Max. Data Rate",
+                content: "18 Gbps (6 Gbps per lane)"
+            },
+            {
+                row: "Compliance",
+                content: "HDMI (3D, Deep Color, 4K); HDCP 2.2"
+            },
+            {
+                row: "Video Input",
+                content: "1 x HDMI Type-A Female (Black)"
+            },
+            {
+                row: "Video Output",
+                content: "2 x HDMI Type-A Female (Black)"
+            },
+            {
+                row: "Audio I/O (HDMI)",
+                content: "1 Input / 2 Output"
+            },
+            {
+                row: "LED Indicators",
+                content: "2 x Port Selector (Orange)"
+            },
+            {
+                row: "Power Connector",
+                content: "1 x USB-C (5V/1A)"
+            },
+            {
+                row: "Atmosphere Light",
+                content: "2 (Orange, Bottom Side)"
+            },
+            {
+                row: "Max. Distance",
+                content: "3 m at 4K@60Hz (4:4:4)"
+            },
+            {
+                row: "USB Cable Length",
+                content: "1 x USB-C to Type-A (1 m)"
+            }
+        ]
+    },
+    {
+        id: "VS4814",
+        category: "HDMI Splitter",
+        name: "4-Port True 4K HDMI Splitter",
+        url: "https://www.aten.com/global/en/products/consumer-electronics/splitters--switches/vs4814/",
+        eShopUrl: "",
+        icons: "./images/VS4814_Icons.png",
+        imageUrl: "./images/VS4814.jpg",
+        currency: "NT$",
+        price: null,
+        features: [
+            "EDID Sync™ – avoids boot-up display issues & optimizes resolutions",
+            "One HDMI source shares four True 4K displays",
+            "LPCM 7.1, Dolby® & DTS-HD Master Audio™",
+            "Compact and aesthetic design with slick accent light"
+        ],
+        description: "Your go-to HDMI splitter for home entertainment, commercial, and professional AV.",
+        table: [
+            {
+                row: "Max. Resolution",
+                content: "3840 x 2160 @ 60Hz (4:4:4)"
+            },
+            {
+                row: "Max. Data Rate",
+                content: "18 Gbps (6 Gbps per lane)"
+            },
+            {
+                row: "Compliance",
+                content: "HDMI (3D, Deep Color, 4K); HDCP 2.2"
+            },
+            {
+                row: "Video Input",
+                content: "1 x HDMI Type-A Female (Black)"
+            },
+            {
+                row: "Video Output",
+                content: "4 x HDMI Type-A Female (Black)"
+            },
+            {
+                row: "Audio I/O (HDMI)",
+                content: "1 Input / 4 Output"
+            },
+            {
+                row: "LED Indicators",
+                content: "4 x Port Selector (Orange)"
+            },
+            {
+                row: "Power Connector",
+                content: "1 x USB-C (5V/1A)"
+            },
+            {
+                row: "Atmosphere Light",
+                content: "2 (Orange, Bottom Side)"
+            },
+            {
+                row: "Max. Distance",
+                content: "3 m at 4K@60Hz (4:4:4)"
+            },
+            {
+                row: "USB Cable Length",
+                content: "1 x USB-C to Type-A (1 m)"
+            }
+        ]
+    },
+    {
+        id: "VS5812",
+        category: "HDMI Splitter",
+        name: "2-Port 8K HDMI Splitter",
+        url: "https://www.aten.com/global/en/products/consumer-electronics/splitters--switches/vs5812/",
+        eShopUrl: "",
+        icons: "./images/VS5812_Icons.png",
+        imageUrl: "./images/VS5812.jpg",
+        currency: "NT$",
+        price: null,
+        features: [
+            "EDID Sync™ – avoids boot-up display issues & optimizes resolutions",
+            "One HDMI source shares two 8K@60 Hz / 4K@120 Hz displays",
+            "LPCM 7.1, Dolby® & DTS-HD Master Audio™",
+            "Supports VRR & ALLM"
+        ],
+        description: "Your go-to HDMI splitter for home theater, gaming, and professional AV.",
+        table: [
+            {
+                row: "Max. Resolution",
+                content: "7680 x 4320 @ 60Hz (4:2:0)"
+            },
+            {
+                row: "Max. Data Rate",
+                content: "48 Gbps"
+            },
+            {
+                row: "Compliance",
+                content: "HDMI (3D, Deep Color, 8K); HDCP 2.3"
+            },
+            {
+                row: "Video Input",
+                content: "1 x HDMI Type-A Female (Black)"
+            },
+            {
+                row: "Video Output",
+                content: "2 x HDMI Type-A Female (Black)"
+            },
+            {
+                row: "Audio I/O (HDMI)",
+                content: "1 Input / 2 Output"
+            },
+            {
+                row: "LED Indicators",
+                content: "2 x Port Selector (Orange)"
+            },
+            {
+                row: "Power Connector",
+                content: "1 x USB-C (5V/1A)"
+            },
+            {
+                row: "Atmosphere Light",
+                content: "2 (Orange, Bottom Side)"
+            },
+            {
+                row: "Max. Distance",
+                content: "1.5 m at 8K@60Hz (4:2:0)"
+            },
+            {
+                row: "USB Cable Length",
+                content: "1 x USB-C to Type-A (1 m)"
+            }
+        ]
+    },
+    {
+        id: "VS4841",
+        category: "HDMI Switch",
+        name: "4-Port True 4K HDMI Switch",
+        url: "https://www.aten.com/global/en/products/consumer-electronics/splitters--switches/vs4841/",
+        eShopUrl: "",
+        icons: "./images/VS4841_Icons.png",
+        imageUrl: "./images/VS4841.jpg",
+        currency: "NT$",
+        price: null,
+        features: [
+            "RapidSync™ – high-speed AV switching",
+            "Switches among four HDMI sources on a single True 4K display",
+            "Dolby® & DTS-HD Master Audio™",
+            "Video switching via pushbutton or IR remote"
+        ],
+        description: "Your go-to HDMI switch for home entertainment, professional AV, and efficient source management.",
+        table: [
+            {
+                row: "Max. Resolution",
+                content: "3840 x 2160 @ 60Hz (4:4:4)"
+            },
+            {
+                row: "Max. Data Rate",
+                content: "18 Gbps (6 Gbps per lane)"
+            },
+            {
+                row: "Compliance",
+                content: "HDMI (3D, Deep Color, 4K); HDCP 2.2"
+            },
+            {
+                row: "Video Input",
+                content: "4 x HDMI Type-A Female"
+            },
+            {
+                row: "Video Output",
+                content: "1 x HDMI Type-A Female"
+            },
+            {
+                row: "Audio I/O (HDMI)",
+                content: "4 Input / 1 Output"
+            },
+            {
+                row: "Control",
+                content: "1 x IR Receiver"
+            },
+            {
+                row: "LED Indicators",
+                content: "4 x Port Selector (Orange)"
+            },
+            {
+                row: "Power Connector",
+                content: "1 x USB-C (5V/1A)"
+            },
+            {
+                row: "Atmosphere Light",
+                content: "2 (Orange, Bottom Side)"
+            },
+            {
+                row: "Max. Distance",
+                content: "3 m at 3840 x 2160 @ 60Hz (4:4:4)"
+            },
+            {
+                row: "USB Cable Length",
+                content: "1 x USB Type-C to Type-A (1 m)"
+            }
+        ]
+    },
+    {
+        id: "VS5821",
+        category: "HDMI Switch",
+        name: "2-Port 8K HDMI Switch",
+        url: "https://www.aten.com/global/en/products/consumer-electronics/splitters--switches/vs5821/",
+        eShopUrl: "",
+        icons: "./images/VS5821_Icons.png",
+        imageUrl: "./images/VS5821.jpg",
+        currency: "NT$",
+        price: null,
+        features: [
+            "RapidSync™ – high-speed AV switching",
+            "8K@60 Hz / 4K@120 Hz exquisite visual clarity",
+            "LPCM 7.1, Dolby Digital & DTS-HD Master Audio",
+            "Supports VRR & ALLM"
+        ],
+        description: "Your go-to HDMI switch for modern gaming, personal entertainment, and professional AV.",
+        table: [
+            {
+                row: "Max. Resolution",
+                content: "7680 x 4320 @ 60Hz (4:2:0)"
+            },
+            {
+                row: "Max. Data Rate",
+                content: "48 Gbps"
+            },
+            {
+                row: "Compliance",
+                content: "HDMI (3D, Deep Color, 8K); HDCP 2.3"
+            },
+            {
+                row: "Video Input",
+                content: "2 x HDMI Type-A Female"
+            },
+            {
+                row: "Video Output",
+                content: "1 x HDMI Type-A Female"
+            },
+            {
+                row: "Audio I/O (HDMI)",
+                content: "2 Input / 1 Output"
+            },
+            {
+                row: "Control",
+                content: "Port Selection Pushbutton"
+            },
+            {
+                row: "LED Indicators",
+                content: "2 x Port Selector (Orange)"
+            },
+            {
+                row: "Power Connector",
+                content: "1 x USB-C (5V/1A)"
+            },
+            {
+                row: "Atmosphere Light",
+                content: "2 (Orange, Bottom Side)"
+            },
+            {
+                row: "Max. Distance",
+                content: "1.5 m at 7680 x 4320 @ 60Hz (4:2:0)"
+            },
+            {
+                row: "USB Cable Length",
+                content: "1 x USB Type-C to Type-A (1 m)"
+            }
+        ]
+    }
+];
+
+
 // ===== Configuration =====
 const CONFIG = {
     mediaPath: './images/'  // Centralized media path management (images + videos)
@@ -277,247 +611,6 @@ const initScrollAnimations = () => {
     });
 };
 
-// Product Data
-const productData = [
-    // HDMI Splitter Category
-    {
-        id: "VS4812",
-        category: "HDMI Splitter",
-        name: "2-Port True 4K HDMI Splitter",
-        url: "#detail-vs4812",
-        eShopUrl: "11",
-        icons: "./images/VS4812_Icons.png",
-        imageUrl: "./images/VS4812.jpg",
-        currency: "NT$",
-        price: 1200,
-        features: [
-            "EDID Sync™ – avoids boot-up display issues & optimizes resolutions",
-            "One HDMI source shares two True 4K displays",
-            "LPCM 7.1, Dolby® & DTS-HD Master Audio™",
-            "HDMI out 2 on/off via pushbutton"
-        ],
-        description: "Your go-to HDMI splitter for home entertainment, workstation, and professional AV.",
-        table: [
-            {
-                row: "Connectors",
-                content: "1 x HDMI Input<br>2 x HDMI Output"
-            },
-            {
-                row: "Max Resolution",
-                content: "4K @ 60Hz (4:4:4)"
-            },
-            {
-                row: "Audio Support",
-                content: "LPCM 7.1, Dolby®, DTS-HD"
-            },
-            {
-                row: "Housing",
-                content: "Metal"
-            },
-            {
-                row: "Weight",
-                content: "280g"
-            },
-            {
-                row: "Dimensions (L×W×H)",
-                content: "13.2 x 7.5 x 2.4 cm"
-            }
-        ]
-    },
-    {
-        id: "VS4814",
-        category: "HDMI Splitter",
-        name: "4-Port True 4K HDMI Splitter",
-        url: "#detail-vs4814",
-        eShopUrl: "",
-        icons: "./images/VS4814_Icons.png",
-        imageUrl: "./images/VS4814.jpg",
-        currency: "NT$",
-        price: null,
-        features: [
-            "EDID Sync™ – avoids boot-up display issues & optimizes resolutions",
-            "One HDMI source shares four True 4K displays",
-            "LPCM 7.1, Dolby® & DTS-HD Master Audio™",
-            "Compact and aesthetic design with slick accent light"
-        ],
-        description: "Your go-to HDMI splitter for home entertainment, commercial, and professional AV.",
-        table: [
-            {
-                row: "Connectors",
-                content: "1 x HDMI Input<br>4 x HDMI Output"
-            },
-            {
-                row: "Max Resolution",
-                content: "4K @ 60Hz (4:4:4)"
-            },
-            {
-                row: "Audio Support",
-                content: "LPCM 7.1, Dolby®, DTS-HD"
-            },
-            {
-                row: "Housing",
-                content: "Metal"
-            },
-            {
-                row: "Weight",
-                content: "350g"
-            },
-            {
-                row: "Dimensions (L×W×H)",
-                content: "21.8 x 7.5 x 2.4 cm"
-            }
-        ]
-    },
-    {
-        id: "VS5812",
-        category: "HDMI Splitter",
-        name: "2-Port 8K HDMI Splitter",
-        url: "#detail-vs5812",
-        eShopUrl: "",
-        icons: "./images/VS5812_Icons.png",
-        imageUrl: "./images/VS5812.jpg",
-        currency: "NT$",
-        price: null,
-        features: [
-            "EDID Sync™ – avoids boot-up display issues & optimizes resolutions",
-            "One HDMI source shares two 8K@60 Hz / 4K@120 Hz displays",
-            "LPCM 7.1, Dolby® & DTS-HD Master Audio™",
-            "Supports VRR & ALLM"
-        ],
-        description: "Your go-to HDMI splitter for home theater, gaming, and professional AV.",
-        table: [
-            {
-                row: "Connectors",
-                content: "1 x HDMI Input<br>2 x HDMI Output"
-            },
-            {
-                row: "Max Resolution",
-                content: "8K @ 60Hz / 4K @ 120Hz"
-            },
-            {
-                row: "Audio Support",
-                content: "LPCM 7.1, Dolby®, DTS-HD"
-            },
-            {
-                row: "Gaming Features",
-                content: "VRR, ALLM"
-            },
-            {
-                row: "Housing",
-                content: "Metal"
-            },
-            {
-                row: "Weight",
-                content: "295g"
-            },
-            {
-                row: "Dimensions (L×W×H)",
-                content: "13.2 x 7.5 x 2.4 cm"
-            }
-        ]
-    },
-    // HDMI Switch Category
-    {
-        id: "VS4841",
-        category: "HDMI Switch",
-        name: "4-Port True 4K HDMI Switch",
-        url: "#detail-vs4841",
-        eShopUrl: "",
-        icons: "./images/VS4841_Icons.png",
-        imageUrl: "./images/VS4841.jpg",
-        currency: "NT$",
-        price: null,
-        features: [
-            "RapidSync™ – high-speed AV switching",
-            "Switches among four HDMI sources on a single True 4K display",
-            "Dolby® & DTS-HD Master Audio™",
-            "Video switching via pushbutton or IR remote"
-        ],
-        description: "Your go-to HDMI switch for home entertainment, professional AV, and efficient source management.",
-        table: [
-            {
-                row: "Connectors",
-                content: "4 x HDMI Input<br>1 x HDMI Output"
-            },
-            {
-                row: "Max Resolution",
-                content: "4K @ 60Hz (4:4:4)"
-            },
-            {
-                row: "Audio Support",
-                content: "Dolby®, DTS-HD"
-            },
-            {
-                row: "Switching",
-                content: "Pushbutton, IR Remote"
-            },
-            {
-                row: "Housing",
-                content: "Metal"
-            },
-            {
-                row: "Weight",
-                content: "320g"
-            },
-            {
-                row: "Dimensions (L×W×H)",
-                content: "21.8 x 7.5 x 2.4 cm"
-            }
-        ]
-    },
-    {
-        id: "VS5821",
-        category: "HDMI Switch",
-        name: "2-Port 8K HDMI Switch",
-        url: "#detail-vs5821",
-        eShopUrl: "",
-        icons: "./images/VS5821_Icons.png",
-        imageUrl: "./images/VS5821.jpg",
-        currency: "NT$",
-        price: null,
-        features: [
-            "RapidSync™ – high-speed AV switching",
-            "8K@60 Hz / 4K@120 Hz exquisite visual clarity",
-            "LPCM 7.1, Dolby Digital & DTS-HD Master Audio",
-            "Supports VRR & ALLM"
-        ],
-        description: "Your go-to HDMI switch for modern gaming, personal entertainment, and professional AV.",
-        table: [
-            {
-                row: "Connectors",
-                content: "2 x HDMI Input<br>1 x HDMI Output"
-            },
-            {
-                row: "Max Resolution",
-                content: "8K @ 60Hz / 4K @ 120Hz"
-            },
-            {
-                row: "Audio Support",
-                content: "LPCM 7.1, Dolby, DTS-HD"
-            },
-            {
-                row: "Gaming Features",
-                content: "VRR, ALLM"
-            },
-            {
-                row: "Switching",
-                content: "Pushbutton, Auto"
-            },
-            {
-                row: "Housing",
-                content: "Metal"
-            },
-            {
-                row: "Weight",
-                content: "265g"
-            },
-            {
-                row: "Dimensions (L×W×H)",
-                content: "13.2 x 7.5 x 2.4 cm"
-            }
-        ]
-    }
-];
 
 const initProductShowcase = () => {
     const categoryButtons = document.getElementById('categoryButtons');
@@ -672,29 +765,6 @@ const initSmoothScroll = () => {
             }
         });
     });
-};
-
-// =====================================================
-// 
-// Initialize All
-// Initialize all features
-// 
-// =====================================================
-const init = () => {
-    console.log('ATEN Essentials Website Initialized');
-
-    // Initialize each Session's functionality
-    initHeroVideo();            // Session 1: Hero video
-    initFloatingPlayButton();   // Floating play button
-    initSunriseAnimation();     // Session 2: Sunrise animation
-    initScrollAnimations();     // Session 3: Scroll animations
-    initProductShowcase();      // Session 3: Product showcase
-    initScenariosTabs();        // Session 7: Scenarios tabs
-    initProductGallery();       // Session 8: Product gallery
-    initSpecifications();       // Session 12: Specifications table
-
-    // Initialize global functionality
-    initSmoothScroll();         // Smooth scrolling
 };
 
 // =====================================================
@@ -854,6 +924,35 @@ const generateComparisonTable = (category) => {
     html += '</tbody>';
     tableContainer.innerHTML = html;
 };
+
+
+
+
+
+// =====================================================
+// 
+// Initialize All
+// Initialize all features
+// 
+// =====================================================
+const init = () => {
+    console.log('ATEN Essentials Website Initialized');
+
+    // Initialize each Session's functionality
+    initHeroVideo();            // Session 1: Hero video
+    initFloatingPlayButton();   // Floating play button
+    initSunriseAnimation();     // Session 2: Sunrise animation
+    initScrollAnimations();     // Session 3: Scroll animations
+    initProductShowcase();      // Session 3: Product showcase
+    initScenariosTabs();        // Session 7: Scenarios tabs
+    initProductGallery();       // Session 8: Product gallery
+    initSpecifications();       // Session 12: Specifications table
+
+    // Initialize global functionality
+    initSmoothScroll();         // Smooth scrolling
+};
+
+
 
 // ===== DOM Ready =====
 if (document.readyState === 'loading') {

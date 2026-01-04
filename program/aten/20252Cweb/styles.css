@@ -548,10 +548,13 @@ a:hover {
 /* ===== Overview Cards ===== */
 .overview-cards {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    display: flex;
+    /* grid-template-columns: repeat(3, 1fr); */
     gap: var(--spacing-lg);
     max-width: 1200px;
     margin: 0 auto;
+    justify-content: center;
+    flex-wrap: wrap;
 }
 
 .overview-card {
@@ -560,6 +563,7 @@ a:hover {
     overflow: hidden;
     transition: all var(--transition-normal);
     border: 1px solid rgba(255, 255, 255, 0.1);
+    width: 38%;
 }
 
 .overview-card:hover {
@@ -622,6 +626,10 @@ a:hover {
     .overview-card-content {
         padding: var(--spacing-sm);
     }
+
+    .overview-card {
+        width: 45%;
+    }
 }
 
 @media (max-width: 768px) {
@@ -632,6 +640,10 @@ a:hover {
 
     .overview-card-content {
         padding: var(--spacing-md);
+    }
+
+    .overview-card {
+        width: 100%;
     }
 }
 
@@ -955,8 +967,8 @@ a:hover {
     position: relative;
     padding-left: 20px;
     margin-bottom: var(--spacing-xs);
-    color: var(--text-secondary);
-    font-size: 14px;
+    color: #fff;
+    font-size: 16px;
     line-height: 1.5;
 }
 
@@ -1592,7 +1604,7 @@ a:hover {
     transform: translateX(-50%);
     margin-bottom: 16px;
     width: 280px;
-    background: linear-gradient(135deg, rgba(236, 80, 22, 0.493) 0%, rgba(255, 107, 53, 0) 100%);
+    background: linear-gradient(135deg, rgba(134, 39, 5, 0.598) 0%, rgba(255, 107, 53, 0) 100%);
     border: 1px solid var(--primary-orange);
     backdrop-filter: blur(5px);
     border-radius: var(--radius-lg);
@@ -1600,7 +1612,7 @@ a:hover {
     opacity: 0;
     visibility: hidden;
     transition: all var(--transition-normal);
-    pointer-events: none;
+    /* pointer-events: none; */
 }
 
 .scenario-dot:hover .scenario-tooltip {
@@ -1636,6 +1648,31 @@ a:hover {
     border-top: 8px solid rgba(255, 107, 53, 0.9);
 }
 
+/* ===== 向上版本的 Tooltip（可選用） ===== */
+.scenario-tooltip.tooltip-upward {
+    top: 100%;
+    bottom: auto;
+    margin-top: 0;
+    margin-bottom: 16px;
+}
+
+.scenario-tooltip.tooltip-upward::after {
+    display: none;
+}
+
+
+.scenario-tooltip .btn.btn-outline-orange {
+    color: #ffffff;
+    background-color: #ab46077d;
+    margin-top: 12px;
+    padding: 8px 26px;
+
+}
+
+
+
+
+
 /* ===== Responsive: Default Desktop ===== */
 .scenario-image-wrapper {
     aspect-ratio: 16 / 9;
@@ -1646,6 +1683,11 @@ a:hover {
     .scenario-image-wrapper {
         aspect-ratio: 4 / 3;
     }
+
+    .scenario-tooltip .btn.btn-outline-orange {
+        padding: 8px 4px;
+    }
+
 }
 
 /* ===== Responsive: 480px ===== */
@@ -1700,7 +1742,7 @@ a:hover {
     }
 
     .tooltip-text {
-        font-size: 0.75rem;
+        font-size: 1rem;
     }
 }
 
@@ -1774,7 +1816,7 @@ a:hover {
     color: var(--primary-orange);
     font-weight: 600;
     margin-bottom: var(--spacing-xs);
-    text-transform: uppercase;
+    /* text-transform: uppercase; */
     letter-spacing: 0.05em;
     white-space: nowrap;
     text-align: center;
@@ -2204,7 +2246,7 @@ a:hover {
 }
 
 .core-intro {
-    font-size: clamp(1rem, 1.5vw, 1.125rem);
+    font-size: clamp(1.2rem, 1.6vw, 2.1rem);
     color: #ffffff;
     font-weight: 700;
     line-height: 1.6;
@@ -2212,7 +2254,7 @@ a:hover {
 }
 
 .core-description {
-    font-size: clamp(0.875rem, 1.2vw, 1rem);
+    font-size: clamp(0.875rem, 1.15vw, 1rem);
     color: #ffffff;
     font-weight: 400;
     line-height: 1.8;
