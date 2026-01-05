@@ -37,568 +37,500 @@
 </head>
 
 <body>
-    <!-- Header -->
-    <header class="header" role="banner">
-        <div class="header-container">
-            <div class="header-left">
-                <img src="./images/aten_logo.png" alt="ATEN Logo" class="header-logo">
+    <div class="customContianer"><!-- Header -->
+        <header class="header" role="banner">
+            <div class="header-container">
+                <div class="header-left"><a href="https://www.aten.com/global/en/"> <img
+                            src="https://assets.aten.com/webpage/shared/aten_essential/landing/aten_logo.png"
+                            alt="ATEN Logo" class="header-logo"> </a></div>
+                <div class="header-right"><a
+                        href="https://www.aten.com/global/en/products/?category=consumer-electronics"
+                        class="btn btn-outline-orange btn-sm" aria-label="Go to enterprise website" target="_blank"
+                        rel="noopener">Consumer Electronics </a></div>
             </div>
-            <div class="header-right">
-                <a href="https://www.aten.com/global/en/" class="btn btn-outline-orange btn-sm"
-                    aria-label="Go to enterprise website">to 2B website</a>
+        </header><!-- Main Content --> <!-- Session 1: Hero Banner -->
+        <section class="hero-section" id="hero" aria-label="Main banner"><video width="300" height="150"
+                class="hero-video" autoplay="autoplay" muted="" loop="loop" playsinline=""
+                poster="https://assets.aten.com/webpage/shared/aten_essential/landing/hero-poster.jpg"
+                aria-label="ATEN product showcase video">
+                <source src="https://assets.aten.com/webpage/shared/aten_essential/landing/essentials.mp4"
+                    type="video/mp4">
+                Your browser does not support video playback
+            </video>
+            <div class="hero-overlay" aria-hidden="true"></div>
+            <div class="hero-content"><img
+                    src="https://assets.aten.com/webpage/shared/aten_essential/landing/logo_orange.svg"
+                    alt="ATEN essentials" class="hero-logo">
+                <p class="hero-subtitle">Clean Space. Clear Mind.</p>
+                <div class="hero-buttons"><a href="#form_ActON" class="btn btn-outline-orange btn-lg "
+                        aria-label="Contact Us"> Contact Us </a> <a class="hero-play-btn" aria-label="Play video"
+                        id="playButton" href="https://youtu.be/7XOHLs8fD_Y?si=UMBVIn8vagXb51vY" target="_blank"
+                        rel="noopener"> <span class="material-symbols-outlined">play_arrow</span> </a></div>
             </div>
-        </div>
-    </header>
-
-    <!-- Main Content -->
-    <!-- Session 1: Hero Banner -->
-    <section class="hero-section" id="hero" aria-label="Main banner">
-        <video class="hero-video" autoplay muted loop playsinline poster="./images/hero-poster.jpg"
-            aria-label="ATEN product showcase video">
-            <source src="./images/essentials.mp4" type="video/mp4">
-            Your browser does not support video playback
-        </video>
-        <div class="hero-overlay" aria-hidden="true"></div>
-        <div class="hero-content">
-            <img src="./images/logo_orange.svg" alt="ATEN essentials" class="hero-logo">
-            <p class="hero-subtitle">Clean Space. Clear Mind.</p>
-            <div class="hero-buttons">
-                <a href="#products" class="btn btn-outline-orange btn-lg" aria-label="Get Quote">
-                    Get Quote
-                </a>
-                <button class="hero-play-btn" aria-label="Play video" id="playButton">
-                    <span class="material-symbols-outlined">play_arrow</span>
-                </button>
-            </div>
-        </div>
-    </section>
-
-    <!-- Session 1.5: Overview -->
-    <section class="overview-section" id="overview" aria-label="Product overview">
-        <div class="container">
-            <!-- Header -->
-            <div class="overview-header text-center">
-                <h2 class="overview-title">Master Your Setup, Define Your Workflow</h2>
-                <p class="overview-card-description" style="max-width: 800px; margin: 0 auto">Leveraging ATEN’s
-                    market-leading
-                    expertise, the essentials series
-                    distills enterprise stability into
-                    a sleek form factor that embodies "Clean Space, Clear Mind"—eliminating clutter while ensuring a
-                    lag-free, pro-grade experience for every setup.</p>
-            </div>
-
-            <!-- Overview Cards -->
-            <div class="overview-cards">
-                <!-- Card 1 - HDMI Splitter -->
-                <a class="overview-card"
-                    href="https://www.aten.com/global/en/products/consumer-electronics/splitters--switches/?f8116[]=2">
-                    <div class="overview-card-image">
-                        <img src="./images/essentials_landingpageV2_overview_Vsplitter.jpg" alt="HDMI Splitter"
-                            class="overview-img">
-                    </div>
-                    <div class="overview-card-content">
-                        <h3 class="overview-card-title">HDMI Splitter</h3>
-                        <p class="overview-card-subtitle">One Source. Multiplied Impact.</p>
-                        <p class="overview-card-description">
-                            These compact 2-port and 4-port splitters utilize ATEN's exclusive <strong
-                                style="color: #fff;">EDID
-                                Sync™</strong> technology to
-                            ensure optimal video output across all connected displays, keeping every screen perfectly
-                            synchronized from the moment it’s connected.</p>
-                    </div>
-                </a>
-
-                <!-- Card 2 - HDMI Switch -->
-                <a class="overview-card"
-                    href="https://www.aten.com/global/en/products/consumer-electronics/splitters--switches/?f8116[]=2">
-                    <div class="overview-card-image">
-                        <img src="./images/essentials_landingpageV2_overview_Vswitch.jpg" alt="HDMI Switch"
-                            class="overview-img">
-                    </div>
-                    <div class="overview-card-content">
-                        <h3 class="overview-card-title">HDMI Switch</h3>
-                        <p class="overview-card-subtitle">Multiple Sources, One Flawless Connection.</p>
-                        <p class="overview-card-description">
-                            Experience lag-free switching between multiple HDMI sources while enjoying a variety of
-                            video content. Featuring <strong style="color: #fff;">RapidSync™</strong>, these 2-Port and
-                            4-Port HDMI switches deliver stunning
-                            visuals, high-speed AV switching, and a clutter-free setup—making every viewing experience
-                            effortless and immersive.
-                    </div>
-                </a>
-                <!-- Card 3 - USB Sharing Switch -->
-                <!-- <div class="overview-card">
-                    <div class="overview-card-image">
-                        <img src="./images/essentials_landingpageV2_overview_Uswitch.jpg" alt="USB Sharing Switch"
-                            class="overview-img">
-                    </div>
-                    <div class="overview-card-content">
-                        <h3 class="overview-card-title">USB Sharing Switch</h3>
-                        <p class="overview-card-subtitle">Style and Switch</p>
-                        <p class="overview-card-description">The 2-Port USB Sharing Switch lineup is purpose-built for
-                            workspaces that value simplicity and
-                            efficiency. Featuring <strong style="color: #fff;">InstaSync™
-                            </strong>, sharing up to four peripherals between two computers is as
-                            easy as a single button press, ensuring your workflow remains smooth, efficient, and
-                            organized
-                            at all times.
-                    </div>
-                </div> -->
-            </div>
-        </div>
-    </section>
-
-    <!-- Session 2: Sunrise Animation -->
-    <section class="sunrise-section" id="sunrise-animation" aria-label="Sunrise animation">
-        <div class="sunrise-container">
-            <!-- Sun with glows -->
-            <div class="sun-wrapper">
-                <!-- Outer orange glow -->
-                <div class="sun-glow sun-glow-orange"></div>
-                <!-- Inner white glow -->
-                <div class="sun-glow sun-glow-white"></div>
-                <!-- Sun body -->
-                <div class="sun-body"></div>
-            </div>
-
-            <!-- Text content -->
-            <div class="sunrise-text">
-                <h2 class="sunrise-title">Glow in Style, Every Space</h2>
-                <p class="sunrise-subtitle">Every Model Elevated by the Iconic Sunrise Orange Accent Light</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Session 3: Product Showcase -->
-    <section class="product-showcase-section" id="products" aria-label="Product showcase">
-        <div class="container">
-            <!-- Title -->
-            <div class="showcase-header text-center animate-on-scroll animate-can-transform animate-fade-up">
-                <h2 class="showcase-title">Explore the Full Lineup</h2>
-            </div>
-
-            <!-- Product Display Area (3 columns) -->
-            <div class="product-display">
-                <!-- Left: Product Name & Features -->
-                <div class="product-info animate-on-scroll animate-delay-2">
-                    <h3 class="product-display-name" id="displayProductName">Product Name</h3>
-                    <ul class="product-features" id="displayProductFeatures">
-                        <li>Feature 1</li>
-                        <li>Feature 2</li>
-                        <li>Feature 3</li>
-                    </ul>
-                    <div class="product-price" id="product-price">
-                    </div>
-                    <div class="product-actions">
-                        <a href="#" class="btn btn-outline-orange" id="displayProductLink">Learn More</a>
-                        <a href="#" class="btn btn-outline-orange" id="displayProductShop">Buy Now</a>
-                    </div>
+        </section>
+        <!-- Session 1.5: Overview -->
+        <section class="overview-section" id="overview" aria-label="Product overview">
+            <div class="container"><!-- Header -->
+                <div class="overview-header text-center">
+                    <h2 class="overview-title">Master Your Setup, Define Your Workflow</h2>
+                    <p class="overview-card-description" style="max-width: 800px; margin: 0 auto;">Leveraging ATEN’s
+                        market-leading expertise, the essentials series distills enterprise stability into a sleek form
+                        factor that embodies "Clean Space, Clear Mind"—eliminating clutter while ensuring a lag-free,
+                        pro-grade experience for every setup.</p>
                 </div>
-
-                <!-- Center: Product Image -->
-                <div
-                    class="product-image-display animate-on-scroll animate-can-transform animate-fade-down animate-delay-1">
-                    <img src="" alt="Product image" id="displayProductImage">
+                <!-- Overview Cards -->
+                <div class="overview-cards"><!-- Card 1 - HDMI Splitter --> <a class="overview-card"
+                        href="https://www.aten.com/global/en/products/consumer-electronics/splitters--switches/?f8116[]=2">
+                        <div class="overview-card-image"><img
+                                src="https://assets.aten.com/webpage/shared/aten_essential/landing/essentials_landingpageV2_overview_Vsplitter.jpg"
+                                alt="HDMI Splitter" class="overview-img"></div>
+                        <div class="overview-card-content">
+                            <h3 class="overview-card-title">HDMI Splitter</h3>
+                            <p class="overview-card-subtitle">One Source. Multiplied Impact.</p>
+                            <p class="overview-card-description">These compact 2-port and 4-port splitters utilize
+                                ATEN's
+                                exclusive <strong style="color: #fff;">EDID Sync™</strong> technology to ensure optimal
+                                video output across all connected displays, keeping every screen perfectly synchronized
+                                from
+                                the moment it’s connected.</p>
+                        </div>
+                    </a> <!-- Card 2 - HDMI Switch --> <a class="overview-card"
+                        href="https://www.aten.com/global/en/products/consumer-electronics/splitters--switches/?f8116[]=3">
+                        <div class="overview-card-image"><img
+                                src="https://assets.aten.com/webpage/shared/aten_essential/landing/essentials_landingpageV2_overview_Vswitch.jpg"
+                                alt="HDMI Switch" class="overview-img"></div>
+                        <div class="overview-card-content">
+                            <h3 class="overview-card-title">HDMI Switch</h3>
+                            <p class="overview-card-subtitle">Multiple Sources, One Flawless Connection.</p>
+                            <p class="overview-card-description">Experience lag-free switching between multiple HDMI
+                                sources
+                                while enjoying a variety of video content. Featuring <strong
+                                    style="color: #fff;">RapidSync™</strong>, these 2-Port and 4-Port HDMI switches
+                                deliver
+                                stunning visuals, high-speed AV switching, and a clutter-free setup—making every viewing
+                                experience effortless and immersive.</p>
+                        </div>
+                    </a> <!-- Card 3 - USB Sharing Switch --> <!-- <a class="overview-card"
+                            href="https://www.aten.com/global/en/products/consumer-electronics/splitters--switches/?f8116[]=3">
+                            <div class="overview-card-image">
+                                <img src="https://assets.aten.com/webpage/shared/aten_essential/landing/essentials_landingpageV2_overview_Uswitch.jpg"
+                                    alt="USB Sharing Switch" class="overview-img">
+                            </div>
+                            <div class="overview-card-content">
+                                <h3 class="overview-card-title">USB Sharing Switch</h3>
+                                <p class="overview-card-subtitle">Style and Switch</p>
+                                <p class="overview-card-description">The 2-Port USB Sharing Switch lineup is purpose-built
+                                    for
+                                    workspaces that value simplicity and
+                                    efficiency. Featuring <strong style="color: #fff;">InstaSync™
+                                    </strong>, sharing up to four peripherals between two computers is as
+                                    easy as a single button press, ensuring your workflow remains smooth, efficient, and
+                                    organized
+                                    at all times.
+                            </div>
+                        </a> --></div>
+            </div>
+        </section>
+        <!-- Session 2: Sunrise Animation -->
+        <section class="sunrise-section" id="sunrise-animation" aria-label="Sunrise animation">
+            <div class="sunrise-container"><!-- Sun with glows -->
+                <div class="sun-wrapper"><!-- Outer orange glow -->
+                    <div class="sun-glow sun-glow-orange"></div>
+                    <!-- Inner white glow -->
+                    <div class="sun-glow sun-glow-white"></div>
+                    <!-- Sun body -->
+                    <div class="sun-body"></div>
                 </div>
-
-                <!-- Right: Product Icons -->
-                <div class="product-icons-display animate-on-scroll animate-delay-3">
-                    <img src="./images/productIcon.png" alt="Product features" id="displayProductIcons">
+                <!-- Text content -->
+                <div class="sunrise-text">
+                    <h2 class="sunrise-title">Glow in Style, Every Space</h2>
+                    <p class="sunrise-subtitle">Every Model Elevated by the Iconic Sunrise Orange Accent Light</p>
                 </div>
             </div>
-
-            <!-- Product Selection Area (2 rows) -->
-            <div class="product-selection">
-                <!-- Category Buttons -->
-                <div class="category-buttons animate-on-scroll animate-can-transform animate-fade-up animate-delay-2"
-                    id="categoryButtons">
-                    <!-- Generated by JavaScript -->
+        </section>
+        <!-- Session 3: Product Showcase -->
+        <section class="product-showcase-section" id="products" aria-label="Product showcase">
+            <div class="container"><!-- Title -->
+                <div class="showcase-header text-center animate-on-scroll animate-can-transform animate-fade-up">
+                    <h2 class="showcase-title">Explore the Full Lineup</h2>
                 </div>
-
-                <!-- Product Thumbnails -->
-                <div class="product-thumbnails animate-on-scroll animate-can-transform animate-fade-up animate-delay-3"
-                    id="productThumbnails">
-                    <!-- Generated by JavaScript -->
+                <!-- Product Display Area (3 columns) -->
+                <div class="product-display"><!-- Left: Product Name & Features -->
+                    <div class="product-info animate-on-scroll animate-delay-2">
+                        <h3 class="product-display-name" id="displayProductName">Product Name</h3>
+                        <ul class="product-features" id="displayProductFeatures">
+                            <li>Feature 1</li>
+                            <li>Feature 2</li>
+                            <li>Feature 3</li>
+                        </ul>
+                        <div class="product-price" id="product-price"></div>
+                        <div class="product-actions"><a href="#" class="btn btn-outline-orange"
+                                id="displayProductLink">Learn More</a> <a href="#" class="btn btn-outline-orange"
+                                id="displayProductShop" target="_blank" rel="noopener">Buy Now</a></div>
+                    </div>
+                    <!-- Center: Product Image -->
+                    <div
+                        class="product-image-display animate-on-scroll animate-can-transform animate-fade-down animate-delay-1">
+                        <img alt="Product image" id="displayProductImage">
+                    </div>
+                    <!-- Right: Product Icons -->
+                    <div class="product-icons-display animate-on-scroll animate-delay-3"><img
+                            src="https://assets.aten.com/webpage/shared/aten_essential/landing/productIcon.png"
+                            alt="Product features" id="displayProductIcons"></div>
+                </div>
+                <!-- Product Selection Area (2 rows) -->
+                <div class="product-selection"><!-- Category Buttons -->
+                    <div class="category-buttons animate-on-scroll animate-can-transform animate-fade-up animate-delay-2"
+                        id="categoryButtons"><!-- Generated by JavaScript --></div>
+                    <!-- Product Thumbnails -->
+                    <div class="product-thumbnails animate-on-scroll animate-can-transform animate-fade-up animate-delay-3"
+                        id="productThumbnails"><!-- Generated by JavaScript --></div>
                 </div>
             </div>
-        </div>
-    </section>
-
-    <!-- Session 4: Compact Design -->
-    <section class="feature-section" id="compact-design" aria-label="Compact design feature">
-        <div class="container">
-            <div class="feature-content text-center">
-                <h2 class="feature-title">Compact & Aesthetic Design</h2>
-                <p class="feature-subtitle">Minimal in Form. Magnificent in Style.</p>
+        </section>
+        <!-- Session 4: Compact Design -->
+        <section class="feature-section" id="compact-design" aria-label="Compact design feature">
+            <div class="container">
+                <div class="feature-content text-center">
+                    <h2 class="feature-title">Compact &amp; Aesthetic Design</h2>
+                    <p class="feature-subtitle">Minimal in Form. Magnificent in Style.</p>
+                </div>
+                <div class="feature-media"><img
+                        src="https://assets.aten.com/webpage/shared/aten_essential/landing/essentials_landingpage_4.png"
+                        alt="Compact design" class="feature-media-image"></div>
             </div>
-            <div class="feature-media">
-                <img src="./images/essentials_landingpage_4.png" alt="Compact design" class="feature-media-image">
+        </section>
+        <!-- Session 5: Easy Switch -->
+        <section class="feature-section" id="easy-switch" aria-label="Easy switch feature">
+            <div class="container">
+                <div class="feature-content text-center">
+                    <h2 class="feature-title">One-Button Switch</h2>
+                    <p class="feature-subtitle">Switch between devices effortlessly using the pushbutton or the IR
+                        remote
+                        controller.</p>
+                </div>
+                <div class="feature-media"><video width="300" height="150" class="feature-media-video"
+                        autoplay="autoplay" loop="loop" muted="" playsinline="">
+                        <source src="https://assets.aten.com/webpage/shared/aten_essential/landing/4841.mp4"
+                            type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video></div>
             </div>
-        </div>
-    </section>
-
-    <!-- Session 5: Easy Switch -->
-    <section class="feature-section" id="easy-switch" aria-label="Easy switch feature">
-        <div class="container">
-            <div class="feature-content text-center">
-                <h2 class="feature-title">One-Button Switchh</h2>
-                <p class="feature-subtitle">Experience seamless HDMI and USB sharing for two to four sources or
-                    peripherals with intuitive LED guidance,<br> switched via a simple pushbutton or remote selector.
-                </p>
+        </section>
+        <!-- Session 6.1: Visual Quality -->
+        <section class="feature-section feature-section-fullscreen" id="visual-quality"
+            aria-label="Visual quality feature">
+            <div class="feature-background"><img
+                    src="https://assets.aten.com/webpage/shared/aten_essential/landing/essentials_landingpage_6.jpg"
+                    alt="Visual quality" class="feature-bg-image"></div>
+            <div class="container">
+                <div class="feature-content text-center">
+                    <h2 class="feature-title">True 4K to 8K: <br>Unleash a Visual Extravaganza.</h2>
+                    <p class="feature-subtitle">Dive into razor-sharp 3D immersion and Deep Color vibrance with HDR10+
+                        and
+                        Dolby Vision™, complemented by a cinematic soundstage featuring Dolby Atmos®, Dolby® TrueHD,
+                        DTS:X®,
+                        and DTS-HD Master Audio™.<br> <small class="feature-note" style="display: none;">*Features
+                            described
+                            above are for HDMI Switch and HDMI Splitter series only.</small></p>
+                </div>
             </div>
-            <div class="feature-media">
-                <video class="feature-media-video" autoplay loop muted playsinline>
-                    <source src="./images/4841.mp4" type="video/mp4">
-                    Your browser does not support the video tag.
-                </video>
+        </section>
+        <!-- Session 6.2: Visual Quality -->
+        <section class="feature-section feature-section-fullscreen" id="visual-quality" style="display: none;">
+            <div class="feature-background"><img
+                    src="https://assets.aten.com/webpage/shared/aten_essential/landing/essentials_landingpageV2_5gbps.jpg"
+                    alt="Visual quality" class="feature-bg-image"></div>
+            <div class="container">
+                <div class="feature-content text-center">
+                    <h2 class="feature-title">Save Time with 5Gbps: 10x Faster than USB 2.0</h2>
+                    <p class="feature-subtitle">Upgrade to USB 3.2 SuperSpeed to transfer 1GB in just 2 seconds—slashing
+                        your wait time by 90% and leaving slow connections behind.</p>
+                </div>
             </div>
-        </div>
-    </section>
-
-    <!-- Session 6.1: Visual Quality -->
-    <section class="feature-section feature-section-fullscreen" id="visual-quality" aria-label="Visual quality feature">
-        <div class="feature-background">
-            <img src="./images/essentials_landingpage_6.jpg" alt="Visual quality" class="feature-bg-image">
-        </div>
-        <div class="container">
-            <div class="feature-content text-center">
-                <h2 class="feature-title">True 4K to 8K: </br>Unleash a Visual Extravaganza.</h2>
-                <p class="feature-subtitle">
-                    Dive into razor-sharp 3D immersion and Deep Color vibrance with HDR10+ and
-                    Dolby Vision™, complemented by a cinematic soundstage featuring Dolby Atmos®, Dolby® TrueHD, DTS:X®,
-                    and DTS-HD Master Audio™.<br>
-                    <small class="feature-note" style="display: none;">*Features described above are for HDMI Switch and
-                        HDMI Splitter series
-                        only.</small>
-                </p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Session 6.2: Visual Quality -->
-    <section class="feature-section feature-section-fullscreen" id="visual-quality" style="display: none;">
-        <div class="feature-background">
-            <img src="./images/essentials_landingpageV2_5gbps.jpg" alt="Visual quality" class="feature-bg-image">
-        </div>
-        <div class="container">
-            <div class="feature-content text-center">
-                <h2 class="feature-title">Save Time with 5Gbps: 10x Faster than USB 2.0</h2>
-                <p class="feature-subtitle">
-                    Upgrade to USB 3.2 SuperSpeed to transfer 1GB in just 2 seconds—slashing your wait time by 90% and
-                    leaving slow connections behind.
-                </p>
-            </div>
-        </div>
-    </section>
-    <!-- Session 7: Scenarios -->
-    <section class="scenarios-section" id="scenarios" aria-label="Usage scenarios">
-        <div class="container">
-            <!-- Title -->
-            <div class="scenarios-header text-center">
-                <h2 class="scenarios-title">Life can be professional, too.</h2>
-            </div>
-
-            <!-- Tabs Navigation -->
-            <div class="scenarios-tabs">
-                <button class="scenario-tab active" data-tab="home-cinema">Home Fun</button>
-                <button class="scenario-tab" data-tab="home-fun">Home Cinema</button>
-                <button class="scenario-tab" data-tab="pro-gaming">Pro Gaming</button>
-                <!-- <button class="scenario-tab" data-tab="workplay-zone">Workplay Zone</button> -->
-            </div>
-
-            <!-- Tab Contents -->
-            <div class="scenarios-content">
-                <!-- Tab 1: Home Cinema -->
-                <div class="scenario-panel active" id="home-cinema">
-                    <div class="scenario-image-wrapper">
-                        <img src="./images/essentials_landingpageV2_scenario_home cinema.jpg" alt="Home Cinema scenario"
-                            class="scenario-bg">
-
-                        <!-- Orange Dot with Tooltip -->
-                        <div class="scenario-dot" style="top: 52%; left: 25%;" data-product-url="#product-vs4841">
-                            <span class="dot-pulse"></span>
-                            <div class="scenario-tooltip">
-                                <p class="tooltip-text">4-Port True 4K HDMI Switch VS4841</p>
-                                <a href="https://www.aten.com/global/en/products/consumer-electronics/splitters--switches/vs4841/"
-                                    class="btn btn-outline-orange">Learn More</a>
+        </section>
+        <!-- Session 7: Scenarios -->
+        <section class="scenarios-section" id="scenarios" aria-label="Usage scenarios">
+            <div class="container"><!-- Title -->
+                <div class="scenarios-header text-center">
+                    <h2 class="scenarios-title">Living Life as a Pro</h2>
+                </div>
+                <!-- Tabs Navigation -->
+                <div class="scenarios-tabs"><button class="scenario-tab active" data-tab="home-cinema">Home
+                        Entertainment</button> <button class="scenario-tab" data-tab="home-fun">Home Cinema</button>
+                    <button class="scenario-tab" data-tab="pro-gaming">Pro Gaming</button>
+                    <!-- <button class="scenario-tab" data-tab="workplay-zone">Workplay Zone</button> --></div>
+                <!-- Tab Contents -->
+                <div class="scenarios-content"><!-- Tab 1: Home Cinema -->
+                    <div class="scenario-panel active" id="home-cinema">
+                        <div class="scenario-image-wrapper"><img
+                                src="https://assets.aten.com/webpage/shared/aten_essential/landing/essentials_landingpageV2_scenario_home cinema.jpg"
+                                alt="Home Cinema scenario" class="scenario-bg"> <!-- Orange Dot with Tooltip -->
+                            <div class="scenario-dot" style="top: 52%; left: 25%;" data-product-url="#product-vs4841">
+                                <span class="dot-pulse"></span>
+                                <div class="scenario-tooltip">
+                                    <p class="tooltip-text">4-Port True 4K HDMI Switch VS4841</p>
+                                    <a href="https://www.aten.com/global/en/products/consumer-electronics/splitters--switches/vs4841/"
+                                        class="btn btn-outline-orange" rel="noopener">Learn More</a>
+                                </div>
+                            </div>
+                            <!-- Bottom Right Info -->
+                            <div class="scenario-info">
+                                <h3 class="scenario-info-title">True 4K <br>HDMI Switch</h3>
+                                <p class="scenario-info-text">One Switch. <br>Endless Fun.</p>
+                                <div class="smText">All references to and depictions of compatible products, including
+                                    those
+                                    produced by Apple, Sony Interactive Entertainment (PlayStation), or Microsoft
+                                    (Xbox),
+                                    are for compatibility demonstration purposes only, not intended to suggest any
+                                    endorsement or sponsorship by or affiliation with those product manufacturers.</div>
                             </div>
                         </div>
-
-                        <!-- Bottom Right Info -->
-                        <div class="scenario-info">
-                            <h3 class="scenario-info-title">True 4K <br>HDMI Switch</h3>
-                            <p class="scenario-info-text">One Switch. <br>Endless Fun.</p>
-                        </div>
                     </div>
-                </div>
-
-                <!-- Tab 2: Home Fun -->
-                <div class="scenario-panel" id="home-fun">
-                    <div class="scenario-image-wrapper">
-                        <img src="./images/essentials_landingpageV2_scenario_homefun.jpg" alt="Home Fun scenario"
-                            class="scenario-bg">
-
-                        <!-- Orange Dot with Tooltip -->
-                        <div class="scenario-dot" style="top: 26%; left: 17%;" data-product-url="#product-vs4812">
-                            <span class="dot-pulse"></span>
-                            <div class="scenario-tooltip tooltip-upward ">
-                                <p class="tooltip-text">2-Port True 4K HDMI Splitter VS4812</p>
-                                <a href="https://www.aten.com/global/en/products/consumer-electronics/splitters--switches/vs4841/"
-                                    class="btn btn-outline-orange">Learn More</a>
+                    <!-- Tab 2: Home Fun -->
+                    <div class="scenario-panel" id="home-fun">
+                        <div class="scenario-image-wrapper"><img
+                                src="https://assets.aten.com/webpage/shared/aten_essential/landing/essentials_landingpageV2_scenario_homefun.jpg"
+                                alt="Home Fun scenario" class="scenario-bg"> <!-- Orange Dot with Tooltip -->
+                            <div class="scenario-dot" style="top: 26%; left: 17%;" data-product-url="#product-vs4812">
+                                <span class="dot-pulse"></span>
+                                <div class="scenario-tooltip tooltip-upward ">
+                                    <p class="tooltip-text">2-Port True 4K HDMI Splitter VS4812</p>
+                                    <a href="https://www.aten.com/global/en/products/consumer-electronics/splitters--switches/vs4812/"
+                                        class="btn btn-outline-orange" rel="noopener">Learn More</a>
+                                </div>
+                            </div>
+                            <!-- Bottom Right Info -->
+                            <div class="scenario-info">
+                                <h3 class="scenario-info-title">True 4K <br>HDMI Splitter</h3>
+                                <p class="scenario-info-text">One Source. <br>Multiply the Joy.</p>
+                                <div class="smText">All references to and depictions of compatible products, including
+                                    those
+                                    produced by Apple, or LG, are for compatibility demonstration purposes only, not
+                                    intended to suggest any endorsement or sponsorship by or affiliation with those
+                                    product
+                                    manufacturers.</div>
                             </div>
                         </div>
-
-                        <!-- Bottom Right Info -->
-                        <div class="scenario-info">
-                            <h3 class="scenario-info-title">True 4K <br>HDMI Splitter</h3>
-                            <p class="scenario-info-text">One Source. <br>Multiply the Joy.</p>
-                        </div>
                     </div>
-                </div>
-
-                <!-- Tab 3: Pro Gaming -->
-                <div class="scenario-panel" id="pro-gaming">
-                    <div class="scenario-image-wrapper">
-                        <img src="./images/essentials_landingpageV2_scenario_pro gaming.jpg" alt="Pro Gaming scenario"
-                            class="scenario-bg">
-
-                        <!-- Orange Dot with Tooltip -->
-                        <div class="scenario-dot" style="top: 68%; left: 50%;" data-product-url="#product-vs5812">
-                            <span class="dot-pulse"></span>
-                            <div class="scenario-tooltip">
-                                <p class="tooltip-text">2-Port 8K HDMI Splitter VS5812</p>
-                                <a href="https://www.aten.com/global/en/products/consumer-electronics/splitters--switches/vs4841/"
-                                    class="btn btn-outline-orange">Learn More</a>
+                    <!-- Tab 3: Pro Gaming -->
+                    <div class="scenario-panel" id="pro-gaming">
+                        <div class="scenario-image-wrapper"><img
+                                src="https://assets.aten.com/webpage/shared/aten_essential/landing/essentials_landingpageV2_scenario_pro gaming.jpg"
+                                alt="Pro Gaming scenario" class="scenario-bg"> <!-- Orange Dot with Tooltip -->
+                            <div class="scenario-dot" style="top: 68%; left: 50%;" data-product-url="#product-vs5812">
+                                <span class="dot-pulse"></span>
+                                <div class="scenario-tooltip">
+                                    <p class="tooltip-text">2-Port 8K HDMI Splitter VS5812</p>
+                                    <a href="https://www.aten.com/global/en/products/consumer-electronics/splitters--switches/vs5812/"
+                                        class="btn btn-outline-orange" rel="noopener">Learn More</a>
+                                </div>
+                            </div>
+                            <!-- Bottom Right Info -->
+                            <div class="scenario-info">
+                                <h3 class="scenario-info-title">8K <br>HDMI Splitter</h3>
+                                <p class="scenario-info-text">One Play. <br>Unbound Immersion.</p>
+                                <div class="smText">All references to and depictions of compatible products, including
+                                    those
+                                    produced by Sony Interactive Entertainment (PlayStation), or Audio-Technica, are for
+                                    compatibility demonstration purposes only, not intended to suggest any endorsement
+                                    or
+                                    sponsorship by or affiliation with those product manufacturers.</div>
                             </div>
                         </div>
-
-                        <!-- Bottom Right Info -->
-                        <div class="scenario-info">
-                            <h3 class="scenario-info-title">8K <br>HDMI Splitter</h3>
-                            <p class="scenario-info-text">One Play. <br>Unbound Immersion.</p>
-                        </div>
                     </div>
-                </div>
-
-                <!-- Tab 4: Workplay Zone -->
-                <div class="scenario-panel" id="workplay-zone">
-                    <div class="scenario-image-wrapper">
-                        <img src="./images/essentials_landingpageV2_scenario_workplayzone.jpg"
-                            alt="Workplay Zone scenario" class="scenario-bg">
-
-                        <!-- Orange Dot with Tooltip -->
-                        <div class="scenario-dot" style="top: 55%; left: 65%;" data-product-url="#product-us4324">
-                            <span class="dot-pulse"></span>
-                            <div class="scenario-tooltip">
-                                <p class="tooltip-text">2 x 4 USB3.2 Gen 1 Sharing Switch US4324</p>
-                                <a href="https://www.aten.com/global/en/products/consumer-electronics/splitters--switches/vs4841/"
-                                    class="btn btn-outline-orange">Learn More</a>
+                    <!-- Tab 4: Workplay Zone -->
+                    <div class="scenario-panel" id="workplay-zone">
+                        <div class="scenario-image-wrapper"><img
+                                src="https://assets.aten.com/webpage/shared/aten_essential/landing/essentials_landingpageV2_scenario_workplayzone.jpg"
+                                alt="Workplay Zone scenario" class="scenario-bg"> <!-- Orange Dot with Tooltip -->
+                            <div class="scenario-dot" style="top: 55%; left: 65%;" data-product-url="#product-us4324">
+                                <span class="dot-pulse"></span>
+                                <div class="scenario-tooltip">
+                                    <p class="tooltip-text">2 x 4 USB3.2 Gen 1 Sharing Switch US4324</p>
+                                    <a href="https://www.aten.com/global/en/products/consumer-electronics/splitters--switches/vs4841/"
+                                        class="btn btn-outline-orange">Learn More</a>
+                                </div>
+                            </div>
+                            <!-- Bottom Right Info -->
+                            <div class="scenario-info">
+                                <h3 class="scenario-info-title">USB Sharing Switch</h3>
+                                <p class="scenario-info-text">Style Your Work.<br>Pace Your Flow.</p>
+                                <div class="smText">All references to and depictions of compatible products, including
+                                    those
+                                    produced by Apple, or Elgato, are for compatibility demonstration purposes only, not
+                                    intended to suggest any endorsement or sponsorship by or affiliation with those
+                                    product
+                                    manufacturers.</div>
                             </div>
                         </div>
-
-                        <!-- Bottom Right Info -->
-                        <div class="scenario-info">
-                            <h3 class="scenario-info-title">USB Sharing Switch</h3>
-                            <p class="scenario-info-text">Style Your Work.<br>Pace Your Flow.</p>
-                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
-
-    <!-- Session 8: Product Gallery -->
-    <section class="product-gallery-section" id="product-gallery" aria-label="Product gallery">
-        <div class="container">
-            <!-- Header -->
-            <div class="product-gallery-header text-center">
-                <h2 class="product-gallery-title">Find Your Flow. All-New.</h2>
-            </div>
-
-            <!-- Product Categories with Global Navigation -->
-            <div class="product-gallery-content">
-                <button class="gallery-nav prev" aria-label="Scroll left">
-                    <span class="material-symbols-outlined">chevron_left</span>
-                </button>
-                <div class="product-categories">
-                    <!-- Category groups will be dynamically generated -->
+        </section>
+        <!-- Session 8: Product Gallery -->
+        <section class="product-gallery-section" id="product-gallery" aria-label="Product gallery">
+            <div class="container"><!-- Header -->
+                <div class="product-gallery-header text-center">
+                    <h2 class="product-gallery-title">Find Your Flow. All-New.</h2>
                 </div>
-                <button class="gallery-nav next" aria-label="Scroll right">
-                    <span class="material-symbols-outlined">chevron_right</span>
-                </button>
-            </div>
-        </div>
-    </section>
-
-    <!-- Session 9: Technology -->
-    <section class="technology-section" id="technology" aria-label="Technology features" style="display: none;">
-        <div class="container">
-            <!-- Header -->
-            <div class="technology-header text-center">
-                <h2 class="technology-title">Professional Sync Made Simple</h2>
-                <p class="technology-subtitle">Your essentials series is infused with unique technological
-                    capabilities, utilizing a strong technical foundation to deliver an elevated user
-                    experience.
-                </p>
-            </div>
-
-            <!-- Technology Grid -->
-            <div class="technology-grid">
-                <!-- Left Column - Tech 01 -->
-                <div class="tech-card tech-card-large">
-                    <div class="tech-card-bg">
-                        <img src="./images/tech01.png" alt="EDID Sync technology" class="tech-bg-image">
-                    </div>
-                    <div class="tech-card-content">
-                        <h3 class="tech-name">EDID Sync<sup class="tech-tm">TM</sup></h3>
-                        <p class="tech-description">Seamless display compatibility with automatic EDID
-                            synchronization.</p>
-                    </div>
+                <!-- Product Categories with Global Navigation -->
+                <div class="product-gallery-content"><button class="gallery-nav prev" aria-label="Scroll left"> <span
+                            class="material-symbols-outlined">chevron_left</span> </button>
+                    <div class="product-categories"><!-- Category groups will be dynamically generated --></div>
+                    <button class="gallery-nav next" aria-label="Scroll right"> <span
+                            class="material-symbols-outlined">chevron_right</span> </button>
                 </div>
-
-                <!-- Right Column -->
-                <div class="tech-card-group">
-                    <!-- Tech 02 - Top -->
-                    <div class="tech-card">
-                        <div class="tech-card-bg">
-                            <img src="./images/tech02.png" alt="RapidSync technology" class="tech-bg-image">
-                        </div>
+            </div>
+        </section>
+        <!-- Session 9: Technology -->
+        <section class="technology-section" id="technology" aria-label="Technology features" style="display: none;">
+            <div class="container"><!-- Header -->
+                <div class="technology-header text-center">
+                    <h2 class="technology-title">Professional Sync Made Simple</h2>
+                    <p class="technology-subtitle">Your essentials series is infused with unique technological
+                        capabilities,
+                        utilizing a strong technical foundation to deliver an elevated user experience.</p>
+                </div>
+                <!-- Technology Grid -->
+                <div class="technology-grid"><!-- Left Column - Tech 01 -->
+                    <div class="tech-card tech-card-large">
+                        <div class="tech-card-bg"><img
+                                src="https://assets.aten.com/webpage/shared/aten_essential/landing/tech01.png"
+                                alt="EDID Sync technology" class="tech-bg-image"></div>
                         <div class="tech-card-content">
-                            <h3 class="tech-name">RapidSync<sup class="tech-tm">TM</sup></h3>
-                            <p class="tech-description">Lightning-fast source switching with near-zero latency.
+                            <h3 class="tech-name">EDID Sync<sup class="tech-tm">TM</sup></h3>
+                            <p class="tech-description">Seamless display compatibility with automatic EDID
+                                synchronization.
                             </p>
                         </div>
                     </div>
-
-                    <!-- Tech 03 - Bottom -->
-                    <div class="tech-card">
-                        <div class="tech-card-bg">
-                            <img src="./images/tech03.png" alt="InstaSync technology" class="tech-bg-image">
+                    <!-- Right Column -->
+                    <div class="tech-card-group"><!-- Tech 02 - Top -->
+                        <div class="tech-card">
+                            <div class="tech-card-bg"><img
+                                    src="https://assets.aten.com/webpage/shared/aten_essential/landing/tech02.png"
+                                    alt="RapidSync technology" class="tech-bg-image"></div>
+                            <div class="tech-card-content">
+                                <h3 class="tech-name">RapidSync<sup class="tech-tm">TM</sup></h3>
+                                <p class="tech-description">Lightning-fast source switching with near-zero latency.</p>
+                            </div>
                         </div>
-                        <div class="tech-card-content">
-                            <h3 class="tech-name">InstaSync<sup class="tech-tm">TM</sup></h3>
-                            <p class="tech-description">Instant plug-and-play with auto device recognition.</p>
+                        <!-- Tech 03 - Bottom -->
+                        <div class="tech-card">
+                            <div class="tech-card-bg"><img
+                                    src="https://assets.aten.com/webpage/shared/aten_essential/landing/tech03.png"
+                                    alt="InstaSync technology" class="tech-bg-image"></div>
+                            <div class="tech-card-content">
+                                <h3 class="tech-name">InstaSync<sup class="tech-tm">TM</sup></h3>
+                                <p class="tech-description">Instant plug-and-play with auto device recognition.</p>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
-
-    <!-- Session 10: Core Message -->
-    <section class="core-section" id="core-message" aria-label="ATEN essentials core message">
-        <div class="container">
-            <div class="core-image">
-                <img src="./images/ess_core.png" alt="ATEN essentials core" class="core-image-img">
-            </div>
-            <div class="core-content">
-                <p class="core-intro">ATEN essentials brings pro-grade tech into everyday life, creating stable,
-                    elegant connections that feel effortless.</p>
-                <p class="core-description">Guided by the belief that great connections should be simple, our
-                    Video
-                    Switches, Video Splitters make every setup feel natural and easy. Compact
-                    yet
-                    powerful, each device moves with you — from one-touch focus at your desk to flawless visual
-                    moments at home. Low-profile but reliable, essential technology that makes every connection
-                    smoother and every moment more meaningful.</p>
-                <p class="core-tagline">Living Life as a Pro</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Session 11: Achievements & Awards -->
-    <section class="achievements-section02">
-        <img src="./images/achievement.jpg">
-    </section>
-    <section class="achievements-section" id="achievements" aria-label="ATEN achievements and awards"
-        style="display: none;">
-        <div class="container">
-            <!-- Header -->
-            <div class="achievements-header">
-                <div class="achievements-logo">
-                    <img src="./images/aten_logob.png" alt="ATEN" class="aten-logo">
-                </div>
-                <div class="achievements-tagline">
-                    <p>A Pioneering brand in <span class="text-orange">Connectivity</span> Technology</p>
+        </section>
+        <!-- Session 10: Core Message -->
+        <section class="core-section" id="core-message" aria-label="ATEN essentials core message">
+            <div class="container">
+                <div class="core-image"><img
+                        src="https://assets.aten.com/webpage/shared/aten_essential/landing/ess_core.png"
+                        alt="ATEN essentials core" class="core-image-img"></div>
+                <div class="core-content">
+                    <p class="core-intro" style="font-weight: bold;">ATEN essentials brings pro-grade tech into everyday
+                        life, creating stable, elegant connections that feel effortless.</p>
+                    <p class="core-description">Guided by the belief that great connections should be simple, our Video
+                        Switches, Video Splitters make every setup feel natural and easy. Compact yet powerful, each
+                        device
+                        moves with you — from one-touch focus at your desk to flawless visual moments at home.
+                        Low-profile
+                        but reliable, essential technology that makes every connection smoother and every moment more
+                        meaningful.</p>
+                    <p class="core-tagline">Living Life as a Pro</p>
                 </div>
             </div>
-
-            <!-- Stats -->
-            <div class="achievements-stats">
-                <div class="stat-item">
-                    <div class="stat-number"><span class="stat-symbol">#</span>1</div>
-                    <div class="stat-label">Global KVM Market Leader</div>
+        </section>
+        <!-- Session 11: Achievements & Awards -->
+        <section class="achievements-section02"><img
+                src="https://assets.aten.com/webpage/shared/aten_essential/landing/achievement.jpg"></section>
+        <section class="achievements-section" id="achievements" aria-label="ATEN achievements and awards"
+            style="display: none;">
+            <div class="container"><!-- Header -->
+                <div class="achievements-header">
+                    <div class="achievements-logo"><img
+                            src="https://assets.aten.com/webpage/shared/aten_essential/landing/aten_logob.png"
+                            alt="ATEN" class="aten-logo"></div>
+                    <div class="achievements-tagline">
+                        <p>A Pioneering brand in <span class="text-orange">Connectivity</span> Technology</p>
+                    </div>
                 </div>
-                <div class="stat-item">
-                    <div class="stat-number">45<span class="stat-symbol">+</span></div>
-                    <div class="stat-label">Years of Connection Expertise</div>
+                <!-- Stats -->
+                <div class="achievements-stats">
+                    <div class="stat-item">
+                        <div class="stat-number"><span class="stat-symbol">#</span>1</div>
+                        <div class="stat-label">Global KVM Market Leader</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">45<span class="stat-symbol">+</span></div>
+                        <div class="stat-label">Years of Connection Expertise</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">35<span class="stat-symbol">+</span></div>
+                        <div class="stat-label">Markets Available Worldwide</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">650<span class="stat-symbol">+</span></div>
+                        <div class="stat-label">Innovations Inside</div>
+                    </div>
                 </div>
-                <div class="stat-item">
-                    <div class="stat-number">35<span class="stat-symbol">+</span></div>
-                    <div class="stat-label">Markets Available Worldwide</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-number">650<span class="stat-symbol">+</span></div>
-                    <div class="stat-label">Innovations Inside</div>
+                <!-- Awards -->
+                <div class="achievements-awards">
+                    <div class="award-item"><img
+                            src="https://assets.aten.com/webpage/shared/aten_essential/landing/award01.png" alt="Award"
+                            class="award-logo"></div>
+                    <div class="award-item"><img
+                            src="https://assets.aten.com/webpage/shared/aten_essential/landing/award02.png" alt="Award"
+                            class="award-logo"></div>
+                    <div class="award-item"><img
+                            src="https://assets.aten.com/webpage/shared/aten_essential/landing/award03.png" alt="Award"
+                            class="award-logo"></div>
+                    <div class="award-item"><img
+                            src="https://assets.aten.com/webpage/shared/aten_essential/landing/award04.png" alt="Award"
+                            class="award-logo"></div>
+                    <div class="award-item"><img
+                            src="https://assets.aten.com/webpage/shared/aten_essential/landing/award05.png" alt="Award"
+                            class="award-logo"></div>
+                    <div class="award-item"><img
+                            src="https://assets.aten.com/webpage/shared/aten_essential/landing/award06.png" alt="Award"
+                            class="award-logo"></div>
+                    <div class="award-item"><img
+                            src="https://assets.aten.com/webpage/shared/aten_essential/landing/award07.png" alt="Award"
+                            class="award-logo"></div>
+                    <div class="award-item"><img
+                            src="https://assets.aten.com/webpage/shared/aten_essential/landing/award08.png" alt="Award"
+                            class="award-logo"></div>
+                    <div class="award-item"><img
+                            src="https://assets.aten.com/webpage/shared/aten_essential/landing/award09.png" alt="Award"
+                            class="award-logo"></div>
+                    <div class="award-item"><img
+                            src="https://assets.aten.com/webpage/shared/aten_essential/landing/award10.png" alt="Award"
+                            class="award-logo"></div>
                 </div>
             </div>
-
-            <!-- Awards -->
-            <div class="achievements-awards">
-                <div class="award-item">
-                    <img src="./images/award01.png" alt="Award" class="award-logo">
-                </div>
-                <div class="award-item">
-                    <img src="./images/award02.png" alt="Award" class="award-logo">
-                </div>
-                <div class="award-item">
-                    <img src="./images/award03.png" alt="Award" class="award-logo">
-                </div>
-                <div class="award-item">
-                    <img src="./images/award04.png" alt="Award" class="award-logo">
-                </div>
-                <div class="award-item">
-                    <img src="./images/award05.png" alt="Award" class="award-logo">
-                </div>
-                <div class="award-item">
-                    <img src="./images/award06.png" alt="Award" class="award-logo">
-                </div>
-                <div class="award-item">
-                    <img src="./images/award07.png" alt="Award" class="award-logo">
-                </div>
-                <div class="award-item">
-                    <img src="./images/award08.png" alt="Award" class="award-logo">
-                </div>
-                <div class="award-item">
-                    <img src="./images/award09.png" alt="Award" class="award-logo">
-                </div>
-                <div class="award-item">
-                    <img src="./images/award10.png" alt="Award" class="award-logo">
+        </section>
+        <!-- Session 12: Specifications -->
+        <section class="specifications-section" id="specifications" aria-label="Product specifications">
+            <div class="container"><!-- Title -->
+                <h2 class="specifications-title">Specifications</h2>
+                <!-- Category Tabs -->
+                <div class="spec-categories" id="specCategories"><!-- Generated by JavaScript --></div>
+                <!-- Comparison Table -->
+                <div class="spec-table-wrapper">
+                    <table class="spec-table" id="specTable"><!-- Generated by JavaScript --></table>
                 </div>
             </div>
-        </div>
-    </section>
-
-    <!-- Session 12: Specifications -->
-    <section class="specifications-section" id="specifications" aria-label="Product specifications">
-        <div class="container">
-            <!-- Title -->
-            <h2 class="specifications-title">Specifications</h2>
-
-            <!-- Category Tabs -->
-            <div class="spec-categories" id="specCategories">
-                <!-- Generated by JavaScript -->
-            </div>
-
-            <!-- Comparison Table -->
-            <div class="spec-table-wrapper">
-                <table class="spec-table" id="specTable">
-                    <!-- Generated by JavaScript -->
-                </table>
-            </div>
-        </div>
-    </section>
-
+        </section>
+    </div>
     <!-- JavaScript -->
     <script src="script.js"></script>
 </body>

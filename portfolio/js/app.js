@@ -374,20 +374,24 @@ try {
 	document.addEventListener('scroll', function (e) {
 		let scrollY = window.scrollY
 		if (scrollY == 0) {
-			header[0].classList.remove("sm");
 			header[0].classList.remove("md");
-			if (nav) nav.classList.remove("hide"); // 回復原位
+			header[0].classList.remove("sm");
+			if (nav) nav.classList.remove("md");
+			if (nav) nav.classList.remove("sm");
+
 		} else if (scrollY > LastScrollY) {
 			header[0].classList.remove("md");
 			header[0].classList.add("sm");
-			if (nav) nav.classList.add("hide"); // 往上移動至頂部
+			if (nav) nav.classList.remove("md");
+			if (nav) nav.classList.add("sm");
 		} else {
-			header[0].classList.remove("sm");
 			header[0].classList.add("md");
-			if (nav) nav.classList.remove("hide"); // 回復原位
+			header[0].classList.remove("sm");
+			if (nav) nav.classList.add("md");
+			if (nav) nav.classList.remove("sm");
 		}
 		LastScrollY = scrollY
-	}, { passive: true }) // 優化效能，解決 console warning
+	}, { passive: true }) // 優化效能
 } catch {
 	console.log("no header")
 }

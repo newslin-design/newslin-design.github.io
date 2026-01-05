@@ -4,13 +4,15 @@
 // 
 // =====================================================
 
+
+// Product Data
 const productData = [
     {
         id: "VS4812",
         category: "HDMI Splitter",
         name: "2-Port True 4K HDMI Splitter",
         url: "https://www.aten.com/global/en/products/consumer-electronics/splitters--switches/vs4812/",
-        eShopUrl: null,
+        eShopUrl: "11",
         icons: "https://assets.aten.com/webpage/shared/aten_essential/landing/VS4812_Icons.png",
         imageUrl: "https://assets.aten.com/webpage/shared/aten_essential/landing/VS4812.jpg",
         currency: "",
@@ -210,7 +212,7 @@ const productData = [
         features: [
             "RapidSync™ – high-speed AV switching",
             "Switches among four HDMI sources on a single True 4K display",
-            "LPCM 7.1, Dolby® & DTS-HD Master Audio™",
+            "Dolby® & DTS-HD Master Audio™",
             "Video switching via pushbutton or IR remote"
         ],
         description: "Your go-to HDMI switch for home entertainment, professional AV, and efficient source management.",
@@ -278,7 +280,7 @@ const productData = [
         features: [
             "RapidSync™ – high-speed AV switching",
             "8K@60 Hz / 4K@120 Hz exquisite visual clarity",
-            "LPCM 7.1, Dolby® & DTS-HD Master Audio™",
+            "LPCM 7.1, Dolby Digital & DTS-HD Master Audio",
             "Supports VRR & ALLM"
         ],
         description: "Your go-to HDMI switch for modern gaming, personal entertainment, and professional AV.",
@@ -334,7 +336,6 @@ const productData = [
         ]
     }
 ];
-
 
 
 // ===== Configuration =====
@@ -561,20 +562,20 @@ const initScenariosTabs = () => {
         });
     });
 
-    // // Add click event to scenario dots for product navigation
-    // const scenarioDots = document.querySelectorAll('.scenario-dot');
-    // scenarioDots.forEach(dot => {
-    //     dot.addEventListener('click', (e) => {
-    //         e.stopPropagation(); // Prevent event bubbling
-    //         const productUrl = dot.getAttribute('data-product-url');
-    //         if (productUrl) {
-    //             window.location.href = productUrl;
-    //         }
-    //     });
+    // Add click event to scenario dots for product navigation
+    const scenarioDots = document.querySelectorAll('.scenario-dot');
+    scenarioDots.forEach(dot => {
+        dot.addEventListener('click', (e) => {
+            e.stopPropagation(); // Prevent event bubbling
+            const productUrl = dot.getAttribute('data-product-url');
+            if (productUrl) {
+                window.location.href = productUrl;
+            }
+        });
 
-    //     // Add cursor pointer style
-    //     dot.style.cursor = 'pointer';
-    // });
+        // Add cursor pointer style
+        dot.style.cursor = 'pointer';
+    });
 };
 
 // =====================================================
@@ -811,21 +812,22 @@ const initProductGallery = () => {
         categoriesContainer.appendChild(categoryDiv);
     });
 
-    // Add global navigation functionality (for desktop) - 控制整個類別列表的滑動
+    // Add global navigation functionality (for desktop)
     const galleryContent = document.querySelector('.product-gallery-content');
     const prevBtn = galleryContent?.querySelector('.gallery-nav.prev');
     const nextBtn = galleryContent?.querySelector('.gallery-nav.next');
 
     if (prevBtn && nextBtn && categoriesContainer) {
         prevBtn.addEventListener('click', () => {
-            categoriesContainer.scrollBy({ left: -800, behavior: 'smooth' });
+            categoriesContainer.scrollBy({ left: -600, behavior: 'smooth' });
         });
 
         nextBtn.addEventListener('click', () => {
-            categoriesContainer.scrollBy({ left: 800, behavior: 'smooth' });
+            categoriesContainer.scrollBy({ left: 600, behavior: 'smooth' });
         });
     }
 };
+
 // =====================================================
 // 
 // Session 12: Specifications
@@ -970,137 +972,3 @@ window.ATENWebsite = {
     initScenariosTabs,
     initSmoothScroll
 };
-
-
-
-
-
-
-
-/***** 改 Pardot Form_iFrame 樣式 >> 【 Webpage 這裡是父端 】 ******/
-/**** 改 Pardot Form_iFrame 樣式 >> Landing Page/ Product Page (父端) 用 Postmessage 傳送樣式給 Pardot 端 **************/
-/***【 給 JS 自動偵測抓取此處 Style 並 Postmessage 給 iFrame 的 Pardot Form 】 ********/
-/***【 CSS 前綴一定要加 [id^="Form_embedded"] 】 ********/
-/***【 Product Page CSS 前綴一定要加 [id^="Form-for-"] 】 ********/
-
-
-$(document).ready(function () {
-    // 自動偵測頁面類型
-    var pageType = null;
-    var prefixPattern = null;
-    var $iframe = null;
-
-    // 檢測 Landing Page
-    if ($('[id*="Form_embedded"]').length > 0) {
-        pageType = 'Landing Page';
-        prefixPattern = /\[id\*="Form_embedded"\]\s*/;  // 注意這裡改成 \* 了
-        $iframe = $('[id*="Form_embedded"] .Form_Box iframe');
-        console.log("偵測到 Landing Page 表單");
-    }
-    // 檢測 Product Page
-    else if ($('[id*="Form-for-"]').length > 0) {
-        pageType = 'Product Page';
-        prefixPattern = /\[id\*="Form-for-"\]\s*/;  // 注意這裡改成 \* 了
-        $iframe = $('[id*="Form-for-"] .Form_Box iframe');
-        console.log("偵測到 Product Page 表單");
-    }
-
-    if (!$iframe || $iframe.length === 0) {
-        console.error("找不到表單 iframe，頁面類型:", pageType);
-        return;
-    }
-
-    console.log("目前頁面類型:", pageType, "iframe 數量:", $iframe.length);
-
-    function extractRelevantStyles() {
-        var styles = { normal: [], media: [] };
-
-        function processRules(rules, mediaCondition = null) {
-            Array.from(rules).forEach(function (rule) {
-                if (rule instanceof CSSStyleRule) {
-                    var selectorText = rule.selectorText;
-                    if (!selectorText || !rule.style.cssText) return;
-
-                    // 使用動態的前綴模式 (contains 匹配)
-                    if (prefixPattern.test(selectorText)) {
-                        var baseSelector = selectorText.replace(prefixPattern, '').trim();
-                        if (baseSelector) {
-                            var styleObj = {
-                                selector: baseSelector,
-                                cssText: rule.style.cssText
-                            };
-                            if (mediaCondition) {
-                                styleObj.media = mediaCondition;
-                                styles.media.push(styleObj);
-                            } else {
-                                styles.normal.push(styleObj);
-                            }
-                            console.log("提取選擇器:", baseSelector, "->", rule.style.cssText, "Media:", mediaCondition || 'none');
-                        }
-                    }
-                } else if (rule instanceof CSSMediaRule) {
-                    processRules(rule.cssRules, mediaCondition || rule.conditionText);
-                }
-            });
-        }
-
-        // 提取 <style> 標籤中的樣式
-        var specificStyleElement = $('.fluid-container.core-container style')[0];
-
-        if (specificStyleElement) {
-            try {
-                var sheet = specificStyleElement.sheet;
-                processRules(sheet.cssRules);
-                console.log("已處理 .fluid-container.core-container style 標籤");
-            } catch (e) {
-                console.warn("無法處理指定的樣式表:", e);
-            }
-        }
-
-        // 也嘗試從所有 stylesheet 中提取（備用方案）
-        Array.from(document.styleSheets).forEach(function (sheet) {
-            try {
-                processRules(sheet.cssRules);
-            } catch (e) {
-                // 跨域樣式表可能無法訪問
-            }
-        });
-
-        console.log("總共提取樣式 - 普通:", styles.normal.length, "Media:", styles.media.length);
-        return styles;
-    }
-
-    function sendStylesToIframe() {
-        if (!$iframe[0].contentWindow) {
-            console.error("contentWindow is undefined");
-            return false;
-        }
-
-        var extractedStyles = extractRelevantStyles();
-        var viewportWidth = window.innerWidth;
-        console.log("發送樣式至 iframe", "頁面類型:", pageType, "Viewport width:", viewportWidth);
-
-        $iframe[0].contentWindow.postMessage({
-            action: 'applyStyles',
-            styles: extractedStyles,
-            viewportWidth: viewportWidth,
-            pageType: pageType
-        }, "https://www2.aten.com");
-    }
-
-    $iframe.on("load", function () {
-        console.log("iframe 已載入，準備發送樣式...");
-        setTimeout(sendStylesToIframe, 500);
-    });
-
-    /* 視窗大小改變時重新發送樣式（可選）
-    $(window).on('resize', function() {
-      clearTimeout(window.resizeTimer);
-      window.resizeTimer = setTimeout(function() {
-        console.log("視窗大小改變，重新發送樣式");
-        sendStylesToIframe();
-      }, 250);
-    });
-    */
-
-});
