@@ -426,6 +426,7 @@ try {
 	document.addEventListener('scroll', function (e) {
 		let scrollY = window.scrollY
 		if (scrollY == 0) {
+			header[0].classList.remove("md");
 			header[0].classList.remove("sm");
 			header[0].classList.remove("md");
 		} else if (scrollY > LastScrollY) {
@@ -435,20 +436,16 @@ try {
 				projectNav.classList.add('scrolling-down');
 				projectNav.classList.remove('scrolling-up');
 			}
-
-
 		} else {
-			header[0].classList.remove("sm");
 			header[0].classList.add("md");
+			header[0].classList.remove("sm");
 			if (projectNav) {
 				projectNav.classList.add('scrolling-up');
 				projectNav.classList.remove('scrolling-down');
-
 			}
-
 		}
 		LastScrollY = scrollY
-	}, { passive: true }) // 優化效能，解決 console warning
+	}, { passive: true }) // 優化效能
 } catch {
 	console.log("no header")
 }

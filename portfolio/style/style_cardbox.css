@@ -132,22 +132,21 @@
 
 .workCards h3 {
 	font-size: 17px;
-	font-weight: 600;
+	font-weight: 450;
 	margin: 0 0 4px 0;
 	letter-spacing: -0.03em;
 	transition: 0.4s;
-	opacity: 0.65;
+	opacity: 0.7;
 	width: 100%;
 }
 
 .workCards .workCard:Hover h3 {
-	/* color: #fff; */
 	opacity: 0.9;
 }
 
 .workCards p {
 	font-size: 14px;
-	font-weight: 350;
+	font-weight: 200;
 	margin: 0;
 	letter-spacing: -0.03em;
 }
@@ -197,6 +196,7 @@
 .workCards .star-project .textBox>h3>span {
 	font-size: 20px;
 	line-height: 1.68em;
+	font-weight: 600;
 	color: #000;
 }
 
