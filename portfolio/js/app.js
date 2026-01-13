@@ -347,12 +347,64 @@ try {
 	console.log("no fold image")
 }
 
+
+// ============================================
+// Project Nav Sticky Behavior
+// ============================================
+try {
+	var projectNav = document.querySelector('.project-nav');
+
+	if (projectNav) {
+		var navOriginalOffsetTop = 0;
+		var lastScrollY = 0;
+		var scrollThreshold = 50;
+		var isInitialized = false;
+
+		// 延遲初始化，確保頁面完全載入
+		function initializeNav() {
+			// 重新計算 nav 的實際位置
+			navOriginalOffsetTop = projectNav.getBoundingClientRect().top + window.scrollY;
+			console.log("Nav original position:", navOriginalOffsetTop); // 除錯用
+			isInitialized = true;
+		}
+
+		// 在多個時間點嘗試初始化，確保抓到正確位置
+		window.addEventListener('load', initializeNav);
+		setTimeout(initializeNav, 500);
+
+		window.addEventListener('scroll', function () {
+			// 如果還沒初始化或位置不合理，重新計算
+			if (!isInitialized || navOriginalOffsetTop < 100) {
+				initializeNav();
+			}
+
+			var currentScrollY = window.scrollY;
+
+			// 判斷是否滾動超過 nav 原始位置
+			if (currentScrollY >= navOriginalOffsetTop - 60) { // 減去 header 高度
+				projectNav.classList.add('sticky');
+				projectNav.classList.remove('moto');
+
+				// 下上滾動邏輯跟 Header 一起
+
+			} else {
+				// 回到原始位置上方，移除 sticky
+				projectNav.classList.remove('sticky', 'scrolling-down', 'scrolling-up');
+				projectNav.classList.add('moto');
+				lastScrollY = currentScrollY;
+			}
+		}, { passive: true });
+	}
+} catch (error) {
+	console.log("Project nav initialization error:", error);
+}
+
+
 // ============================================
 // Header
 // ============================================
 try {
 	var header = $tag("header")
-	var nav = $css("project-nav")[0] // 取得導覽列，用於與 Header 同步
 	var headerHtml = `
                     <div class="container">
                         <a href="index.html">
@@ -376,15 +428,24 @@ try {
 		if (scrollY == 0) {
 			header[0].classList.remove("sm");
 			header[0].classList.remove("md");
-			if (nav) nav.classList.remove("hide"); // 回復原位
 		} else if (scrollY > LastScrollY) {
 			header[0].classList.remove("md");
 			header[0].classList.add("sm");
-			if (nav) nav.classList.add("hide"); // 往上移動至頂部
+			if (projectNav) {
+				projectNav.classList.add('scrolling-down');
+				projectNav.classList.remove('scrolling-up');
+			}
+
+
 		} else {
 			header[0].classList.remove("sm");
 			header[0].classList.add("md");
-			if (nav) nav.classList.remove("hide"); // 回復原位
+			if (projectNav) {
+				projectNav.classList.add('scrolling-up');
+				projectNav.classList.remove('scrolling-down');
+
+			}
+
 		}
 		LastScrollY = scrollY
 	}, { passive: true }) // 優化效能，解決 console warning

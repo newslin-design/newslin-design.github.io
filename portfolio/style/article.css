@@ -1,7 +1,5 @@
 /******************************
-
-		article
-
+        article
 *******************************/
 
 .article {
@@ -9,7 +7,6 @@
     flex-direction: column;
     align-items: flex-start;
     position: relative;
-
 }
 
 .article P {
@@ -41,7 +38,6 @@
     background-color: #EBEBEB;
 }
 
-
 .article .icon-btn {
     font-family: Material Symbols Outlined;
     font-size: 24px;
@@ -62,7 +58,6 @@
     color: #ffffff;
 }
 
-
 .article .move-by-scroll-box {
     overflow: hidden;
 }
@@ -80,37 +75,101 @@
 
 
 
-/* 專案流程導覽目錄 - 改為右上方固定水平顯示 */
+
+
+
+/* **************************
+
+專案流程導覽目錄 - 預設位置在文章中 
+
+*****************************/
 .project-nav {
-    position: fixed;
-    top: 50px;
-    /* 預設位置，配合 Header */
-    right: 40px;
+    position: relative;
     display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
     flex-direction: row;
-    background: rgba(255, 255, 255, 0.9);
-    backdrop-filter: blur(10px);
-    padding: 10px 24px;
+    background: linear-gradient(to right,
+            rgba(255, 255, 255, 0) 0%,
+            rgba(255, 255, 255, 0.9) 30%,
+            rgba(255, 255, 255, 1) 40%,
+            rgba(255, 255, 255, 1) 60%,
+            rgba(255, 255, 255, 0.9) 70%,
+            rgba(255, 255, 255, 0) 100%);
+    padding: 12px 24px;
     border-radius: 50px;
-    border: 1px solid rgba(0, 0, 0, 0.1);
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
     z-index: 1001;
     gap: 30px;
     width: auto;
-    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-    z-index: 5001;
+    transition: all 1s cubic-bezier(0.165, 0.84, 0.44, 1);
+
 }
 
-/* 配合 Header 狀態：下滑時不消失，僅往上移動到頂部 */
-.project-nav.hide {
-    top: 0px;
-    /* 往上移至頂部 */
-    background: rgba(255, 255, 255, 0.98);
-    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
-    border-top: none;
-    border-radius: 0 0 20px 20px;
-    /* 貼頂部時僅下方圓角 */
+.project-nav.moto {
+    animation: slideDown01 0.8s ease-out;
+
 }
+
+
+/* 當滾動超過原始位置時，固定在頂部 */
+.project-nav.sticky {
+    position: fixed;
+    top: 0px;
+    /* 配合 header 高度 */
+    left: 50%;
+    transform: translateX(-50%);
+    /* box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1); */
+    border-radius: 0;
+    animation: slideDown 0.5s ease-out;
+    width: 100%;
+    left: 0%;
+    transform: translateX(0%);
+}
+
+
+
+/* 當往下滾動時，nav 往上貼齊頂部 */
+.project-nav.sticky.scrolling-down {
+    top: 0px;
+}
+
+.project-nav.sticky.scrolling-down .nav-item .step {
+    display: none;
+}
+
+/* 當往上滾動時，nav 恢復到 header 下方 */
+.project-nav.sticky.scrolling-up {
+    top: 40px;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideDown01 {
+    from {
+        opacity: 0;
+        transform: translateY(-100px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+
+
 
 .nav-item {
     text-decoration: none;
@@ -120,6 +179,7 @@
     align-items: center;
     transition: all 0.3s ease;
     position: relative;
+    white-space: nowrap;
 }
 
 .nav-item .step {
@@ -159,35 +219,32 @@
     width: 100%;
 }
 
-/* 手機版適應性調整：固定在螢幕最上方置中 */
+/* Tablet 版本 */
 @media (max-width: 1024px) {
-    .project-nav {
-        top: 50px;
-        right: 20px;
-        gap: 20px;
-        padding: 8px 20px;
+
+
+    .project-nav.sticky.scrolling-down {
+        top: 0;
     }
 
-    .project-nav.hide {
-        top: 0;
+    .project-nav.sticky.scrolling-up {
+        top: 42px;
     }
 }
 
+/* 手機版：固定在螢幕最上方 */
 @media (max-width: 768px) {
     .project-nav {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
+
         width: 100%;
+        margin: 0;
+        gap: 0;
+        padding: 16px 0;
+        backdrop-filter: blur(10px);
+    }
+
+    .project-nav.sticky {
         border-radius: 0;
-        padding: 12px 10px;
-        justify-content: center;
-        gap: 15px;
-        background: white;
-        border: none;
-        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
     }
 
     .nav-item .step {
@@ -198,14 +255,17 @@
         font-size: 0.85rem;
     }
 
-    .nav-item:hover {
-        transform: none;
+    .nav-item .label::before {
+        content: "|";
+        position: relative;
+        width: 1px;
+        height: 10px;
+        margin: 6px;
+        color: #cecece;
     }
 
-    .project-nav.hide {
-        top: 0;
-        /* 手機版下滑時依然維持在最上方 */
-        border-radius: 0;
+    .nav-item:hover {
+        transform: none;
     }
 }
 

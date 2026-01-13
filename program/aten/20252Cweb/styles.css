@@ -189,6 +189,7 @@ a:hover {
 
 
 
+
 /* ===== Utility Classes ===== */
 .text-center {
     text-align: center;
@@ -2694,4 +2695,58 @@ a:hover {
         width: 120%;
         max-width: 140px;
     }
+}
+
+
+
+
+
+
+
+
+
+
+/* 新增 */
+
+
+
+
+/* Header */
+/* 跟 Red 拿 https://www.aten.com/global/en/products/consumer-electronics/splitters--switches/vs4841/ 這裡的header樣式 */
+/* 語言打開 */
+
+
+
+.Dark-Mode #wrapper,
+.Dark-Mode section#content {
+    background-color: #252525;
+}
+
+.customContianer .header {
+    display: none;
+}
+
+#header.full-header {
+    /* display: none; */
+}
+
+
+
+
+
+
+
+
+/* overview 文字靠左 */
+
+.customContianer .overview-card-subtitle {
+    text-align: right !important;
+}
+
+.customContianer .overview-card-subtitle {
+    text-align: left !important;
+}
+
+.customContianer .overview-card-description {
+    text-align: left !important;
 }
