@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beautiful Mermaid Editor - Dark Sidebar</title>
+
+    <script src="https://unpkg.com/beautiful-mermaid/dist/beautiful-mermaid.browser.global.js"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #18181b;
+            /* 整體改為深色底 */
+            color: #e4e4e7;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 360px 1fr;
+            height: 100vh;
+        }
+
+        /* 側邊欄：深色風格 */
+        .sidebar {
+            background: #18181b;
+            border-right: 1px solid #27272a;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            z-index: 20;
+        }
+
+        .sidebar-header {
+            padding: 16px;
+            border-bottom: 1px solid #27272a;
+        }
+
+        .sidebar-header h1 {
+            font-size: 16px;
+            font-weight: 700;
+            color: #f4f4f5;
+            /* 亮白文字 */
+        }
+
+        .sidebar-header p {
+            font-size: 12px;
+            color: #a1a1aa;
+            /* 灰白文字 */
+            margin-top: 2px;
+        }
+
+        .theme-selector {
+            padding: 12px;
+            border-bottom: 1px solid #27272a;
+            background: #18181b;
+        }
+
+        .theme-selector label {
+            display: block;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+            color: #71717a;
+        }
+
+        .theme-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            max-height: 180px;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+
+        /* 主題按鈕：深色樣式 */
+        .theme-option {
+            padding: 8px;
+            border: 1px solid #3f3f46;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.1s;
+            background: #27272a;
+            color: #d4d4d8;
+        }
+
+        .theme-option:hover {
+            border-color: #71717a;
+            background: #3f3f46;
+        }
+
+        .theme-option.active {
+            border-color: #7aa2f7;
+            /* Tokyo Night Blue */
+            background: #1f2335;
+            box-shadow: 0 0 0 1px #7aa2f7;
+            color: white;
+        }
+
+        .theme-name {
+            font-size: 11px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .theme-colors {
+            display: flex;
+            gap: 2px;
+            height: 6px;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .theme-color-bar {
+            flex: 1;
+            height: 100%;
+        }
+
+        .editor-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .code-editor {
+            flex: 1;
+            padding: 0;
+            position: relative;
+        }
+
+        /* 編輯器：深色樣式 */
+        textarea {
+            width: 100%;
+            height: 100%;
+            font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+            font-size: 13px;
+            /* 稍微加大一點字體方便閱讀 */
+            line-height: 1.6;
+            padding: 16px;
+            border: none;
+            resize: none;
+            background: #222231;
+            color: #e4e4e7;
+            /* 淺灰代碼色 */
+        }
+
+        textarea:focus {
+            outline: none;
+            background: #18181b;
+        }
+
+        /* 預覽區：背景色會由 JS 動態決定，這裡給個預設 */
+        .preview-area {
+            background: #1a1b26;
+            /* Tokyo Night Default BG */
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .preview-controls {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            background: rgba(24, 24, 27, 0.8);
+            /* 深色半透明 */
+            padding: 6px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(4px);
+            z-index: 100;
+        }
+
+        .zoom-controls {
+            display: flex;
+            gap: 2px;
+            align-items: center;
+        }
+
+        .zoom-btn {
+            width: 24px;
+            height: 24px;
+            border: none;
+            background: transparent;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            color: #a1a1aa;
+            transition: background 0.1s;
+        }
+
+        .zoom-btn:hover {
+            background: #3f3f46;
+            color: #fff;
+        }
+
+        .zoom-level {
+            font-size: 11px;
+            color: #d4d4d8;
+            min-width: 40px;
+            text-align: center;
+            font-weight: 500;
+            font-family: monospace;
+        }
+
+        .separator {
+            width: 1px;
+            height: 16px;
+            background: #3f3f46;
+            margin: 0 4px;
+        }
+
+        .render-btn {
+            padding: 4px 12px;
+            background: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            height: 24px;
+            transition: all 0.15s;
+        }
+
+        .render-btn:hover {
+            background: #2563eb;
+        }
+
+        .diagram-container {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            cursor: grab;
+        }
+
+        .diagram-container.grabbing {
+            cursor: grabbing;
+        }
+
+        .diagram-viewport {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #mermaid-output {
+            transform-origin: center center;
+            transition: transform 0.1s ease-out;
+            padding: 40px;
+        }
+
+        #mermaid-output svg {
+            max-width: none;
+            /* 深色模式下陰影加重 */
+            border-radius: 4px;
+        }
+
+        .error-message {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #f87171;
+            background: #27272a;
+            padding: 12px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            border: 1px solid #7f1d1d;
+            font-size: 12px;
+            z-index: 50;
+            pointer-events: none;
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+                grid-template-rows: 1fr 1fr;
+            }
+
+            .sidebar {
+                border-right: none;
+                border-bottom: 1px solid #27272a;
+            }
+        }
+
+        /* 深色滾動條 */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #18181b;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #3f3f46;
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #52525b;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h1>🎨 Beautiful Mermaid</h1>
+                <p>Editor</p>
+            </div>
+
+            <div class="theme-selector">
+                <label>Theme</label>
+                <div class="theme-grid" id="theme-grid"></div>
+            </div>
+
+            <div class="editor-area">
+                <div class="code-editor">
+                    <textarea id="mermaid-code" spellcheck="false">stateDiagram-v2
+    [*] --> Prepare_HTML
+    
+    Prepare_HTML --> Define_Specs : Example_Done
+    Define_Specs --> GPT_Script_Gen : Submit_Prompt
+    
+    state GPT_Script_Gen {
+        %% 內部橫向排列，避免線條過長
+        direction LR
+        
+        [*] --> Parse_PPTX
+        Parse_PPTX --> Extract_Content
+        Extract_Content --> Normalize_Names
+        Normalize_Names --> Convert_HTML
+    }
+    
+    GPT_Script_Gen --> Setup_Python : Script_Done
+    
+    Setup_Python --> Local_Run : Env_Ready
+    
+    Local_Run --> Success : Test_Pass
+    Local_Run --> Failure : Error_Occurred
+    
+    Failure --> Debug_Fix : Analyze
+    Debug_Fix --> Local_Run : Retry
+    
+    Success --> [*]</textarea>
+                </div>
+            </div>
+        </div>
+
+        <div class="preview-area">
+            <div class="preview-controls">
+                <div class="zoom-controls">
+                    <button class="zoom-btn" onclick="zoomOut()" title="Zoom Out">−</button>
+                    <span class="zoom-level" id="zoom-level">100%</span>
+                    <button class="zoom-btn" onclick="zoomIn()" title="Zoom In">+</button>
+                </div>
+                <div class="separator"></div>
+                <button class="zoom-btn" onclick="resetZoom()" title="Reset">⟲</button>
+                <div class="separator"></div>
+                <button class="render-btn" onclick="renderDiagram()">Run</button>
+            </div>
+
+            <div class="diagram-container" id="diagram-container">
+                <div class="diagram-viewport">
+                    <div id="mermaid-output"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let renderMermaid, THEMES;
+
+        if (typeof beautifulMermaid !== 'undefined') {
+            renderMermaid = beautifulMermaid.renderMermaid;
+            THEMES = beautifulMermaid.THEMES;
+        }
+
+        // 修改：預設主題改成 tokyo-night
+        let currentTheme = 'tokyo-night';
+        let scale = 1.0;
+        let translateX = 0;
+        let translateY = 0;
+        let isDragging = false;
+        let startX = 0;
+        let startY = 0;
+
+
+
+        // 【關鍵修改】定義全域通用樣式 (會在渲染時自動插入)
+        // p1: 紅色系 (High Priority / Error)
+        // p2: 橘黃色系 (Medium Priority / Warning)
+        // 這些顏色經過挑選，在深色和淺色背景下都能看清楚文字
+        const GLOBAL_STYLES = `
+            classDef p1 fill:#e11d48,stroke:#be123c,color:#fff,stroke-width:2px,font-weight:bold;
+            classDef p2 fill:#d97706,stroke:#b45309,color:#fff,stroke-width:2px,font-weight:bold;
+        `;
+        function initThemeGrid() {
+            const grid = document.getElementById('theme-grid');
+            if (!THEMES) return;
+
+            // 確保 tokyo-night 排在第一個或者顯眼位置 (Object.keys 順序不保證，但通常沒問題)
+            Object.keys(THEMES).forEach(key => {
+                const theme = THEMES[key];
+                if (!theme) return;
+
+                const option = document.createElement('div');
+                option.className = 'theme-option';
+                option.dataset.theme = key;
+
+                const colors = [theme.bg, theme.fg, theme.accent].filter(c => c);
+
+                option.innerHTML = `
+                    <div class="theme-name">${key.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')}</div>
+                    <div class="theme-colors">
+                        <div class="theme-color-bar" style="background:${theme.bg || '#fff'}"></div>
+                        <div class="theme-color-bar" style="background:${theme.accent || theme.fg || '#000'}"></div>
+                    </div>
+                `;
+
+                option.addEventListener('click', () => selectTheme(key));
+                grid.appendChild(option);
+            });
+
+            selectTheme(currentTheme);
+        }
+
+        function selectTheme(themeName) {
+            currentTheme = themeName;
+            document.querySelectorAll('.theme-option').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.theme === themeName);
+            });
+            renderDiagram();
+        }
+
+        function zoomIn() {
+            scale = Math.min(scale * 1.2, 5);
+            updateTransform();
+        }
+
+        function zoomOut() {
+            scale = Math.max(scale / 1.2, 0.1);
+            updateTransform();
+        }
+
+        function resetZoom() {
+            scale = 1.0;
+            translateX = 0;
+            translateY = 0;
+            updateTransform();
+        }
+
+        function updateTransform() {
+            const output = document.getElementById('mermaid-output');
+            output.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`;
+            document.getElementById('zoom-level').textContent = Math.round(scale * 100) + '%';
+        }
+
+        function initZoomAndPan() {
+            const container = document.getElementById('diagram-container');
+
+            container.addEventListener('wheel', (e) => {
+                e.preventDefault();
+                const delta = e.deltaY > 0 ? 0.9 : 1.1;
+                const newScale = Math.max(0.1, Math.min(5, scale * delta));
+                // 修正：簡單縮放，不計算滑鼠位置以避免平移錯誤
+                scale = newScale;
+                updateTransform();
+            }, { passive: false });
+
+            container.addEventListener('mousedown', (e) => {
+                if (e.target.closest('.preview-controls')) return;
+                isDragging = true;
+                startX = e.clientX - translateX;
+                startY = e.clientY - translateY;
+                container.classList.add('grabbing');
+            });
+
+            document.addEventListener('mousemove', (e) => {
+                if (isDragging) {
+                    translateX = e.clientX - startX;
+                    translateY = e.clientY - startY;
+                    updateTransform();
+                }
+            });
+
+            document.addEventListener('mouseup', () => {
+                isDragging = false;
+                container.classList.remove('grabbing');
+            });
+        }
+
+        async function renderDiagram() {
+            const code = document.getElementById('mermaid-code').value.trim();
+            const output = document.getElementById('mermaid-output');
+
+            if (!renderMermaid || !THEMES[currentTheme]) return;
+
+            const theme = THEMES[currentTheme];
+            // 同步預覽區背景色
+            document.querySelector('.preview-area').style.backgroundColor = theme.bg || '#1a1b26';
+
+            try {
+                const oldErr = document.querySelector('.error-message');
+                if (oldErr) oldErr.remove();
+
+                const finalCode = code + '\n' + GLOBAL_STYLES;
+
+                const svg = await renderMermaid(finalCode, theme);
+                output.innerHTML = svg;
+            } catch (error) {
+                const errDiv = document.createElement('div');
+                errDiv.className = 'error-message';
+                errDiv.innerHTML = `<strong>Error:</strong> ${error.message}`;
+                document.querySelector('.preview-area').appendChild(errDiv);
+                console.error(error);
+            }
+        }
+
+        function init() {
+            if (typeof beautifulMermaid === 'undefined') {
+                setTimeout(init, 100);
+                return;
+            }
+            renderMermaid = beautifulMermaid.renderMermaid;
+            THEMES = beautifulMermaid.THEMES;
+
+            initThemeGrid();
+            initZoomAndPan();
+            renderDiagram();
+
+            document.getElementById('mermaid-code').addEventListener('input',
+                debounce(() => renderDiagram(), 500)
+            );
+        }
+
+        function debounce(func, wait) {
+            let timeout;
+            return function (...args) {
+                clearTimeout(timeout);
+                timeout = setTimeout(() => func(...args), wait);
+            };
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+        } else {
+            init();
+        }
+    </script>
+</body>
+
+</html>

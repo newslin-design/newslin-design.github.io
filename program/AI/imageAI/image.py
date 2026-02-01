@@ -212,7 +212,7 @@ cv2.imwrite('new_image.jpg', image)
 
 
 # 讀取圖片
-img = cv2.imread('image/021.jpg')
+img = cv2.imread('image/019.jpg')
 gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)   # 將圖片轉成灰階
 
 face_cascade = cv2.CascadeClassifier("haarcascade_frontalface_default.xml")   # 載入人臉模型
