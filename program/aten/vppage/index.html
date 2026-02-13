@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>塔羅牌占卜</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft JhengHei', sans-serif;
+            overflow-x: hidden;
+            background: #1a1a1a;
+        }
+
+        .screen {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1e1b4b 0%, #3b0764 50%, #4c0519 100%);
+            display: none;
+            padding: 2rem;
+        }
+
+        .screen.active {
+            display: flex;
+        }
+
+        /* Prompt 輸入頁面 */
+        #prompt-screen {
+            align-items: center;
+            justify-content: center;
+            background: #2d2d30;
+        }
+
+        .prompt-container {
+            width: 100%;
+            max-width: 1100px;
+            /* background: #1e1e1e; */
+            border-radius: 1rem;
+            padding: 3rem;
+            /* box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5); */
+        }
+
+        .prompt-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .claude-logo {
+            width: 48px;
+            height: 48px;
+            color: #d97706;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .claude-logo svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .prompt-title {
+            font-size: 1.5rem;
+            color: #e0e0e0;
+            font-weight: 600;
+        }
+
+        .prompt-input-wrapper {
+            position: relative;
+            margin-bottom: 2rem;
+
+        }
+
+
+        .prompt-textarea {
+            width: 100%;
+            min-height: 450px;
+            background: #2d2d30;
+            border: 2px solid #3e3e42;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            color: #e0e0e0;
+            font-size: 1.05rem;
+            line-height: 1.8;
+            font-family: inherit;
+            resize: vertical;
+            transition: border-color 0.3s;
+            background: #1e1e1e;
+
+        }
+
+        .prompt-textarea:focus {
+            outline: none;
+            border-color: #d97706;
+        }
+
+        .prompt-send-btn {
+            background: linear-gradient(135deg, #d97706 0%, #ea580c 100%);
+            color: white;
+            padding: 1rem 2.5rem;
+            border-radius: 0.5rem;
+            border: none;
+            font-size: 1.125rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .prompt-send-btn:hover {
+            background: linear-gradient(135deg, #ea580c 0%, #dc2626 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(217, 119, 6, 0.4);
+        }
+
+        /* 生成中頁面 */
+        #generating-screen {
+            align-items: center;
+            justify-content: center;
+            background: #2d2d30;
+        }
+
+        .generating-container {
+            width: 100%;
+            max-width: 1100px;
+            /* background: #1e1e1e; */
+            border-radius: 1rem;
+            padding: 3rem;
+            /* box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5); */
+        }
+
+        .user-message {
+            background: #2d2d30;
+            border-radius: 0.75rem;
+            padding: 1.75rem 2.25rem;
+            margin-bottom: 2rem;
+            color: #e0e0e0;
+            font-size: 1.05rem;
+            line-height: 1.8;
+            white-space: pre-line;
+        }
+
+        .ai-response {
+            background: transparent;
+            border-radius: 0.75rem;
+            padding: 1.75rem 2.25rem;
+            color: #e0e0e0;
+            font-size: 1.05rem;
+            line-height: 1.8;
+        }
+
+        .typing-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .typing-dot {
+            width: 10px;
+            height: 10px;
+            background: #d97706;
+            border-radius: 50%;
+            animation: typing 1.4s infinite;
+        }
+
+        .typing-dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .typing-dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes typing {
+
+            0%,
+            60%,
+            100% {
+                opacity: 0.3;
+                transform: translateY(0);
+            }
+
+            30% {
+                opacity: 1;
+                transform: translateY(-8px);
+            }
+        }
+
+        .generating-text {
+            color: #a0a0a0;
+            font-size: 2.05rem;
+            margin-top: 1rem;
+        }
+
+        /* 開始頁面 */
+        #start-screen {
+            align-items: center;
+            justify-content: center;
+        }
+
+        .start-content {
+            text-align: center;
+        }
+
+        .sparkle-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 2rem;
+            font-size: 80px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 0.8;
+                transform: scale(1.05);
+            }
+        }
+
+        h1 {
+            font-size: 3rem;
+            color: white;
+            margin-bottom: 1rem;
+            font-weight: bold;
+        }
+
+        .subtitle {
+            font-size: 1.25rem;
+            color: #d8b4fe;
+            margin-bottom: 2rem;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #a855f7 0%, #ec4899 100%);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 9999px;
+            font-size: 1.25rem;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn:hover {
+            background: linear-gradient(135deg, #9333ea 0%, #db2777 100%);
+            transform: scale(1.05);
+        }
+
+        .btn-start {
+            animation: pulse-btn 2s infinite;
+        }
+
+        @keyframes pulse-btn {
+
+            0%,
+            100% {
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            }
+
+            50% {
+                box-shadow: 0 10px 40px rgba(251, 191, 36, 0.4);
+            }
+        }
+
+        /* 選牌頁面 */
+        #selecting-screen {
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        h2 {
+            font-size: 2rem;
+            color: white;
+            margin-bottom: 1rem;
+            font-weight: bold;
+        }
+
+        .card-counter {
+            color: #d8b4fe;
+            margin-bottom: 3rem;
+            font-size: 1.1rem;
+        }
+
+        .cards-container {
+            position: relative;
+            margin: 40vh 0 0;
+            height: 50px;
+            width: 1200px;
+            max-width: 95vw;
+        }
+
+        .card {
+            position: absolute;
+            width: 176px;
+            height: 320px;
+            cursor: pointer;
+            transition: all 0.5s ease-out;
+        }
+
+        .card-inner {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #7c3aed 0%, #4f46e5 100%);
+            border-radius: 1rem;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.5s;
+            border: 2px solid rgba(196, 181, 253, 0.3);
+            overflow: hidden;
+        }
+
+        .card.selected .card-inner {
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+            box-shadow: 0 25px 70px rgba(251, 191, 36, 0.6);
+            transform: translateY(-80px) scale(1.1);
+            border: 2px solid rgba(254, 240, 138, 0.4);
+        }
+
+        .card:not(.selected):hover .card-inner {
+            transform: translateY(-50px);
+        }
+
+        .card-back {
+            width: 112px;
+            height: 220px;
+            border: 4px solid #d8b4fe;
+            border-radius: 0.75rem;
+        }
+
+        .card-symbol {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .reveal-btn {
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+            margin-top: 2rem;
+            opacity: 0;
+            transition: opacity 0.6s ease-in-out;
+        }
+
+        .reveal-btn.show {
+            opacity: 1;
+        }
+
+        .reveal-btn:hover {
+            background: linear-gradient(135deg, #f59e0b 0%, #ea580c 100%);
+        }
+
+        /* 結果頁面 */
+        #reading-screen {
+            flex-direction: column;
+        }
+
+        .reading-container {
+            max-width: 1400px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .overall-reading {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(12px);
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .overall-title {
+            font-size: 1.75rem;
+            color: #fcd34d;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .sparkle-small {
+            font-size: 1.75rem;
+            margin: 0 0.5rem;
+        }
+
+        .overall-text {
+            color: white;
+            font-size: 1.25rem;
+            line-height: 1.9;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-bottom: 3rem;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease-out 0.3s forwards;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card-column {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .card-display {
+            width: 100%;
+            max-width: 200px;
+            height: 320px;
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+            border-radius: 1rem;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            border: 2px solid rgba(254, 240, 138, 0.4);
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-display:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 30px 60px rgba(251, 191, 36, 0.4);
+        }
+
+        .card-emoji {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .card-info {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(12px);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            width: 100%;
+            text-align: center;
+        }
+
+        .card-name {
+            font-size: 1.5rem;
+            color: #fcd34d;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        .card-meaning {
+            color: #d8b4fe;
+            font-size: 1rem;
+            margin-bottom: 0.75rem;
+            font-weight: 600;
+        }
+
+        .card-description {
+            color: white;
+            line-height: 1.625;
+            font-size: 0.95rem;
+        }
+
+        .reset-btn {
+            display: block;
+            margin: 2rem auto 0;
+        }
+
+        /* 占卜中頁面 */
+        #divining-screen {
+            align-items: center;
+            justify-content: center;
+        }
+
+        .divining-content {
+            text-align: center;
+        }
+
+        .crystal-ball {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 2rem;
+            position: relative;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        .crystal-inner {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, rgba(167, 139, 250, 0.8), rgba(139, 92, 246, 0.6), rgba(109, 40, 217, 0.9));
+            position: relative;
+            animation: rotate 4s linear infinite;
+            box-shadow:
+                0 0 40px rgba(167, 139, 250, 0.6),
+                0 0 80px rgba(139, 92, 246, 0.4),
+                inset 0 0 60px rgba(255, 255, 255, 0.2);
+        }
+
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .crystal-shine {
+            position: absolute;
+            top: 20%;
+            left: 25%;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.8), transparent);
+            animation: shimmer 2s ease-in-out infinite;
+        }
+
+        @keyframes shimmer {
+
+            0%,
+            100% {
+                opacity: 0.6;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 1;
+                transform: scale(1.2);
+            }
+        }
+
+        .crystal-glow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            height: 80%;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(251, 191, 36, 0.3), transparent 70%);
+            animation: pulse-glow 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-glow {
+
+            0%,
+            100% {
+                opacity: 0.5;
+                transform: translate(-50%, -50%) scale(1);
+            }
+
+            50% {
+                opacity: 0.8;
+                transform: translate(-50%, -50%) scale(1.1);
+            }
+        }
+
+        .divining-text {
+            color: white;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            animation: pulse-text 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse-text {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.6;
+            }
+        }
+
+        .divining-subtext {
+            color: #fcd34d;
+            font-size: 1.25rem;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Prompt 輸入頁面 -->
+    <div id="prompt-screen" class="screen active">
+        <div class="prompt-container">
+            <div class="prompt-header">
+                <div class="claude-logo">
+                    <svg overflow="visible" width="100%" height="100%" viewBox="0 0 100 101" fill="none"
+                        xmlns="http://www.w3.org/2000/svg" role="presentation">
+                        <path
+                            d="M96.0000 40.0000 L99.5002 42.0000 L99.5002 43.5000 L98.5000 47.0000 L56.0000 57.0000 L52.0040 47.0708 L96.0000 40.0000 M96.0000 40.0000 "
+                            fill="currentColor"
+                            style="transform-origin: 50px 50px; transform: rotate(330deg) scaleY(1.09) rotate(-330deg);">
+                        </path>
+                        <path
+                            d="M80.1032 10.5903 L84.9968 11.6171 L86.2958 13.2179 L87.5346 17.0540 L87.0213 19.5007 L58.5000 58.5000 L49.0000 49.0000 L75.3008 14.4873 L80.1032 10.5903 M80.1032 10.5903 "
+                            fill="currentColor"
+                            style="transform-origin: 50px 50px; transform: rotate(300deg) scaleY(0.925) rotate(-300deg);">
+                        </path>
+                        <path
+                            d="M55.5002 4.5000 L58.5005 2.5000 L61.0002 3.5000 L63.5002 7.0000 L56.6511 48.1620 L52.0005 45.0000 L50.0005 39.5000 L53.5003 8.5000 L55.5002 4.5000 M55.5002 4.5000 "
+                            fill="currentColor"
+                            style="transform-origin: 50px 50px; transform: rotate(270deg) scaleY(1.075) rotate(-270deg);">
+                        </path>
+                        <path
+                            d="M23.4253 5.1588 L26.5075 1.2217 L28.5175 0.7632 L32.5063 1.3458 L34.4748 2.8868 L48.8202 34.6902 L54.0089 49.8008 L47.9378 53.1760 L24.8009 11.1886 L23.4253 5.1588 M23.4253 5.1588 "
+                            fill="currentColor"
+                            style="transform-origin: 50px 50px; transform: rotate(240deg) scaleY(0.94) rotate(-240deg);">
+                        </path>
+                        <path
+                            d="M8.4990 27.0019 L7.4999 23.0001 L10.5003 19.5001 L14.0003 20.0001 L15.0003 20.0001 L36.0000 35.5000 L42.5000 40.5000 L51.5000 47.5000 L46.5000 56.0000 L42.0002 52.5000 L39.0001 49.5000 L10.0000 29.0001 L8.4990 27.0019 M8.4990 27.0019 "
+                            fill="currentColor"
+                            style="transform-origin: 50px 50px; transform: rotate(210deg) scaleY(1.06) rotate(-210deg);">
+                        </path>
+                        <path
+                            d="M2.5003 53.0000 L0.2370 50.5000 L0.2373 48.2759 L2.5003 47.5000 L28.0000 49.0000 L53.0000 51.0000 L52.1885 55.9782 L4.5000 53.5000 L2.5003 53.0000 M2.5003 53.0000 "
+                            fill="currentColor"
+                            style="transform-origin: 50px 50px; transform: rotate(180deg) scaleY(0.955) rotate(-180deg);">
+                        </path>
+                        <path
+                            d="M17.5002 79.0264 L12.5005 79.0264 L10.5124 76.7369 L10.5124 74.0000 L19.0005 68.0000 L53.5082 46.0337 L57.0005 52.0000 L17.5002 79.0264 M17.5002 79.0264 "
+                            fill="currentColor"
+                            style="transform-origin: 50px 50px; transform: rotate(150deg) scaleY(1.05142) rotate(-150deg);">
+                        </path>
+                        <path
+                            d="M27.0004 92.9999 L25.0003 93.4999 L22.0003 91.9999 L22.5004 89.4999 L52.0003 50.5000 L56.0004 55.9999 L34.0003 85.0000 L27.0004 92.9999 M27.0004 92.9999 "
+                            fill="currentColor"
+                            style="transform-origin: 50px 50px; transform: rotate(120deg) scaleY(1.04309) rotate(-120deg);">
+                        </path>
+                        <path
+                            d="M51.9998 98.0000 L50.5002 100.0000 L47.5002 101.0000 L45.0001 99.0000 L43.5000 96.0000 L51.0003 55.4999 L55.5001 55.9999 L51.9998 98.0000 M51.9998 98.0000 "
+                            fill="currentColor"
+                            style="transform-origin: 50px 50px; transform: rotate(90deg) scaleY(1.16976) rotate(-90deg);">
+                        </path>
+                        <path
+                            d="M77.5007 86.9997 L77.5007 90.9997 L77.0006 92.4997 L75.0004 93.4997 L71.5006 93.0339 L47.4669 57.2642 L56.9998 50.0002 L64.9994 64.5004 L65.7507 69.7497 L77.5007 86.9997 M77.5007 86.9997 "
+                            fill="currentColor"
+                            style="transform-origin: 50px 50px; transform: rotate(60deg) scaleY(1.17858) rotate(-60deg);">
+                        </path>
+                        <path
+                            d="M89.0008 80.9991 L89.5008 83.4991 L88.0008 85.4991 L86.5007 84.9991 L78.0007 78.9991 L65.0007 67.4991 L55.0007 60.4991 L58.0000 51.0000 L62.9999 54.0001 L66.0007 59.4991 L89.0008 80.9991 M89.0008 80.9991 "
+                            fill="currentColor"
+                            style="transform-origin: 50px 50px; transform: rotate(30deg) scaleY(1.14191) rotate(-30deg);">
+                        </path>
+                        <path
+                            d="M82.5003 55.5000 L95.0003 56.5000 L98.0003 58.5000 L100.0000 61.5000 L100.0000 63.6587 L94.5003 66.0000 L66.5005 59.0000 L55.0003 58.5000 L58.0000 48.0000 L66.0005 54.0000 L82.5003 55.5000 M82.5003 55.5000 "
+                            fill="currentColor"
+                            style="transform-origin: 50px 50px; transform: rotate(0deg) scaleY(1.05724) rotate(0deg);">
+                        </path>
+                    </svg>
+                </div>
+                <div class="prompt-title">Claude</div>
+            </div>
+
+            <div class="prompt-input-wrapper">
+                <textarea id="prompt-input" class="prompt-textarea" placeholder="請輸入你的問題...">請建立一個完整的塔羅牌占卜系統，需包含以下規格：
+
+1. 神秘的開場介面，營造連結宇宙能量的氛圍
+2. 互動式選牌機制：10張牌扇形展開，用戶選擇3張
+3. 占卜儀式動畫：水晶球旋轉效果，象徵與宇宙溝通
+4. 詳細解讀頁面：
+   - 三張牌的個別意義與象徵
+   - 整體運勢解析（愛情、事業、健康）
+   - 宇宙訊息的深層解讀
+5. 視覺設計：深邃神秘的漸層背景，發光邊框效果
+6. 動畫流暢度：淡入淡出、滑動、浮動等過渡效果
+
+請確保整體體驗充滿儀式感，讓使用者感受到正在與宇宙能量連結。</textarea>
+            </div>
+
+            <button class="prompt-send-btn" onclick="startGenerating()">
+                <span>發送</span>
+                <span>→</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- 生成中頁面 -->
+    <div id="generating-screen" class="screen">
+        <div class="generating-container">
+            <div class="user-message" id="user-message-display">
+                請建立一個完整的塔羅牌占卜系統...
+            </div>
+
+            <div class="ai-response">
+                <div class="typing-indicator">
+                    <span class="typing-dot"></span>
+                    <span class="typing-dot"></span>
+                    <span class="typing-dot"></span>
+                </div>
+                <div class="generating-text" id="generating-text">正在連結宇宙能量...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 開始頁面 -->
+    <div id="start-screen" class="screen active">
+        <div class="start-content">
+            <div class="sparkle-icon">✨</div>
+            <h1>塔羅牌占卜</h1>
+            <p class="subtitle">探索你的命運之路</p>
+            <button class="btn btn-start" onclick="startReading()">開始占卜</button>
+        </div>
+    </div>
+
+    <!-- 選牌頁面 -->
+    <div id="selecting-screen" class="screen">
+        <div style="text-align: center;">
+            <div class="cards-container" id="cards-container"></div>
+
+            <h2 style="margin-top: 2rem;">請選擇三張牌</h2>
+            <p class="card-counter">已選擇: <span id="selected-count">0</span> / 3</p>
+
+            <div style="display: flex; justify-content: center;">
+                <button id="reveal-btn" class="btn reveal-btn" onclick="revealReading()">
+                    開始占卜 ✨
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 占卜中頁面 -->
+    <div id="divining-screen" class="screen">
+        <div class="divining-content">
+            <div class="crystal-ball">
+                <div class="crystal-inner">
+                    <div class="crystal-shine"></div>
+                    <div class="crystal-glow"></div>
+                </div>
+            </div>
+            <h2 class="divining-text">正在占卜中...</h2>
+            <p class="divining-subtext">✨ 聆聽宇宙的訊息 ✨</p>
+        </div>
+    </div>
+
+    <!-- 結果頁面 -->
+    <div id="reading-screen" class="screen">
+        <div class="reading-container">
+            <h2 style="text-align: center; margin-bottom: 3rem;">你的塔羅解讀</h2>
+
+            <div id="cards-result" class="cards-grid"></div>
+
+            <div class="overall-reading" style="opacity: 0; animation: fadeInUp 0.8s ease-out 0.6s forwards;">
+                <h3 class="overall-title">
+                    <span class="sparkle-small">✨</span>
+                    根據這三張牌的組合，宇宙傳達給你的訊息是
+                    <span class="sparkle-small">✨</span>
+                </h3>
+                <p class="overall-text" style="white-space: pre-line;">
+                    過去的努力終於要開花結果啦！只要保持天秤那份優雅猶豫的平衡感 (嗯...再想三秒也沒關係)，最後你一定能做出完美選擇。
+
+                    <strong style="color: #fcd34d;">愛情運勢：</strong>
+                    「桃花朵朵開～今天連路邊的貓都對你放電！」
+                    「小心，老婆看到你被貓盯上可能會吃醋...」
+
+                    <strong style="color: #fcd34d;">財運：</strong>
+                    只要達成 6022、PSI 2.0 升級完成、VIP 產品大賣，
+                    你的荷包就會從從容容、游刃有餘地暴漲！副總一出手，財神都要點頭！
+
+                    <strong style="color: #fcd34d;">健康運勢：</strong>
+                    記住，少！喝！酒！特別是跟一位叫 Jonas 的同事，在尾牙季別再和威士忌、紅酒眉來眼去～
+                    健康值自然會一路上升，遠離「匆匆忙忙、連滾帶爬」的模式，開啟「從從容容、游刃有餘」的副總人生！
+                </p>
+            </div>
+
+            <button class="btn reset-btn" onclick="reset()">重新占卜</button>
+        </div>
+    </div>
+
+    <script>
+        // 固定的三張牌結果
+        const fixedResult = [
+            {
+                name: '太陽',
+                meaning: '代表成功、喜悅和光明',
+                description: '太陽牌象徵著積極的能量和成功。這是一張非常正面的牌，預示著你即將迎來快樂、成就和清晰的時刻。你的努力會得到回報,困難會被克服。',
+                image: 'sun.svg'
+            },
+            {
+                name: '星星',
+                meaning: '代表希望、靈感和平靜',
+                description: '星星牌帶來希望和治癒的訊息。它提醒你要對未來保持信心，相信宇宙的安排。這是一個恢復和重新找到內心平靜的時期。',
+                image: 'star.svg'
+            },
+            {
+                name: '世界',
+                meaning: '代表完成、成就和圓滿',
+                description: '世界牌象徵著一個重要階段的完成和新開始。你已經完成了一個重要的人生課題，現在是時候慶祝你的成就，並準備迎接新的冒險。',
+                image: 'world.jpg'
+            }
+        ];
+
+        const totalCards = 10;
+        let selectedCards = [];
+        let generatingInterval;
+
+        const generatingMessages = [
+            '正在連結宇宙能量...',
+            '解讀星辰的排列...',
+            '召喚神秘的塔羅力量...',
+            '與高維度意識溝通中...',
+            '建構占卜儀式系統...',
+            '注入靈性視覺元素...',
+            '編織命運的絲線...',
+            '啟動水晶球能量場...',
+            '調頻至宇宙頻率...',
+            '準備揭示未來的面紗...',
+            '最後的能量校準中...',
+            '占卜系統即將完成...'
+        ];
+
+        function startGenerating() {
+            const promptText = document.getElementById('prompt-input').value;
+            document.getElementById('user-message-display').textContent = promptText;
+
+            document.getElementById('prompt-screen').classList.remove('active');
+            document.getElementById('generating-screen').classList.add('active');
+
+            let messageIndex = 0;
+            const generatingTextEl = document.getElementById('generating-text');
+
+            // 每1.7秒更換一次文字
+            generatingInterval = setInterval(() => {
+                messageIndex = (messageIndex + 1) % generatingMessages.length;
+                generatingTextEl.textContent = generatingMessages[messageIndex];
+            }, 1700);
+
+            // 20秒後進入占卜開始頁面
+            setTimeout(() => {
+                clearInterval(generatingInterval);
+                document.getElementById('generating-screen').classList.remove('active');
+                document.getElementById('start-screen').classList.add('active');
+            }, 20000);
+        }
+
+        function startReading() {
+            document.getElementById('start-screen').classList.remove('active');
+            document.getElementById('selecting-screen').classList.add('active');
+            createCards();
+        }
+
+        function createCards() {
+            const container = document.getElementById('cards-container');
+            container.innerHTML = '';
+            selectedCards = [];
+
+            for (let i = 0; i < totalCards; i++) {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.dataset.index = i;
+
+                const totalSpread = 100;
+                const rotation = ((i / (totalCards - 1)) - 0.5) * totalSpread;
+                const radiusY = 450;
+                const angleRad = (rotation * Math.PI) / 180;
+                const translateX = Math.sin(angleRad) * radiusY;
+                const translateY = Math.cos(angleRad) * radiusY - 280;
+
+                card.style.left = '50%';
+                card.style.top = '50%';
+                card.style.transformOrigin = 'center center';
+                card.style.transform = `translate(calc(-50% + ${translateX}px), calc(-50% - ${translateY}px)) rotate(${rotation}deg)`;
+                card.style.zIndex = 50 - Math.abs(i - totalCards / 2);
+
+                card.innerHTML = `
+          <div class="card-inner">
+            <div class="card-back"></div>
+          </div>
+        `;
+
+                card.onclick = () => selectCard(i);
+                container.appendChild(card);
+            }
+        }
+
+        function selectCard(index) {
+            if (selectedCards.length >= 3 && !selectedCards.includes(index)) {
+                return;
+            }
+
+            const card = document.querySelector(`.card[data-index="${index}"]`);
+
+            if (selectedCards.includes(index)) {
+                selectedCards = selectedCards.filter(i => i !== index);
+                card.classList.remove('selected');
+                card.querySelector('.card-inner').innerHTML = '<div class="card-back"></div>';
+            } else if (selectedCards.length < 3) {
+                selectedCards.push(index);
+                card.classList.add('selected');
+                const resultIndex = selectedCards.length - 1;
+                card.querySelector('.card-inner').innerHTML = `
+          <img src="${fixedResult[resultIndex].image}" alt="${fixedResult[resultIndex].name}" class="card-symbol">
+        `;
+                card.style.zIndex = 100;
+            }
+
+            document.getElementById('selected-count').textContent = selectedCards.length;
+
+            const revealBtn = document.getElementById('reveal-btn');
+            if (selectedCards.length === 3) {
+                revealBtn.classList.add('show');
+            } else {
+                revealBtn.classList.remove('show');
+            }
+        }
+
+        function revealReading() {
+            // 切換到占卜中畫面
+            document.getElementById('selecting-screen').classList.remove('active');
+            document.getElementById('divining-screen').classList.add('active');
+
+            // 3秒後顯示結果
+            setTimeout(() => {
+                document.getElementById('divining-screen').classList.remove('active');
+                document.getElementById('reading-screen').classList.add('active');
+                displayResults();
+            }, 3000);
+        }
+
+        function displayResults() {
+            const container = document.getElementById('cards-result');
+            container.innerHTML = '';
+
+            fixedResult.forEach((card, index) => {
+                const cardColumn = document.createElement('div');
+                cardColumn.className = 'card-column';
+                cardColumn.innerHTML = `
+          <div class="card-display">
+            <img src="${card.image}" alt="${card.name}" class="card-emoji">
+          </div>
+          <div class="card-info">
+            <h3 class="card-name">${card.name}</h3>
+            <p class="card-meaning">${card.meaning}</p>
+            <p class="card-description">${card.description}</p>
+          </div>
+        `;
+                container.appendChild(cardColumn);
+            });
+        }
+
+        function reset() {
+            selectedCards = [];
+            document.getElementById('reading-screen').classList.remove('active');
+            document.getElementById('start-screen').classList.add('active');
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D White Gallery - Flexible Media</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #f0f0f0;
+            font-family: "Inter", sans-serif;
+        }
+
+        #overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            cursor: pointer;
+            z-index: 10;
+            transition: opacity 0.5s;
+        }
+
+        #overlay h1 {
+            font-weight: 300;
+            letter-spacing: 5px;
+            margin-bottom: 10px;
+        }
+
+        #overlay p {
+            color: #666;
+            font-size: 0.9rem;
+            border: 1px solid #ddd;
+            padding: 10px 20px;
+            border-radius: 50px;
+        }
+
+        #media-container {
+            display: none;
+        }
+
+        #media-container video,
+        #media-container img {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="overlay">
+        <h1>WHITE GALLERY</h1>
+        <p>點擊進入場景 / CLICK TO START</p>
+    </div>
+
+    <!-- 媒體容器 - 在這裡自由放置圖片或影片 -->
+    <div id="media-container">
+
+        <!-- 前牆 -->
+        <div data-wall="front">
+            <img src="images/c1-13.png" crossOrigin="anonymous">
+        </div>
+
+        <!-- 左牆 -->
+        <div data-wall="left">
+            <img src="images/c2-11.png" crossOrigin="anonymous">
+        </div>
+
+        <!-- 後牆 -->
+        <div data-wall="back">
+            <video loop crossOrigin="anonymous" playsinline muted>
+                <source src="w001.mp4" type="video/mp4">
+            </video>
+        </div>
+
+        <!-- 右牆 -->
+        <div data-wall="right">
+            <img src="images/c4-11.png" crossOrigin="anonymous">
+        </div>
+
+    </div>
+
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+            }
+        }
+    </script>
+
+    <script type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+        // 1. 場景初始化
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0xffffff);
+
+        // 2. 攝影機
+        const camera = new THREE.PerspectiveCamera(65, window.innerWidth / window.innerHeight, 0.1, 100);
+        camera.position.set(0, 1.1, 0);
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.outputColorSpace = THREE.SRGBColorSpace;
+        document.body.appendChild(renderer.domElement);
+
+        // 3. 建立白色房間
+        const roomWidth = 10;
+        const roomHeight = 8;
+        const roomDepth = 18;
+
+        const roomGeo = new THREE.BoxGeometry(roomWidth, roomHeight, roomDepth);
+        const roomMat = new THREE.MeshStandardMaterial({
+            color: 0xfafafa,
+            side: THREE.BackSide,
+            roughness: 0.4,
+            metalness: 0.1
+        });
+        const room = new THREE.Mesh(roomGeo, roomMat);
+        scene.add(room);
+
+        // 4. 燈光
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
+        scene.add(ambientLight);
+
+        const topLight = new THREE.PointLight(0xffffff, 0.5);
+        topLight.position.set(0, 3.8, 0);
+        scene.add(topLight);
+
+        // 5. 從容器讀取媒體配置
+        const mediaContainer = document.getElementById('media-container');
+        const walls = mediaContainer.querySelectorAll('[data-wall]');
+
+        // 牆面位置配置（調整右牆往後牆靠近）
+        const wallConfig = {
+            front: {
+                position: new THREE.Vector3(0, 1.8, -(roomDepth / 2) + 0.05),
+                rotation: 0,
+                width: 6  // 前牆螢幕較大
+            },
+            back: {
+                position: new THREE.Vector3(0, 1.8, (roomDepth / 2) - 0.05),
+                rotation: Math.PI,
+                width: 4
+            },
+            left: {
+                position: new THREE.Vector3(-(roomWidth / 2) + 0.05, 1.8, 1),
+                rotation: Math.PI / 2,
+                width: 3  // 左牆螢幕正常大小
+            },
+            right: {
+                position: new THREE.Vector3((roomWidth / 2) - 0.05, 1.8, 3),  // Z軸改為4，往後牆移動
+                rotation: -Math.PI / 2,
+                width: 4
+            }
+        };
+
+        // 6. 建立螢幕的函數
+        function createScreen(mediaElement, width, position, rotationY) {
+            const ratio = 16 / 9;
+            const height = width / ratio;
+
+            let texture;
+
+            // 判斷是影片還是圖片
+            if (mediaElement.tagName === 'VIDEO') {
+                texture = new THREE.VideoTexture(mediaElement);
+            } else if (mediaElement.tagName === 'IMG') {
+                texture = new THREE.Texture(mediaElement);
+                texture.needsUpdate = true;
+
+                if (!mediaElement.complete) {
+                    mediaElement.onload = () => {
+                        texture.needsUpdate = true;
+                    };
+                }
+            }
+
+            texture.colorSpace = THREE.SRGBColorSpace;
+
+            // 螢幕幾何
+            const geometry = new THREE.PlaneGeometry(width, height);
+            const material = new THREE.MeshBasicMaterial({ map: texture });
+            const screen = new THREE.Mesh(geometry, material);
+
+            // 外框
+            const frameGeo = new THREE.PlaneGeometry(width + 0.05, height + 0.05);
+            const frameMat = new THREE.MeshBasicMaterial({ color: 0x111111 });
+            const frame = new THREE.Mesh(frameGeo, frameMat);
+            frame.position.z = -0.005;
+            screen.add(frame);
+
+            screen.position.copy(position);
+            screen.rotation.y = rotationY;
+
+            scene.add(screen);
+            return mediaElement;
+        }
+
+        // 7. 自動生成所有牆面的螢幕
+        const allMediaElements = [];
+
+        walls.forEach(wall => {
+            const wallName = wall.getAttribute('data-wall');
+            const mediaElement = wall.querySelector('video, img');
+
+            if (mediaElement && wallConfig[wallName]) {
+                const config = wallConfig[wallName];
+                const element = createScreen(
+                    mediaElement,
+                    config.width,  // 使用各牆面自訂的寬度
+                    config.position,
+                    config.rotation
+                );
+                allMediaElements.push(element);
+            }
+        });
+
+        // 8. 控制器
+        const controls = new OrbitControls(camera, renderer.domElement);
+        controls.enableZoom = false;
+        controls.enablePan = false;
+        controls.rotateSpeed = -0.4;
+        controls.target.set(0, 1.1, -1);
+        controls.update();
+
+        // 9. 互動啟動
+        const overlay = document.getElementById('overlay');
+        overlay.addEventListener('click', () => {
+            overlay.style.opacity = '0';
+            setTimeout(() => overlay.style.display = 'none', 500);
+
+            // 只播放影片元素
+            allMediaElements.forEach(element => {
+                if (element.tagName === 'VIDEO') {
+                    element.play();
+                }
+            });
+        });
+
+        // 10. 渲染迴圈
+        function animate() {
+            requestAnimationFrame(animate);
+            controls.update();
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
+</body>
+
+</html>

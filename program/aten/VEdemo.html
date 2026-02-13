@@ -1,0 +1,1848 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>創意電視牆佈局設定器 (含相機背景)</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft JhengHei', 'Segoe UI', sans-serif;
+            background: #1a1a2e;
+            color: #eee;
+            overflow: hidden;
+        }
+
+        .container {
+            display: flex;
+            height: 100vh;
+        }
+
+        /* 左側欄 */
+        .sidebar-left {
+            width: 280px;
+            background: #16213e;
+            padding: 20px;
+            overflow-y: auto;
+            border-right: 1px solid #0f3460;
+        }
+
+        .sidebar-left h2 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #00d4ff;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 10px;
+            background: #0f3460;
+            border: none;
+            border-radius: 6px;
+            color: #fff;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .btn:hover {
+            background: #00d4ff;
+            transform: translateY(-2px);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+        }
+
+        .btn-camera {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .btn-camera:hover {
+            background: linear-gradient(135deg, #f5576c 0%, #f093fb 100%);
+        }
+
+        .btn-camera.active {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .screen-list {
+            margin-top: 20px;
+        }
+
+        .screen-item {
+            padding: 12px;
+            margin-bottom: 8px;
+            background: #0f3460;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .screen-item:hover {
+            background: #1e5a8e;
+        }
+
+        .screen-item.active {
+            background: #00d4ff;
+            color: #000;
+        }
+
+        .screen-item .delete-btn {
+            background: #e74c3c;
+            border: none;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        /* 中間畫布區 */
+        .canvas-area {
+            flex: 1;
+            background: #0f1419;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* 相機視訊背景 */
+        #cameraVideo {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* 圖片背景 */
+        #backgroundImage {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            z-index: 1;
+            pointer-events: none;
+            display: none;
+        }
+
+        .btn-upload {
+            background: linear-gradient(135deg, #ffa751 0%, #ffe259 100%);
+        }
+
+        .btn-upload:hover {
+            background: linear-gradient(135deg, #ffe259 0%, #ffa751 100%);
+        }
+
+        .btn-upload.active {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        #imageUpload {
+            display: none;
+        }
+
+        .camera-controls {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(22, 33, 62, 0.95);
+            padding: 15px;
+            border-radius: 8px;
+            z-index: 100;
+        }
+
+        .camera-controls h3 {
+            font-size: 14px;
+            color: #00d4ff;
+            margin-bottom: 10px;
+        }
+
+        .camera-controls label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 12px;
+            color: #aaa;
+        }
+
+        .camera-controls input[type="range"] {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        .camera-controls input[type="number"] {
+            width: 70px;
+            padding: 4px;
+            background: #0f3460;
+            border: 1px solid #00d4ff;
+            color: #fff;
+            border-radius: 4px;
+            margin-left: 5px;
+        }
+
+        .camera-controls .control-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .camera-controls .control-row label {
+            margin: 0;
+            margin-right: 10px;
+            min-width: 80px;
+        }
+
+        .camera-controls button {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            background: #0f3460;
+            border: none;
+            color: white;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .camera-controls button:hover {
+            background: #00d4ff;
+        }
+
+        .canvas-toolbar {
+            position: absolute;
+            top: 20px;
+            right: 300px;
+            background: rgba(22, 33, 62, 0.95);
+            padding: 15px;
+            border-radius: 8px;
+            z-index: 100;
+        }
+
+        .canvas-toolbar label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 12px;
+            color: #aaa;
+        }
+
+        .canvas-toolbar input[type="checkbox"] {
+            margin-right: 5px;
+        }
+
+        .zoom-controls {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(22, 33, 62, 0.95);
+            padding: 10px;
+            border-radius: 8px;
+            z-index: 100;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .zoom-btn {
+            width: 35px;
+            height: 35px;
+            background: #0f3460;
+            border: none;
+            color: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: all 0.3s;
+        }
+
+        .zoom-btn:hover {
+            background: #00d4ff;
+        }
+
+        .zoom-level {
+            color: #00d4ff;
+            font-size: 14px;
+            min-width: 60px;
+            text-align: center;
+        }
+
+        .canvas-info {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(22, 33, 62, 0.95);
+            padding: 15px;
+            border-radius: 8px;
+            z-index: 100;
+            font-size: 12px;
+            color: #00d4ff;
+        }
+
+        .canvas-container {
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            position: relative;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .canvas-wrapper {
+            display: inline-block;
+            transform-origin: center center;
+            position: relative;
+            z-index: 10;
+        }
+
+        .canvas {
+            position: relative;
+            background: rgba(26, 26, 46, 0.7);
+            box-shadow: 0 0 50px rgba(0, 212, 255, 0.3);
+        }
+
+        .canvas.grid {
+            background-image:
+                repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.15) 0px, rgba(255, 255, 255, 0.15) 1px, transparent 1px, transparent 50px),
+                repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.15) 0px, rgba(255, 255, 255, 0.15) 1px, transparent 1px, transparent 50px);
+            background-color: rgba(26, 26, 46, 0.5);
+        }
+
+        .screen-box {
+            position: absolute;
+            cursor: move;
+        }
+
+        .screen-box-inner {
+            width: 100%;
+            height: 100%;
+            border: 2px solid #00d4ff;
+            background: rgba(0, 212, 255, 0.1);
+            position: relative;
+            transform-origin: left top;
+        }
+
+        .screen-box:hover .screen-box-inner {
+            border-color: #00ff88;
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+        }
+
+        .screen-box.selected .screen-box-inner {
+            border-color: #ff00ff;
+            border-width: 3px;
+            box-shadow: 0 0 30px rgba(255, 0, 255, 0.6);
+        }
+
+        .screen-label {
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            background: rgba(0, 212, 255, 0.9);
+            color: #000;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .resize-handle {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: #00d4ff;
+            border: 2px solid #fff;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .resize-handle.nw {
+            top: -6px;
+            left: -6px;
+            cursor: nw-resize;
+        }
+
+        .resize-handle.ne {
+            top: -6px;
+            right: -6px;
+            cursor: ne-resize;
+        }
+
+        .resize-handle.sw {
+            bottom: -6px;
+            left: -6px;
+            cursor: sw-resize;
+        }
+
+        .resize-handle.se {
+            bottom: -6px;
+            right: -6px;
+            cursor: se-resize;
+        }
+
+        /* 右側欄 */
+        .sidebar-right {
+            width: 320px;
+            background: #16213e;
+            padding: 20px;
+            overflow-y: auto;
+            border-left: 1px solid #0f3460;
+        }
+
+        .sidebar-right h2 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #00d4ff;
+        }
+
+        .property-group {
+            margin-bottom: 20px;
+        }
+
+        .property-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 13px;
+            color: #ddd;
+        }
+
+        .property-group input,
+        .property-group select {
+            width: 100%;
+            padding: 8px;
+            background: #0f3460;
+            border: 1px solid #00d4ff;
+            border-radius: 4px;
+            color: #fff;
+            font-size: 13px;
+        }
+
+        .property-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .info-text {
+            font-size: 11px;
+            color: #888;
+            margin-top: 4px;
+        }
+
+        .warning-text {
+            font-size: 11px;
+            color: #ff9800;
+            margin-top: 4px;
+        }
+
+        .camera-status {
+            padding: 8px;
+            background: rgba(255, 152, 0, 0.2);
+            border-left: 3px solid #ff9800;
+            border-radius: 4px;
+            font-size: 11px;
+            color: #ffb74d;
+            margin-bottom: 10px;
+        }
+
+        .camera-status.active {
+            background: rgba(76, 175, 80, 0.2);
+            border-left-color: #4caf50;
+            color: #81c784;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- 左側欄:操作與螢幕列表 -->
+        <div class="sidebar-left">
+            <h2>📐 畫布設定</h2>
+            <label style="font-size: 12px; color: #aaa;">畫布寬度 (px)</label>
+            <input type="number" id="canvasWidth" value="1920" min="100"
+                style="width: 100%; padding: 8px; margin-bottom: 10px; background: #0f3460; border: 1px solid #00d4ff; border-radius: 4px; color: #fff;">
+
+            <label style="font-size: 12px; color: #aaa;">畫布高度 (px)</label>
+            <input type="number" id="canvasHeight" value="1080" min="100"
+                style="width: 100%; padding: 8px; margin-bottom: 10px; background: #0f3460; border: 1px solid #00d4ff; border-radius: 4px; color: #fff;">
+
+            <button class="btn btn-primary" onclick="updateCanvasSize()">✓ 套用畫布大小</button>
+
+            <h2 style="margin-top: 30px;">🖼️ 背景設定</h2>
+            <button class="btn btn-camera" id="cameraToggle" onclick="toggleCamera()">🎥 啟動相機背景</button>
+            <button class="btn btn-upload" id="uploadToggle" onclick="triggerImageUpload()">📁 上傳圖片背景</button>
+            <input type="file" id="imageUpload" accept="image/*" onchange="handleImageUpload(event)">
+            <div id="backgroundStatus" class="camera-status">背景未設定</div>
+
+            <h2 style="margin-top: 30px;">➕ 新增螢幕</h2>
+            <button class="btn" onclick="addScreen()">+ 新增輸出螢幕</button>
+
+            <h2 style="margin-top: 30px;">📺 螢幕列表</h2>
+            <div id="screenList" class="screen-list"></div>
+        </div>
+
+        <!-- 中間:畫布區域 -->
+        <div class="canvas-area">
+            <!-- 相機視訊背景 -->
+            <video id="cameraVideo" autoplay playsinline></video>
+
+            <!-- 圖片背景 -->
+            <img id="backgroundImage" alt="背景圖片">
+
+            <!-- 背景控制面板 -->
+            <div class="camera-controls" id="cameraControls" style="display: none;">
+                <h3>📹 背景影像調整</h3>
+
+                <div class="control-row">
+                    <label>縮放:</label>
+                    <input type="range" id="cameraZoom" min="50" max="200" value="100" oninput="updateCameraTransform()"
+                        style="flex: 1;">
+                    <input type="number" id="cameraZoomValue" value="100" min="50" max="200"
+                        oninput="document.getElementById('cameraZoom').value=this.value; updateCameraTransform();">
+                    <span style="font-size: 11px; color: #888;">%</span>
+                </div>
+
+                <div class="control-row">
+                    <label>X 位移:</label>
+                    <input type="range" id="cameraPanX" min="-500" max="500" value="0" oninput="updateCameraTransform()"
+                        style="flex: 1;">
+                    <input type="number" id="cameraPanXValue" value="0" min="-500" max="500"
+                        oninput="document.getElementById('cameraPanX').value=this.value; updateCameraTransform();">
+                    <span style="font-size: 11px; color: #888;">px</span>
+                </div>
+
+                <div class="control-row">
+                    <label>Y 位移:</label>
+                    <input type="range" id="cameraPanY" min="-500" max="500" value="0" oninput="updateCameraTransform()"
+                        style="flex: 1;">
+                    <input type="number" id="cameraPanYValue" value="0" min="-500" max="500"
+                        oninput="document.getElementById('cameraPanY').value=this.value; updateCameraTransform();">
+                    <span style="font-size: 11px; color: #888;">px</span>
+                </div>
+
+                <div class="control-row">
+                    <label>透明度:</label>
+                    <input type="range" id="cameraOpacity" min="10" max="100" value="80"
+                        oninput="updateCameraTransform()" style="flex: 1;">
+                    <input type="number" id="cameraOpacityValue" value="80" min="10" max="100"
+                        oninput="document.getElementById('cameraOpacity').value=this.value; updateCameraTransform();">
+                    <span style="font-size: 11px; color: #888;">%</span>
+                </div>
+
+                <button onclick="resetCameraTransform()">🔄 重置影像</button>
+            </div>
+
+            <div class="canvas-toolbar">
+                <label><input type="checkbox" id="showGrid" checked onchange="toggleGrid()"> 顯示網格</label>
+                <label><input type="checkbox" id="snapToGrid" onchange="toggleSnap()"> 對齊網格</label>
+            </div>
+
+            <div class="canvas-info" id="canvasInfo">
+                畫布: 1920 × 1080 px
+            </div>
+
+            <div class="zoom-controls">
+                <button class="zoom-btn" onclick="zoomOut()">−</button>
+                <span class="zoom-level" id="zoomLevel">100%</span>
+                <button class="zoom-btn" onclick="zoomIn()">+</button>
+                <button class="zoom-btn" onclick="resetZoom()" title="重置縮放">⟲</button>
+            </div>
+
+            <div class="canvas-container" id="canvasContainer">
+                <div class="canvas-wrapper" id="canvasWrapper">
+                    <div class="canvas grid" id="canvas"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 右側欄:屬性編輯與 JSON -->
+        <div class="sidebar-right">
+            <h2>⚙️ 螢幕屬性</h2>
+            <div id="propertiesPanel">
+                <p style="color: #888; text-align: center; padding: 40px 20px;">請選擇一個螢幕以編輯其屬性</p>
+            </div>
+
+            <h2 style="margin-top: 30px;">切換</h2>
+            <button class="btn btn-primary" onclick="uploadPattern()">⬆️ 上傳自定創意拚接模板</button>
+            <button class="btn btn-primary" onclick="switchVideo()">▶️ 切換影像至TX-0001(自定)</button>
+            <button class="btn btn-primary" onclick="switchVideo0()">▶️ 切換影像至TX-0001(風車)</button>
+            <button class="btn btn-primary" onclick="resetLobby()">🔄 斷線並重置Lobby</button>
+
+            <h2 style="margin-top: 30px;">📄 JSON 輸出</h2>
+            <button class="btn btn-primary" onclick="generateJSON()">📋 生成配置 JSON</button>
+            <button class="btn" onclick="copyJSON()" id="copyBtn" style="display: none;">📑 複製 JSON</button>
+            <div id="jsonOutput"
+                style="margin-top: 10px; padding: 15px; background: #0f3460; border-radius: 6px; max-height: 400px; overflow-y: auto; display: none;">
+                <pre id="jsonContent"
+                    style="color: #00d4ff; font-size: 11px; margin: 0; white-space: pre-wrap; word-wrap: break-word;"></pre>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 全域狀態
+        let screens = [];
+        let selectedScreen = null;
+        let dragState = null;
+        let resizeState = null;
+        let screenIdCounter = 1;
+        let zoomLevel = 1;
+        let showGrid = true;
+        let snapToGrid = false;
+        let generatedJSON = null;
+        let cameraStream = null;
+        let cameraActive = false;
+        let backgroundType = null; // 'camera' 或 'image'
+        let uploadedImage = null;
+
+        const canvas = {
+            width: 1920,
+            height: 1080
+        };
+
+        // 初始化
+        function init() {
+            updateCanvasSize();
+            updateScreenList();
+            updatePropertiesPanel();
+
+            // 同步滑桿和數字輸入框
+            syncCameraControls();
+        }
+
+        // 背景功能
+        async function toggleCamera() {
+            const video = document.getElementById('cameraVideo');
+            const imageEl = document.getElementById('backgroundImage');
+            const cameraBtn = document.getElementById('cameraToggle');
+            const uploadBtn = document.getElementById('uploadToggle');
+            const status = document.getElementById('backgroundStatus');
+            const controls = document.getElementById('cameraControls');
+
+            if (!cameraActive) {
+                // 關閉圖片背景
+                if (backgroundType === 'image') {
+                    closeImageBackground();
+                }
+
+                try {
+                    // 請求相機權限
+                    cameraStream = await navigator.mediaDevices.getUserMedia({
+                        video: {
+                            width: { ideal: 1920 },
+                            height: { ideal: 1080 }
+                        }
+                    });
+
+                    video.srcObject = cameraStream;
+                    cameraActive = true;
+                    backgroundType = 'camera';
+
+                    cameraBtn.textContent = '⏸️ 停止相機';
+                    cameraBtn.classList.add('active');
+                    uploadBtn.classList.remove('active');
+                    status.textContent = '✓ 相機已啟動';
+                    status.classList.add('active');
+                    controls.style.display = 'block';
+
+                } catch (error) {
+                    console.error('無法存取相機:', error);
+                    alert('無法存取相機,請確認:\n1. 瀏覽器已允許相機權限\n2. 相機未被其他程式使用\n3. 使用 HTTPS 或 localhost');
+                    status.textContent = '❌ 相機啟動失敗';
+                }
+            } else {
+                // 停止相機
+                if (cameraStream) {
+                    cameraStream.getTracks().forEach(track => track.stop());
+                    cameraStream = null;
+                }
+
+                video.srcObject = null;
+                cameraActive = false;
+                backgroundType = null;
+
+                cameraBtn.textContent = '🎥 啟動相機背景';
+                cameraBtn.classList.remove('active');
+                status.textContent = '背景未設定';
+                status.classList.remove('active');
+                controls.style.display = 'none';
+            }
+        }
+
+        function triggerImageUpload() {
+            // 如果已經有圖片,則移除
+            if (backgroundType === 'image') {
+                closeImageBackground();
+                return;
+            }
+
+            // 關閉相機背景
+            if (cameraActive) {
+                toggleCamera();
+            }
+
+            document.getElementById('imageUpload').click();
+        }
+
+        function handleImageUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const imageEl = document.getElementById('backgroundImage');
+                const video = document.getElementById('cameraVideo');
+                const uploadBtn = document.getElementById('uploadToggle');
+                const status = document.getElementById('backgroundStatus');
+                const controls = document.getElementById('cameraControls');
+
+                // 設定圖片
+                uploadedImage = e.target.result;
+                imageEl.src = uploadedImage;
+                imageEl.style.display = 'block';
+                video.style.display = 'none';
+
+                backgroundType = 'image';
+
+                uploadBtn.textContent = '🗑️ 移除圖片';
+                uploadBtn.classList.add('active');
+                status.textContent = '✓ 圖片已載入';
+                status.classList.add('active');
+                controls.style.display = 'block';
+
+                // 重置變換
+                resetCameraTransform();
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function closeImageBackground() {
+            const imageEl = document.getElementById('backgroundImage');
+            const video = document.getElementById('cameraVideo');
+            const uploadBtn = document.getElementById('uploadToggle');
+            const status = document.getElementById('backgroundStatus');
+            const controls = document.getElementById('cameraControls');
+
+            imageEl.style.display = 'none';
+            imageEl.src = '';
+            video.style.display = 'block';
+            uploadedImage = null;
+            backgroundType = null;
+
+            uploadBtn.textContent = '📁 上傳圖片背景';
+            uploadBtn.classList.remove('active');
+            status.textContent = '背景未設定';
+            status.classList.remove('active');
+            controls.style.display = 'none';
+
+            // 重置檔案輸入
+            document.getElementById('imageUpload').value = '';
+        }
+
+        function updateCameraTransform() {
+            const video = document.getElementById('cameraVideo');
+            const imageEl = document.getElementById('backgroundImage');
+            const zoom = document.getElementById('cameraZoom').value;
+            const panX = document.getElementById('cameraPanX').value;
+            const panY = document.getElementById('cameraPanY').value;
+            const opacity = document.getElementById('cameraOpacity').value;
+
+            // 同步數值顯示
+            document.getElementById('cameraZoomValue').value = zoom;
+            document.getElementById('cameraPanXValue').value = panX;
+            document.getElementById('cameraPanYValue').value = panY;
+            document.getElementById('cameraOpacityValue').value = opacity;
+
+            // 套用變換到當前背景
+            const transform = `scale(${zoom / 100}) translate(${panX}px, ${panY}px)`;
+            const opacityValue = opacity / 100;
+
+            if (backgroundType === 'camera') {
+                video.style.transform = transform;
+                video.style.opacity = opacityValue;
+            } else if (backgroundType === 'image') {
+                imageEl.style.transform = transform;
+                imageEl.style.opacity = opacityValue;
+            }
+        }
+
+        function resetCameraTransform() {
+            document.getElementById('cameraZoom').value = 100;
+            document.getElementById('cameraPanX').value = 0;
+            document.getElementById('cameraPanY').value = 0;
+            document.getElementById('cameraOpacity').value = 80;
+            updateCameraTransform();
+        }
+
+        function syncCameraControls() {
+            // 確保滑桿和數字輸入框同步
+            const controls = ['cameraZoom', 'cameraPanX', 'cameraPanY', 'cameraOpacity'];
+            controls.forEach(id => {
+                const slider = document.getElementById(id);
+                const input = document.getElementById(id + 'Value');
+                if (slider && input) {
+                    input.value = slider.value;
+                }
+            });
+        }
+
+        // 畫布設定
+        function updateCanvasSize() {
+            const w = parseInt(document.getElementById('canvasWidth').value);
+            const h = parseInt(document.getElementById('canvasHeight').value);
+
+            canvas.width = w;
+            canvas.height = h;
+
+            const canvasEl = document.getElementById('canvas');
+            canvasEl.style.width = w + 'px';
+            canvasEl.style.height = h + 'px';
+
+            document.getElementById('canvasInfo').textContent = `畫布: ${w} × ${h} px`;
+
+            renderScreens();
+        }
+
+        function toggleGrid() {
+            showGrid = document.getElementById('showGrid').checked;
+            const canvasEl = document.getElementById('canvas');
+            if (showGrid) {
+                canvasEl.classList.add('grid');
+            } else {
+                canvasEl.classList.remove('grid');
+            }
+        }
+
+        function toggleSnap() {
+            snapToGrid = document.getElementById('snapToGrid').checked;
+        }
+
+        // 縮放功能
+        function zoomIn() {
+            zoomLevel = Math.min(zoomLevel + 0.1, 3);
+            applyZoom();
+        }
+
+        function zoomOut() {
+            zoomLevel = Math.max(zoomLevel - 0.1, 0.3);
+            applyZoom();
+        }
+
+        function resetZoom() {
+            zoomLevel = 1;
+            applyZoom();
+        }
+
+        function applyZoom() {
+            const wrapper = document.getElementById('canvasWrapper');
+            wrapper.style.transform = `scale(${zoomLevel})`;
+            document.getElementById('zoomLevel').textContent = Math.round(zoomLevel * 100) + '%';
+        }
+
+        // 螢幕管理
+        function addScreen() {
+            const newScreen = {
+                id: screenIdCounter++,
+                label: `螢幕 ${screens.length + 1}`,
+                outputId: `output_${screens.length + 1}`,
+                cropX: 100,
+                cropY: 100,
+                cropW: 400,
+                cropH: 225,
+                rotation: 0,
+                aspectRatio: '16:9'
+            };
+
+            screens.push(newScreen);
+            renderScreens();
+            updateScreenList();
+            selectScreen(newScreen.id);
+        }
+
+        function deleteScreen(id) {
+            if (confirm('確定要刪除這個螢幕嗎?')) {
+                screens = screens.filter(s => s.id !== id);
+                if (selectedScreen === id) {
+                    selectedScreen = null;
+                }
+                renderScreens();
+                updateScreenList();
+                updatePropertiesPanel();
+            }
+        }
+
+        function selectScreen(id) {
+            selectedScreen = id;
+            renderScreens();
+            updateScreenList();
+            updatePropertiesPanel();
+        }
+
+        function updateScreenList() {
+            const list = document.getElementById('screenList');
+            if (screens.length === 0) {
+                list.innerHTML = '<p style="color: #888; text-align: center; padding: 20px;">尚未新增螢幕</p>';
+                return;
+            }
+
+            list.innerHTML = screens.map(s => `
+                <div class="screen-item ${s.id === selectedScreen ? 'active' : ''}" onclick="selectScreen(${s.id})">
+                    <span>${s.label} (${s.outputId})</span>
+                    <button class="delete-btn" onclick="event.stopPropagation(); deleteScreen(${s.id})">✕</button>
+                </div>
+            `).join('');
+        }
+
+        // 渲染螢幕
+        function renderScreens() {
+            const canvasEl = document.getElementById('canvas');
+            canvasEl.innerHTML = '';
+
+            screens.forEach(screen => {
+                const box = document.createElement('div');
+                box.className = 'screen-box';
+                if (screen.id === selectedScreen) {
+                    box.classList.add('selected');
+                }
+
+                box.style.left = screen.cropX + 'px';
+                box.style.top = screen.cropY + 'px';
+                box.style.width = screen.cropW + 'px';
+                box.style.height = screen.cropH + 'px';
+
+                const inner = document.createElement('div');
+                inner.className = 'screen-box-inner';
+
+                // 支援任意角度旋轉
+                const rotationRad = (screen.rotation * Math.PI) / 180;
+                const cos = Math.cos(rotationRad);
+                const sin = Math.sin(rotationRad);
+
+                // 使用 CSS transform rotate
+                inner.style.transform = `rotate(${screen.rotation}deg)`;
+
+                const label = document.createElement('div');
+                label.className = 'screen-label';
+                label.textContent = screen.label;
+
+                inner.appendChild(label);
+
+                // 新增調整大小的控制點
+                ['nw', 'ne', 'sw', 'se'].forEach(dir => {
+                    const handle = document.createElement('div');
+                    handle.className = `resize-handle ${dir}`;
+                    handle.onmousedown = (e) => {
+                        e.stopPropagation();
+                        startResize(e, screen, dir);
+                    };
+                    inner.appendChild(handle);
+                });
+
+                box.appendChild(inner);
+                box.onmousedown = (e) => {
+                    if (e.target === box || e.target === inner || e.target === label) {
+                        startDrag(e, screen);
+                    }
+                };
+
+                canvasEl.appendChild(box);
+            });
+        }
+
+        // 拖曳功能
+        function startDrag(e, screen) {
+            e.preventDefault();
+            selectScreen(screen.id);
+
+            dragState = {
+                screen: screen,
+                startX: e.clientX,
+                startY: e.clientY,
+                initialX: screen.cropX,
+                initialY: screen.cropY
+            };
+
+            document.addEventListener('mousemove', onDrag);
+            document.addEventListener('mouseup', stopDrag);
+        }
+
+        function onDrag(e) {
+            if (!dragState) return;
+
+            const dx = (e.clientX - dragState.startX) / zoomLevel;
+            const dy = (e.clientY - dragState.startY) / zoomLevel;
+
+            let newX = dragState.initialX + dx;
+            let newY = dragState.initialY + dy;
+
+            if (newX < 0)
+                newX = 0;
+
+            if (dragState.screen.rotation === 0 || dragState.screen.rotation === 180) {
+                if (newX + dragState.screen.cropW > canvas.width)
+                    newX = canvas.width - dragState.screen.cropW;
+            } else {
+                if (newX + dragState.screen.cropH > canvas.width)
+                    newX = canvas.width - dragState.screen.cropH;
+            }
+
+            if (newY < 0)
+                newY = 0;
+
+            if (dragState.screen.rotation === 0 || dragState.screen.rotation === 180) {
+                if (newY + dragState.screen.cropH > canvas.height)
+                    newY = canvas.height - dragState.screen.cropH;
+            } else {
+                if (newY + dragState.screen.cropW > canvas.height)
+                    newY = canvas.height - dragState.screen.cropW;
+            }
+
+            if (snapToGrid) {
+                newX = Math.round(newX / 50) * 50;
+                newY = Math.round(newY / 50) * 50;
+            }
+
+            dragState.screen.cropX = Math.round(newX);
+            dragState.screen.cropY = Math.round(newY);
+
+            renderScreens();
+            updatePropertiesPanel();
+        }
+
+        function stopDrag() {
+            dragState = null;
+            document.removeEventListener('mousemove', onDrag);
+            document.removeEventListener('mouseup', stopDrag);
+        }
+
+        // 調整大小功能
+        function getAspectRatio(ratioStr) {
+            if (ratioStr.includes(':')) {
+                const parts = ratioStr.split(':');
+                return parseFloat(parts[0]) / parseFloat(parts[1]);
+            }
+            return 16 / 9;
+        }
+
+        function startResize(e, screen, dir) {
+            e.preventDefault();
+            selectScreen(screen.id);
+
+            resizeState = {
+                screen: screen,
+                dir: dir,
+                startX: e.clientX,
+                startY: e.clientY,
+                initialW: screen.cropW,
+                initialH: screen.cropH,
+                initialX: screen.cropX,
+                initialY: screen.cropY
+            };
+
+            document.addEventListener('mousemove', onResize);
+            document.addEventListener('mouseup', stopResize);
+        }
+
+        function onResize(e) {
+            if (!resizeState) return;
+
+            const dx = (e.clientX - resizeState.startX) / zoomLevel;
+            const dy = (e.clientY - resizeState.startY) / zoomLevel;
+
+            const screen = resizeState.screen;
+            const aspectRatio = getAspectRatio(screen.aspectRatio);
+
+            let newW = resizeState.initialW;
+            let newH = resizeState.initialH;
+            let newX = resizeState.initialX;
+            let newY = resizeState.initialY;
+
+            // 根據拖曳方向調整尺寸,保持長寬比
+            if (resizeState.dir === 'se') {
+                newW = Math.max(50, resizeState.initialW + dx);
+                newH = newW / aspectRatio;
+            } else if (resizeState.dir === 'sw') {
+                newW = Math.max(50, resizeState.initialW - dx);
+                newH = newW / aspectRatio;
+                newX = resizeState.initialX + (resizeState.initialW - newW);
+            } else if (resizeState.dir === 'ne') {
+                newW = Math.max(50, resizeState.initialW + dx);
+                newH = newW / aspectRatio;
+                newY = resizeState.initialY + (resizeState.initialH - newH);
+            } else if (resizeState.dir === 'nw') {
+                newW = Math.max(50, resizeState.initialW - dx);
+                newH = newW / aspectRatio;
+                newX = resizeState.initialX + (resizeState.initialW - newW);
+                newY = resizeState.initialY + (resizeState.initialH - newH);
+            }
+
+            screen.cropW = Math.round(newW);
+            screen.cropH = Math.round(newH);
+            screen.cropX = Math.round(newX);
+            screen.cropY = Math.round(newY);
+
+            renderScreens();
+            updatePropertiesPanel();
+        }
+
+        function stopResize() {
+            resizeState = null;
+            document.removeEventListener('mousemove', onResize);
+            document.removeEventListener('mouseup', stopResize);
+        }
+
+        // 屬性面板
+        function updatePropertiesPanel() {
+            const panel = document.getElementById('propertiesPanel');
+
+            if (!selectedScreen) {
+                panel.innerHTML = '<p style="color: #888; text-align: center; padding: 40px 20px;">請選擇一個螢幕以編輯其屬性</p>';
+                return;
+            }
+
+            const screen = screens.find(s => s.id === selectedScreen);
+            if (!screen) return;
+
+            const isCustomRatio = !['16:9', '9:16', '4:3', '3:4', '21:9', '1:1'].includes(screen.aspectRatio);
+            const isCustomRotation = ![0, 90, 180, 270].includes(screen.rotation);
+
+            panel.innerHTML = `
+                <div class="property-group">
+                    <label>顯示名稱</label>
+                    <input type="text" value="${screen.label}" onchange="updateProperty('label', this.value)">
+                    <div class="info-text">僅供 UI 辨識使用</div>
+                </div>
+
+                <div class="property-group">
+                    <label>硬體輸出 ID</label>
+                    <input type="text" value="${screen.outputId}" onchange="updateProperty('outputId', this.value)">
+                    <div class="info-text">對應實體視訊輸出埠 (必填)</div>
+                </div>
+
+                <div class="property-group">
+                    <label>🔲 螢幕長寬比</label>
+                    <select onchange="updateAspectRatio(this.value)">
+                        <option value="16:9" ${screen.aspectRatio === '16:9' ? 'selected' : ''}>16:9 (標準橫式)</option>
+                        <option value="9:16" ${screen.aspectRatio === '9:16' ? 'selected' : ''}>9:16 (標準直式)</option>
+                        <option value="4:3" ${screen.aspectRatio === '4:3' ? 'selected' : ''}>4:3 (傳統橫式)</option>
+                        <option value="3:4" ${screen.aspectRatio === '3:4' ? 'selected' : ''}>3:4 (傳統直式)</option>
+                        <option value="21:9" ${screen.aspectRatio === '21:9' ? 'selected' : ''}>21:9 (超寬)</option>
+                        <option value="1:1" ${screen.aspectRatio === '1:1' ? 'selected' : ''}>1:1 (正方形)</option>
+                        <option value="custom" ${isCustomRatio ? 'selected' : ''}>自訂比例</option>
+                    </select>
+                    <div class="info-text">選擇螢幕的長寬比例</div>
+                </div>
+
+                ${isCustomRatio ? `
+                <div class="property-group">
+                    <label>自訂長寬比 (寬:高)</label>
+                    <input type="text" value="${screen.aspectRatio}" onchange="updateProperty('aspectRatio', this.value)" placeholder="例如: 16:9">
+                    <div class="info-text">格式: 寬:高 (例如 16:9)</div>
+                </div>
+                ` : ''}
+
+                <div class="property-group">
+                    <label style="color: #00d4ff;">✂️ 訊源擷取區域(像素座標)</label>
+                    <div class="property-row">
+                        <div>
+                            <label>來源 X (px)</label>
+                            <input type="number" value="${screen.cropX}" onchange="updateProperty('cropX', parseInt(this.value))">
+                        </div>
+                        <div>
+                            <label>來源 Y (px)</label>
+                            <input type="number" value="${screen.cropY}" onchange="updateProperty('cropY', parseInt(this.value))">
+                        </div>
+                    </div>
+                    <div class="property-row">
+                        <div>
+                            <label>擷取寬度 (px)</label>
+                            <input type="number" value="${screen.cropW}" onchange="updateCropSize('cropW', parseInt(this.value))">
+                        </div>
+                        <div>
+                            <label>擷取高度 (px)</label>
+                            <input type="number" value="${screen.cropH}" onchange="updateCropSize('cropH', parseInt(this.value))">
+                        </div>
+                    </div>
+                    <div class="info-text">從訊源畫布擷取的像素範圍</div>
+                </div>
+
+                <div class="property-group">
+                    <label>🔄 旋轉角度</label>
+                    <select onchange="updateRotation(this.value)">
+                        <option value="0" ${screen.rotation === 0 ? 'selected' : ''}>0° (正常)</option>
+                        <option value="90" ${screen.rotation === 90 ? 'selected' : ''}>90° (順時針)</option>
+                        <option value="180" ${screen.rotation === 180 ? 'selected' : ''}>180° (倒置)</option>
+                        <option value="270" ${screen.rotation === 270 ? 'selected' : ''}>270° (逆時針)</option>
+                        <option value="custom" ${isCustomRotation ? 'selected' : ''}>自訂角度</option>
+                    </select>
+                    ${isCustomRotation ? `
+                    <div style="margin-top: 10px;">
+                        <label>自訂角度 (0-359°)</label>
+                        <input type="number" value="${screen.rotation}" min="0" max="359" onchange="updateProperty('rotation', parseInt(this.value))" placeholder="輸入角度">
+                        <div class="info-text">輸入 0 到 359 之間的角度值</div>
+                    </div>
+                    ` : ''}
+                    <div class="warning-text">⚠️ 旋轉 90°/270° 時輸出畫面會交換寬高</div>
+                </div>
+            `;
+        }
+
+        function updateProperty(prop, value) {
+            if (!selectedScreen) return;
+            const screen = screens.find(s => s.id === selectedScreen);
+            if (!screen) return;
+
+            screen[prop] = value;
+            renderScreens();
+            updateScreenList();
+            updatePropertiesPanel();
+        }
+
+        function updateAspectRatio(ratio) {
+            if (!selectedScreen) return;
+            const screen = screens.find(s => s.id === selectedScreen);
+            if (!screen) return;
+
+            screen.aspectRatio = ratio;
+
+            if (ratio !== 'custom') {
+                // 根據新的長寬比調整高度,保持寬度不變
+                const aspectValue = getAspectRatio(ratio);
+                screen.cropH = Math.round(screen.cropW / aspectValue);
+            }
+
+            renderScreens();
+            updatePropertiesPanel();
+        }
+
+        function updateRotation(value) {
+            if (!selectedScreen) return;
+            const screen = screens.find(s => s.id === selectedScreen);
+            if (!screen) return;
+
+            if (value === 'custom') {
+                // 切換到自訂模式,保持當前角度或設為 45
+                if ([0, 90, 180, 270].includes(screen.rotation)) {
+                    screen.rotation = 45;
+                }
+            } else {
+                // 設定為預設角度
+                screen.rotation = parseInt(value);
+            }
+
+            renderScreens();
+            updatePropertiesPanel();
+        }
+
+        function updateCropSize(prop, value) {
+            if (!selectedScreen) return;
+            const screen = screens.find(s => s.id === selectedScreen);
+            if (!screen) return;
+
+            screen[prop] = value;
+
+            // 根據長寬比自動調整另一個維度
+            if (screen.aspectRatio !== 'custom') {
+                const aspectValue = getAspectRatio(screen.aspectRatio);
+                if (prop === 'cropW') {
+                    screen.cropH = Math.round(value / aspectValue);
+                } else {
+                    screen.cropW = Math.round(value * aspectValue);
+                }
+            }
+
+            renderScreens();
+            updatePropertiesPanel();
+        }
+
+        // XHR helpers
+        var g_xhr = new XMLHttpRequest();
+        var g_xhr_error_cb = null;
+        var g_xhr_timeout_cb = null;
+        var g_xhr_state_cb = null;
+
+        g_xhr.onerror = function (e) {
+            if (g_xhr_error_cb)
+                g_xhr_error_cb(g_xhr, e);
+        };
+
+        g_xhr.ontimeout = function (e) {
+            if (g_xhr_timeout_cb)
+                g_xhr_timeout_cb(g_xhr, e);
+        };
+
+        g_xhr.onreadystatechange = function () {
+            if (g_xhr_state_cb)
+                g_xhr_state_cb(g_xhr);
+        };
+
+        function xhr_get(url, cred, error_cb, timeout_cb, state_cb) {
+            g_xhr_error_cb = error_cb;
+            g_xhr_timeout_cb = timeout_cb;
+            g_xhr_state_cb = state_cb;
+
+            g_xhr.open("GET", url);
+            g_xhr.setRequestHeader('Authorization', cred);
+            g_xhr.send();
+        }
+
+        function xhr_send_json(url, cred, verb, json, error_cb, timeout_cb, state_cb) {
+            g_xhr_error_cb = error_cb;
+            g_xhr_timeout_cb = timeout_cb;
+            g_xhr_state_cb = state_cb;
+
+            g_xhr.open(verb, url);
+
+            if (cred)
+                g_xhr.setRequestHeader('Authorization', cred);
+
+            g_xhr.setRequestHeader("Content-Type", "application/json; charset=utf-8");
+            g_xhr.send(json);
+        }
+
+        let cred = '';
+
+        function login() {
+            if (cred.length > 0)
+                return;
+
+            const url = "/api/v4.0/auth/tokens"
+            const json = JSON.stringify({
+                authorization: btoa('fcgi' + ':' + 'Aten#SW3')
+            });
+
+            return new Promise((resolve, reject) => {
+                xhr_send_json("https://" + window.location.host + url, null, "POST", json,
+                    function (xhr, e) {
+                        reject(new Error('Failed to send request.'));
+                    },
+                    function (xhr, e) {
+                        reject(new Error('Request is timeout.'));
+                    },
+                    function (xhr) {
+                        if (xhr.readyState == 4) {
+                            if (xhr.status == 200) {
+                                const json = JSON.parse(xhr.response);
+
+                                cred = json.credential;
+                                resolve();
+                            } else
+                                reject(new Error("Unexpected status code = " + xhr.status));
+                        }
+                    }
+                )
+            });
+        }
+
+        function getPatterns() {
+            if (cred.length === 0)
+                return null;
+
+            const url = "/api/v4.0/video/veProfile/patterns";
+
+            return new Promise((resolve, reject) => {
+                xhr_get("https://" + window.location.host + url, cred,
+                    function (xhr, e) {
+                        reject(new Error('Failed to send request.'));
+                    },
+                    function (xhr, e) {
+                        reject(new Error('Request is timeout.'));
+                    },
+                    function (xhr) {
+                        if (xhr.readyState == 4) {
+                            if (xhr.status == 200) {
+                                let json = JSON.parse(xhr.response);
+
+                                resolve(json.patterns);
+                            } else
+                                reject(new Error("Unexpected status code = " + xhr.status));
+                        }
+                    }
+                )
+            });
+        }
+
+        function getProfiles() {
+            if (cred.length === 0)
+                return null;
+
+            const url = "/api/v4.0/video/veProfile";
+
+            return new Promise((resolve, reject) => {
+                xhr_get("https://" + window.location.host + url, cred,
+                    function (xhr, e) {
+                        reject(new Error('Failed to send request.'));
+                    },
+                    function (xhr, e) {
+                        reject(new Error('Request is timeout.'));
+                    },
+                    function (xhr) {
+                        if (xhr.readyState == 4) {
+                            if (xhr.status == 200) {
+                                let json = JSON.parse(xhr.response);
+
+                                resolve(json.profiles);
+                            } else
+                                reject(new Error("Unexpected status code = " + xhr.status));
+                        }
+                    }
+                )
+            });
+        }
+
+        function getVideoExts() {
+            if (cred.length === 0)
+                return null;
+
+            const url = "/api/v4.0/system/videoExts";
+
+            return new Promise((resolve, reject) => {
+                xhr_get("https://" + window.location.host + url, cred,
+                    function (xhr, e) {
+                        reject(new Error('Failed to send request.'));
+                    },
+                    function (xhr, e) {
+                        reject(new Error('Request is timeout.'));
+                    },
+                    function (xhr) {
+                        if (xhr.readyState == 4) {
+                            if (xhr.status == 200) {
+                                let json = JSON.parse(xhr.response);
+
+                                resolve(json.videoExts);
+                            } else
+                                reject(new Error("Unexpected status code = " + xhr.status));
+                        }
+                    }
+                )
+            });
+        }
+
+        function patternOp(pattern, verb) {
+            if (cred.length === 0)
+                return false;
+
+            const url = "/api/v4.0/video/veProfile/patterns";
+            const obj = {
+                patterns: [
+                    pattern
+                ]
+            };
+
+            return new Promise((resolve, reject) => {
+                xhr_send_json("https://" + window.location.host + url, cred, verb, JSON.stringify(obj, null, 2),
+                    function (xhr, e) {
+                        reject(new Error('Failed to send request.'));
+                    },
+                    function (xhr, e) {
+                        reject(new Error('Request is timeout.'));
+                    },
+                    function (xhr) {
+                        if (xhr.readyState == 4) {
+                            if (xhr.status == 200) {
+                                resolve();
+                            } else
+                                reject(new Error("Unexpected status code = " + xhr.status));
+                        }
+                    }
+                )
+            });
+        }
+
+        function profileOp(profile) {
+            if (cred.length === 0)
+                return false;
+
+            const url = "/api/v4.0/video/veProfile";
+            const obj = {
+                profiles: [
+                    profile
+                ]
+            };
+
+            return new Promise((resolve, reject) => {
+                xhr_send_json("https://" + window.location.host + url, cred, 'PATCH', JSON.stringify(obj, null, 2),
+                    function (xhr, e) {
+                        reject(new Error('Failed to send request.'));
+                    },
+                    function (xhr, e) {
+                        reject(new Error('Request is timeout.'));
+                    },
+                    function (xhr) {
+                        if (xhr.readyState == 4) {
+                            if (xhr.status == 200) {
+                                resolve();
+                            } else
+                                reject(new Error("Unexpected status code = " + xhr.status));
+                        }
+                    }
+                )
+            });
+        }
+
+        function switchOp(sw) {
+            if (cred.length === 0)
+                return false;
+
+            const url = "/api/v4.0/video/veProfile/switch";
+            const obj = {
+                switch: [
+                    sw
+                ]
+            };
+
+            return new Promise((resolve, reject) => {
+                xhr_send_json("https://" + window.location.host + url, cred, 'PATCH', JSON.stringify(obj, null, 2),
+                    function (xhr, e) {
+                        reject(new Error('Failed to send request.'));
+                    },
+                    function (xhr, e) {
+                        reject(new Error('Request is timeout.'));
+                    },
+                    function (xhr) {
+                        if (xhr.readyState == 4) {
+                            if (xhr.status == 204) {
+                                resolve();
+                            } else
+                                reject(new Error("Unexpected status code = " + xhr.status));
+                        }
+                    }
+                )
+            });
+        }
+
+        // 上傳創意拚接模板
+        function uploadPattern() {
+            const output = {
+                width: canvas.width,
+                height: canvas.height,
+                slices: screens.map(s => {
+                    let tmp = {
+                        left: s.cropX,
+                        top: s.cropY,
+                        width: s.cropW,
+                        height: s.cropH,
+                        rotate: s.rotation
+                    };
+
+                    if (s.rotation == 90 || s.rotation == 270) {
+                        tmp.width = s.cropH;
+                        tmp.height = s.cropW;
+                    }
+
+                    return tmp;
+                })
+            };
+
+            (async () => {
+                try {
+                    await login();
+
+                    const patterns = await getPatterns();
+
+                    if (patterns.length > 32) {
+                        output.id = patterns[32].id;
+
+                        await patternOp(output, 'PATCH');
+                    } else {
+                        await patternOp(output, 'POST');
+                    }
+                } catch (err) {
+                    console.log(err.message);
+                }
+            })();
+        }
+
+        // 切換影像
+        function switchVideo() {
+            (async () => {
+                try {
+                    await login();
+
+                    let videoExts = await getVideoExts();
+
+                    videoExts.sort((a, b) => a.idx - b.idx);
+
+                    let profile = {
+                        id: "000000000001",
+                        rx: [
+                        ],
+                        tx: [
+                        ],
+                        walls: [
+                            {
+                                bezelWidth: {
+                                    bottom: 0,
+                                    left: 0,
+                                    right: 0,
+                                    top: 0
+                                },
+                                fitMode: {
+                                    value: 3
+                                },
+                                id: "0001",
+                                layoutIdx: 32,
+                                layouts: [
+                                ],
+                                name: "creative",
+                                rx: [
+                                ],
+                                type: 1
+                            }
+                        ]
+                    };
+                    let tx_devid;
+                    let rx_count = 0;
+
+                    videoExts.forEach(videoExt => {
+                        if (videoExt.type == "tx") {
+                            profile.tx.push(videoExt.id);
+                            if (tx_devid == null)
+                                tx_devid = videoExt.id;
+                        } else {
+                            profile.rx.push(videoExt.id);
+                            profile.walls[0].rx.push(videoExt.id);
+                            rx_count++;
+                        }
+                    });
+
+                    const patterns = await getPatterns();
+
+                    if (patterns.length <= 32)
+                        return;
+
+                    if (rx_count < patterns[32].slices.length)
+                        profile.walls[0].rx.push(...Array(patterns[32].slices.length - rx_count).fill(""));
+
+                    await profileOp(profile);
+
+                    const sw = {
+                        type: 1,
+                        room: "000000000001",
+                        wall: "0001",
+                        tx: tx_devid
+                    };
+
+                    await switchOp(sw);
+                } catch (err) {
+                    console.log(err.message);
+                }
+            })();
+        }
+
+        // 切換影像0
+        function switchVideo0() {
+            (async () => {
+                try {
+                    await login();
+
+                    let videoExts = await getVideoExts();
+
+                    videoExts.sort((a, b) => a.idx - b.idx);
+
+                    let profile = {
+                        id: "000000000001",
+                        rx: [
+                        ],
+                        tx: [
+                        ],
+                        walls: [
+                            {
+                                bezelWidth: {
+                                    bottom: 0,
+                                    left: 0,
+                                    right: 0,
+                                    top: 0
+                                },
+                                fitMode: {
+                                    value: 3
+                                },
+                                id: "0001",
+                                layoutIdx: 0,
+                                layouts: [
+                                ],
+                                name: "creative",
+                                rx: [
+                                ],
+                                type: 1
+                            }
+                        ]
+                    };
+                    let tx_devid;
+                    let rx_count = 0;
+
+                    videoExts.forEach(videoExt => {
+                        if (videoExt.type == "tx") {
+                            profile.tx.push(videoExt.id);
+                            if (tx_devid == null)
+                                tx_devid = videoExt.id;
+                        } else {
+                            profile.rx.push(videoExt.id);
+                            profile.walls[0].rx.push(videoExt.id);
+                            rx_count++;
+                        }
+                    });
+
+                    const patterns = await getPatterns();
+
+                    if (rx_count < patterns[0].slices.length)
+                        profile.walls[0].rx.push(...Array(patterns[0].slices.length - rx_count).fill(""));
+
+                    await profileOp(profile);
+
+                    const sw = {
+                        type: 1,
+                        room: "000000000001",
+                        wall: "0001",
+                        tx: tx_devid
+                    };
+
+                    await switchOp(sw);
+                } catch (err) {
+                    console.log(err.message);
+                }
+            })();
+        }
+
+        // 重置Lobby
+        function resetLobby() {
+            (async () => {
+                try {
+                    await login();
+
+                    const sw = {
+                        type: 3,
+                        room: "000000000001",
+                        wall: "0001"
+                    };
+
+                    await switchOp(sw);
+
+                    let videoExts = await getVideoExts();
+
+                    videoExts.sort((a, b) => a.idx - b.idx);
+
+                    let profile = {
+                        id: "000000000001",
+                        rx: [
+                        ],
+                        tx: [
+                        ],
+                        walls: [
+                        ]
+                    };
+
+                    videoExts.forEach(videoExt => {
+                        if (videoExt.type == "tx") {
+                            profile.tx.push(videoExt.id);
+                        } else {
+                            profile.rx.push(videoExt.id);
+                        }
+                    });
+
+                    await profileOp(profile);
+                } catch (err) {
+                    console.log(err.message);
+                }
+            })();
+        }
+
+        // 生成配置 JSON
+        function generateJSON() {
+            const output = {
+                canvas: {
+                    width: canvas.width,
+                    height: canvas.height
+                },
+                screens: screens.map(s => ({
+                    id: s.id,
+                    label: s.label,
+                    outputId: s.outputId,
+                    position: {
+                        x: s.cropX,
+                        y: s.cropY
+                    },
+                    size: {
+                        width: s.cropW,
+                        height: s.cropH
+                    },
+                    rotation: s.rotation,
+                    aspectRatio: s.aspectRatio
+                })),
+                pattern: {
+                    width: canvas.width,
+                    height: canvas.height,
+                    slices: screens.map(s => {
+                        let tmp = {
+                            left: s.cropX,
+                            top: s.cropY,
+                            width: s.cropW,
+                            height: s.cropH,
+                            rotate: s.rotation
+                        };
+
+                        // 如果是 90 或 270 度,交換寬高
+                        if (s.rotation == 90 || s.rotation == 270) {
+                            tmp.width = s.cropH;
+                            tmp.height = s.cropW;
+                        }
+
+                        return tmp;
+                    })
+                }
+            };
+
+            generatedJSON = JSON.stringify(output, null, 2);
+
+            document.getElementById('jsonContent').textContent = generatedJSON;
+            document.getElementById('jsonOutput').style.display = 'block';
+            document.getElementById('copyBtn').style.display = 'block';
+        }
+
+        // 複製 JSON 到剪貼簿
+        function copyJSON() {
+            if (!generatedJSON) {
+                alert('請先生成 JSON');
+                return;
+            }
+
+            navigator.clipboard.writeText(generatedJSON).then(() => {
+                const btn = document.getElementById('copyBtn');
+                const originalText = btn.textContent;
+                btn.textContent = '✓ 已複製!';
+                btn.style.background = 'linear-gradient(135deg, #4caf50 0%, #66bb6a 100%)';
+
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                    btn.style.background = '';
+                }, 2000);
+            }).catch(err => {
+                alert('複製失敗: ' + err);
+            });
+        }
+
+        // 啟動
+        init();
+    </script>
+</body>
+
+</html>

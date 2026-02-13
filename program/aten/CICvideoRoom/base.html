@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D White Room - 16:9 Screens</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #f0f0f0;
+            font-family: "Inter", sans-serif;
+        }
+
+        #overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            cursor: pointer;
+            z-index: 10;
+            transition: opacity 0.5s;
+        }
+
+        #overlay h1 {
+            font-weight: 300;
+            letter-spacing: 5px;
+            margin-bottom: 10px;
+        }
+
+        #overlay p {
+            color: #666;
+            font-size: 0.9rem;
+            border: 1px solid #ddd;
+            padding: 10px 20px;
+            border-radius: 50px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="overlay">
+        <h1>WHITE GALLERY</h1>
+        <p>點擊進入場景 / CLICK TO START</p>
+    </div>
+
+    <video id="v-front" loop crossOrigin="anonymous" playsinline style="display:none" muted>
+        <source src="b001.mp4" type="video/mp4">
+    </video>
+
+    <video id="v-left" loop crossOrigin="anonymous" playsinline style="display:none" muted>
+        <source src="b002.mp4" type="video/mp4">
+    </video>
+    <video id="v-back" loop crossOrigin="anonymous" playsinline style="display:none" muted>
+        <source src="b003.mp4" type="video/mp4">
+    </video>
+    <video id="v-right" loop crossOrigin="anonymous" playsinline style="display:none" muted>
+        <source src="b004.mp4" type="video/mp4">
+    </video>
+
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+            }
+        }
+    </script>
+
+    <script type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+        // 1. 場景初始化
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0xffffff);
+
+        // 2. 攝影機 (更矮的視角，約 1.1m，適合長形空間)
+        const camera = new THREE.PerspectiveCamera(65, window.innerWidth / window.innerHeight, 0.1, 100);
+        camera.position.set(0, 1.1, 0);
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        // 設定色彩空間，確保顏色呈現正確
+        renderer.outputColorSpace = THREE.SRGBColorSpace;
+        document.body.appendChild(renderer.domElement);
+
+        // 3. 建立白色房間
+        const roomWidth = 10;
+        const roomHeight = 8;
+        const roomDepth = 18; // 長方形空間
+
+        const roomGeo = new THREE.BoxGeometry(roomWidth, roomHeight, roomDepth);
+        const roomMat = new THREE.MeshStandardMaterial({
+            color: 0xfafafa, // 純白色牆面
+            side: THREE.BackSide,
+            roughness: 0.4,
+            metalness: 0.1
+        });
+        const room = new THREE.Mesh(roomGeo, roomMat);
+        scene.add(room);
+
+        // 4. 加強燈光 (因為牆面是白的，需要明亮的環境光)
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
+        scene.add(ambientLight);
+
+        const topLight = new THREE.PointLight(0xffffff, 0.5);
+        topLight.position.set(0, 3.8, 0);
+        scene.add(topLight);
+
+        // 5. 建立螢幕的函數 (嚴格 16:9)
+        function createScreen(videoElement, width, position, rotationY) {
+            // 嚴格定義 16:9 比例
+            const ratio = 16 / 9;
+            const height = width / ratio;
+
+            const texture = new THREE.VideoTexture(videoElement);
+            texture.colorSpace = THREE.SRGBColorSpace;
+
+            // 螢幕幾何
+            const geometry = new THREE.PlaneGeometry(width, height);
+            const material = new THREE.MeshBasicMaterial({ map: texture });
+            const screen = new THREE.Mesh(geometry, material);
+
+            // 外框 (黑色極細外框)
+            const frameGeo = new THREE.PlaneGeometry(width + 0.05, height + 0.05);
+            const frameMat = new THREE.MeshBasicMaterial({ color: 0x111111 });
+            const frame = new THREE.Mesh(frameGeo, frameMat);
+            frame.position.z = -0.005;
+            screen.add(frame);
+
+            screen.position.copy(position);
+            screen.rotation.y = rotationY;
+
+            scene.add(screen);
+            return videoElement;
+        }
+
+        // --- 配置四個 16:9 螢幕 ---
+        const sw = 5; // 設定螢幕寬度為 5 公尺
+        const distZ = (roomDepth / 2) - 0.05;
+        const distX = (roomWidth / 2) - 0.05;
+
+        const videos = [
+            createScreen(document.getElementById('v-front'), sw, new THREE.Vector3(0, 1.8, -distZ), 0),
+            createScreen(document.getElementById('v-back'), sw, new THREE.Vector3(0, 1.8, distZ), Math.PI),
+            createScreen(document.getElementById('v-left'), sw, new THREE.Vector3(-distX, 1.8, 0), Math.PI / 2),
+            createScreen(document.getElementById('v-right'), sw, new THREE.Vector3(distX, 1.8, 0), -Math.PI / 2)
+        ];
+
+        // 6. 控制器
+        const controls = new OrbitControls(camera, renderer.domElement);
+        controls.enableZoom = false;
+        controls.enablePan = false;
+        controls.rotateSpeed = -0.4; // 稍微調慢轉頭速度，感覺更沉穩
+        controls.target.set(0, 1.1, -1);
+        controls.update();
+
+        // 7. 互動啟動
+        const overlay = document.getElementById('overlay');
+        overlay.addEventListener('click', () => {
+            overlay.style.opacity = '0';
+            setTimeout(() => overlay.style.display = 'none', 500);
+            videos.forEach(v => v.play());
+        });
+
+        // 8. 渲染迴圈
+        function animate() {
+            requestAnimationFrame(animate);
+            controls.update();
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
+</body>
+
+</html>
