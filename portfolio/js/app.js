@@ -22,9 +22,9 @@ const portfolioData = {
 		cards: [
 			{
 				id: "a_builder",
-				title: "Product and Diagran design Tool <br> <span>Solution Builder</span>",
-				desc: "Solution Builder comes with a library of optimized connection templates for various scenarios, allowing you to quickly apply standard designs",
-				tags: ["Software PRD", "iPad UI Design", "Design Library", "Scenario Definition"],
+				title: "Visual Solution Simulator <br> <span>Solution Builder</span>",
+				desc: "A digital tool driving ATEN's transformation from product-oriented to solution-oriented sales, featuring visual topology editing, automated proposals, and data-driven insights.",
+				tags: ["UX Engineering", "React Development", "Data Analytics", "B2B Tool"],
 				cardConfig: { colClass: "col-8 col-md-6 col-xs-12 star-project" }
 			},
 			{
@@ -52,8 +52,7 @@ const portfolioData = {
 				id: "d_ftr",
 				title: "Future Training Room",
 				desc: "",
-				tags: ["Scenario Definition", "IoT Control System Design"],
-				cardConfig: {}
+				tags: ["Scenario Definition", "IoT Control System Design"]
 			},
 			{
 				id: "d_uvc",
@@ -71,63 +70,56 @@ const portfolioData = {
 				id: "d_so",
 				title: "SO!Eyewear Website",
 				desc: "",
-				tags: ["Website", "Frond-end", "SEO", "Google Analysis"],
-				cardConfig: {}
+				tags: ["Website", "Frond-end", "SEO", "Google Analysis"]
 			},
 			{
 				id: "d_ofweb",
 				title: "Official Website Optimization",
 				desc: "",
-				tags: ["User Research", "Re-design", "User Journey Map"],
-				cardConfig: {}
+				tags: ["User Research", "Re-design", "User Journey Map"]
 			},
 			{
 				id: "d_game",
 				title: "Gaming KVM Adapter Application",
 				desc: "",
-				tags: ["Gaming", "First Use", " Tutorial"],
-				cardConfig: {}
+				tags: ["Gaming", "First Use", "Tutorial"]
 			},
 			{
 				id: "d_wall",
 				title: "Road Construction </br>Noise Control System",
 				desc: "",
-				tags: ["Product design", "Field research"],
-				cardConfig: {}
+				tags: ["Product design", "Field research"]
 			},
 			{
 				id: "d_vrbot",
 				title: "Remote VR Interactive Robot",
 				desc: "",
-				tags: ["Product design", "VR"],
-				cardConfig: {}
+				tags: ["Product design", "VR"]
 			},
 			{
 				id: "d_ar",
 				title: "Reality Plus",
 				desc: "",
 				tags: ["AR", "Concept Design"],
-				cardConfig: { whiteText: true, }
+				cardConfig: { whiteText: true }
 			},
 			{
 				id: "v_vis",
 				title: "VIS / Visual Design",
 				desc: "",
-				tags: ["Visual System", "Poster", "Illustration", "Animations"],
-				cardConfig: {}
+				tags: ["Visual System", "Poster", "Illustration", "Animations"]
 			},
 			{
 				id: "v_ino",
 				title: "Infographic Design",
 				desc: "",
-				tags: ["Infographic", "Flow", "Scenario Illustration"],
-				cardConfig: {}
+				tags: ["Infographic", "Flow", "Scenario Illustration"]
 			},
 			{
 				id: "v_3d",
 				title: "3D Render",
-				tags: ["3D max", "V-ray", "Industral Design"],
-				cardConfig: {}
+				desc: "",
+				tags: ["3D max", "V-ray", "Industral Design"]
 			}]
 	},
 	development: {
@@ -138,43 +130,40 @@ const portfolioData = {
 				id: "c_auto_tag",
 				title: "Experimentation of Structuring  <br> Unstructured Data,	and Visualization",
 				desc: "",
-				tags: ["python", "AI", "data"],
-				cardConfig: {}
+				tags: ["python", "AI", "data"]
 			},
 			{
 				id: "c_auto-matome",
 				title: "Automated Tool for Interview Transcript <br>and Summary Generation",
 				desc: "",
-				tags: ["python", "AI"],
-				cardConfig: {}
+				tags: ["python", "AI"]
 			},
 			{
 				id: "c_demo",
 				title: "Overcoming Costly On-Site Demos: <br>Virtual Demo Room Solution for Pro AV Sales",
 				desc: "",
 				tags: ["JavaScript", "After Effects"],
-				cardConfig: { whiteText: true, }
+				cardConfig: { whiteText: true }
 			},
 			{
 				id: "c_party",
 				title: "Party Game",
 				desc: "",
 				tags: ["JavaScript", "Web Audio API"],
-				cardConfig: { whiteText: true, }
+				cardConfig: { whiteText: true }
 			},
 			{
 				id: "c_test",
 				title: "Prototypes and Tools",
 				desc: "",
 				tags: ["JavaScript", "Usability test Tools"],
-				cardConfig: { whiteText: true, }
+				cardConfig: { whiteText: true }
 			},
 			{
 				id: "c_an",
 				title: "The interactive animation</br>for a marketing campaign",
 				desc: "",
-				tags: ["JavaScript", "After Effects"],
-				cardConfig: {}
+				tags: ["JavaScript", "After Effects"]
 			}
 		]
 	}
@@ -474,7 +463,7 @@ try {
 					</a>\
 				</div>\
 				<div class="col-4 col-xsm-12 text-xsm-center mt-sm-sm">\
-					<a href="about_jp.html" class="btn">Recume <span class="icon"> arrow_forward</span>\
+					<a href="about_jp.html" class="btn">Resume <span class="icon"> arrow_forward</span>\
 					</a>\
 				</div>\
 			</div>\
@@ -488,6 +477,60 @@ try {
 	footer[0].innerHTML = footerHtml;
 } catch {
 	console.log("no footer")
+}
+
+// ============================================
+// 首頁卡片渲染
+// ============================================
+function renderPortfolioCards() {
+	const workCardsContainer = document.getElementById('workCardsContainer');
+	if (!workCardsContainer) {
+		console.log('workCards container not found');
+		return;
+	}
+
+	let cardsHtml = '';
+
+	Object.keys(portfolioData).forEach((category) => {
+		const categoryData = portfolioData[category];
+
+		// 加入類別標題
+		if (categoryData.title) {
+			cardsHtml += `
+				<div class="session-border pt-xs pb-xs">
+					<h2 class="${categoryData.titleClass || ''}">${categoryData.title}</h2>
+				</div>
+			`;
+		}
+
+		// 卡片區塊
+		cardsHtml += '<div class="row workCards">';
+		categoryData.cards.forEach((work) => {
+			const config = work.cardConfig || {};
+			const colClass = config.colClass || 'col-4 col-md-6 col-xs-12 m-0';
+			const h3Class = config.whiteText ? 'class="f-white"' : '';
+
+			const tagsHtml = work.tags.map(tag => `<p class="tag">${tag}</p>`).join('');
+
+			cardsHtml += `
+				<div class="${colClass}">
+					<a class="workCard" href="${work.id}.html#img00" >
+						<div class="work-image" style="background-image: url(../image/cover_${work.id}.png);">
+							<div class="detail_box row flex-c">${tagsHtml}</div>
+						</div>
+						<div class="textBox">
+							<h3 ${h3Class}>${work.title}</h3>
+							<p>${work.desc || ''}</p>
+						</div>
+					</a>
+				</div>
+			`;
+		});
+
+		cardsHtml += '</div>';
+	});
+
+	workCardsContainer.innerHTML = cardsHtml;
 }
 
 // ============================================

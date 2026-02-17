@@ -97,7 +97,7 @@
 						</div>
 						<div
 							class="col-md-3 col-xsm-6 col-xs-12 plr-sm row flex-dir-col flex-jus-end mt-sm animate__animated animate__fadeIn animate__delay-1s">
-							<a href="about_jp.html" class="btn">Recume <span class="icon"> arrow_forward</span>
+							<a href="about_jp.html" class="btn">Resume <span class="icon"> arrow_forward</span>
 							</a>
 						</div>
 					</div>
@@ -111,70 +111,5 @@
 	<footer></footer>
 </body>
 <script src="js/app.js"></script>
-<script>
-
-
-	// ============================================
-	// 首頁卡片渲染
-	// ============================================
-	function renderPortfolioCards() {
-		const workCardsContainer = document.getElementById('workCardsContainer');
-		if (!workCardsContainer) {
-			console.log('workCards container not found');
-			return;
-		}
-
-		let cardsHtml = '';
-
-
-
-		Object.keys(portfolioData).forEach((category) => {
-			const categoryData = portfolioData[category];
-
-			//----------------
-			// 加入類別標題
-			//----------------
-			if (categoryData.title) {
-				cardsHtml += `
-				<div class="session-border pt-xs pb-xs">
-					<h2 class="${categoryData.titleClass || ''}">${categoryData.title}</h2>
-				</div>
-			`;
-			}
-
-			//----------------
-			// 卡片區塊
-			//----------------
-			cardsHtml += '<div class="row workCards">';
-			// 渲染類別下的所有卡片
-			categoryData.cards.forEach((work) => {
-				const config = work.cardConfig || {};
-				const colClass = config.colClass || 'col-4 col-md-6 col-xs-12 m-0';
-				const h3Class = config.whiteText ? 'class="f-white"' : '';
-
-				const tagsHtml = work.tags.map(tag => `<p class="tag">${tag}</p>`).join('');
-
-				cardsHtml += `
-				<div class="${colClass}">
-					<a class="workCard" href="${work.id}.html#img00" >
-						<div class="work-image" style="background-image: url(../image/cover_${work.id}.png);">
-							<div class="detail_box row flex-c">${tagsHtml}</div>							
-						</div>
-						<div class="textBox">
-							<h3 ${h3Class}>${work.title}</h3>
-							<p >${work.desc}</h3>
-						</div>
-					</a>
-				</div>
-			`;
-			});
-
-			// 關閉當前類別的卡片區塊
-			cardsHtml += '</div>';
-		});
-
-		workCardsContainer.innerHTML = cardsHtml;
-	}
-</script>
 
 </html>
