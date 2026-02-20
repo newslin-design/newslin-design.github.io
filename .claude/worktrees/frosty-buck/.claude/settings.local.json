@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git worktree:*)",
+      "Bash(git branch:*)",
+      "Bash(ls \"K:\\\\Github\\\\newslin-design.github.io\\\\portfolio\\\\ja\"\" 2>/dev/null || echo \"ja/ directory is empty or doesn 't exist \")"
+    ]
+  }
+}

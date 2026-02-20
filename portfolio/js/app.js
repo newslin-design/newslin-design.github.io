@@ -11,10 +11,33 @@ var $tag = function (name) {
 	return document.getElementsByTagName(name)
 }
 
+// ============================================
+// Language & Path Configuration
+// ============================================
+// 各頁面可透過 <script> 設定: lang = "zh" / "ja" / "en"
+// basePath 用於修正子資料夾的相對路徑
+var lang = (typeof lang !== 'undefined') ? lang : "en";
+var basePath = (typeof basePath !== 'undefined') ? basePath : "";
+// basePath 範例: zh/ ja/ 頁面設為 "../"，根層頁面設為 ""
+var imgBasePath = basePath + "../image/";
+var pageBasePath = basePath + "";
+
 
 // ============================================
-// 作品資料定義 - 使用物件陣列格式
+// 作品資料定義（含多語系）
 // ============================================
+// title / desc 可為字串或 { en, zh, ja } 物件
+// 字串 = 所有語言共用；物件 = 依 lang 選取，fallback 到 en
+// hasLocalPage: true 表示 zh/ ja/ 資料夾有對應頁面
+
+// 根據語言解析欄位值
+function i18n(value) {
+	if (typeof value === 'object' && value !== null) {
+		return value[lang] || value['en'] || '';
+	}
+	return value || '';
+}
+
 const portfolioData = {
 	design: {
 		title: "",
@@ -22,16 +45,34 @@ const portfolioData = {
 		cards: [
 			{
 				id: "a_builder",
-				title: "Visual Solution Simulator <br> <span>Solution Builder</span>",
-				desc: "A digital tool driving ATEN's transformation from product-oriented to solution-oriented sales, featuring visual topology editing, automated proposals, and data-driven insights.",
+				hasLocalPage: true,
+				title: {
+					en: "Visual Solution Simulator <br> <span>Solution Builder</span>",
+					zh: "視覺化解決方案模擬器 <br> <span>Solution Builder</span>",
+					ja: "ビジュアルソリューションシミュレーター <br> <span>Solution Builder</span>"
+				},
+				desc: {
+					en: "A digital tool driving ATEN's transformation from product-oriented to solution-oriented sales, featuring visual topology editing, automated proposals, and data-driven insights.",
+					zh: "推動 ATEN 從產品導向轉型為解決方案導向的數位工具，具備視覺化拓撲編輯、自動化提案與數據驅動洞察。",
+					ja: "ATENの製品志向からソリューション志向への変革を推進するデジタルツール。ビジュアルトポロジー編集、自動提案、データ駆動インサイトを搭載。"
+				},
 				tags: ["UX Engineering", "React Development", "Data Analytics", "B2B Tool"],
 				cardConfig: { colClass: "col-8 col-md-6 col-xs-12 star-project" }
 			},
 			{
 				id: "a_foodAnimal",
-				title: "Dining Persona Profiler Website",
-				desc: "An interactive personality test website themed around dietary habits to Uncover Your Dining Persona.",
-				tags: ["AI Interact Design", "Website", "B2B Solution"],
+				hasLocalPage: true,
+				title: {
+					en: "Food Animal Personality Quiz",
+					zh: "美食動物性格測驗",
+					ja: "フードアニマル性格診断"
+				},
+				desc: {
+					en: "An AI-collaborative side project transforming dining habits into animal personas, showcasing Prompt Engineering, Midjourney visual systems, and full-stack development.",
+					zh: "一個 AI 協作的 Side Project，將飲食習慣轉化為動物人格，展示 Prompt Engineering、Midjourney 視覺系統與全端開發。",
+					ja: "AI協働のサイドプロジェクト。食習慣を動物ペルソナに変換し、プロンプトエンジニアリング、Midjourneyビジュアルシステム、フルスタック開発を実証。"
+				},
+				tags: ["AI Collaboration", "Prompt Engineering", "Interactive Web App"],
 				cardConfig: { colClass: "col-4 col-md-6 col-xs-12" }
 			},
 			{
@@ -246,8 +287,9 @@ try {
 
 		if (currentWork) {
 			// 設定頁面標題
-			$tag("title")[0].innerHTML = currentWork.title.replace(/<\/?br>/g, '').replace(/<\/?\/br>/g, '');
-			$tag("h1")[0].innerHTML = currentWork.title;
+			var workTitle = i18n(currentWork.title);
+			$tag("title")[0].innerHTML = workTitle.replace(/<\/?br>/g, '').replace(/<\/?\/br>/g, '');
+			$tag("h1")[0].innerHTML = workTitle;
 
 			// 載入圖片
 			let img = $tag("img")
@@ -261,7 +303,7 @@ try {
 				}
 				if (img[i].alt != "no") {
 					let num = i - j
-					img[i].src = "../image/" + workName + num + imgType
+					img[i].src = imgBasePath + workName + num + imgType
 				} else {
 					j++
 				}
@@ -275,27 +317,38 @@ try {
 
 				sidebar.classList.add("row", "flex-dir-col");
 
-				let sidebarHtml = '<div class="row flex-dir-col"><a class="mt-xl" href="index.html">Home</a>';
+				// Home 連結：非英文時留在當前語言資料夾
+			var homeHref = (lang !== 'en') ? 'index.html' : `${pageBasePath}index.html`;
+			let sidebarHtml = `<div class="row flex-dir-col"><a class="mt-xl" href="${homeHref}">Home</a>`;
 
 				if (nextWork) {
+					// 側邊欄連結：有該語言頁面則留在當前資料夾，否則跳回英文
+					var nextHasLocal = (lang !== 'en' && nextWork.hasLocalPage);
+					var nextHref = nextHasLocal
+						? `${nextWork.id}.html#img00`
+						: `${pageBasePath}${nextWork.id}.html#img00`;
 					sidebarHtml += `
-						<a id="nextwork" class="icon" href="${nextWork.id}.html#img00">
+						<a id="nextwork" class="icon" href="${nextHref}">
 							chevron_right
 							<div id="nextwork-describe">
-								<img src="../image/cover_${nextWork.id}.png">
-								<span>${nextWork.title}</span>
+								<img src="${imgBasePath}cover_${nextWork.id}.png">
+								<span>${i18n(nextWork.title)}</span>
 							</div>
 						</a>
 					`;
 				}
 
 				if (prevWork) {
+					var prevHasLocal = (lang !== 'en' && prevWork.hasLocalPage);
+					var prevHref = prevHasLocal
+						? `${prevWork.id}.html#img00`
+						: `${pageBasePath}${prevWork.id}.html#img00`;
 					sidebarHtml += `
-						<a id="lastwork" class="icon" href="${prevWork.id}.html#img00">
+						<a id="lastwork" class="icon" href="${prevHref}">
 							chevron_left
 							<div id="lastwork-describe">
-								<img src="../image/cover_${prevWork.id}.png">
-								<span>${prevWork.title}</span>
+								<img src="${imgBasePath}cover_${prevWork.id}.png">
+								<span>${i18n(prevWork.title)}</span>
 							</div>
 						</a>
 					`;
@@ -394,18 +447,39 @@ try {
 // ============================================
 try {
 	var header = $tag("header")
+	// 語言切換連結
+	var langLinks = '';
+	if (typeof workName !== 'undefined' && workName === 'home') {
+		// 首頁的語言切換
+		langLinks = `
+			<li class="lang-switcher">
+				<a href="${basePath}index.html" ${lang === 'en' ? 'class="active"' : ''}>EN</a>
+				<a href="${basePath}zh/index.html" ${lang === 'zh' ? 'class="active"' : ''}>中</a>
+				<a href="${basePath}ja/index.html" ${lang === 'ja' ? 'class="active"' : ''}>JP</a>
+			</li>`;
+	} else if (typeof workName !== 'undefined') {
+		// 作品頁的語言切換
+		langLinks = `
+			<li class="lang-switcher">
+				<a href="${basePath}${workName}.html" ${lang === 'en' ? 'class="active"' : ''}>EN</a>
+				<a href="${basePath}zh/${workName}.html" ${lang === 'zh' ? 'class="active"' : ''}>中</a>
+				<a href="${basePath}ja/${workName}.html" ${lang === 'ja' ? 'class="active"' : ''}>JP</a>
+			</li>`;
+	}
+
 	var headerHtml = `
                     <div class="container">
-                        <a href="index.html">
+                        <a href="${pageBasePath}index.html">
                             <div class="logo">
                                 <div></div>
                             </div>
                         </a>
                         <ul class="row flex-jus-end">
-                            <li><a href="index.html">Design</a></li>
-                            <li><a href="index.html">Project</a></li>
-                            <li><a href="index.html">Development</a></li>
-                            <li><a href="about.html">Resume</a></li>
+                            <li><a href="${pageBasePath}index.html">Design</a></li>
+                            <li><a href="${pageBasePath}index.html">Project</a></li>
+                            <li><a href="${pageBasePath}index.html">Development</a></li>
+                            <li><a href="${pageBasePath}about.html">Resume</a></li>
+                            ${langLinks}
                         </ul>
                     </div>`
 	header[0].innerHTML = headerHtml;
@@ -454,16 +528,16 @@ try {
 				</div>\
 				<div class="col-5 col-md-4 col-xsm-12 row-xsm flex-xsm-jus-c">\
 					<div class="row flex-align-c">\
-						<img src="../image/icon_email.png">\
+						<img src="' + imgBasePath + 'icon_email.png">\
 						<p class="mb-xxs">newslining@gmail.com</p>\
 					</div>\
 					<a class="row flex-align-c" href="https://www.linkedin.com/in/sin-siang-lin/" target="_blank">\
-						<img src="../image/icon_linkedin-rect.png">\
+						<img src="' + imgBasePath + 'icon_linkedin-rect.png">\
 						<p>linkedin sin-siang-lin</p>\
 					</a>\
 				</div>\
 				<div class="col-4 col-xsm-12 text-xsm-center mt-sm-sm">\
-					<a href="about_jp.html" class="btn">Resume <span class="icon"> arrow_forward</span>\
+					<a href="' + pageBasePath + 'about_jp.html" class="btn">Resume <span class="icon"> arrow_forward</span>\
 					</a>\
 				</div>\
 			</div>\
@@ -510,17 +584,26 @@ function renderPortfolioCards() {
 			const colClass = config.colClass || 'col-4 col-md-6 col-xs-12 m-0';
 			const h3Class = config.whiteText ? 'class="f-white"' : '';
 
+			const displayTitle = i18n(work.title);
+			const displayDesc = i18n(work.desc);
+
 			const tagsHtml = work.tags.map(tag => `<p class="tag">${tag}</p>`).join('');
+
+			// 卡片連結：有該語言頁面的留在當前資料夾，否則跳回英文根目錄
+			const hasLocalPage = (lang !== 'en' && work.hasLocalPage);
+			const cardHref = hasLocalPage
+				? `${work.id}.html#img00`
+				: `${pageBasePath}${work.id}.html#img00`;
 
 			cardsHtml += `
 				<div class="${colClass}">
-					<a class="workCard" href="${work.id}.html#img00" >
-						<div class="work-image" style="background-image: url(../image/cover_${work.id}.png);">
+					<a class="workCard" href="${cardHref}" >
+						<div class="work-image" style="background-image: url(${imgBasePath}cover_${work.id}.png);">
 							<div class="detail_box row flex-c">${tagsHtml}</div>
 						</div>
 						<div class="textBox">
-							<h3 ${h3Class}>${work.title}</h3>
-							<p>${work.desc || ''}</p>
+							<h3 ${h3Class}>${displayTitle}</h3>
+							<p>${displayDesc}</p>
 						</div>
 					</a>
 				</div>

@@ -1,26 +1,26 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
 
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, maximum-scale=1.5">
 	<title>ATEN Solution Builder - Portfolio</title>
-	<script>workName = "a_builder"</script>
-	<link rel="stylesheet" href="style/reset.css">
-	<link rel="stylesheet" href="style/style_layout.css">
-	<link rel="stylesheet" href="style/style.css">
-	<link rel="stylesheet" href="style/article.css">
-	<link rel="icon" type="image/png" href="web_icon.png" />
+	<script>workName = "a_builder"; lang = "ja"; basePath = "../";</script>
+	<link rel="stylesheet" href="../style/reset.css">
+	<link rel="stylesheet" href="../style/style_layout.css">
+	<link rel="stylesheet" href="../style/style.css">
+	<link rel="stylesheet" href="../style/article.css">
+	<link rel="icon" type="image/png" href="../web_icon.png" />
 
 	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-114514958-1"></script>
 	<script>
-			(function (w, d, s, l, i) {
-				w[l] = w[l] || []; w[l].push({
-					'gtm.start': new Date().getTime(), event: 'gtm.js'
-				}); var f = d.getElementsByTagName(s)[0],
-					j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
-						'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
-			})(window, document, 'script', 'dataLayer', 'GTM-PMLJXPC');
+		(function (w, d, s, l, i) {
+			w[l] = w[l] || []; w[l].push({
+				'gtm.start': new Date().getTime(), event: 'gtm.js'
+			}); var f = d.getElementsByTagName(s)[0],
+				j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+					'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+		})(window, document, 'script', 'dataLayer', 'GTM-PMLJXPC');
 	</script>
 </head>
 
@@ -31,9 +31,6 @@
 	<header></header>
 	<div id="sidebar"></div>
 
-	<!-- ========================================
-		Section 1: Project Overview
-	======================================== -->
 	<div class="container mt-xl">
 		<h1>ATEN Solution Builder</h1>
 		<div class="row mb-lg">
@@ -88,12 +85,8 @@
 			</div>
 		</div>
 
-		<!-- Main Content -->
 		<div class="article">
 
-			<!-- ========================================
-				Section 1: Core Contributions
-			======================================== -->
 			<div class="session" id="overview">Core Contributions</div>
 			<p class="highlight">
 				<strong>Built from 0 to 1:</strong> Designed and developed a visual diagram simulator,
@@ -110,10 +103,6 @@
 				behind it.
 			</p>
 
-
-			<!-- ========================================
-				Section 2: Challenge & Strategy
-			======================================== -->
 			<div class="session" id="challenge">The Challenge & Strategy</div>
 			<h2>Dissecting Business Pain Points & User Needs</h2>
 			<p>
@@ -163,7 +152,6 @@
 				personas and tailored a layered design strategy for each:
 			</p>
 
-			<!-- Persona Table -->
 			<div class="row mt-md mb-lg" style="width:100%">
 				<div class="col-4 col-sm-12 plr-sm mb-md">
 					<h4>Novice SI</h4>
@@ -213,9 +201,6 @@
 			<img alt="Overview of three persona cards (Novice SI, Expert SI, Internal Sales) mapped to their corresponding feature strategies: Guided Templates, Flexible Canvas, and Automated Proposals">
 
 
-			<!-- ========================================
-				Section 3: Product Features & Design Details
-			======================================== -->
 			<div class="session" id="features">Product Features & Design Details</div>
 			<h2>Core Features Deep Dive</h2>
 			<p>
@@ -223,7 +208,6 @@
 				time-consuming analog workflow, reshaping it into an intuitive, intelligent digital experience.
 			</p>
 
-			<!-- 3.1 Visual Topology Editor -->
 			<h2 class="box mb-0 mt-lg">Feature 1. Visual Topology Editor</h2>
 			<h2 class="hightlight">The Heart of the Application</h2>
 			<p>
@@ -268,7 +252,6 @@
 			</p>
 			<img alt="Close-up of smart connection lines between device ports, color-coded by signal type: Video (blue), Audio (pink), Network (light blue), with automatic routing paths">
 
-			<!-- 3.2 Flexible Project Creation -->
 			<h2 class="box mb-0 mt-lg">Feature 2. Flexible Project Creation</h2>
 			<h2 class="hightlight">Dual-Path Design for All Skill Levels</h2>
 
@@ -287,14 +270,8 @@
 				For senior experts, this mode provides a completely blank canvas. Users can design highly
 				customized solutions without any restrictions, fully leveraging their professional expertise.
 			</p>
-			<p>
-				This dual-path design approach was a direct outcome of our user research, ensuring the
-				tool is immediately accessible to novice SIs through templates while providing experts with
-				unlimited creative freedom.
-			</p>
 			<img alt="Side-by-side comparison of two project creation paths: Template mode (left) with pre-configured diagram vs. Scratch mode (right) with blank canvas for expert users">
 
-			<!-- 3.3 Automated Documentation -->
 			<h2 class="box mb-0 mt-lg">Feature 3. Automated Documentation</h2>
 			<h2 class="hightlight">Automating the Last Mile of the Proposal Process</h2>
 
@@ -321,19 +298,13 @@
 			<img alt="Examples of automated documentation outputs: Excel BOM spreadsheet with product quantities on the left, and a professionally formatted PDF system architecture diagram with custom metadata on the right">
 
 
-			<!-- ========================================
-				Section 4: Technical Implementation
-			======================================== -->
 			<div class="session" id="technical">Technical Implementation & Contribution</div>
 			<h2>Crossing the Boundary Between Design and Development</h2>
 			<p>
 				As a UX Engineer, my contribution extended beyond drafting design blueprints to hands-on
-				implementation. This section details the key engineering tasks I undertook — work that not
-				only realized the design vision but solved a foundational data problem blocking project
-				progress, while building a robust, scalable frontend architecture.
+				implementation. This section details the key engineering tasks I undertook.
 			</p>
 
-			<!-- 4.1 Frontend Architecture -->
 			<h2 class="box mb-0 mt-lg">Engineering 1. Frontend Architecture & Component Development</h2>
 			<h2 class="hightlight">Building a Modular, Scalable System</h2>
 
@@ -347,178 +318,137 @@
 			<p>
 				I created highly customized React components for canvas elements, such as
 				<strong>DeviceNode</strong> and <strong>GroupNode</strong>. This approach transformed canvas
-				nodes from static icons into intelligent, self-contained agents. Each node manages its own
-				data fetching, view management, and port rendering logic — creating a highly modular
-				and extensible architecture.
+				nodes from static icons into intelligent, self-contained agents.
 			</p>
 
 			<h3>Performance Optimization</h3>
 			<p>
 				A critical UX challenge was the product library's scale — <strong>thousands of devices</strong>.
-				Traditional loading would cause unacceptable initial load times. I implemented a
-				<strong>batch-request lazy-loading strategy</strong> through the getDeviceList function,
+				I implemented a <strong>batch-request lazy-loading strategy</strong> through the getDeviceList function,
 				ensuring the app becomes interactive within seconds while the complete device library
 				loads seamlessly in the background.
 			</p>
 			<img alt="React component architecture diagram showing DeviceNode and GroupNode custom components, with data flow between the canvas, device library, and lazy-loading batch request system">
 
-			<!-- 4.2 AI-Driven Data Unification -->
 			<h2 class="box mb-0 mt-lg">Engineering 2. AI-Driven Product Data Unification</h2>
 			<h2 class="hightlight">Solving the Legacy Data Bottleneck with LLMs</h2>
 
 			<h3>The Problem</h3>
 			<p>
-				The project was initially blocked by a critical data problem: decades of legacy product
-				specifications existed only in <strong>unstructured, inconsistent HTML tables</strong>,
-				making them unusable by modern applications. This became a massive bottleneck.
+				Decades of legacy product specifications existed only in <strong>unstructured, inconsistent
+				HTML tables</strong>, making them unusable by modern applications.
 			</p>
 
 			<h3>The Solution</h3>
 			<p>
 				I developed a <strong>Node.js script</strong> to automate data cleansing and structuring.
-				The script fetches messy product specification tables from internal APIs and leverages
-				the <strong>OpenAI API (GPT-4o)</strong> to transform them into clean, unified JSON format.
+				The script leverages the <strong>OpenAI API (GPT-4o)</strong> to transform messy product
+				specification tables into clean, unified JSON format.
 			</p>
 
 			<h3>Precision Prompt Engineering</h3>
 			<p>
-				The solution's success hinged on meticulous prompt engineering. I designed detailed prompts
-				with strict rules to guide the AI in handling complex scenarios such as:
+				I designed detailed prompts with strict rules to handle complex scenarios:
 				parsing quantity expressions ("2 x HDMI"), accurately classifying port types,
-				and correctly identifying special devices like signal extenders — categorizing their
-				unique "Unit to Unit" interfaces as video inputs or outputs.
-				<br><br>
-				This not only solved the data problem but demonstrated the technical depth of leveraging
-				Large Language Models to solve real-world business challenges.
+				and correctly identifying special devices like signal extenders.
 			</p>
 			<img alt="Before-and-after comparison of product data: messy unstructured HTML tables on the left transformed into clean structured JSON format on the right, with the Node.js + GPT-4o pipeline illustrated in between">
 
-			<!-- 4.3 Complex Feature Implementation -->
 			<h2 class="box mb-0 mt-lg">Engineering 3. Elegant Solutions for Complex Features</h2>
 			<h2 class="hightlight">Implementation Highlights</h2>
 
 			<h3>Atomic BOM Download</h3>
 			<p>
-				To solve the "download BOM directly from template preview" requirement, I designed an
-				elegant flow: when users click download, the system creates a <strong>temporary project</strong>
-				in the backend, passes the BOM calculated from visible nodes, triggers Excel export,
-				then immediately deletes the temporary project.
-				<br><br>
-				This design provides the instant gratification of direct downloads while avoiding orphaned
-				or temporary projects in the user's workspace — maintaining a clean, purpose-driven UX.
+				When users click download, the system creates a <strong>temporary project</strong>
+				in the backend, calculates BOM, exports Excel, then immediately deletes the temporary project.
+				This provides instant gratification while avoiding orphaned projects in the workspace.
 			</p>
 
 			<h3>Batch Automation Processing</h3>
 			<p>
-				The handleBatchProcess function is a powerful internal tool that automatically generates
-				all permutations of a template's options and executes a series of automated actions
-				(e.g., standardizing line thickness, saving projects) on each combination.
-				<br><br>
-				This showcases architectural foresight, providing the internal team with tremendous
-				convenience for large-scale template management and maintenance.
+				The handleBatchProcess function automatically generates all permutations of a template's
+				options and executes a series of automated actions on each combination, providing
+				tremendous convenience for large-scale template management.
 			</p>
 			<img alt="Flow diagram of the Atomic BOM Download process: user clicks download, system creates temporary project, calculates BOM from visible nodes, exports Excel, then auto-deletes the temporary project">
 
 
-			<!-- ========================================
-				Section 5: Validation & Business Impact
-			======================================== -->
 			<div class="session" id="impact">Validation & Business Impact</div>
 			<h2>Data-Driven Value Measurement</h2>
 			<p>
-				A project's success depends not only on usability but on its substantive contribution
-				to business goals. We established a quantifiable direct link connecting user engagement
-				to core business outcomes such as lead generation and sales conversion — something
-				previously untrackable.
+				We established a quantifiable direct link connecting user engagement
+				to core business outcomes such as lead generation and sales conversion.
 			</p>
 
-			<!-- Key Metrics -->
 			<h3>Defining Success Metrics</h3>
 
 			<h4>Efficiency Improvement</h4>
 			<p>
-				Based on internal team testing, proposal preparation time was dramatically reduced
+				Proposal preparation time was dramatically reduced
 				from an average of <strong>3 days to 30 minutes</strong>.
 			</p>
 
 			<h4>Marketing & Sales Funnel</h4>
 			<p>
 				<strong>Acquisition:</strong> The tool itself became a powerful lead magnet, attracting
-				a significant number of new System Integrators to register, effectively expanding the
-				prospect list.
+				a significant number of new System Integrators to register.
 				<br><br>
 				<strong>Retention:</strong> We tracked high-value SI users' platform engagement and
 				return rates to measure product stickiness.
 				<br><br>
 				<strong>Conversion:</strong> The system converts draft diagrams created in the simulator
-				directly into Salesforce opportunities, seamlessly integrating with the sales process.
+				directly into Salesforce opportunities.
 			</p>
-			<img alt="Key metrics dashboard showing efficiency improvement (3 days to 30 minutes), and the marketing-sales funnel stages: Acquisition (lead magnet), Retention (engagement tracking), Conversion (Salesforce integration)">
+			<img alt="Key metrics dashboard showing efficiency improvement (3 days to 30 minutes), and the marketing-sales funnel stages: Acquisition, Retention, Conversion">
 
-			<!-- Data Feedback Loop -->
 			<h3>Establishing the Data Feedback Loop</h3>
 
 			<h4>Data Architecture</h4>
 			<p>
-				We used <strong>GA4</strong> on the frontend for precise user behavior tracking,
-				streamed data to <strong>BigQuery</strong> for storage and analysis, and ultimately
-				integrated with CRM sales data in <strong>PowerBI</strong> to form a complete business
-				insight dashboard.
+				Frontend <strong>GA4</strong> tracking → <strong>BigQuery</strong> storage & analysis →
+				<strong>PowerBI</strong> integration with CRM sales data.
 			</p>
-			<img alt="Data architecture pipeline diagram: GA4 frontend tracking flows into BigQuery for storage and analysis, then integrates with CRM sales data in PowerBI to form a complete business intelligence dashboard">
+			<img alt="Data architecture pipeline diagram: GA4 frontend tracking flows into BigQuery for storage and analysis, then integrates with CRM sales data in PowerBI">
 
 			<h4>Insights to Action</h4>
-			<p>
-				Through this data system, we gained invaluable insights that translated into concrete
-				business actions:
-			</p>
 
 			<div class="line_area">
 				<h6>Market Demand Insights</h6>
 				<p>
 					After analyzing massive diagram data, we discovered the most popular product
-					combinations in the market. This directly prompted the marketing department
-					to launch targeted <strong>"Product Bundle"</strong> sales campaigns.
+					combinations, directly prompting targeted <strong>"Product Bundle"</strong> sales campaigns.
 				</p>
 			</div>
 
 			<div class="line_area">
 				<h6>Product R&D Guidance</h6>
 				<p>
-					When we discovered users frequently resorting to third-party solutions to fill
-					functionality gaps for specific connection needs, we fed this data back to the R&D team.
-					This directly led to the development of <strong>several new products</strong>,
-					successfully converting market demand into new revenue drivers for the company.
+					We discovered users frequently resorting to third-party solutions to fill
+					functionality gaps, feeding this data back to R&D to develop <strong>several new products</strong>.
 				</p>
 			</div>
-			<img alt="Two case studies of data-driven insights: Product Bundle campaign generated from popular product combination analysis, and new product development initiatives triggered by third-party usage gap data">
+			<img alt="Two case studies of data-driven insights: Product Bundle campaign and new product development initiatives triggered by usage gap data">
 
 
-			<!-- ========================================
-				Section 6: Conclusion
-			======================================== -->
 			<div class="session">Conclusion</div>
 			<h2>More Than a Tool — A Catalyst for Business Transformation</h2>
 			<p>
 				ATEN Solution Builder is not merely a software tool — it is a core vehicle driving
-				business model transformation. This project fully demonstrates how a UX Engineer can
+				business model transformation. This project demonstrates how a UX Engineer can
 				integrate <strong>business strategy thinking</strong>, <strong>robust frontend development</strong>,
 				and <strong>data-driven insights</strong> to transform a complex, traditional hardware
 				sales process into a smooth, efficient digital experience.
 				<br><br>
 				Ultimately, Solution Builder established a new paradigm for how ATEN interacts with
 				its customers — proving that the deep fusion of design and engineering can not only
-				solve user pain points but fundamentally reshape a company's market strategy, creating
-				lasting business impact.
+				solve user pain points but fundamentally reshape a company's market strategy.
 			</p>
 
 		</div>
 	</div>
 
-	<footer>
-	</footer>
-
-	<script src="js/app.js"></script>
+	<footer></footer>
+	<script src="../js/app.js"></script>
 </body>
 
 </html>
