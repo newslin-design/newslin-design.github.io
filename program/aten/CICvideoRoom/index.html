@@ -44,6 +44,30 @@
             border-radius: 50px;
         }
 
+        #loading-status {
+            margin-top: 16px;
+            font-size: 0.85rem;
+            color: #999;
+            letter-spacing: 2px;
+        }
+
+        #progress-bar-wrap {
+            width: 200px;
+            height: 2px;
+            background: #ddd;
+            border-radius: 2px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+
+        #progress-bar {
+            height: 100%;
+            width: 0%;
+            background: #333;
+            border-radius: 2px;
+            transition: width 0.3s ease;
+        }
+
         #media-container {
             display: none;
         }
@@ -59,7 +83,11 @@
 
     <div id="overlay">
         <h1>WHITE GALLERY</h1>
-        <p>點擊進入場景 / CLICK TO START</p>
+        <p id="overlay-btn">載入中，請稍候… / LOADING…</p>
+        <div id="loading-status">0 / 0</div>
+        <div id="progress-bar-wrap">
+            <div id="progress-bar"></div>
+        </div>
     </div>
 
     <!-- 媒體容器 - 在這裡自由放置圖片或影片 -->
@@ -67,24 +95,30 @@
 
         <!-- 前牆 -->
         <div data-wall="front">
-            <img src="images/c1-13.png" crossOrigin="anonymous">
+            <video loop crossOrigin="anonymous" playsinline muted>
+                <source src="001_home.mp4" type="video/mp4">
+            </video>
         </div>
 
         <!-- 左牆 -->
         <div data-wall="left">
-            <img src="images/c2-11.png" crossOrigin="anonymous">
+            <video loop crossOrigin="anonymous" playsinline muted>
+                <source src="002.mp4" type="video/mp4">
+            </video>
         </div>
 
         <!-- 後牆 -->
         <div data-wall="back">
             <video loop crossOrigin="anonymous" playsinline muted>
-                <source src="w001.mp4" type="video/mp4">
+                <source src="003.mp4" type="video/mp4">
             </video>
         </div>
 
         <!-- 右牆 -->
         <div data-wall="right">
-            <img src="images/c4-11.png" crossOrigin="anonymous">
+            <video loop crossOrigin="anonymous" playsinline muted>
+                <source src="004.mp4" type="video/mp4">
+            </video>
         </div>
 
     </div>
@@ -142,27 +176,27 @@
         const mediaContainer = document.getElementById('media-container');
         const walls = mediaContainer.querySelectorAll('[data-wall]');
 
-        // 牆面位置配置（調整右牆往後牆靠近）
+        // 牆面位置配置（螢幕放大）
         const wallConfig = {
             front: {
                 position: new THREE.Vector3(0, 1.8, -(roomDepth / 2) + 0.05),
                 rotation: 0,
-                width: 6  // 前牆螢幕較大
+                width: 9       // 前牆：從 6 → 9（幾乎填滿整面牆）
             },
             back: {
                 position: new THREE.Vector3(0, 1.8, (roomDepth / 2) - 0.05),
                 rotation: Math.PI,
-                width: 4
+                width: 7       // 後牆：從 4 → 7
             },
             left: {
                 position: new THREE.Vector3(-(roomWidth / 2) + 0.05, 1.8, 1),
                 rotation: Math.PI / 2,
-                width: 3  // 左牆螢幕正常大小
+                width: 5.5     // 左牆：從 3 → 5.5
             },
             right: {
-                position: new THREE.Vector3((roomWidth / 2) - 0.05, 1.8, 3),  // Z軸改為4，往後牆移動
+                position: new THREE.Vector3((roomWidth / 2) - 0.05, 1.8, 3),
                 rotation: -Math.PI / 2,
-                width: 4
+                width: 6.5     // 右牆：從 4 → 6.5
             }
         };
 
@@ -173,28 +207,22 @@
 
             let texture;
 
-            // 判斷是影片還是圖片
             if (mediaElement.tagName === 'VIDEO') {
                 texture = new THREE.VideoTexture(mediaElement);
             } else if (mediaElement.tagName === 'IMG') {
                 texture = new THREE.Texture(mediaElement);
                 texture.needsUpdate = true;
-
                 if (!mediaElement.complete) {
-                    mediaElement.onload = () => {
-                        texture.needsUpdate = true;
-                    };
+                    mediaElement.onload = () => { texture.needsUpdate = true; };
                 }
             }
 
             texture.colorSpace = THREE.SRGBColorSpace;
 
-            // 螢幕幾何
             const geometry = new THREE.PlaneGeometry(width, height);
             const material = new THREE.MeshBasicMaterial({ map: texture });
             const screen = new THREE.Mesh(geometry, material);
 
-            // 外框
             const frameGeo = new THREE.PlaneGeometry(width + 0.05, height + 0.05);
             const frameMat = new THREE.MeshBasicMaterial({ color: 0x111111 });
             const frame = new THREE.Mesh(frameGeo, frameMat);
@@ -214,15 +242,9 @@
         walls.forEach(wall => {
             const wallName = wall.getAttribute('data-wall');
             const mediaElement = wall.querySelector('video, img');
-
             if (mediaElement && wallConfig[wallName]) {
                 const config = wallConfig[wallName];
-                const element = createScreen(
-                    mediaElement,
-                    config.width,  // 使用各牆面自訂的寬度
-                    config.position,
-                    config.rotation
-                );
+                const element = createScreen(mediaElement, config.width, config.position, config.rotation);
                 allMediaElements.push(element);
             }
         });
@@ -235,18 +257,55 @@
         controls.target.set(0, 1.1, -1);
         controls.update();
 
-        // 9. 互動啟動
+        // 9. 等所有影片載入後才允許進入，並同步播放
         const overlay = document.getElementById('overlay');
+        const overlayBtn = document.getElementById('overlay-btn');
+        const loadingStatus = document.getElementById('loading-status');
+        const progressBar = document.getElementById('progress-bar');
+
+        const videoElements = allMediaElements.filter(el => el.tagName === 'VIDEO');
+        const total = videoElements.length;
+        let readyCount = 0;
+        let allReady = false;
+
+        function updateProgress() {
+            readyCount++;
+            loadingStatus.textContent = `${readyCount} / ${total}`;
+            progressBar.style.width = `${(readyCount / total) * 100}%`;
+
+            if (readyCount >= total) {
+                allReady = true;
+                overlayBtn.textContent = '點擊進入場景 / CLICK TO START';
+                overlay.style.cursor = 'pointer';
+            }
+        }
+
+        if (total === 0) {
+            // 沒有影片，直接開放進入
+            allReady = true;
+            overlayBtn.textContent = '點擊進入場景 / CLICK TO START';
+        } else {
+            loadingStatus.textContent = `0 / ${total}`;
+            // 預先 load 影片（靜音影片在大多數瀏覽器允許自動載入）
+            videoElements.forEach(video => {
+                video.load();
+                if (video.readyState >= 3) {
+                    // 已經夠 ready
+                    updateProgress();
+                } else {
+                    video.addEventListener('canplaythrough', updateProgress, { once: true });
+                }
+            });
+        }
+
         overlay.addEventListener('click', () => {
+            if (!allReady) return; // 尚未全部就緒，點擊無效
+
             overlay.style.opacity = '0';
             setTimeout(() => overlay.style.display = 'none', 500);
 
-            // 只播放影片元素
-            allMediaElements.forEach(element => {
-                if (element.tagName === 'VIDEO') {
-                    element.play();
-                }
-            });
+            // 所有影片同步播放
+            videoElements.forEach(video => video.play());
         });
 
         // 10. 渲染迴圈
