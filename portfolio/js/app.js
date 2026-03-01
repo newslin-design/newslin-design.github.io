@@ -734,6 +734,29 @@ try {
 }
 
 // ============================================
+// About 頁面：動態計算 ATEN 工作年資
+// ============================================
+try {
+	var atenDuration = document.querySelector('.aten-duration');
+	if (atenDuration) {
+		var startYear = 2018, startMonth = 10; // 2018年10月
+		var now = new Date();
+		var years = now.getFullYear() - startYear;
+		var months = now.getMonth() + 1 - startMonth;
+		if (months < 0) { years--; months += 12; }
+		if (lang === 'zh') {
+			atenDuration.textContent = years + ' 年 ' + months + ' 個月';
+		} else if (lang === 'ja') {
+			atenDuration.textContent = years + ' 年 ' + months + ' ヶ月';
+		} else {
+			atenDuration.textContent = years + ' years ' + months + ' months';
+		}
+	}
+} catch (error) {
+	console.log("ATEN duration calculation error:", error);
+}
+
+// ============================================
 // 首頁卡片渲染
 // ============================================
 function renderPortfolioCards() {
