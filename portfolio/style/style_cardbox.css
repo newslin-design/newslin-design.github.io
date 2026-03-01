@@ -25,12 +25,11 @@
 .workCards .workCard {
 	display: flex;
 	flex-wrap: wrap;
-	height: 320px;
+	min-height: 220px;
 	padding: 4px;
 	background-color: #ffffff;
 	border: 1px solid #e3e9eb;
 	border-radius: 6px;
-	overflow: hidden;
 }
 
 
@@ -48,7 +47,7 @@
 	work image 
 ----------------- */
 .workCards .work-image {
-	height: 70%;
+	height: 220px;
 	width: 100%;
 	background-color: rgb(165, 165, 165);
 	background-repeat: no-repeat;
@@ -120,11 +119,9 @@
 ----------------- */
 
 .workCards .textBox {
-	height: 30%;
 	width: 100%;
 	padding: 8px 12px;
 	background-color: #F2F7F8;
-
 }
 
 
@@ -148,6 +145,7 @@
 	margin: 0;
 	letter-spacing: -0.03em;
 }
+
 
 
 
@@ -176,6 +174,11 @@
 	background-color: #d5dddf;
 }
 
+
+.workCards .star-project .workCard {
+	height: 320px;
+	overflow: hidden;
+}
 
 .workCards .star-project .work-image {
 	background-color: #e9ecee;
