@@ -39,30 +39,26 @@
 		<div class="row mb-lg">
 			<div class="col-6 col-sm-12 pr-md">
 				<p>Side Project</p>
-				<h3>"If what we eat defines who we are, what animal would we be?"</h3>
+				<h3>"Can the way we eat reflect who we are?"</h3>
 				<p>
-					This project originated from a casual lunchtime conversation among colleagues,
-					yet became the perfect testing ground for validating
-					<strong>"AI-collaborative full-stack development."</strong>
-					Unlike traditional commercial projects burdened with heavy KPIs,
-					the original intent was pure and challenging: How can one person, without
-					engineers or illustrators, leverage Generative AI to create a
-					commercial-grade interactive experience?
+					It started from a casual chat during a colleague's birthday lunch — everyone's food
+					preferences were so different that we wanted to build a dining personality quiz to explore it.
+					It also seemed like a good chance to see whether one person could use Generative AI
+					to handle the entire process: planning, illustration, and frontend development.
 					<br><br>
-					This is not just a personality quiz — it's a <strong>cross-disciplinary
-					productivity experiment</strong>. As the initiator, I integrated product strategy,
-					Prompt Engineering, and frontend development to address common pain points in
-					online quizzes: inconsistent visual styles and loosely structured copy.
-					Through this Side Project, I aimed to prove that with AI empowerment,
-					designers can break through production boundaries and bring creative visions
-					to life with exceptional completeness.
+					Three things needed to be figured out along the way:
+					<br>• <strong>Logic design:</strong> Built a four-dimension scoring model inspired by MBTI, replacing random results with structured reasoning.
+					<br>• <strong>Visual consistency:</strong> Iterated on Midjourney prompts to keep all 16 character illustrations in a unified style.
+					<br>• <strong>Frontend implementation:</strong> Used a JSON-based weight system to manage questions and scoring, paired with HTML/JS for a responsive interactive page.
 				</p>
 
 				<h6 class="mb-xxs">My Role</h6>
-				<p>Solo Maker — Product Strategy, Prompt Engineer, Full-stack Co-development, Visual Director</p>
+				<p>Solo — Planning, Prompt Design, Frontend Development, Visual Direction</p>
 
 				<h6 class="mb-xxs">Project Type</h6>
-				<p>Interactive Web App · AI Generative Art · Experimental UIUX</p>
+				<p>Interactive Web · AI-generated Illustration · Side Project</p>
+
+				<a href="../foodan/" class="btn" target="_blank">Go to Quiz<span class="icon"> ↗</span></a>
 			</div>
 			<div class="col-6 col-sm-12">
 				<img class="w-100" alt="Food Animal Personality Quiz hero image showing a collection of pastel-style animal character cards in Sumikko Gurashi aesthetic with warm cream backgrounds">
@@ -74,7 +70,7 @@
 			<div class="project-nav">
 				<a href="#core-value" class="nav-item">
 					<span class="step">01</span>
-					<span class="label">Core Strategy</span>
+					<span class="label">Design Decisions</span>
 				</a>
 				<a href="#logic" class="nav-item">
 					<span class="step">02</span>
@@ -105,45 +101,54 @@
 			<!-- ========================================
 				Section 1: Core Value & Engagement Strategy
 			======================================== -->
-			<div class="session" id="core-value">Core Value & Engagement Strategy</div>
+			<div class="session" id="core-value">Design Decisions</div>
 
 			<p class="highlight">
-				<strong>AI Orchestration:</strong> Demonstrating how to chain Midjourney and LLMs together,
-				compressing a development cycle from weeks to days.<br><br>
-				<strong>Design System Consistency:</strong> Overcoming the inherent randomness of AI generation
-				to establish a highly consistent visual and copywriting system.
+				The core question for this project was: how to make a "dining personality quiz" feel
+				accurate enough that people want to share their results?
+				Here are the three main design decisions.
 			</p>
 
-			<h2>Key Engagement Strategies</h2>
+			<h2>Three Design Decisions</h2>
+
+			<h3>1. Represent Personalities as Animals</h3>
 			<p>
-				To strengthen the quiz's virality and memorability, I introduced three key mechanisms
-				into the product design:
+				Quiz results map to specific <strong>animal personas</strong>
+				(e.g., Strategist Elephant, Comfort Cat).
+				Animals are easier to remember than abstract adjectives, and easier to bring up in conversation.
 			</p>
 
-			<h3>1. Animal Metaphor</h3>
+			<h3>2. A Signature "Inner Monologue" for Each Character</h3>
 			<p>
-				Abstract personality traits were transformed into concrete <strong>"animal personas"</strong>
-				(e.g., Strategist Elephant, Slow-Warm Cat). Compared to cold adjectives, animal imagery is
-				far more <strong>memorable</strong> and entertaining, quickly establishing emotional connections
-				with users.
+				At the top of each result page is a short <strong>character quote</strong>
+				(e.g., Ritual Swan: <em>"Regarding the order of desserts, I have an Excel spreadsheet
+				that can explain it."</em>).
+				The goal is to give people an immediate "that's so me" reaction, which also makes it easy to screenshot and share.
 			</p>
 
-			<h3>2. "The One-liner" — Instant Gut Feel</h3>
+			<h3>3. Dining Buddy / Dining Disaster Pairing</h3>
 			<p>
-				Each result page features a signature <strong>"inner monologue"</strong> at the top
-				(e.g., Logic Swan: <em>"Regarding the order of desserts, I have an Excel spreadsheet
-				that can explain it."</em>). This lets users intuitively grasp the personality essence
-				within 3 seconds, dramatically increasing reading enjoyment and the desire to screenshot
-				and share.
+				Each result shows a <strong>"best dining buddy"</strong> and a <strong>"worst match"</strong>,
+				extending the experience from "viewing my own result" to "tagging friends" — adding a layer of social interaction.
 			</p>
-
-			<h3>3. Social Compatibility Mechanic</h3>
-			<p>
-				I specifically designed <strong>"Best Dining Buddy"</strong> and <strong>"Dining
-				Disaster"</strong> animal pairings. This not only increases post-quiz conversation topics
-				but creates a powerful <strong>social interaction</strong> motive — transforming a one-way
-				quiz into a two-way social tagging and sharing experience.
-			</p>
+			<div class="row mt-md mb-md" style="width:100%">
+				<div class="col-3 col-sm-6 plr-sm mb-md" style="text-align:center">
+					<img alt="no" src="../foodan/images/TSDM.png" style="width:100%;max-width:180px;border-radius:12px">
+					<p><strong>Strategist Elephant</strong><br><small>職人味覺社交家</small></p>
+				</div>
+				<div class="col-3 col-sm-6 plr-sm mb-md" style="text-align:center">
+					<img alt="no" src="../foodan/images/TSDF.png" style="width:100%;max-width:180px;border-radius:12px">
+					<p><strong>Party Pup</strong><br><small>爽感系同樂吃貨</small></p>
+				</div>
+				<div class="col-3 col-sm-6 plr-sm mb-md" style="text-align:center">
+					<img alt="no" src="../foodan/images/ISEM.png" style="width:100%;max-width:180px;border-radius:12px">
+					<p><strong>Ritual Swan</strong><br><small>嚴謹型創食向導</small></p>
+				</div>
+				<div class="col-3 col-sm-6 plr-sm mb-md" style="text-align:center">
+					<img alt="no" src="../foodan/images/TLDF.png" style="width:100%;max-width:180px;border-radius:12px">
+					<p><strong>Comfort Cat</strong><br><small>宅系味覺療癒師</small></p>
+				</div>
+			</div>
 			<img alt="Three key engagement mechanics illustrated: Animal Metaphor showing character-to-trait mapping, The One-liner with example inner monologues, and Social Compatibility pairing with Best Dining Buddy and Dining Disaster labels">
 
 
@@ -153,10 +158,9 @@
 			<div class="session" id="logic">Research & Logic Framework</div>
 			<h2>Translating "Taste" into "Personality"</h2>
 			<p>
-				To prevent the quiz from devolving into random guessing, I introduced an
+				To avoid the quiz feeling like random guessing, I introduced an
 				<strong>MBTI-inspired framework</strong>, translating vague dietary preferences into
-				a quantifiable <strong>"four-dimension model."</strong> This not only increased test
-				accuracy (User Validation) but also made results more discussion-worthy.
+				a quantifiable <strong>"four-dimension model."</strong>
 			</p>
 
 			<h3>The Four Dimensions of Dining Personality</h3>
@@ -185,13 +189,20 @@
 			</div>
 
 			<h3>Question Design Example</h3>
-			<p>
-				<em>Scenario: A dessert shop just launched new items — how do you choose?</em><br><br>
-				<strong>A.</strong> Classic strawberry cake (tried it many times, definitely delicious!)
-				<br>→ Deep-rooted (Conservative & Committed)<br><br>
-				<strong>B.</strong> Matcha chili cheese puff (I just have to know what this tastes like!)
-				<br>→ Experimental (Adventurous & Exploring)
-			</p>
+			<div class="row mt-md mb-md" style="width:100%;align-items:center">
+				<div class="col-4 col-sm-12 plr-sm mb-md">
+					<img alt="no" src="../foodan/images/0010.png" style="width:100%;border-radius:12px">
+				</div>
+				<div class="col-8 col-sm-12 plr-sm mb-md">
+					<p>
+						<em>Scenario: A popular dessert shop has two new items — which do you pick?</em><br><br>
+						<strong>A.</strong> Chocolate donut — tried it many times, definitely delicious! 🍩
+						<br>→ Deep-rooted [0, 0, +1, 0]<br><br>
+						<strong>B.</strong> Chili cheese puff — never tried this flavor! Let me taste it 🌶️
+						<br>→ Experimental [0, 0, -1, 0]
+					</p>
+				</div>
+			</div>
 			<img alt="Four-dimension model diagram mapping dining psychology axes: Taste vs. Idea (horizontal), Social vs. Lonely (vertical), Deep-rooted vs. Experimental, and Methodical vs. Free-flowing, with example question scenarios">
 
 
@@ -199,45 +210,46 @@
 				Section 3: Content Engineering
 			======================================== -->
 			<div class="session" id="content">Content Engineering</div>
-			<h2>Giving Data a Soul with Prompt Chains</h2>
+			<h2>From Logic Labels to Character Copy</h2>
 			<p>
-				With the skeleton (logic) in place, it needed flesh (copywriting). The challenge was making
-				16 personality types not just "codes" but fully fleshed-out characters. I leveraged
-				<strong>LLMs</strong> playing the role of a <strong>"humorous food critic,"</strong>
-				using <strong>Prompt Chaining</strong> techniques to transform cold logic labels into
-				vivid character profiles.
-			</p>
-
-			<h3>Character Design & AI Collaboration</h3>
-			<p>
-				At this stage, I strictly followed a <strong>Human-in-the-loop</strong> model.
-				AI handled creative divergence; I handled convergence and refinement — ensuring
-				humor never became clich&eacute;.
+				The 16 personality codes are just dry classification labels on their own — they needed
+				to become character descriptions with actual personality.
+				The approach was to use <strong>Prompt Chaining</strong>, having the LLM write drafts
+				in the voice of a "food critic," then I adjusted the tone and removed inconsistencies
+				one by one to make sure all characters read coherently.
 			</p>
 
 			<div class="row mt-md mb-lg" style="width:100%">
 				<div class="col-4 col-sm-12 plr-sm mb-md">
+					<img alt="no" src="../foodan/images/TSDM.png" style="width:100%;max-width:140px;border-radius:12px;margin-bottom:8px">
 					<h4>Strategist Elephant</h4>
 					<h6 class="gray">Prompt Strategy</h6>
 					<p>Combined "leadership presence" with "obsession over details."</p>
 					<h6 class="gray">Signature Line</h6>
 					<p><em>"I'm not being picky — I just think this dish should logically be served
 						3rd in sequence..."</em></p>
+					<h6 class="gray">Recommended Foods</h6>
+					<p>Dim sum platter, Wagyu set, Banquet combos</p>
 				</div>
 				<div class="col-4 col-sm-12 plr-sm mb-md">
+					<img alt="no" src="../foodan/images/TSDF.png" style="width:100%;max-width:140px;border-radius:12px;margin-bottom:8px">
 					<h4>Party Pup</h4>
 					<h6 class="gray">Prompt Strategy</h6>
 					<p>Emphasized "high energy" and "sharing drive."</p>
 					<h6 class="gray">Signature Line</h6>
 					<p><em>"If no one's fighting over meat at hot pot, then what's even the point?"</em></p>
+					<h6 class="gray">Recommended Foods</h6>
+					<p>Spicy hot pot, BBQ platter, Night market feast</p>
 				</div>
 				<div class="col-4 col-sm-12 plr-sm mb-md">
-					<h4>Logic Swan</h4>
+					<img alt="no" src="../foodan/images/ISEM.png" style="width:100%;max-width:140px;border-radius:12px;margin-bottom:8px">
+					<h4>Ritual Swan</h4>
 					<h6 class="gray">Prompt Strategy</h6>
 					<p>Combined "elegance" with "data obsession."</p>
 					<h6 class="gray">Signature Line</h6>
-					<p><em>"Regarding the order of main course and dessert, I have an Excel
-						spreadsheet that can explain it."</em></p>
+					<p><em>"I've been tracking this Michelin restaurant for three years, and today is finally my reservation..."</em></p>
+					<h6 class="gray">Recommended Foods</h6>
+					<p>French cuisine, Michelin sets, Pour-over coffee</p>
 				</div>
 			</div>
 			<img alt="Prompt Chaining workflow diagram: LLM role assignment as humorous food critic, generating 16 personality drafts, followed by Human-in-the-loop refinement showing before-and-after copy examples for Strategist Elephant, Party Pup, and Logic Swan">
@@ -247,13 +259,12 @@
 				Section 4: Visual Consistency System
 			======================================== -->
 			<div class="session" id="visual">Visual Consistency System</div>
-			<h2>Taming Midjourney's Randomness</h2>
+			<h2>Making 16 Images Look Like One Set</h2>
 			<p>
-				Visual consistency is key to building trust. The biggest challenge with AI-generated
-				images is <strong>"style drift."</strong> To make all 16 result cards look like they
-				belong to the same illustrated guide, I conducted extensive <strong>Prompt stress tests</strong>
-				and established a visual specification anchored on the
-				<strong>"Sumikko Gurashi style."</strong>
+				The most common issue with Midjourney is that each generated image comes out in a slightly
+				different style. To make all 16 result cards look like they belong to the same illustrated guide,
+				I iterated on prompt parameters and eventually settled on a
+				<strong>"Sumikko Gurashi style"</strong> anchor to bring them together.
 			</p>
 
 			<h3>Prompt Engineering Key Parameters</h3>
@@ -267,28 +278,94 @@
 
 			<h3>Character-Specific Fine-tuning</h3>
 
-			<div class="line_area">
-				<h6>Comfort Cat (Slow-Warm Cat)</h6>
-				<p>
-					To create the ultimate cozy feeling, I blended <strong>pastel soft koala</strong>
-					roundness traits into the Prompt, adding <strong>"curled up in a kotatsu blanket"</strong>
-					to reinforce the "homebody" attribute.
-				</p>
+			<div class="row mt-md mb-md" style="width:100%">
+				<div class="col-6 col-sm-12 plr-sm mb-md">
+					<img alt="no" src="../foodan/images/TLDF.png" style="width:100%;max-width:200px;border-radius:12px;margin-bottom:8px">
+					<h6>Comfort Cat (Slow-Warm Cat)</h6>
+					<p>
+						Blended <strong>pastel soft koala</strong> roundness traits,
+						adding <strong>"curled up in a kotatsu blanket"</strong>
+						to reinforce the "homebody" attribute.
+					</p>
+				</div>
+				<div class="col-6 col-sm-12 plr-sm mb-md">
+					<img alt="no" src="../foodan/images/TLEM.png" style="width:100%;max-width:200px;border-radius:12px;margin-bottom:8px">
+					<h6>Hedgehog Soloist</h6>
+					<p>
+						Added <strong>"clean lab-like setting"</strong> and
+						<strong>"reading nutrition label"</strong> — making visual details
+						echo the character profile.
+					</p>
+				</div>
 			</div>
 
-			<div class="line_area">
-				<h6>Hedgehog Soloist</h6>
-				<p>
-					To embody the "researcher" trait, I added <strong>"clean lab-like setting"</strong>
-					and <strong>"reading nutrition label"</strong> — making the visual details echo
-					the character profile.
-				</p>
+			<h3>All 16 Characters</h3>
+			<div class="row mt-md mb-md" style="width:100%">
+				<div class="col-3 col-sm-4 plr-xs mb-sm" style="text-align:center">
+					<img alt="no" src="../foodan/images/TSDM.png" style="width:100%;border-radius:8px">
+					<small>Strategist Elephant</small>
+				</div>
+				<div class="col-3 col-sm-4 plr-xs mb-sm" style="text-align:center">
+					<img alt="no" src="../foodan/images/TSDF.png" style="width:100%;border-radius:8px">
+					<small>Party Pup</small>
+				</div>
+				<div class="col-3 col-sm-4 plr-xs mb-sm" style="text-align:center">
+					<img alt="no" src="../foodan/images/TSEM.png" style="width:100%;border-radius:8px">
+					<small>Logic Owl</small>
+				</div>
+				<div class="col-3 col-sm-4 plr-xs mb-sm" style="text-align:center">
+					<img alt="no" src="../foodan/images/TSEF.png" style="width:100%;border-radius:8px">
+					<small>Adventurous Otter</small>
+				</div>
+				<div class="col-3 col-sm-4 plr-xs mb-sm" style="text-align:center">
+					<img alt="no" src="../foodan/images/TLDM.png" style="width:100%;border-radius:8px">
+					<small>Steady Tortoise</small>
+				</div>
+				<div class="col-3 col-sm-4 plr-xs mb-sm" style="text-align:center">
+					<img alt="no" src="../foodan/images/TLDF.png" style="width:100%;border-radius:8px">
+					<small>Comfort Cat</small>
+				</div>
+				<div class="col-3 col-sm-4 plr-xs mb-sm" style="text-align:center">
+					<img alt="no" src="../foodan/images/TLEM.png" style="width:100%;border-radius:8px">
+					<small>Solo Hedgehog</small>
+				</div>
+				<div class="col-3 col-sm-4 plr-xs mb-sm" style="text-align:center">
+					<img alt="no" src="../foodan/images/TLEF.png" style="width:100%;border-radius:8px">
+					<small>Free Fox</small>
+				</div>
+				<div class="col-3 col-sm-4 plr-xs mb-sm" style="text-align:center">
+					<img alt="no" src="../foodan/images/ISDM.png" style="width:100%;border-radius:8px">
+					<small>Cultural Dragon</small>
+				</div>
+				<div class="col-3 col-sm-4 plr-xs mb-sm" style="text-align:center">
+					<img alt="no" src="../foodan/images/ISDF.png" style="width:100%;border-radius:8px">
+					<small>Comfort Dove</small>
+				</div>
+				<div class="col-3 col-sm-4 plr-xs mb-sm" style="text-align:center">
+					<img alt="no" src="../foodan/images/ISEM.png" style="width:100%;border-radius:8px">
+					<small>Ritual Swan</small>
+				</div>
+				<div class="col-3 col-sm-4 plr-xs mb-sm" style="text-align:center">
+					<img alt="no" src="../foodan/images/ISEF.png" style="width:100%;border-radius:8px">
+					<small>Experience Butterfly</small>
+				</div>
+				<div class="col-3 col-sm-4 plr-xs mb-sm" style="text-align:center">
+					<img alt="no" src="../foodan/images/ILDM.png" style="width:100%;border-radius:8px">
+					<small>Silent Owl</small>
+				</div>
+				<div class="col-3 col-sm-4 plr-xs mb-sm" style="text-align:center">
+					<img alt="no" src="../foodan/images/ILDF.png" style="width:100%;border-radius:8px">
+					<small>Memory Koala</small>
+				</div>
+				<div class="col-3 col-sm-4 plr-xs mb-sm" style="text-align:center">
+					<img alt="no" src="../foodan/images/ILEM.png" style="width:100%;border-radius:8px">
+					<small>Engineer Beaver</small>
+				</div>
+				<div class="col-3 col-sm-4 plr-xs mb-sm" style="text-align:center">
+					<img alt="no" src="../foodan/images/ILEF.png" style="width:100%;border-radius:8px">
+					<small>Fantasy Unicorn</small>
+				</div>
 			</div>
-
-			<p>
-				This visual system successfully reduced users' cognitive load. The unified warm-tone
-				pastel style gave this Side Project the polished brand quality of a mature product.
-			</p>
 			<img alt="Before-and-after fine-tuning examples: Comfort Cat with added kotatsu blanket and koala roundness traits, Hedgehog Soloist with lab-like setting and nutrition label reading pose, showing Prompt iteration process">
 
 
@@ -296,11 +373,10 @@
 				Section 5: Technical Execution
 			======================================== -->
 			<div class="session" id="technical">Technical Execution</div>
-			<h2>Pair Programming with AI</h2>
+			<h2>Frontend Development & AI Collaboration</h2>
 			<p>
-				During the development phase, I played the role of <strong>"architect,"</strong>
-				guiding AI (Copilot/LLM) to write core logic. This demonstrates how designers who
-				understand programming logic can maximize AI output efficiency.
+				I defined the architecture and logic, then used AI (Copilot/LLM) to help write the
+				implementation code.
 			</p>
 
 			<h3>Data Structure Design (JSON Schema)</h3>
@@ -323,14 +399,14 @@
 			<div class="line_area">
 				<h6>Social Matching Algorithm</h6>
 				<p>
-					I wrote logic to determine <strong>compatible (Dining Buddy)</strong> and
+					Logic to determine <strong>compatible (Dining Buddy)</strong> and
 					<strong>incompatible (Dining Disaster)</strong> combinations. For example,
-					the logic-driven "Logic Swan" and the intuition-driven "Party Pup" are
-					algorithmically exclusive — adding social conversation value to the quiz.
+					the logic-driven "Ritual Swan" and the intuition-driven "Party Pup" are
+					set as incompatible.
 				</p>
 			</div>
 
-			<h3>AI-Collaborative Workflow</h3>
+			<h3>Overall Workflow</h3>
 			<img alt="Three-phase AI collaboration flowchart: Phase 1 Logic Architecture (Human defines MBTI model), Phase 2 Parallel Production (Content track with LLM + Visual track with Midjourney running simultaneously), Phase 3 Full-stack Integration (Human architect + AI Copilot pair programming)">
 
 			<div class="row mt-md mb-lg" style="width:100%">
@@ -371,37 +447,40 @@
 				Section 6: Reflection
 			======================================== -->
 			<div class="session" id="reflection">Reflection</div>
-			<h2>A Paradigm Shift in the Designer's Role</h2>
+			<h2>Takeaways</h2>
 			<p>
-				Although "Food Animal Personality Quiz" is an entertainment-oriented Side Project,
-				it represents a significant milestone in my career. It validated that in the AI era,
-				the designer's battlefield has shifted from simply <strong>"producing screens"</strong>
-				to <strong>"defining problems"</strong> and <strong>"architecting systems."</strong>
+				This project gave me a more concrete sense of how the focus of a designer's work
+				shifts when collaborating with AI.
 			</p>
 
 			<div class="line_area">
-				<h6>From Creator to Curator</h6>
+				<h6>Output Gets Faster, Judgment Gets More Important</h6>
 				<p>
-					AI can generate infinite copy and images, but only humans can decide what's
-					<strong>"genuinely funny"</strong> and what's <strong>"stylistically consistent."</strong>
-					Aesthetic judgment and insight became the most important filters.
+					AI can generate large amounts of copy and images quickly, but deciding
+					"which ones work and which don't" still falls on the human side.
+					Filtering and refining took a significant portion of the time.
 				</p>
 			</div>
 
 			<div class="line_area">
-				<h6>The Power of Rapid Prototyping</h6>
+				<h6>The Development Cycle Did Get Shorter</h6>
 				<p>
-					What previously took weeks of planning and design was compressed to days through
-					AI collaboration. This freed up more time to focus on <strong>interaction experience</strong>
-					and <strong>creative detail refinement</strong>, rather than being consumed by
-					repetitive labor.
+					From planning to launch took roughly a few days. The time saved
+					went into adjusting interaction details and testing the experience.
 				</p>
 			</div>
 
 			<p>
-				This project isn't just a quiz — it's a <strong>manifesto for the future of work</strong>.
-				When we master the rhythm of dancing with AI, individual creativity knows no bounds.
+				Overall, this project was a fairly complete run of AI-assisted work — from logic,
+				copywriting, and visuals to frontend. Going through the entire process solo also
+				made it clearer which parts AI can help with and which still need to be done by hand.
 			</p>
+
+			<div style="text-align:center;margin-top:32px">
+				<a href="../foodan/" class="btn" target="_blank" style="font-size:1.1em">
+					Go to Quiz<span class="icon"> ↗</span>
+				</a>
+			</div>
 
 		</div>
 	</div>

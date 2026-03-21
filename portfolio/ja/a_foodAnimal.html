@@ -36,27 +36,26 @@
 		<div class="row mb-lg">
 			<div class="col-6 col-sm-12 pr-md">
 				<p>Side Project</p>
-				<h3>"If what we eat defines who we are, what animal would we be?"</h3>
+				<h3>「食べ方で、その人の性格がわかるのでは？」</h3>
 				<p>
-					This project originated from a casual lunchtime conversation among colleagues,
-					yet became the perfect testing ground for validating
-					<strong>"AI-collaborative full-stack development."</strong>
-					Unlike traditional commercial projects burdened with heavy KPIs,
-					the original intent was pure and challenging: How can one person, without
-					engineers or illustrators, leverage Generative AI to create a
-					commercial-grade interactive experience?
+					同僚の誕生日ランチでの雑談がきっかけでした。食の好みが人によってかなり違うことに気づき、
+					「食の性格診断」を作ってみようと思い立ちました。
+					同時に、Generative AI を使えば企画からイラスト、フロントエンド開発まで
+					一人で完結できるのか試してみたかったのもあります。
 					<br><br>
-					This is not just a personality quiz — it's a <strong>cross-disciplinary
-					productivity experiment</strong>. As the initiator, I integrated product strategy,
-					Prompt Engineering, and frontend development to address common pain points in
-					online quizzes: inconsistent visual styles and loosely structured copy.
+					制作で取り組んだのは主に3つです：
+					<br>• <strong>ロジック設計：</strong>MBTI を参考に「食の四象限」スコアリングモデルを構築し、ランダムではない根拠ある結果を出せるようにしました。
+					<br>• <strong>ビジュアルの統一：</strong>Midjourney の Prompt を繰り返しテストし、16枚のキャラクターイラストを同じスタイルに揃えました。
+					<br>• <strong>フロントエンド実装：</strong>JSON ベースのウェイトシステムで設問とスコアリングを管理し、HTML/JS でレスポンシブなインタラクティブページを構築しました。
 				</p>
 
-				<h6 class="mb-xxs">My Role</h6>
-				<p>Solo Maker — Product Strategy, Prompt Engineer, Full-stack Co-development, Visual Director</p>
+				<h6 class="mb-xxs">役割</h6>
+				<p>個人制作——企画、Prompt 設計、フロントエンド開発、ビジュアルディレクション</p>
 
-				<h6 class="mb-xxs">Project Type</h6>
-				<p>Interactive Web App · AI Generative Art · Experimental UIUX</p>
+				<h6 class="mb-xxs">プロジェクト種別</h6>
+				<p>インタラクティブ Web · AI 生成イラスト · Side Project</p>
+
+				<a href="../../foodan/" class="btn" target="_blank">診断ページへ<span class="icon"> ↗</span></a>
 			</div>
 			<div class="col-6 col-sm-12">
 				<img class="w-100" alt="Food Animal Personality Quiz hero image showing a collection of pastel-style animal character cards in Sumikko Gurashi aesthetic with warm cream backgrounds">
@@ -68,288 +67,384 @@
 			<div class="project-nav">
 				<a href="#core-value" class="nav-item">
 					<span class="step">01</span>
-					<span class="label">Core Strategy</span>
+					<span class="label">設計判断</span>
 				</a>
 				<a href="#logic" class="nav-item">
 					<span class="step">02</span>
-					<span class="label">Logic Framework</span>
+					<span class="label">ロジック設計</span>
 				</a>
 				<a href="#content" class="nav-item">
 					<span class="step">03</span>
-					<span class="label">Content Engineering</span>
+					<span class="label">コンテンツ設計</span>
 				</a>
 				<a href="#visual" class="nav-item">
 					<span class="step">04</span>
-					<span class="label">Visual System</span>
+					<span class="label">ビジュアル</span>
 				</a>
 				<a href="#technical" class="nav-item">
 					<span class="step">05</span>
-					<span class="label">Technical</span>
+					<span class="label">実装</span>
 				</a>
 				<a href="#reflection" class="nav-item">
 					<span class="step">06</span>
-					<span class="label">Reflection</span>
+					<span class="label">振り返り</span>
 				</a>
 			</div>
 		</div>
 
 		<div class="article">
 
-			<div class="session" id="core-value">Core Value & Engagement Strategy</div>
+			<div class="session" id="core-value">インタラクション設計の判断</div>
 
 			<p class="highlight">
-				<strong>AI Orchestration:</strong> Demonstrating how to chain Midjourney and LLMs together,
-				compressing a development cycle from weeks to days.<br><br>
-				<strong>Design System Consistency:</strong> Overcoming the inherent randomness of AI generation
-				to establish a highly consistent visual and copywriting system.
+				このプロジェクトの核心的な問い：「食の性格診断」の結果を、
+				当たっていると感じてもらい、シェアしたくなるようにするにはどうすればいいか？
+				以下の3つが主な設計判断です。
 			</p>
 
-			<h2>Key Engagement Strategies</h2>
+			<h2>3つの設計判断</h2>
 
-			<h3>1. Animal Metaphor</h3>
+			<h3>1. 性格を動物で表現する</h3>
 			<p>
-				Abstract personality traits were transformed into concrete <strong>"animal personas"</strong>
-				(e.g., Strategist Elephant, Slow-Warm Cat). Compared to cold adjectives, animal imagery is
-				far more <strong>memorable</strong> and entertaining, quickly establishing emotional connections
-				with users.
+				診断結果を具体的な<strong>動物キャラクター</strong>（例：格局象、慢熟貓）に対応させました。
+				抽象的な形容詞より動物のほうが覚えやすく、会話のきっかけにもなりやすいです。
 			</p>
 
-			<h3>2. "The One-liner" — Instant Gut Feel</h3>
+			<h3>2. キャラクターごとの「心の声」</h3>
 			<p>
-				Each result page features a signature <strong>"inner monologue"</strong> at the top
-				(e.g., Logic Swan: <em>"Regarding the order of desserts, I have an Excel spreadsheet
-				that can explain it."</em>). This lets users intuitively grasp the personality essence
-				within 3 seconds, dramatically increasing the desire to screenshot and share.
+				結果ページの冒頭に、キャラクターの<strong>代表的なセリフ</strong>を配置しました
+				（例：儀式天鵝——<em>「デザートの順番については、Excel で説明できます」</em>）。
+				「まさに自分だ」と直感的に感じてもらい、スクリーンショットでのシェアにもつなげる狙いです。
 			</p>
 
-			<h3>3. Social Compatibility Mechanic</h3>
+			<h3>3. ご飯友達 / ご飯災難マッチング</h3>
 			<p>
-				I specifically designed <strong>"Best Dining Buddy"</strong> and <strong>"Dining
-				Disaster"</strong> animal pairings. This creates a powerful <strong>social interaction</strong>
-				motive — transforming a one-way quiz into a two-way social tagging and sharing experience.
+				各結果に<strong>「一番合うご飯友達」</strong>と<strong>「一番合わない相手」</strong>を表示し、
+				「自分の結果を見る」から「友達をタグ付けする」へと体験を広げ、ソーシャルな要素を加えました。
 			</p>
+			<div class="row mt-md mb-md" style="width:100%">
+				<div class="col-3 col-sm-6 plr-sm mb-md" style="text-align:center">
+					<img alt="no" src="../../foodan/images/TSDM.png" style="width:100%;max-width:180px;border-radius:12px">
+					<p><strong>Strategist Elephant</strong><br><small>格局象</small></p>
+				</div>
+				<div class="col-3 col-sm-6 plr-sm mb-md" style="text-align:center">
+					<img alt="no" src="../../foodan/images/TSDF.png" style="width:100%;max-width:180px;border-radius:12px">
+					<p><strong>Party Pup</strong><br><small>熱情狗</small></p>
+				</div>
+				<div class="col-3 col-sm-6 plr-sm mb-md" style="text-align:center">
+					<img alt="no" src="../../foodan/images/ISEM.png" style="width:100%;max-width:180px;border-radius:12px">
+					<p><strong>Ritual Swan</strong><br><small>儀式天鵝</small></p>
+				</div>
+				<div class="col-3 col-sm-6 plr-sm mb-md" style="text-align:center">
+					<img alt="no" src="../../foodan/images/TLDF.png" style="width:100%;max-width:180px;border-radius:12px">
+					<p><strong>Comfort Cat</strong><br><small>慢熟貓</small></p>
+				</div>
+			</div>
 			<img alt="Three key engagement mechanics illustrated: Animal Metaphor, The One-liner with example inner monologues, and Social Compatibility pairing">
 
 
-			<div class="session" id="logic">Research & Logic Framework</div>
-			<h2>Translating "Taste" into "Personality"</h2>
+			<div class="session" id="logic">ロジック設計</div>
+			<h2>「味の好み」を「性格」に変換する</h2>
 			<p>
-				To prevent the quiz from devolving into random guessing, I introduced an
-				<strong>MBTI-inspired framework</strong>, translating vague dietary preferences into
-				a quantifiable <strong>"four-dimension model."</strong>
+				診断が「ランダムな当てずっぽう」にならないよう、
+				<strong>MBTI を参考にしたフレームワーク</strong>を導入し、
+				あいまいな食の好みを定量化できる<strong>「四象限モデル」</strong>に落とし込みました。
 			</p>
 
-			<h3>The Four Dimensions of Dining Personality</h3>
+			<h3>食の性格 四つの軸</h3>
 
 			<div class="row mt-md mb-md" style="width:100%">
 				<div class="col-6 col-sm-12 plr-sm mb-md">
-					<h4>Taste vs. Idea</h4>
-					<p>Do you eat for <strong>physical deliciousness</strong> or
-						<strong>story and atmosphere</strong>?</p>
+					<h4>味覚 vs. 概念</h4>
+					<p><strong>物理的なおいしさ</strong>で食べるか、
+						<strong>ストーリーや雰囲気</strong>で食べるか？</p>
 				</div>
 				<div class="col-6 col-sm-12 plr-sm mb-md">
-					<h4>Social vs. Lonely</h4>
-					<p>Is dining about <strong>connecting with others</strong> or
-						<strong>recharging yourself</strong>?</p>
+					<h4>社交 vs. 一人</h4>
+					<p>食事は<strong>人とつながるため</strong>か、
+						<strong>自分を回復させるため</strong>か？</p>
 				</div>
 				<div class="col-6 col-sm-12 plr-sm mb-md">
-					<h4>Deep-rooted vs. Experimental</h4>
-					<p>Faced with "Cilantro Century Egg Pizza" — do you defend Italian dignity,
-						or get excited to try it?</p>
+					<h4>保守 vs. 冒険</h4>
+					<p>「パクチーピータンピザ」を前にして、イタリアの尊厳を守るか、
+						ワクワクして試してみるか？</p>
 				</div>
 				<div class="col-6 col-sm-12 plr-sm mb-md">
-					<h4>Methodical vs. Free-flowing</h4>
-					<p>When ordering, do you calculate <strong>nutritional ratios</strong>,
-						or go with the <strong>moment's mood</strong>?</p>
+					<h4>計画 vs. 直感</h4>
+					<p>注文時に<strong>栄養バランス</strong>を計算するか、
+						<strong>その時の気分</strong>で決めるか？</p>
 				</div>
 			</div>
 
-			<h3>Question Design Example</h3>
-			<p>
-				<em>Scenario: A dessert shop just launched new items — how do you choose?</em><br><br>
-				<strong>A.</strong> Classic strawberry cake (tried it many times, definitely delicious!)
-				<br>→ Deep-rooted (Conservative & Committed)<br><br>
-				<strong>B.</strong> Matcha chili cheese puff (I just have to know what this tastes like!)
-				<br>→ Experimental (Adventurous & Exploring)
-			</p>
+			<h3>設問の設計例</h3>
+			<div class="row mt-md mb-md" style="width:100%;align-items:center">
+				<div class="col-4 col-sm-12 plr-sm mb-md">
+					<img alt="no" src="../../foodan/images/0010.png" style="width:100%;border-radius:12px">
+				</div>
+				<div class="col-8 col-sm-12 plr-sm mb-md">
+					<p>
+						<em>Scenario: A popular dessert shop has two new items — which do you pick?</em><br><br>
+						<strong>A.</strong> Chocolate donut — tried it many times, definitely delicious! 🍩
+						<br>→ Deep-rooted [0, 0, +1, 0]<br><br>
+						<strong>B.</strong> Chili cheese puff — never tried this flavor! Let me taste it 🌶️
+						<br>→ Experimental [0, 0, -1, 0]
+					</p>
+				</div>
+			</div>
 			<img alt="Four-dimension model diagram mapping dining psychology axes: Taste vs. Idea, Social vs. Lonely, Deep-rooted vs. Experimental, and Methodical vs. Free-flowing">
 
 
-			<div class="session" id="content">Content Engineering</div>
-			<h2>Giving Data a Soul with Prompt Chains</h2>
+			<div class="session" id="content">コンテンツ設計</div>
+			<h2>ロジックラベルからキャラクター文へ</h2>
 			<p>
-				I leveraged <strong>LLMs</strong> playing the role of a <strong>"humorous food critic,"</strong>
-				using <strong>Prompt Chaining</strong> techniques to transform cold logic labels into
-				vivid character profiles. I strictly followed a <strong>Human-in-the-loop</strong> model:
-				AI handled creative divergence; I handled convergence and refinement.
+				16組の性格コードはそのままでは無味乾燥な分類ラベルに過ぎず、
+				個性のあるキャラクター説明文に変換する必要がありました。
+				<strong>Prompt Chaining</strong> で LLM に「美食評論家」の口調で初稿を生成させ、
+				その後一つずつトーンを調整し、不自然な部分を削除して、全キャラクターの文体を統一しました。
 			</p>
 
 			<div class="row mt-md mb-lg" style="width:100%">
 				<div class="col-4 col-sm-12 plr-sm mb-md">
-					<h4>Strategist Elephant</h4>
-					<h6 class="gray">Prompt Strategy</h6>
-					<p>Combined "leadership presence" with "obsession over details."</p>
-					<h6 class="gray">Signature Line</h6>
-					<p><em>"I'm not being picky — I just think this dish should logically be served
-						3rd in sequence..."</em></p>
+					<img alt="no" src="../../foodan/images/TSDM.png" style="width:100%;max-width:140px;border-radius:12px;margin-bottom:8px">
+					<h4>格局象（Strategist Elephant）</h4>
+					<h6 class="gray">Prompt 戦略</h6>
+					<p>「リーダーシップ」と「細部へのこだわり」を組み合わせました。</p>
+					<h6 class="gray">代表セリフ</h6>
+					<p><em>『神経質じゃないよ、この料理は3番目に出すのが論理的だと思うだけで…』</em></p>
+					<h6 class="gray">おすすめ料理</h6>
+					<p>点心盛り合わせ、和牛コース、宴会セット</p>
 				</div>
 				<div class="col-4 col-sm-12 plr-sm mb-md">
-					<h4>Party Pup</h4>
-					<h6 class="gray">Prompt Strategy</h6>
-					<p>Emphasized "high energy" and "sharing drive."</p>
-					<h6 class="gray">Signature Line</h6>
-					<p><em>"If no one's fighting over meat at hot pot, then what's even the point?"</em></p>
+					<img alt="no" src="../../foodan/images/TSDF.png" style="width:100%;max-width:140px;border-radius:12px;margin-bottom:8px">
+					<h4>熱情狗（Party Pup）</h4>
+					<h6 class="gray">Prompt 戦略</h6>
+					<p>「高エネルギー」と「シェア欲」を強調しました。</p>
+					<h6 class="gray">代表セリフ</h6>
+					<p><em>『鍋で誰も肉を取り合わないなんて、何が楽しいの？』</em></p>
+					<h6 class="gray">おすすめ料理</h6>
+					<p>麻辣鍋、焼肉盛り合わせ、夜市制覇</p>
 				</div>
 				<div class="col-4 col-sm-12 plr-sm mb-md">
-					<h4>Logic Swan</h4>
-					<h6 class="gray">Prompt Strategy</h6>
-					<p>Combined "elegance" with "data obsession."</p>
-					<h6 class="gray">Signature Line</h6>
-					<p><em>"Regarding the order of main course and dessert, I have an Excel
-						spreadsheet that can explain it."</em></p>
+					<img alt="no" src="../../foodan/images/ISEM.png" style="width:100%;max-width:140px;border-radius:12px;margin-bottom:8px">
+					<h4>儀式天鵝（Ritual Swan）</h4>
+					<h6 class="gray">Prompt 戦略</h6>
+					<p>「エレガンス」と「データへの執着」を組み合わせました。</p>
+					<h6 class="gray">代表セリフ</h6>
+					<p><em>『このミシュラン店を3年追いかけて、やっと予約の番が来た…』</em></p>
+					<h6 class="gray">おすすめ料理</h6>
+					<p>フレンチ、ミシュランコース、ハンドドリップコーヒー</p>
 				</div>
 			</div>
 			<img alt="Prompt Chaining workflow diagram: LLM role assignment as humorous food critic, generating 16 personality drafts, followed by Human-in-the-loop refinement">
 
 
-			<div class="session" id="visual">Visual Consistency System</div>
-			<h2>Taming Midjourney's Randomness</h2>
+			<div class="session" id="visual">ビジュアルシステム</div>
+			<h2>16枚を同じセットに見せる</h2>
 			<p>
-				The biggest challenge with AI-generated images is <strong>"style drift."</strong>
-				To make all 16 result cards look like they belong to the same illustrated guide,
-				I conducted extensive <strong>Prompt stress tests</strong> and established a visual
-				specification anchored on the <strong>"Sumikko Gurashi style."</strong>
+				Midjourney で一番よく起きる問題は、生成するたびにスタイルが微妙にばらつくことです。
+				16枚の結果カードを同じ図鑑のように見せるために、Prompt のパラメータを繰り返し調整し、
+				最終的に<strong>「すみっコぐらし風」</strong>をスタイルの基準点として収束させました。
 			</p>
 
-			<h3>Prompt Engineering Key Parameters</h3>
+			<h3>Prompt の主要パラメータ</h3>
 			<p>
-				<strong>Style Anchor:</strong> pastel sketchy style, minimalist graphics, bold outlines.
+				<strong>スタイル基準：</strong>pastel sketchy style, minimalist graphics, bold outlines.
 				<br><br>
-				<strong>Atmosphere:</strong> Clean solid warm cream background, soft lighting.
+				<strong>雰囲気：</strong>クリーンな暖色クリーム背景、ソフトな照明。
 			</p>
 			<img alt="Midjourney Prompt Engineering specification showing style anchor parameters alongside multiple generated animal character samples demonstrating consistent visual style">
 
-			<h3>Character-Specific Fine-tuning</h3>
+			<h3>キャラクター別の微調整</h3>
 
-			<div class="line_area">
-				<h6>Comfort Cat (Slow-Warm Cat)</h6>
-				<p>
-					Blended <strong>pastel soft koala</strong> roundness traits, adding
-					<strong>"curled up in a kotatsu blanket"</strong> to reinforce the "homebody" attribute.
-				</p>
+			<div class="row mt-md mb-md" style="width:100%">
+				<div class="col-6 col-sm-12 plr-sm mb-md">
+					<img alt="no" src="../../foodan/images/TLDF.png" style="width:100%;max-width:200px;border-radius:12px;margin-bottom:8px">
+					<h6>慢熟貓（Comfort Cat）</h6>
+					<p>
+						コアラの丸みを取り入れ、<strong>「こたつに包まる」</strong>要素を加えて
+						「インドア派」の属性を強化しました。
+					</p>
+				</div>
+				<div class="col-6 col-sm-12 plr-sm mb-md">
+					<img alt="no" src="../../foodan/images/TLEM.png" style="width:100%;max-width:200px;border-radius:12px;margin-bottom:8px">
+					<h6>孤食刺蝟（Solo Hedgehog）</h6>
+					<p>
+						<strong>「清潔な実験室風の背景」</strong>と<strong>「栄養成分表を読む」</strong>ポーズを追加し、
+						ビジュアルの細部をキャラクター設定に合わせました。
+					</p>
+				</div>
 			</div>
 
-			<div class="line_area">
-				<h6>Hedgehog Soloist</h6>
-				<p>
-					Added <strong>"clean lab-like setting"</strong> and <strong>"reading nutrition label"</strong>
-					— making visual details echo the character profile.
-				</p>
+			<h3>全16キャラクター一覧</h3>
+			<div class="row mt-md mb-md" style="width:100%">
+				<div class="col-3 col-sm-4 plr-xs mb-sm" style="text-align:center">
+					<img alt="no" src="../../foodan/images/TSDM.png" style="width:100%;border-radius:8px">
+					<small>格局象</small>
+				</div>
+				<div class="col-3 col-sm-4 plr-xs mb-sm" style="text-align:center">
+					<img alt="no" src="../../foodan/images/TSDF.png" style="width:100%;border-radius:8px">
+					<small>熱情狗</small>
+				</div>
+				<div class="col-3 col-sm-4 plr-xs mb-sm" style="text-align:center">
+					<img alt="no" src="../../foodan/images/TSEM.png" style="width:100%;border-radius:8px">
+					<small>理性鴞</small>
+				</div>
+				<div class="col-3 col-sm-4 plr-xs mb-sm" style="text-align:center">
+					<img alt="no" src="../../foodan/images/TSEF.png" style="width:100%;border-radius:8px">
+					<small>覓味水獺</small>
+				</div>
+				<div class="col-3 col-sm-4 plr-xs mb-sm" style="text-align:center">
+					<img alt="no" src="../../foodan/images/TLDM.png" style="width:100%;border-radius:8px">
+					<small>穩定陸龜</small>
+				</div>
+				<div class="col-3 col-sm-4 plr-xs mb-sm" style="text-align:center">
+					<img alt="no" src="../../foodan/images/TLDF.png" style="width:100%;border-radius:8px">
+					<small>慢熟貓</small>
+				</div>
+				<div class="col-3 col-sm-4 plr-xs mb-sm" style="text-align:center">
+					<img alt="no" src="../../foodan/images/TLEM.png" style="width:100%;border-radius:8px">
+					<small>孤食刺蝟</small>
+				</div>
+				<div class="col-3 col-sm-4 plr-xs mb-sm" style="text-align:center">
+					<img alt="no" src="../../foodan/images/TLEF.png" style="width:100%;border-radius:8px">
+					<small>自由狐狸</small>
+				</div>
+				<div class="col-3 col-sm-4 plr-xs mb-sm" style="text-align:center">
+					<img alt="no" src="../../foodan/images/ISDM.png" style="width:100%;border-radius:8px">
+					<small>文化龍</small>
+				</div>
+				<div class="col-3 col-sm-4 plr-xs mb-sm" style="text-align:center">
+					<img alt="no" src="../../foodan/images/ISDF.png" style="width:100%;border-radius:8px">
+					<small>療癒鴿</small>
+				</div>
+				<div class="col-3 col-sm-4 plr-xs mb-sm" style="text-align:center">
+					<img alt="no" src="../../foodan/images/ISEM.png" style="width:100%;border-radius:8px">
+					<small>儀式天鵝</small>
+				</div>
+				<div class="col-3 col-sm-4 plr-xs mb-sm" style="text-align:center">
+					<img alt="no" src="../../foodan/images/ISEF.png" style="width:100%;border-radius:8px">
+					<small>美味妃蝶</small>
+				</div>
+				<div class="col-3 col-sm-4 plr-xs mb-sm" style="text-align:center">
+					<img alt="no" src="../../foodan/images/ILDM.png" style="width:100%;border-radius:8px">
+					<small>靜味貓頭鷹</small>
+				</div>
+				<div class="col-3 col-sm-4 plr-xs mb-sm" style="text-align:center">
+					<img alt="no" src="../../foodan/images/ILDF.png" style="width:100%;border-radius:8px">
+					<small>追憶無尾熊</small>
+				</div>
+				<div class="col-3 col-sm-4 plr-xs mb-sm" style="text-align:center">
+					<img alt="no" src="../../foodan/images/ILEM.png" style="width:100%;border-radius:8px">
+					<small>工程河狸</small>
+				</div>
+				<div class="col-3 col-sm-4 plr-xs mb-sm" style="text-align:center">
+					<img alt="no" src="../../foodan/images/ILEF.png" style="width:100%;border-radius:8px">
+					<small>幻想獨角獸</small>
+				</div>
 			</div>
 			<img alt="Before-and-after fine-tuning examples: Comfort Cat with added kotatsu blanket and koala roundness traits, Hedgehog Soloist with lab-like setting and nutrition label reading pose">
 
 
-			<div class="session" id="technical">Technical Execution</div>
-			<h2>Pair Programming with AI</h2>
+			<div class="session" id="technical">フロントエンド実装</div>
+			<h2>フロントエンド開発と AI 協業</h2>
 			<p>
-				During the development phase, I played the role of <strong>"architect,"</strong>
-				guiding AI (Copilot/LLM) to write core logic.
+				アーキテクチャとロジックは自分で定義し、AI（Copilot/LLM）で実装コードの作成を補助しました。
 			</p>
 
-			<h3>Data Structure Design (JSON Schema)</h3>
+			<h3>データ構造設計</h3>
 			<p>
-				I designed a <strong>weight-based scoring system</strong> where each question's options
-				dynamically affect scores across four dimensions.
+				<strong>ウェイトベースのスコアリングシステム</strong>を設計し、
+				各設問の選択肢が四つの軸のスコアに動的に影響する仕組みにしました。
 			</p>
 			<img alt="JSON Schema code example showing the weight-based scoring data structure with four personality dimensions">
 
-			<h3>Interactive Logic Implementation</h3>
+			<h3>インタラクションロジック</h3>
 
 			<div class="line_area">
-				<h6>Dynamic Weight Calculation</h6>
+				<h6>動的ウェイト計算</h6>
 				<p>
-					Real-time array score computation, ultimately mapping to the
-					corresponding personality key (e.g., TSDM = Strategist Elephant).
+					配列スコアをリアルタイムに計算し、最終的に対応する性格キー
+					（例：TSDM = 格局象）にマッピングします。
 				</p>
 			</div>
 
 			<div class="line_area">
-				<h6>Social Matching Algorithm</h6>
+				<h6>ソーシャルマッチングロジック</h6>
 				<p>
-					Logic to determine <strong>compatible (Dining Buddy)</strong> and
-					<strong>incompatible (Dining Disaster)</strong> combinations. For example,
-					the logic-driven "Logic Swan" and the intuition-driven "Party Pup" are
-					algorithmically exclusive.
+					<strong>相性の良い（ご飯友達）</strong>と<strong>相性の悪い（ご飯災難）</strong>の
+					組み合わせを判定するロジック。例えば、論理重視の「儀式天鵝」と
+					直感型の「熱情狗」は相互に排他的になっています。
 				</p>
 			</div>
 
-			<h3>AI-Collaborative Workflow</h3>
+			<h3>全体フロー</h3>
 			<img alt="Three-phase AI collaboration flowchart: Phase 1 Logic Architecture, Phase 2 Parallel Production (Content + Visual tracks), Phase 3 Full-stack Integration">
 
 			<div class="row mt-md mb-lg" style="width:100%">
 				<div class="col-4 col-sm-12 plr-sm mb-md">
-					<h4>Phase 1: Logic Architecture</h4>
+					<h4>第1段階：ロジック設計</h4>
 					<p>
-						<strong>(Human)</strong> Define problem & goals, establish the
-						"four-dimension dining psychology" model inspired by MBTI.
+						<strong>（人間）</strong>課題と目標を定義し、MBTI を参考にした「食の四象限」モデルを構築。
 						<br><br>
-						<strong>(Output)</strong> 16-personality logic skeleton.
+						<strong>（成果物）</strong>16性格のロジック骨格。
 					</p>
 				</div>
 				<div class="col-4 col-sm-12 plr-sm mb-md">
-					<h4>Phase 2: Parallel Production</h4>
+					<h4>第2段階：並行制作</h4>
 					<p>
-						<strong>Track A — Content:</strong> Prompt Chain design → AI generates
-						16 personality drafts → Human refinement → Final copy & JSON.
+						<strong>トラック A コンテンツ：</strong>Prompt Chain 設計→AI が16性格の初稿を生成→人間が調整→確定テキスト＆JSON。
 						<br><br>
-						<strong>Track B — Visual:</strong> Set visual anchor → Prompt stress testing →
-						Midjourney generation → Fine-tuning → 16 consistent character cards.
+						<strong>トラック B ビジュアル：</strong>スタイル基準を設定→Prompt テスト→Midjourney 生成→微調整→16枚のキャラクターカード。
 					</p>
 				</div>
 				<div class="col-4 col-sm-12 plr-sm mb-md">
-					<h4>Phase 3: Full-stack Integration</h4>
+					<h4>第3段階：フロントエンド統合</h4>
 					<p>
-						<strong>(Human)</strong> Design scoring weight system & social matching algorithm.
+						<strong>（人間）</strong>スコアリングウェイトシステムとマッチングロジックを設計。
 						<br><br>
-						<strong>(AI - Copilot)</strong> Pair programming for JavaScript logic & CSS.
+						<strong>（AI Copilot）</strong>JavaScript ロジックと CSS の実装を補助。
 						<br><br>
-						<strong>(Output)</strong> Final product: RWD interactive web app.
+						<strong>（成果物）</strong>レスポンシブ対応のインタラクティブ Web ページ。
 					</p>
 				</div>
 			</div>
 			<img alt="Final product screenshots: responsive web app showing quiz question interface on mobile and result page with animal character card on desktop">
 
 
-			<div class="session" id="reflection">Reflection</div>
-			<h2>A Paradigm Shift in the Designer's Role</h2>
+			<div class="session" id="reflection">振り返り</div>
+			<h2>やってみての所感</h2>
 			<p>
-				This project validated that in the AI era, the designer's battlefield has shifted from
-				simply <strong>"producing screens"</strong> to <strong>"defining problems"</strong>
-				and <strong>"architecting systems."</strong>
+				このプロジェクトを通じて、AI と協業する際にデザイナーの仕事の重心がどこに移るのか、
+				より具体的に実感できました。
 			</p>
 
 			<div class="line_area">
-				<h6>From Creator to Curator</h6>
+				<h6>アウトプットは速くなるが、判断はより重要になる</h6>
 				<p>
-					AI can generate infinite copy and images, but only humans can decide what's
-					<strong>"genuinely funny"</strong> and what's <strong>"stylistically consistent."</strong>
-					Aesthetic judgment and insight became the most important filters.
+					AI は大量のコピーや画像を素早く生成できますが、「どれが使えてどれがダメか」の判断は
+					やはり人間の仕事です。選別と修正にかなりの時間を使いました。
 				</p>
 			</div>
 
 			<div class="line_area">
-				<h6>The Power of Rapid Prototyping</h6>
+				<h6>開発サイクルは確かに短くなった</h6>
 				<p>
-					What previously took weeks of planning and design was compressed to days through
-					AI collaboration, freeing time to focus on <strong>interaction experience</strong>
-					and <strong>creative detail refinement</strong>.
+					企画から公開まで数日程度で完了しました。
+					浮いた時間はインタラクションの調整や体験のテストに充てることができました。
 				</p>
 			</div>
 
 			<p>
-				This project isn't just a quiz — it's a <strong>manifesto for the future of work</strong>.
-				When we master the rhythm of dancing with AI, individual creativity knows no bounds.
+				全体として、ロジック・コピー・ビジュアル・フロントエンドまで一人で通した、
+				わりと一通りの AI 協業実践になりました。
+				どの工程で AI が役に立ち、どこは自分でやるしかないのかも、より明確になりました。
 			</p>
+
+			<div style="text-align:center;margin-top:32px">
+				<a href="../../foodan/" class="btn" target="_blank" style="font-size:1.1em">
+					診断ページへ<span class="icon"> ↗</span>
+				</a>
+			</div>
 
 		</div>
 	</div>

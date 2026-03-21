@@ -36,29 +36,24 @@
 		<div class="row mb-lg">
 			<div class="col-6 col-sm-12 pr-md">
 				<p>Side Project</p>
-				<h3>「一天有三餐要吃，我們吃的東西的方式是不是也能決定我們是誰？和適合一起吃飯的好夥伴」</h3>
+				<h3>「吃的方式，是不是也能反映一個人的個性？」</h3>
 				<p>
-					這個專案源自於同事慶生時的輕鬆話題，卻成為我驗證<strong>「AI 協作全端開發」</strong>的最佳實驗場。
-					有別於傳統商業專案背負著沈重的 KPI，本專案的初衷純粹且充滿挑戰：如何在沒有工程師與繪師支援的情況下，
-					僅憑一人之力，利用 Generative AI 打造出具備商業級水準的互動體驗？
+					起因是同事慶生時的閒聊：大家對吃的偏好差異很大，於是想做一個飲食性格測驗來驗證。
+					同時也想借這個機會，試試看一個人能不能透過 Generative AI 完成從企劃、插畫到前端開發的完整流程。
 					<br><br>
-					這不只是一個心理測驗，更是一次<strong>跨領域的生產力實驗</strong>。身為發起人，我整合了產品策略、
-					Prompt Engineering 與前端開發，試圖解決市面上心理測驗常見的痛點——視覺風格不統一、文案邏輯鬆散。
-
-
-					這是一個結合 設計思考（Design Thinking） 與 生成式 AI（Generative AI）
-					的互動網頁實驗。有別於市面上邏輯鬆散的測驗，本專案由我獨立定義產品策略，旨在驗證如何透過 AI 協作，將娛樂性內容轉化為高品質的數位產品。
-					核心方法論：
-					• 邏輯重構： 捨棄隨機亂數，將 MBTI 心理學架構轉化為「飲食四象限」積分邏輯，確保結果的準確度與說服力。
-					• AI 視覺工程： 透過 Midjourney 進行精密的 Prompt Engineering，克服 AI 生成的隨機性，建立風格高度一致（Pastel Style）的 16 款角色插畫。
-					• 全端架構： 主導前端 HTML/JS 架構設計，利用 JSON 權重系統管理複雜題庫，實現從邏輯企劃到程式落地的完整閉環。
+					過程中主要處理三件事：
+					<br>• <strong>邏輯設計：</strong>參考 MBTI 架構，建立「飲食四象限」積分模型，取代隨機亂數，讓結果有依據。
+					<br>• <strong>視覺一致性：</strong>透過 Midjourney Prompt 反覆測試，讓 16 張角色插畫維持同一套視覺風格。
+					<br>• <strong>前端實作：</strong>用 JSON 權重系統管理題庫與計分邏輯，搭配 HTML/JS 完成 RWD 互動頁面。
 				</p>
 
 				<h6 class="mb-xxs">我的角色</h6>
-				<p>Solo Maker——產品策略、Prompt Engineer、全端協作開發、視覺總監</p>
+				<p>獨立製作——企劃、Prompt 設計、前端開發、視覺規範</p>
 
 				<h6 class="mb-xxs">專案類型</h6>
-				<p>互動網頁應用 · AI 生成藝術 · 實驗性 UIUX</p>
+				<p>互動網頁 · AI 生成插畫 · Side Project</p>
+
+				<a href="../../foodan/" class="btn" target="_blank">前往測驗頁面<span class="icon"> ↗</span></a>
 			</div>
 			<div class="col-6 col-sm-12">
 				<img class="w-100" alt="美食動物性格測驗主視覺，展示一系列角落生物風格的動物角色卡片">
@@ -70,7 +65,7 @@
 			<div class="project-nav">
 				<a href="#core-value" class="nav-item">
 					<span class="step">01</span>
-					<span class="label">核心策略</span>
+					<span class="label">設計決策</span>
 				</a>
 				<a href="#logic" class="nav-item">
 					<span class="step">02</span>
@@ -98,33 +93,50 @@
 		<div class="article">
 
 			<!-- 核心價值與互動策略 -->
-			<div class="session" id="core-value">核心價值與互動策略</div>
+			<div class="session" id="core-value">互動設計決策</div>
 			<p class="highlight">
-				<strong>AI 協作指揮：</strong>展示如何串聯 Midjourney 與 LLMs，
-				將開發週期從數週縮短至數天。<br><br>
-				<strong>設計系統一致性：</strong>克服 AI 生成的隨機性，建立高度一致的視覺與文案系統。
+				這個專案的核心問題是：如何讓一個「飲食性格測驗」的結果讓人覺得準、想分享？
+				以下是三個主要的設計決策。
 			</p>
 
-			<h2>核心互動策略</h2>
+			<h2>三個設計決策</h2>
 
-			<h3>1. 動物擬人化</h3>
+			<h3>1. 用動物來代表人格</h3>
 			<p>
-				將抽象的人格特質轉化為具體的<strong>「動物形象」</strong>（如格局象、慢熟貓）。
-				相較於冷冰冰的形容詞，動物形象更具備記憶點與趣味性，能快速建立使用者的情感連結。
+				把測驗結果對應到具體的<strong>動物形象</strong>（如格局象、慢熟貓），
+				比起抽象的形容詞，動物更容易記住，也更容易在對話中提起。
 			</p>
 
-			<h3>2. 「靈魂一句話」直覺呈現</h3>
+			<h3>2. 每個角色一句「內心獨白」</h3>
 			<p>
-				每個結果頁最上方都有一句該動物的<strong>「內心獨白」</strong>
+				結果頁最上方放一句角色的<strong>代表語錄</strong>
 				（例如：儀式天鵝——<em>「關於甜點的順序，我有個 Excel 表可以解釋」</em>）。
-				讓用戶在 3 秒內直覺抓到個性精髓，大幅提升截圖分享的意願。
+				目的是讓人一看就有「是我沒錯」的感覺，也方便截圖分享。
 			</p>
 
-			<h3>3. 社交配對機制</h3>
+			<h3>3. 飯友 / 飯局災難配對</h3>
 			<p>
-				特別設計了<strong>「最適合一起吃飯（飯友）」</strong>與<strong>「最不適合一起吃飯（飯局災難）」</strong>
-				的動物欄位。創造強烈的社交互動動機，驅使單向的測驗轉化為雙向的社群標記與分享。
+				每個結果會顯示<strong>「最適合一起吃飯的動物」</strong>與<strong>「最不適合的」</strong>，
+				讓測驗從「看自己的結果」延伸到「去標記朋友」，多了一層社交互動。
 			</p>
+			<div class="row mt-md mb-md" style="width:100%">
+				<div class="col-3 col-sm-6 plr-sm mb-md" style="text-align:center">
+					<img alt="no" src="../../foodan/images/TSDM.png" style="width:100%;max-width:180px;border-radius:12px">
+					<p><strong>格局象</strong><br><small>職人味覺社交家</small></p>
+				</div>
+				<div class="col-3 col-sm-6 plr-sm mb-md" style="text-align:center">
+					<img alt="no" src="../../foodan/images/TSDF.png" style="width:100%;max-width:180px;border-radius:12px">
+					<p><strong>熱情狗</strong><br><small>爽感系同樂吃貨</small></p>
+				</div>
+				<div class="col-3 col-sm-6 plr-sm mb-md" style="text-align:center">
+					<img alt="no" src="../../foodan/images/ISEM.png" style="width:100%;max-width:180px;border-radius:12px">
+					<p><strong>儀式天鵝</strong><br><small>嚴謹型創食向導</small></p>
+				</div>
+				<div class="col-3 col-sm-6 plr-sm mb-md" style="text-align:center">
+					<img alt="no" src="../../foodan/images/TLDF.png" style="width:100%;max-width:180px;border-radius:12px">
+					<p><strong>慢熟貓</strong><br><small>宅系味覺療癒師</small></p>
+				</div>
+			</div>
 			<img alt="三大互動策略圖示：動物擬人化、靈魂一句話呈現、社交配對機制（飯友與飯局災難）">
 
 			<!-- 邏輯建模 -->
@@ -156,53 +168,70 @@
 			</div>
 
 			<h3>題目設計實例</h3>
-			<p>
-				<em>情境：甜點店推出了新品，你怎麼選？</em><br><br>
-				<strong>A.</strong> 經典草莓蛋糕（吃過很多次了一定好吃！）<br>→ 保守堅持<br><br>
-				<strong>B.</strong> 抹茶辣椒起司泡芙（光聽就想知道是什麼味道！）<br>→ 冒險探索
-			</p>
+			<div class="row mt-md mb-md" style="width:100%;align-items:center">
+				<div class="col-4 col-sm-12 plr-sm mb-md">
+					<img alt="no" src="../../foodan/images/0010.png" style="width:100%;border-radius:12px">
+				</div>
+				<div class="col-8 col-sm-12 plr-sm mb-md">
+					<p>
+						<em>🧁 公司附近的人氣甜點店裡有兩款新品，你選：</em><br><br>
+						<strong>A.</strong> 巧克力甜甜圈啊，吃過很多次了一定好吃！ 🍩<br>→ 傳統堅持 [0, 0, +1, 0]<br><br>
+						<strong>B.</strong> 辣椒起司泡芙？沒吃過的味道！我想試試看 🌶️<br>→ 冒險探索 [0, 0, -1, 0]
+					</p>
+				</div>
+			</div>
 			<img alt="四向度模型圖：感官vs.概念、社交vs.獨處、傳統vs.冒險、結構vs.直覺，搭配題目情境範例">
 
 			<!-- 內容工程 -->
 			<div class="session" id="content">內容工程</div>
-			<h2>用 Prompt Chain 賦予數據靈魂</h2>
+			<h2>從邏輯標籤到角色文案</h2>
 			<p>
-				利用 LLM 扮演「幽默的美食評論家」，透過 <strong>Prompt Chaining</strong> 技術，
-				將冰冷的邏輯標籤轉化為生動的人設。嚴格執行 <strong>Human-in-the-loop</strong> 模式：
-				AI 負責發散創意，我負責收斂與修飾。
+				16 組人格代碼本身只是乾燥的分類標籤，需要轉化成有個性的角色描述。
+				做法是透過 <strong>Prompt Chaining</strong>，讓 LLM 以「美食評論家」的口吻生成初稿，
+				再由我逐一調整語氣、刪除不合理的細節，確保每個角色讀起來是一致的。
 			</p>
 
 			<div class="row mt-md mb-lg" style="width:100%">
 				<div class="col-4 col-sm-12 plr-sm mb-md">
+					<img alt="no" src="../../foodan/images/TSDM.png" style="width:100%;max-width:140px;border-radius:12px;margin-bottom:8px">
 					<h4>格局象</h4>
 					<h6 class="gray">Prompt 策略</h6>
 					<p>結合「領袖氣質」與「對細節的堅持」。</p>
 					<h6 class="gray">人格金句</h6>
-					<p><em>「我不是龜毛，我只是覺得這道菜應該排在第 3 順位上桌比較符合邏輯...」</em></p>
+					<p><em>『我不是龜毛，我只是覺得這道菜應該排第3道上比較合理…』</em></p>
+					<h6 class="gray">推薦美食</h6>
+					<p>港點拼盤、和牛套餐、桌菜組合</p>
 				</div>
 				<div class="col-4 col-sm-12 plr-sm mb-md">
+					<img alt="no" src="../../foodan/images/TSDF.png" style="width:100%;max-width:140px;border-radius:12px;margin-bottom:8px">
 					<h4>熱情狗</h4>
 					<h6 class="gray">Prompt 策略</h6>
 					<p>強調「高能量」與「分享欲」。</p>
 					<h6 class="gray">人格金句</h6>
-					<p><em>「吃火鍋如果沒人搶肉，那還有什麼樂趣？」</em></p>
+					<p><em>『吃火鍋，沒人搶菜就不刺激啊～』</em></p>
+					<h6 class="gray">推薦美食</h6>
+					<p>麻辣鍋、燒肉拼盤、夜市全制霸</p>
 				</div>
 				<div class="col-4 col-sm-12 plr-sm mb-md">
+					<img alt="no" src="../../foodan/images/ISEM.png" style="width:100%;max-width:140px;border-radius:12px;margin-bottom:8px">
 					<h4>儀式天鵝</h4>
 					<h6 class="gray">Prompt 策略</h6>
 					<p>結合「優雅」與「數據控」。</p>
 					<h6 class="gray">人格金句</h6>
-					<p><em>「關於主菜與甜點的順序，我有一個 Excel 表格可以解釋給你看。」</em></p>
+					<p><em>『這家米其林我追蹤三年了，今天終於輪到我的預約…』</em></p>
+					<h6 class="gray">推薦美食</h6>
+					<p>法式料理、米其林套餐、手沖咖啡</p>
 				</div>
 			</div>
 			<img alt="Prompt Chaining 工作流程圖：LLM 扮演幽默美食評論家生成 16 人格初稿，再經人工潤飾的前後對比">
 
 			<!-- 視覺系統 -->
 			<div class="session" id="visual">視覺實驗</div>
-			<h2>馴服 Midjourney 的隨機性</h2>
+			<h2>讓 16 張圖看起來像同一套</h2>
 			<p>
-				使用 AI 生圖最大的挑戰在於「風格飄移」。為了讓 16 張結果卡看起來像同一套圖鑑，
-				我進行了大量的 Prompt 壓力測試，最終確立了一套以<strong>「角落生物風」</strong>為錨點的視覺規範。
+				用 Midjourney 生圖最常遇到的問題是每張風格都不太一樣。
+				為了讓 16 張結果卡像同一套圖鑑，反覆測試 Prompt 參數後，
+				最終以<strong>「角落生物風」</strong>作為風格錨點來收斂。
 			</p>
 
 			<h3>Prompt 關鍵參數</h3>
@@ -214,20 +243,92 @@
 			<img alt="Midjourney Prompt 工程規範：風格錨點參數與多個生成角色的風格一致性樣本展示">
 
 			<h3>針對性微調</h3>
-			<div class="line_area">
-				<h6>慢熟貓</h6>
-				<p>混合了無尾熊的圓潤特徵，加入「窩在暖桌裡」來強化「宅」的屬性。</p>
+			<div class="row mt-md mb-md" style="width:100%">
+				<div class="col-6 col-sm-12 plr-sm mb-md">
+					<img alt="no" src="../../foodan/images/TLDF.png" style="width:100%;max-width:200px;border-radius:12px;margin-bottom:8px">
+					<h6>慢熟貓</h6>
+					<p>混合了無尾熊的圓潤特徵，加入「窩在暖桌裡」來強化「宅」的屬性。</p>
+				</div>
+				<div class="col-6 col-sm-12 plr-sm mb-md">
+					<img alt="no" src="../../foodan/images/TLEM.png" style="width:100%;max-width:200px;border-radius:12px;margin-bottom:8px">
+					<h6>孤食刺蝟</h6>
+					<p>加入「乾淨的實驗室場景」與「閱讀營養標示」，讓畫面細節呼應人設。</p>
+				</div>
 			</div>
-			<div class="line_area">
-				<h6>孤食刺蝟</h6>
-				<p>加入「乾淨的實驗室場景」與「閱讀營養標示」，讓畫面細節呼應人設。</p>
+
+			<h3>16 款角色一覽</h3>
+			<div class="row mt-md mb-md" style="width:100%">
+				<div class="col-3 col-sm-4 plr-xs mb-sm" style="text-align:center">
+					<img alt="no" src="../../foodan/images/TSDM.png" style="width:100%;border-radius:8px">
+					<small>格局象</small>
+				</div>
+				<div class="col-3 col-sm-4 plr-xs mb-sm" style="text-align:center">
+					<img alt="no" src="../../foodan/images/TSDF.png" style="width:100%;border-radius:8px">
+					<small>熱情狗</small>
+				</div>
+				<div class="col-3 col-sm-4 plr-xs mb-sm" style="text-align:center">
+					<img alt="no" src="../../foodan/images/TSEM.png" style="width:100%;border-radius:8px">
+					<small>理性鴞</small>
+				</div>
+				<div class="col-3 col-sm-4 plr-xs mb-sm" style="text-align:center">
+					<img alt="no" src="../../foodan/images/TSEF.png" style="width:100%;border-radius:8px">
+					<small>覓味水獺</small>
+				</div>
+				<div class="col-3 col-sm-4 plr-xs mb-sm" style="text-align:center">
+					<img alt="no" src="../../foodan/images/TLDM.png" style="width:100%;border-radius:8px">
+					<small>穩定陸龜</small>
+				</div>
+				<div class="col-3 col-sm-4 plr-xs mb-sm" style="text-align:center">
+					<img alt="no" src="../../foodan/images/TLDF.png" style="width:100%;border-radius:8px">
+					<small>慢熟貓</small>
+				</div>
+				<div class="col-3 col-sm-4 plr-xs mb-sm" style="text-align:center">
+					<img alt="no" src="../../foodan/images/TLEM.png" style="width:100%;border-radius:8px">
+					<small>孤食刺蝟</small>
+				</div>
+				<div class="col-3 col-sm-4 plr-xs mb-sm" style="text-align:center">
+					<img alt="no" src="../../foodan/images/TLEF.png" style="width:100%;border-radius:8px">
+					<small>自由狐狸</small>
+				</div>
+				<div class="col-3 col-sm-4 plr-xs mb-sm" style="text-align:center">
+					<img alt="no" src="../../foodan/images/ISDM.png" style="width:100%;border-radius:8px">
+					<small>文化龍</small>
+				</div>
+				<div class="col-3 col-sm-4 plr-xs mb-sm" style="text-align:center">
+					<img alt="no" src="../../foodan/images/ISDF.png" style="width:100%;border-radius:8px">
+					<small>療癒鴿</small>
+				</div>
+				<div class="col-3 col-sm-4 plr-xs mb-sm" style="text-align:center">
+					<img alt="no" src="../../foodan/images/ISEM.png" style="width:100%;border-radius:8px">
+					<small>儀式天鵝</small>
+				</div>
+				<div class="col-3 col-sm-4 plr-xs mb-sm" style="text-align:center">
+					<img alt="no" src="../../foodan/images/ISEF.png" style="width:100%;border-radius:8px">
+					<small>美味妃蝶</small>
+				</div>
+				<div class="col-3 col-sm-4 plr-xs mb-sm" style="text-align:center">
+					<img alt="no" src="../../foodan/images/ILDM.png" style="width:100%;border-radius:8px">
+					<small>靜味貓頭鷹</small>
+				</div>
+				<div class="col-3 col-sm-4 plr-xs mb-sm" style="text-align:center">
+					<img alt="no" src="../../foodan/images/ILDF.png" style="width:100%;border-radius:8px">
+					<small>追憶無尾熊</small>
+				</div>
+				<div class="col-3 col-sm-4 plr-xs mb-sm" style="text-align:center">
+					<img alt="no" src="../../foodan/images/ILEM.png" style="width:100%;border-radius:8px">
+					<small>工程河狸</small>
+				</div>
+				<div class="col-3 col-sm-4 plr-xs mb-sm" style="text-align:center">
+					<img alt="no" src="../../foodan/images/ILEF.png" style="width:100%;border-radius:8px">
+					<small>幻想獨角獸</small>
+				</div>
 			</div>
 			<img alt="角色微調前後對比：慢熟貓加入暖桌與無尾熊圓潤特徵，孤食刺蝟加入實驗室場景與閱讀營養標示">
 
 			<!-- 全端實踐 -->
 			<div class="session" id="technical">全端實踐</div>
-			<h2>與 AI 結對編程</h2>
-			<p>在程式開發階段，我扮演「架構師」，引導 AI (Copilot/LLM) 撰寫核心邏輯。</p>
+			<h2>前端開發與 AI 協作</h2>
+			<p>程式部分由我定義架構與邏輯，再透過 AI（Copilot/LLM）協助撰寫實作程式碼。</p>
 
 			<h3>數據結構設計</h3>
 			<p>設計了一套基於權重的計分系統，每一題的選項都會動態影響四個維度的分數。</p>
@@ -243,7 +344,7 @@
 				<p>撰寫邏輯判斷「飯友」與「飯局災難」的組合，例如講求邏輯的「儀式天鵝」與憑感覺的「熱情狗」互斥。</p>
 			</div>
 
-			<h3>AI 協作工作流程</h3>
+			<h3>整體流程</h3>
 			<img alt="三階段 AI 協作流程圖：第一階段邏輯架構、第二階段內容與視覺雙軌並行、第三階段全端整合">
 
 			<div class="row mt-md mb-lg" style="width:100%">
@@ -275,24 +376,29 @@
 
 			<!-- 專案反思 -->
 			<div class="session" id="reflection">專案反思</div>
-			<h2>設計師角色的典範轉移</h2>
+			<h2>做完之後的想法</h2>
 			<p>
-				這個專案驗證了在 AI 時代，設計師的戰場已經從單純的<strong>「產出畫面」</strong>，
-				轉移到了<strong>「定義問題」</strong>與<strong>「架構系統」</strong>。
+				這個專案讓我比較具體地感受到，用 AI 協作時，設計師的工作重心會往哪裡移動。
 			</p>
 
 			<div class="line_area">
-				<h6>從 Creator 到 Curator</h6>
-				<p>AI 能生成無限的文案與圖片，但唯有人類能決定什麼是「好笑的」、什麼是「風格一致的」。審美與洞察力成為了最重要的篩選器。</p>
+				<h6>產出變快，判斷變重要</h6>
+				<p>AI 可以快速生成大量文案和圖片，但「哪些能用、哪些不行」的判斷還是得靠人。篩選和修正佔了不少時間。</p>
 			</div>
 			<div class="line_area">
-				<h6>快速原型的力量</h6>
-				<p>過去需要數週的企劃與設計，透過 AI 協作縮短至數天。讓我有更多時間專注於互動體驗與創意細節的打磨。</p>
+				<h6>開發週期確實縮短了</h6>
+				<p>從企劃到上線大約花了幾天，省下來的時間可以用在調整互動細節和測試體驗。</p>
 			</div>
 			<p>
-				這個專案不只是一個測驗，更是一份<strong>「未來工作模式」的宣言</strong>——
-				當我們掌握了與 AI 共舞的節奏，個人的創造力將無遠弗屆。
+				整體來說，這個專案算是一次比較完整的 AI 協作實踐——從邏輯、文案、視覺到前端，
+				一個人跑完全程，過程中也更清楚哪些環節 AI 幫得上忙、哪些還是得自己來。
 			</p>
+
+			<div style="text-align:center;margin-top:32px">
+				<a href="../../foodan/" class="btn" target="_blank" style="font-size:1.1em">
+					前往測驗頁面<span class="icon"> ↗</span>
+				</a>
+			</div>
 
 		</div>
 	</div>

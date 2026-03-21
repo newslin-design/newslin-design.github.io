@@ -1,7 +1,8 @@
 {
   "permissions": {
     "allow": [
-      "Bash(python3:*)"
+      "Bash(python3:*)",
+      "Bash(find /c/Users/s9348/github/newslin-design.github.io/foodan -type f -name *.html -o -name *.css -o -name *.js)"
     ]
   }
 }
