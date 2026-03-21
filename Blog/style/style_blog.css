@@ -2,11 +2,12 @@
     max-width: 850px;
 }
 
-header .container {
+header .container,
+footer .container {
     max-width: 100%;
 }
 
-p {
+.article p {
     font-size: 19px;
     letter-spacing: 0.05em;
     line-height: 1.628em;

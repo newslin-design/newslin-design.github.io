@@ -656,8 +656,7 @@ try {
                         </a>
                         <ul class="row flex-jus-end">
                             <li><a href="${pageBasePath}index.html">Design</a></li>
-                            <li><a href="${pageBasePath}index.html">Project</a></li>
-                            <li><a href="${pageBasePath}index.html">Development</a></li>
+                            <li><a href="${pageBasePath}index.html#development">Development</a></li>
                             <li><a href="${pageBasePath}../blog/">Blog</a></li>
                             <li><a href="${pageBasePath}about.html">Resume</a></li>
                             ${langLinks}
@@ -775,7 +774,7 @@ function renderPortfolioCards() {
 		// 加入類別標題
 		if (categoryData.title) {
 			cardsHtml += `
-				<div class="session-border pt-xs pb-xs">
+				<div id="${category}" class="session-border pt-xs pb-xs">
 					<h2 class="${categoryData.titleClass || ''}">${categoryData.title}</h2>
 				</div>
 			`;
