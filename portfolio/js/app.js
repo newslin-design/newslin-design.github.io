@@ -658,6 +658,7 @@ try {
                             <li><a href="${pageBasePath}index.html">Design</a></li>
                             <li><a href="${pageBasePath}index.html">Project</a></li>
                             <li><a href="${pageBasePath}index.html">Development</a></li>
+                            <li><a href="${pageBasePath}../blog/">Blog</a></li>
                             <li><a href="${pageBasePath}about.html">Resume</a></li>
                             ${langLinks}
                         </ul>

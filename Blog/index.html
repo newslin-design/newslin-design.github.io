@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, maximum-scale=1.5">
+	<title>Blog - Portfolio</title>
+	<script>workName = "blog"</script>
+	<script>var basePath = "../portfolio/"; var pageBasePath = "../portfolio/";</script>
+	<link rel="stylesheet" href="../portfolio/style/reset.css">
+	<link rel="stylesheet" href="../portfolio/style/style_layout.css">
+	<link rel="stylesheet" href="../portfolio/style/style.css">
+	<link rel="stylesheet" href="style/style_blog.css">
+	<link rel="icon" type="image/png" href="../portfolio/web_icon.png" />
+	
+	<!-- 複用與首頁類似的 card 配置樣式 -->
+	<link rel="stylesheet" href="../portfolio/style/style_cardbox.css">
+
+	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-114514958-1"></script>
+	<!-- Google Tag Manager -->
+	<script>
+		(function (w, d, s, l, i) {
+			w[l] = w[l] || []; w[l].push({
+				'gtm.start':
+					new Date().getTime(), event: 'gtm.js'
+			}); var f = d.getElementsByTagName(s)[0],
+				j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+					'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+		})(window, document, 'script', 'dataLayer', 'GTM-PMLJXPC');
+	</script>
+	<!-- End Google Tag Manager -->
+	<style>
+		.blog-list {
+			display: flex;
+			flex-direction: column;
+			gap: 24px;
+		}
+		
+		/* 簡單的卡片樣式 */
+		.blog-card {
+			display: flex;
+			flex-direction: row;
+			background: #fff;
+			border-radius: 12px;
+			overflow: hidden;
+			box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+			text-decoration: none;
+			color: #333;
+			transition: transform 0.3s ease, box-shadow 0.3s ease;
+		}
+		
+		.blog-card:hover {
+			transform: translateY(-4px);
+			box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+		}
+		
+		.blog-card-img {
+			width: 30%;
+			min-width: 250px;
+			background-size: cover;
+			background-position: center;
+		}
+		
+		.blog-card-content {
+			padding: 24px 32px;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			flex: 1;
+		}
+		
+		.blog-card-date {
+			color: #888;
+			font-size: 14px;
+			margin-bottom: 8px;
+		}
+		
+		.blog-card-title {
+			font-size: 24px;
+			font-weight: 500;
+			margin-bottom: 12px;
+		}
+		
+		.blog-card-excerpt {
+			color: #666;
+			font-size: 16px;
+			line-height: 1.6;
+		}
+		
+		@media (max-width: 768px) {
+			.blog-card {
+				flex-direction: column;
+			}
+			.blog-card-img {
+				width: 100%;
+				height: 200px;
+			}
+		}
+	</style>
+</head>
+
+<body>
+	<!-- Google Tag Manager (noscript) -->
+	<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PMLJXPC" height="0" width="0"
+			style="display:none;visibility:hidden"></iframe></noscript>
+	<!-- End Google Tag Manager (noscript) -->
+	
+	<header></header>
+	
+	<div class="container mt-xl mb-xxl">
+		<div class="session-border pt-xs pb-xs mb-lg">
+			<h2>Blog</h2>
+			<p>Learning notes, thoughts, and technical shares.</p>
+		</div>
+		
+		<div class="blog-list">
+			<!-- 文章列表 -->
+			<a href="how-to-use-nihonngo-input.html" class="blog-card">
+				<div class="blog-card-img" style="background-image: url('image/001/A_nighttime_shot_of_a_Tokyo_rainy_night_building_reflectio_.jpg');"></div>
+				<div class="blog-card-content">
+					<div class="blog-card-date">2023 / 05 / 03</div>
+					<h3 class="blog-card-title">如何安裝日本語輸入法</h3>
+					<div class="blog-card-excerpt">
+						學習日文時，經歷過聽力終於聽懂一點長看的動畫和電視劇的對話後，會漸漸開始想要自己能開始對話了... 這邊就來教大家日文輸入法的大小事吧!
+					</div>
+				</div>
+			</a>
+		</div>
+	</div>
+
+	<footer>
+	</footer>
+
+</body>
+<!-- 引用 portfolio/js/app.js 產生 header/footer -->
+<script src="../portfolio/js/app.js"></script>
+
+</html>
