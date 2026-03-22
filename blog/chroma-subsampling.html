@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, maximum-scale=1.5">
+	<title>什麼是色度抽樣？圖解 4:4:4、4:2:2 與 4:2:0 的祕密</title>
+	<script>workName = "blog_chroma_subsampling"</script>
+	<script>var basePath = "../portfolio/"; var pageBasePath = "../portfolio/";</script>
+	<link rel="stylesheet" href="../portfolio/style/reset.css">
+	<link rel="stylesheet" href="../portfolio/style/style_layout.css">
+	<link rel="stylesheet" href="../portfolio/style/style.css">
+	<link rel="stylesheet" href="../portfolio/style/article.css">
+	<link rel="stylesheet" href="style/style_blog.css">
+	<link rel="icon" type="image/png" href="../portfolio/web_icon.png" />
+	<!-- Article Specific CSS Illustrations -->
+	<style>
+		.css-illustration {
+			margin: 40px 0;
+			padding: 40px 20px;
+			background: #f8f9fa;
+			border-radius: 16px;
+			box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+			overflow: hidden;
+		}
+
+		.css-illustration h4 { margin-bottom: 24px; font-family: sans-serif; color: #333; text-align: center;}
+
+		/* Eye / Luma Chroma visual */
+		.luma-chroma-box {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			gap: 30px;
+			flex-wrap: wrap;
+		}
+		
+		.vision-card {
+			background: white;
+			border-radius: 12px;
+			padding: 20px;
+			text-align: center;
+			width: 200px;
+			box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+		}
+
+		.vision-icon {
+			font-size: 3rem;
+			margin-bottom: 15px;
+		}
+
+		.vision-title {
+			font-weight: bold;
+			margin-bottom: 10px;
+			color: #2c3e50;
+		}
+
+		.vision-desc {
+			font-size: 0.9rem;
+			color: #7f8c8d;
+		}
+
+		/* Pixel Grid Visualization for 4:4:4, 4:2:2, 4:2:0 */
+		.sampling-compare {
+			display: flex;
+			gap: 40px;
+			justify-content: center;
+			flex-wrap: wrap;
+			margin-top: 20px;
+		}
+
+		.sampling-type {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			gap: 15px;
+		}
+
+		.sampling-label {
+			font-weight: bold;
+			font-size: 1.2rem;
+			color: #34495e;
+			background: #eef2f5;
+			padding: 6px 16px;
+			border-radius: 20px;
+		}
+
+		/* Classic Sampling Grid */
+		.classic-grid {
+			display: grid;
+			grid-template-columns: 60px 1fr 1fr 1fr;
+			gap: 20px 15px;
+			align-items: center;
+			margin-top: 20px;
+			width: 100%;
+			max-width: 850px;
+		}
+		.cg-head { font-weight: bold; font-style: italic; text-align: center; color: #333; font-size: 1.05rem; }
+		.cg-row-label { font-weight: bold; font-style: italic; color: #222; text-align: left; font-size: 1.1rem; }
+		.cg-group { display: grid; gap: 0; overflow: hidden; }
+		.cg-cell { width: 100%; aspect-ratio: 1/1; display: block; }
+
+		/* Luma grays - 8 tones */
+		.l-a { background: #808080; }
+		.l-b { background: #c0c0c0; }
+		.l-c { background: #b0b0b0; }
+		.l-d { background: #e0e0e0; }
+		.l-e { background: #a0a0a0; }
+		.l-f { background: #909090; }
+		.l-g { background: #c8c8c8; }
+		.l-h { background: #585858; }
+
+		/* Chroma - 8 vivid colors matching reference */
+		.ch-1 { background: #ffe600; }
+		.ch-2 { background: #0066ff; }
+		.ch-3 { background: #cc00cc; }
+		.ch-4 { background: #ff0000; }
+		.ch-5 { background: #00aa00; }
+		.ch-6 { background: #ffaacc; }
+		.ch-7 { background: #3399ff; }
+		.ch-8 { background: #9966ff; }
+
+		/* Luma+Chroma combined via overlay */
+		.cg-mix { position: relative; }
+		.cg-mix::after {
+			content: '';
+			position: absolute;
+			top: 0; left: 0; right: 0; bottom: 0;
+			mix-blend-mode: color;
+			opacity: 1;
+		}
+		.cg-mix.m-1::after { background: #ffe600; }
+		.cg-mix.m-2::after { background: #0066ff; }
+		.cg-mix.m-3::after { background: #cc00cc; }
+		.cg-mix.m-4::after { background: #ff0000; }
+		.cg-mix.m-5::after { background: #00aa00; }
+		.cg-mix.m-6::after { background: #ffaacc; }
+		.cg-mix.m-7::after { background: #3399ff; }
+		.cg-mix.m-8::after { background: #9966ff; }
+
+		@media (max-width: 768px) {
+			.classic-grid { grid-template-columns: 1fr; gap: 20px; }
+			.cg-head { display: none; }
+			.cg-row-label { text-align: left; border-bottom: 2px solid #ddd; padding-bottom: 5px; margin-top: 15px; }
+			.cg-mobile-label { display: block; text-align: center; font-size: 0.85rem; margin-bottom: 4px; color: #888; }
+		}
+		@media (min-width: 769px) {
+			.cg-mobile-label { display: none; }
+		}
+		
+		.data-saving {
+			text-align: center;
+			margin-top: 10px;
+			font-size: 0.9rem;
+			color: #e74c3c;
+			font-weight: bold;
+		}
+
+		.bandwidth-bar {
+			width: 100%;
+			height: 8px;
+			background: #ecf0f1;
+			border-radius: 4px;
+			margin-top: 5px;
+			overflow: hidden;
+		}
+
+		.bar-fill {
+			height: 100%;
+			background: #3498db;
+		}
+
+		table.custom-table {
+			width: 100%;
+			border-collapse: collapse;
+			margin: 30px 0;
+			background: white;
+			box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+			border-radius: 8px;
+			overflow: hidden;
+		}
+
+		table.custom-table th, table.custom-table td {
+			padding: 15px;
+			text-align: left;
+			border-bottom: 1px solid #eee;
+		}
+
+		table.custom-table th {
+			background: #f8f9fa;
+			color: #2c3e50;
+			font-weight: bold;
+		}
+
+		table.custom-table tr:last-child td {
+			border-bottom: none;
+		}
+	</style>
+</head>
+
+<body>
+	<header></header>
+	<div class="container mt-xl">
+		<h1>什麼是色度抽樣？圖解 4:4:4、4:2:2 與 4:2:0 的祕密</h1>
+		<div class="blog-article-tags" style="display: flex; gap: 8px; margin-top: 12px; margin-bottom: 24px;">
+			<span style="padding: 4px 12px; background: #f0f0f0; border-radius: 4px; font-size: 14px; color: #555; border: 1px solid #e0e0e0;">知識</span>
+			<span style="padding: 4px 12px; background: #f0f0f0; border-radius: 4px; font-size: 14px; color: #555; border: 1px solid #e0e0e0;">影音</span>
+		</div>
+		<div class="row blog_header ">
+			<div class="col">
+				<p class="date">2026 / 03 / 22</p>
+			</div>
+			<div class="col">
+				<div class="iconbox">
+					<a href="#comments"><img src="image/icon/comment-next-outline.svg" alt=""></a>
+					<img src="image/icon/output.svg" alt="">
+					<div class="divider"></div>
+					<img src="image/icon/extra-life.svg" alt="">
+					<img src="image/icon/twitter.svg" alt="">
+					<img src="image/icon/facebook.svg" alt="">
+				</div>
+			</div>
+		</div>
+		<div class="article">
+			
+			<p>
+				當你在購買螢幕、相機或是影音擷取卡的時候，規格表上除了常見的 4K、60Hz 之外，可能還會看到一串神祕的數字：「支援 <strong>4:4:4</strong>」、「輸出 <strong>4:2:2</strong>」或是「影片編碼為 <strong>4:2:0</strong>」。
+			</p>
+			
+			<p>
+				這串數字到底是什麼密碼？它對我們看到的畫面有什麼影響？為什麼有些設備只支援 4:2:0？
+				今天要帶大家用最簡單的圖解，徹底搞懂「<strong>色度抽樣 (Chroma Subsampling)</strong>」這個拯救了全世界網路頻寬的偉大發明！
+			</p>
+
+			<hr class="lg">
+
+			<h2>先從 RGB 說起：畫面的基本盤</h2>
+			<p>
+				我們都知道電腦、顯示卡、電視螢幕最常使用的是 <strong>RGB 色彩空間</strong>。畫面上每一個小小的像素 (Pixel)，都是由紅 (Red)、綠 (Green)、藍 (Blue) 這三個原色燈光組合而成的。
+			</p>
+			
+			<p>
+				但問題來了：如果我們要把一部 4K 解析度、60fps 的影片，每一格畫面的每一個像素的 R、G、B 資訊都完整記錄下來並傳輸，那個檔案大小和需要的網路頻寬會是<strong>極度恐怖的天文數字</strong>！
+				為了解決這個傳輸瓶頸，聰明的工程師們把腦筋動到了「人類的眼睛」上。
+			</p>
+
+			<hr>
+
+			<h2>人類眼睛的漏洞：對「明暗」比對「色彩」更敏感</h2>
+			<p>
+				在影片工程中，我們不直接傳輸 RGB，而是把它轉換成另一種格式：<strong>YUV (或是 YCbCr)</strong>。
+				在這個格式中，影像訊號被拆分為兩個面向：
+			</p>
+			<ul>
+				<li><strong>Y (Luminance) 亮度：</strong> 決定了畫面的明暗、輪廓與細節。可以把這層想像成一張高解析度的黑白照片。</li>
+				<li><strong>U/V (Chrominance) 色度：</strong> 決定了畫面上的顏色分佈。</li>
+			</ul>
+
+			<p>
+				這牽涉到一個極為關鍵的視覺感官秘密：<strong>人類眼睛對於深淺（光暗變化）的敏感度，遠遠大於對色彩的解析能力。</strong><br>
+				如果亮度（Luma）細節受損，畫面立刻會失去輪廓、看起來糊成一團；但如果只是把相鄰幾個像素的「顏色」稍微糊在一起（降低色度的解析度），只要亮度的輪廓還在，大腦就幾乎分辨不出破綻。
+			</p>
+			
+			<p>
+				這就是色度抽樣的核心精神：<strong>利用大腦的視覺錯覺，保留 100% 絕對銳利的亮度資訊，但大膽地將色彩資訊丟棄掉一半以上。</strong>
+			</p>
+			
+			<!-- 圖層拆解對比圖 (建議圖片 1) -->
+			<img src="image/blog/chroma/luma-chroma-concept.jpg" alt="圖層拆解對比圖：包含清晰的黑白照片（Luma）、模糊的純色照片（Chroma），以及兩者疊加後得到銳利彩色照的對比。" style="width: 100%; height: auto; border-radius: 8px; margin: 30px 0; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+			
+			<p>
+				既然視覺對色度造成的影響相對較小，工程師發明了<strong>「色度抽樣 (Chroma Subsampling)」</strong>。它是一種大幅縮減影像中色度訊息，來有效縮減檔案大小與節省頻寬的方法。在 YUV 格式中，如果我們削減色度資訊，最極端可以節省高達一半的資料量，且肉眼幾乎看不出畫質下降！
+			</p>
+
+			<hr class="lg">
+
+			<h2>圖解時間：4:4:4 vs 4:2:2 vs 4:2:0 到底是什麼？</h2>
+			<p>
+				這三個數字代表了影像在一個 <strong>4 x 2 的像素區塊 (總共 8 個像素)</strong> 內的色彩取樣方式：
+				<ul>
+					<li><strong>第一個數字：</strong> 參考區域的寬度 (通常固定為 4)。</li>
+					<li><strong>第二個數字：</strong> 第一排 4 個像素中，有幾個像素擁有自己獨立的色彩資訊。</li>
+					<li><strong>第三個數字：</strong> 第二排 4 個像素中，有幾個像素擁有自己獨立的色彩資訊。</li>
+				</ul>
+				<br>注意：<strong>所有像素的亮度 (Y) 都會被 100% 完整保留！(也就是黑點)</strong> 被省略的只有色彩 (背景色)。
+			</p>
+
+			<div class="css-illustration" style="padding: 30px 10px; background: #fff;">
+				<h4>色度抽樣對照表</h4>
+				<div class="classic-grid">
+					<!-- Header -->
+					<div class="cg-head"></div>
+					<div class="cg-head">Luma</div>
+					<div class="cg-head">Chroma</div>
+					<div class="cg-head">Luma + Chroma</div>
+
+					<!-- ===== 4:4:4 ===== -->
+					<div class="cg-row-label">4:4:4</div>
+					<div>
+						<div class="cg-mobile-label">Luma</div>
+						<div class="cg-group" style="grid-template-columns:repeat(4,1fr)">
+							<div class="cg-cell l-a"></div><div class="cg-cell l-b"></div><div class="cg-cell l-c"></div><div class="cg-cell l-d"></div>
+							<div class="cg-cell l-e"></div><div class="cg-cell l-f"></div><div class="cg-cell l-g"></div><div class="cg-cell l-h"></div>
+							<div class="cg-cell l-b"></div><div class="cg-cell l-d"></div><div class="cg-cell l-f"></div><div class="cg-cell l-h"></div>
+							<div class="cg-cell l-a"></div><div class="cg-cell l-c"></div><div class="cg-cell l-e"></div><div class="cg-cell l-g"></div>
+						</div>
+					</div>
+					<div>
+						<div class="cg-mobile-label">Chroma</div>
+						<div class="cg-group" style="grid-template-columns:repeat(4,1fr)">
+							<div class="cg-cell ch-1"></div><div class="cg-cell ch-2"></div><div class="cg-cell ch-6"></div><div class="cg-cell ch-8"></div>
+							<div class="cg-cell ch-4"></div><div class="cg-cell ch-5"></div><div class="cg-cell ch-6"></div><div class="cg-cell ch-7"></div>
+							<div class="cg-cell ch-2"></div><div class="cg-cell ch-1"></div><div class="cg-cell ch-7"></div><div class="cg-cell ch-4"></div>
+							<div class="cg-cell ch-8"></div><div class="cg-cell ch-3"></div><div class="cg-cell ch-5"></div><div class="cg-cell ch-1"></div>
+						</div>
+					</div>
+					<div>
+						<div class="cg-mobile-label">Luma + Chroma</div>
+						<div class="cg-group" style="grid-template-columns:repeat(4,1fr)">
+							<div class="cg-cell cg-mix l-a m-1"></div><div class="cg-cell cg-mix l-b m-2"></div><div class="cg-cell cg-mix l-c m-6"></div><div class="cg-cell cg-mix l-d m-8"></div>
+							<div class="cg-cell cg-mix l-e m-4"></div><div class="cg-cell cg-mix l-f m-5"></div><div class="cg-cell cg-mix l-g m-6"></div><div class="cg-cell cg-mix l-h m-7"></div>
+							<div class="cg-cell cg-mix l-b m-2"></div><div class="cg-cell cg-mix l-d m-1"></div><div class="cg-cell cg-mix l-f m-7"></div><div class="cg-cell cg-mix l-h m-4"></div>
+							<div class="cg-cell cg-mix l-a m-8"></div><div class="cg-cell cg-mix l-c m-3"></div><div class="cg-cell cg-mix l-e m-5"></div><div class="cg-cell cg-mix l-g m-1"></div>
+						</div>
+					</div>
+
+					<!-- ===== 4:2:2 ===== -->
+					<div class="cg-row-label">4:2:2</div>
+					<div>
+						<div class="cg-mobile-label">Luma</div>
+						<div class="cg-group" style="grid-template-columns:repeat(4,1fr)">
+							<div class="cg-cell l-a"></div><div class="cg-cell l-b"></div><div class="cg-cell l-c"></div><div class="cg-cell l-d"></div>
+							<div class="cg-cell l-e"></div><div class="cg-cell l-f"></div><div class="cg-cell l-g"></div><div class="cg-cell l-h"></div>
+							<div class="cg-cell l-b"></div><div class="cg-cell l-d"></div><div class="cg-cell l-f"></div><div class="cg-cell l-h"></div>
+							<div class="cg-cell l-a"></div><div class="cg-cell l-c"></div><div class="cg-cell l-e"></div><div class="cg-cell l-g"></div>
+						</div>
+					</div>
+					<div>
+						<div class="cg-mobile-label">Chroma</div>
+						<div class="cg-group" style="grid-template-columns:repeat(2,1fr)">
+							<div class="cg-cell ch-1" style="aspect-ratio:2/1"></div><div class="cg-cell ch-8" style="aspect-ratio:2/1"></div>
+							<div class="cg-cell ch-4" style="aspect-ratio:2/1"></div><div class="cg-cell ch-6" style="aspect-ratio:2/1"></div>
+							<div class="cg-cell ch-2" style="aspect-ratio:2/1"></div><div class="cg-cell ch-4" style="aspect-ratio:2/1"></div>
+							<div class="cg-cell ch-8" style="aspect-ratio:2/1"></div><div class="cg-cell ch-1" style="aspect-ratio:2/1"></div>
+						</div>
+					</div>
+					<div>
+						<div class="cg-mobile-label">Luma + Chroma</div>
+						<div class="cg-group" style="grid-template-columns:repeat(4,1fr)">
+							<div class="cg-cell cg-mix l-a m-1"></div><div class="cg-cell cg-mix l-b m-1"></div><div class="cg-cell cg-mix l-c m-8"></div><div class="cg-cell cg-mix l-d m-8"></div>
+							<div class="cg-cell cg-mix l-e m-4"></div><div class="cg-cell cg-mix l-f m-4"></div><div class="cg-cell cg-mix l-g m-6"></div><div class="cg-cell cg-mix l-h m-6"></div>
+							<div class="cg-cell cg-mix l-b m-2"></div><div class="cg-cell cg-mix l-d m-2"></div><div class="cg-cell cg-mix l-f m-4"></div><div class="cg-cell cg-mix l-h m-4"></div>
+							<div class="cg-cell cg-mix l-a m-8"></div><div class="cg-cell cg-mix l-c m-8"></div><div class="cg-cell cg-mix l-e m-1"></div><div class="cg-cell cg-mix l-g m-1"></div>
+						</div>
+					</div>
+
+					<!-- ===== 4:2:0 ===== -->
+					<div class="cg-row-label">4:2:0</div>
+					<div>
+						<div class="cg-mobile-label">Luma</div>
+						<div class="cg-group" style="grid-template-columns:repeat(4,1fr)">
+							<div class="cg-cell l-a"></div><div class="cg-cell l-b"></div><div class="cg-cell l-c"></div><div class="cg-cell l-d"></div>
+							<div class="cg-cell l-e"></div><div class="cg-cell l-f"></div><div class="cg-cell l-g"></div><div class="cg-cell l-h"></div>
+							<div class="cg-cell l-b"></div><div class="cg-cell l-d"></div><div class="cg-cell l-f"></div><div class="cg-cell l-h"></div>
+							<div class="cg-cell l-a"></div><div class="cg-cell l-c"></div><div class="cg-cell l-e"></div><div class="cg-cell l-g"></div>
+						</div>
+					</div>
+					<div>
+						<div class="cg-mobile-label">Chroma</div>
+						<div class="cg-group" style="grid-template-columns:repeat(2,1fr)">
+							<div class="cg-cell ch-1"></div><div class="cg-cell ch-8"></div>
+							<div class="cg-cell ch-2"></div><div class="cg-cell ch-1"></div>
+						</div>
+					</div>
+					<div>
+						<div class="cg-mobile-label">Luma + Chroma</div>
+						<div class="cg-group" style="grid-template-columns:repeat(4,1fr)">
+							<div class="cg-cell cg-mix l-a m-1"></div><div class="cg-cell cg-mix l-b m-1"></div><div class="cg-cell cg-mix l-c m-8"></div><div class="cg-cell cg-mix l-d m-8"></div>
+							<div class="cg-cell cg-mix l-e m-1"></div><div class="cg-cell cg-mix l-f m-1"></div><div class="cg-cell cg-mix l-g m-8"></div><div class="cg-cell cg-mix l-h m-8"></div>
+							<div class="cg-cell cg-mix l-b m-2"></div><div class="cg-cell cg-mix l-d m-2"></div><div class="cg-cell cg-mix l-f m-1"></div><div class="cg-cell cg-mix l-h m-1"></div>
+							<div class="cg-cell cg-mix l-a m-2"></div><div class="cg-cell cg-mix l-c m-2"></div><div class="cg-cell cg-mix l-e m-1"></div><div class="cg-cell cg-mix l-g m-1"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<h3>4:4:4 格式 (無抽樣)</h3>
+			<p>
+				數字表示在 4 個像素的寬度中，上下兩排的 4 個像素全都有自己獨立的色彩。它<strong>沒有使用到色度抽樣</strong>，呈現了最完整的亮度與色度。
+				<br><strong>關鍵補充：</strong> 雖然 4:4:4 經常與 RGB 混為一談，但在數學定義上其實不同。RGB 是直接把訊號分為紅綠藍，而 4:4:4 通常指的是 YCbCr 色彩空間。不過在 4:4:4 的無損狀態下，YCbCr 保留了與 RGB 完全同等的信息量，因此兩者可以互換且無損。
+				<br><strong>為什麼電腦螢幕需要它？</strong> 黑白細小文字非常依賴高對比與銳利的邊緣。如果螢幕輸出降級為有色度抽樣的格式，文字邊緣就會出現彩色沾染（Color Fringing）與模糊現象。
+			</p>
+			
+			<!-- 電腦文字邊沿銳利度檢測範例圖 (建議圖片 2) -->
+			<img src="image/blog/chroma/text-fringing.jpg" alt="電腦文字邊沿銳利度檢測範例圖：對比無損 4:4:4 的文字邊緣與 4:2:0 電腦螢幕上文字邊緣溢色、糊掉的慘況。" style="width: 100%; height: auto; border-radius: 8px; margin: 20px 0 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+			
+			<p>
+				<strong>適合場景：</strong> 高階數位相機 RAW 檔、底片掃描器、電影後期調色製作、與電腦工作用顯示器。
+			</p>
+
+			<h3>4:2:2 格式 (色彩減半)</h3>
+			<p>
+				水平方向每兩個像素共用一個顏色，垂直方向仍維持原比例不共用。
+				雖然留存的色彩訊號佔全彩的二分之一，但在加上 100% 完整的亮度 Y 之後，總數據量大約是 4:4:4 的 2/3。
+				<br><strong>為什麼適合綠幕去背 (Keying)？</strong> 因為比起 4:2:0，它在水平方向多了整整一倍的色彩資訊！這讓軟體在演算「髮絲邊緣」或「半透明物件」去背時，能有更精準的顏色邊界判斷，邊緣會乾淨非常多。
+				<br><strong>適合場景：</strong> 專業廣播電視、高階錄影、需要進行進階綠幕去背與特效的電影後製素材。
+			</p>
+
+			<h3>4:2:0 格式 (色彩剩四分之一)</h3>
+			<p>
+				第一行的 4 個像素每兩個共用一個顏色 (4:2)，而第二行則「完全不採樣色度」(以尾角的 0 表示)，直接借用上一行的顏色！這意味著一個 <strong>2x2 的田字型區域，4 個像素共用著同 1 個色彩</strong>。留存的色度僅為 4:4:4 格式的四分之一！
+				<br><strong>我們真的看不出差別嗎？</strong> 雖然在動態連續的真實影像 (像電影、Vlog) 中人眼很難察覺差異，但在處理高對比、高飽和度的圖文（例如紅色底圖配上綠色細字的 UI 設計），或是邊緣銳利的高速移動紅光下，4:2:0 就會露出破綻，邊緣會出現明顯的鋸齒與色塊溢出。
+				<br><strong>適合場景：</strong> 我們日常生活中幾乎所有的終端影片！不管是 YouTube、Netflix、藍光光碟 (Blu-ray)、遊戲機實況錄影、家用電視接收的訊號，全都是 4:2:0，因為它是大幅縮減頻寬與儲存空間的完美方案。
+			</p>
+
+			<hr class="lg">
+
+			<h2>總結表格：我們該如何選擇？</h2>
+			<p>
+				除非你用的是高解析度電視作為極限的電腦螢幕 (看非常細小的紅色文字在黑色背景上時，4:2:0 的邊緣會模糊溢色)，這三種格式對於一般影片觀賞的影響微乎其微。數字越高代表畫面色彩細緻度越高，但也代表需要越佔用硬碟層級的頻寬。
+			</p>
+
+			<table class="custom-table">
+				<thead>
+					<tr>
+						<th>格式</th>
+						<th>色彩保留率</th>
+						<th>資料傳輸量</th>
+						<th>優點</th>
+						<th>常見應用裝置與場景</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td><strong>4:4:4</strong> (或 RGB)</td>
+						<td>100%</td>
+						<td>極大</td>
+						<td>最高畫質，邊緣文字最清晰，適合繁重後期與調色處理。</td>
+						<td>電腦顯示卡輸出給電腦螢幕、電影級後期設備、高階擷取卡。</td>
+					</tr>
+					<tr>
+						<td><strong>4:2:2</strong></td>
+						<td>50%</td>
+						<td>中等</td>
+						<td>平衡的選擇，畫質極佳且節省 1/3 的頻寬，綠幕去背邊緣不會太慘。</td>
+						<td>專業攝影機內錄、電視轉播車、高階視訊硬體設備。</td>
+					</tr>
+					<tr>
+						<td><strong>4:2:0</strong></td>
+						<td>25%</td>
+						<td>最小</td>
+						<td>極度節省網路和 HDMI 傳輸頻寬，縮減檔案大小最高達 50%。肉眼看影片幾乎無感。</td>
+						<td>YouTube、Netflix、藍光 DVD、家用遊戲機錄影、所有家用影音播放。</td>
+					</tr>
+				</tbody>
+			</table>
+
+			<p>
+				下次當你在挑選螢幕或是 HDMI 線材時，看到「支援 4K 60Hz 4:4:4」時，你就會知道那代表這條線材擁有極大的頻寬，能夠無損傳輸最頂級的畫面表現了！
+			</p>
+			
+		</div>
+	</div>
+
+	
+	<!-- Giscus Comments -->
+	<div id="comments" class="container mt-xl" style="padding-bottom: 60px; padding-top: 40px; border-top: 1px solid #eee;">
+		<script src="https://giscus.app/client.js"
+				data-repo="newslin-design/newslin-design.github.io"
+				data-repo-id="R_kgDOOXA3ww"
+				data-category="Announcements"
+				data-category-id="DIC_kwDOOXA3w84C5AiY"
+				data-mapping="pathname"
+				data-strict="0"
+				data-reactions-enabled="1"
+				data-emit-metadata="0"
+				data-input-position="top"
+				data-theme="light"
+				data-lang="zh-TW"
+				crossorigin="anonymous"
+				async>
+		</script>
+	</div>
+	<footer>
+	</footer>
+
+</body>
+<!-- 引用 portfolio/js/app.js 產生 header/footer -->
+<script src="../portfolio/js/app.js"></script>
+
+</html>

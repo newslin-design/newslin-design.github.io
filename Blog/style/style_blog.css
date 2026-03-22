@@ -4,7 +4,14 @@
 
 header .container,
 footer .container {
-    max-width: 100%;
+    max-width: 1240px;
+}
+
+@media only screen and (max-width: 1200px) {
+    header .container,
+    footer .container {
+        max-width: 1024px;
+    }
 }
 
 .article p {
@@ -12,6 +19,46 @@ footer .container {
     letter-spacing: 0.05em;
     line-height: 1.628em;
     margin: 14px 0;
+}
+
+/* --- List Styles --- */
+.article ul, 
+.article ol {
+    padding-left: 28px;
+    margin: 16px 0 28px 0;
+    font-size: 19px;
+    letter-spacing: 0.05em;
+    line-height: 1.628em;
+}
+
+.article li {
+    margin-bottom: 12px;
+    position: relative;
+    color: inherit;
+}
+
+.article ul {
+    list-style-type: none;
+}
+
+.article ul li::before {
+    content: "";
+    position: absolute;
+    left: -20px;
+    top: 13px;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background-color: var(--aug-color, #787878);
+}
+
+.article ol {
+    list-style-type: decimal;
+}
+
+.article ol li::marker {
+    color: var(--aug-color, #787878);
+    font-weight: 600;
 }
 
 p.highlight {

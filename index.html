@@ -1,196 +1,279 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
 <head>
 	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width initial-scale=1.0,user-scalable=0,maximum-scale=1.5">
-	<title></title>
-	<script>workName = "about"</script>
-	<link rel="stylesheet" href="style/reset.css">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, maximum-scale=1.5">
+	<title>Blog - Portfolio</title>
+	<script>workName = "blog"</script>
+	<script>var basePath = "portfolio/"; var pageBasePath = "portfolio/";</script>
+	<link rel="stylesheet" href="portfolio/style/reset.css">
+	<link rel="stylesheet" href="portfolio/style/style_layout.css">
 	<link rel="stylesheet" href="portfolio/style/style.css">
-	<link rel="icon" type="image/png" href="web_icon.png" />
+	<link rel="stylesheet" href="blog/style/style_blog.css">
+	<link rel="icon" type="image/png" href="portfolio/web_icon.png" />
+	
+	<!-- 複用與首頁類似的 card 配置樣式 -->
+	<link rel="stylesheet" href="portfolio/style/style_cardbox.css">
+
 	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-114514958-1"></script>
 	<!-- Google Tag Manager -->
 	<script>
-			(function (w, d, s, l, i) {
-				w[l] = w[l] || []; w[l].push({
-					'gtm.start':
-						new Date().getTime(), event: 'gtm.js'
-				}); var f = d.getElementsByTagName(s)[0],
-					j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
-						'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
-			})(window, document, 'script', 'dataLayer', 'GTM-PMLJXPC');
+		(function (w, d, s, l, i) {
+			w[l] = w[l] || []; w[l].push({
+				'gtm.start':
+					new Date().getTime(), event: 'gtm.js'
+			}); var f = d.getElementsByTagName(s)[0],
+				j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+					'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+		})(window, document, 'script', 'dataLayer', 'GTM-PMLJXPC');
 	</script>
 	<!-- End Google Tag Manager -->
+	<style>
+		.blog-list {
+			display: flex;
+			flex-direction: column;
+			gap: 24px;
+		}
+		
+		/* 簡單的卡片樣式 */
+		.blog-card {
+			display: flex;
+			flex-direction: row;
+			background: #fff;
+			border-radius: 12px;
+			overflow: hidden;
+			box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+			text-decoration: none;
+			color: #333;
+			transition: transform 0.3s ease, box-shadow 0.3s ease;
+		}
+		
+		.blog-card:hover {
+			box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+		}
+		
+		.blog-card-img {
+			width: 30%;
+			min-width: 250px;
+			background-size: cover;
+			background-position: center;
+		}
+		
+		.blog-card-content {
+			padding: 24px 32px;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			flex: 1;
+		}
+		
+		.blog-card-date {
+			color: #888;
+			font-size: 14px;
+			margin-bottom: 8px;
+		}
+		
+		.blog-card-title {
+			font-size: 24px;
+			font-weight: 500;
+			margin-bottom: 12px;
+		}
+		
+		.blog-card-excerpt {
+			color: #666;
+			font-size: 16px;
+			line-height: 1.6;
+		}
+		
+		@media (max-width: 768px) {
+			.blog-card {
+				flex-direction: column;
+			}
+			.blog-card-img {
+				width: 100%;
+				height: 200px;
+			}
+		}
+
+		.blog-filters {
+			display: flex;
+			gap: 12px;
+			margin-bottom: 24px;
+			flex-wrap: wrap;
+		}
+		
+		.filter-btn {
+			padding: 8px 16px;
+			border: 1px solid #ddd;
+			border-radius: 20px;
+			background: #fff;
+			color: #666;
+			cursor: pointer;
+			font-size: 14px;
+			transition: all 0.3s ease;
+		}
+		
+		.filter-btn:hover {
+			background: #f0f0f0;
+		}
+		
+		.filter-btn.active {
+			background: #333;
+			color: #fff;
+			border-color: #333;
+		}
+
+		.blog-card-tags {
+			display: flex;
+			gap: 8px;
+			margin-bottom: 12px;
+		}
+
+		.blog-card-tag {
+			padding: 4px 10px;
+			background: #f0f0f0;
+			border-radius: 4px;
+			font-size: 12px;
+			color: #555;
+		}
+	</style>
 </head>
-<style>
-	.close {
-		display: none;
-	}
-</style>
 
 <body>
 	<!-- Google Tag Manager (noscript) -->
 	<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PMLJXPC" height="0" width="0"
 			style="display:none;visibility:hidden"></iframe></noscript>
 	<!-- End Google Tag Manager (noscript) -->
-
-	<div class="container mt-llg">
-		<div class="row mb-md">
-			<div id="loadingMask"></div>
-			<div class="col-2">
-				<div class="imgbox circle"><img id="cover-me" src="image/cover_me.png" alt=""></div>
-			</div>
-			<div class="col-3" style="width: 205px;">
-				<!-- <h2 style="margin: 24px 0 0 0;">林新翔</h2> -->
-				<!-- <h2 style="margin: 0 0 0 0;">LIN SIN-SIANG</h2> -->
-				<!-- <h6 style="color: #3d3d3d;">newslining@gmail.com</h6> -->
-				<h3>Password : <input class="password"></input></h3>
-			</div>
-			<div class="col-6 col-sm-12">
-				<h4 style="color:#8A8A8A;font-size: 20px;font-weight: 300;margin: 24px 0 0 0;"></h4>
-			</div>
+	
+	<header></header>
+	
+	<div class="container mt-xl mb-xxl">
+		<div class="session-border pt-xs pb-xs mb-lg">
+			<h2>Blog</h2>
+			<p>Learning notes, thoughts, and technical shares.</p>
+		</div>
+		
+		<!-- Tag 過濾器 -->
+		<div class="blog-filters" id="blog-filters">
+			<button class="filter-btn active" data-filter="all">全部 (All)</button>
+			<button class="filter-btn" data-filter="開發">開發</button>
+			<button class="filter-btn" data-filter="知識">知識</button>
+			<button class="filter-btn" data-filter="日語">日語</button>
+			<button class="filter-btn" data-filter="教學">教學</button>
 		</div>
 
-		<div class="row mb-lg close">
-			<div class="col-6 col-sm-12">
-				<div class="session mt-md">Experence</div>
-				<h4>UI/UX Designer, Data Analyst</h4>
-				<h5>ATEN International Co., Ltd.</h5>
-				<p>2018.10 - Now , 4 years months </p>
-				<div class="line_area">
-					<h6>Streaming Studio Series</h6>
-					<p>Build the software spec and design the UI experience based on the study of the industry trend and
-						scenario. The series includes six products, which accomplished our corporation's mission of
-						developing new product lines. And the first one of them obtained the highest sales volume that
-						year and won many international awards.</p>
-					<h6>Text-to-Speech AI Solution</h6>
-					<p>Co-working with the AI team, quickly finding the market fit for the new AI-based algorithm with
-						MVP, and creating a solution to meet user needs under the assurance of R&D resources.</p>
-					<h6>Control System Design</h6>
-					<p>Discover users' needs, build a solution, and design the control system, which includes the space
-						scenario, the automation control, the IoT hardware connection, and the mobile/iPad controller
-						UI. The project includes Mansion System, Training Room, Exhibition display system…</p>
-					<h6>Data Analytics </h6>
-					<p>Preprocess and compute data from POS, CRM, or web scraping by python or power query, then build
-						the BI dashboard or analytics report for researchers or PM, which includes global satisfaction
-						analytics, E-shop keyword analytics, and quarterly project dashboard...</p>
-				</div>
-				<h4>Cyberart Designer (UI/UX Designer)</h4>
-				<h5>Chunlyn wwcb tech co., ltd</h5>
-				<p>2017.8 - 2018.7 , 1 years </p>
-				<div class="line_area">
-					<h6>Official Website</h6>
-					<p>Build an official website, including UI design, SEO planning, Google Analytics, WordPress.</p>
-					<h6>Product Development</h6>
-					<p>Develop environmentally friendly building materials.</p>
-				</div>
-				<h4>Designer, Frontend Developer</h4>
-				<h5>Freelancer</h5>
-				<p>2014.9 - 2017.8 , 3 years </p>
-				<div class="line_area">
-					<p>Complete over 20 projects with RD teams independently or lead the design teams, including website
-						design and frontend, Marketing video/animation, product design, visual design, and digital
-						marketing.</p>
-				</div>
-				<h4>Curator, Designer</h4>
-				<h5>DesignAct 設計思</h5>
-				<p>2014.9 - 2017.8 , 3 years </p>
-				<div class="line_area">
-					<p>
-						A design community and design education platform based in Taiwan, devoted to spreading design
-						thinking and ideas to everyone through a series of activities and discussions.
-					</p>
-					<h6>Workshop/Event organization </h6>
-					<p>
-						Organize five workshops: Inviting young designers to share and host The World Café.
-					</p>
-					<h6>Social Marketing</h6>
-					<p>
-						Facebook 7000+ fans, Fans 84% returning rate</br>
-						Website 9.71% bounce rate
-					</p>
-				</div>
-			</div>
-			<div class="col-6 col-sm-12 pl-lg pl-sm-4px">
-				<div class="session mt-md">Skill</div>
-				<h4>UI/UX Design</h4>
-				<div class="row">
-					<div class="col-3" style="width: 96px;">
-						<p style="line-height:28px;">
-							Design :</br>
-							Prototype :</br>
-							DEMO :</br>
-						</p>
+		<div class="blog-list" id="blog-list">
+			<!-- 文章列表 -->
+			<a href="blog/chroma-subsampling.html" class="blog-card" data-tags="知識,影音">
+				<div class="blog-card-img" style="background: linear-gradient(135deg, #3498db, #2c3e50);"></div>
+				<div class="blog-card-content">
+					<div class="blog-card-tags">
+						<span class="blog-card-tag">知識</span>
+						<span class="blog-card-tag">影音</span>
 					</div>
-					<div class="col">
-						<p style="line-height:28px;">
-							Adobe Xd, Sketch, Illustrator, Photoshop</br>
-							HTML, JavaScript, Protopie, Webflow</br>
-							After Effects, Davinci resolve, 3Dmax</br>
-						</p>
+					<div class="blog-card-date">2026 / 03 / 22</div>
+					<h3 class="blog-card-title">什麼是色度抽樣？圖解 4:4:4、4:2:2 與 4:2:0 的祕密</h3>
+					<div class="blog-card-excerpt">
+						為什麼 4K 影片檔案可以這麼小？4:4:4 和 4:2:0 到底差在哪？這篇文章用最簡單的圖解讓你秒懂「色度抽樣」，揭開工程師如何用欺騙眼睛的方法拯救全世界網路頻寬的秘密！
 					</div>
 				</div>
-				<h4>Delelopment</h4>
-				<p style="line-height:28px;">
-					HTML, CSS, JavaScript, Bootstrap</br>
-					Search engine optimization, Google Analytics
-				</p>
-				<h4>Date Analytics</h4>
-				<p style="line-height:28px;">
-					Python, Power BI, Power Query, Excel,<br>
-					Google Analytics, Salesforce
-				</p>
-				<h4>Language</h4>
-				<p style="line-height:28px;">
-					English :TOEIC 715</br>
-					日本語：JLPT N2
-				</p>
-				<div class="session mt-md">Education</div>
-				<h4>Bachelor of science in Industrial Design</h4>
-				<h5>National Cheng Kung University ,Taiwan</h5>
-				<div class="session mt-md">Side Project</div>
-				<h6>Project of Rural Improvement in Cambodian</h6>
-				<div class="line_area">
-					<p>International Volunteer Project. Conducted field studies over three prototype tests in a remote
-						village and Developed a design proposal and prototype.</p>
-				</div>
-				<h6>TEDxTainan</h6>
-				<div class="line_area">
-					<p>Lead the design team to complete the design for 200 people event, Including Workshop
-						organization, Venue design, and Visual design.</p>
-				</div>
-				<h6>Charades Games Website</h6>
-				<div class="line_area">
-					<p>Create a Charades party game with javascript, and use audio web API to control the voice.</p>
-				</div>
-				<h6>NEAR</h6>
-				<div class="line_area">
-					<p>Application of mapping help and resources by spatializing. Composed a design proposal and build a
-						prototype with a Startup team.</p>
-				</div>
-				<div class="session mt-md">Award</div>
-				<div class="row">
-					<div class="col-1" style="width: 54px;">
-						<h5 style="line-height:28px;">
-							2019</br>
-							2016</br>
-							2015</br>
-							2015
-						</h5>
-					</div>
-					<div class="col">
-						<p style="line-height:28px;">
-							GOOD DESIGN GOLD AWARD</br>
-							iF STUDENT DESIGN AWARD</br>
-							LEXUS Design Award , First place Taiwan</br>
-							Goldenpin Award
-						</p>
-					</div>
-				</div>
-			</div>
+			</a>
 
+			<a href="blog/metamerism-color.html" class="blog-card" data-tags="知識,設計">
+				<div class="blog-card-img" style="background: linear-gradient(135deg, #f1c40f, #e74c3c);"></div>
+				<div class="blog-card-content">
+					<div class="blog-card-tags">
+						<span class="blog-card-tag">知識</span>
+						<span class="blog-card-tag">設計</span>
+					</div>
+					<div class="blog-card-date">2026 / 03 / 22</div>
+					<h3 class="blog-card-title">什麼是 Metamerism (同色異譜)？為什麼紅光加綠光會等於黃光？</h3>
+					<div class="blog-card-excerpt">
+						原來我們螢幕上的黃色，根本不是真的黃光？這篇文章帶你從色彩學與神經科學的角度，圖解什麼是「同色異譜 (Metamerism)」，揭開大腦被欺騙的有趣機制。
+					</div>
+				</div>
+			</a>
+
+			<a href="blog/unicode-intro.html" class="blog-card" data-tags="開發,知識">
+				<div class="blog-card-img" style="position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; background-color: #f8f9fa;">
+					<video class="blog-card-video" src="image/blog/unicode-intro.mp4" muted loop playsinline style="width: 100%; height: 100%; object-fit: cover;"></video>
+				</div>
+				<div class="blog-card-content">
+					<div class="blog-card-tags">
+						<span class="blog-card-tag">開發</span>
+						<span class="blog-card-tag">知識</span>
+					</div>
+					<div class="blog-card-date">2026 / 03 / 22</div>
+					<h3 class="blog-card-title">Unicode 深度介紹：從亂碼到萬國碼的奇妙旅程</h3>
+					<div class="blog-card-excerpt">
+						你有沒有遇過打開文字檔時滿滿都是亂碼的經驗？這篇文章將帶你用輕鬆圖解的方式，深入淺出了解 Unicode 與 UTF-8 的核心概念，揭開它們如何拯救電腦世界的編碼危機。
+					</div>
+				</div>
+			</a>
+
+			<a href="blog/how-to-use-nihonngo-input.html" class="blog-card" data-tags="日語,教學">
+				<div class="blog-card-img" style="background-image: url('blog/image/001/A_nighttime_shot_of_a_Tokyo_rainy_night_building_reflectio_.jpg');"></div>
+				<div class="blog-card-content">
+					<div class="blog-card-tags">
+						<span class="blog-card-tag">日語</span>
+						<span class="blog-card-tag">教學</span>
+					</div>
+					<div class="blog-card-date">2023 / 05 / 03</div>
+					<h3 class="blog-card-title">如何安裝日本語輸入法</h3>
+					<div class="blog-card-excerpt">
+						學習日文時，經歷過聽力終於聽懂一點長看的動畫和電視劇的對話後，會漸漸開始想要自己能開始對話了... 這邊就來教大家日文輸入法的大小事吧!
+					</div>
+				</div>
+			</a>
 		</div>
-
 	</div>
-</body>
-<script src="portfolio/js/app.js"></script>
 
+	<footer>
+	</footer>
+
+</body>
+<!-- 引用 portfolio/js/app.js 產生 header/footer -->
+<script src="portfolio/js/app.js"></script>
+<script>
+	// Tag 篩選與影片預覽功能
+	document.addEventListener('DOMContentLoaded', () => {
+		const filterBtns = document.querySelectorAll('.filter-btn');
+		const blogCards = document.querySelectorAll('.blog-card');
+
+		// 影片預覽播放功能
+		blogCards.forEach(card => {
+			const video = card.querySelector('video.blog-card-video');
+			if (video) {
+				card.addEventListener('mouseenter', () => video.play());
+				card.addEventListener('mouseleave', () => video.pause());
+			}
+		});
+
+		filterBtns.forEach(btn => {
+			btn.addEventListener('click', () => {
+				// 移除所有按鈕的 active 狀態
+				filterBtns.forEach(b => b.classList.remove('active'));
+				// 替當前點擊的按鈕加入 active
+				btn.classList.add('active');
+
+				const selectedTag = btn.getAttribute('data-filter');
+
+				// 篩選文章
+				blogCards.forEach(card => {
+					if (selectedTag === 'all') {
+						card.style.display = 'flex';
+					} else {
+						const cardTags = card.getAttribute('data-tags');
+						if (cardTags && cardTags.includes(selectedTag)) {
+							card.style.display = 'flex';
+						} else {
+							card.style.display = 'none';
+						}
+					}
+				});
+			});
+		});
+	});
+</script>
 </html>

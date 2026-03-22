@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, maximum-scale=1.5">
+	<title>Unicode 深度介紹：從亂碼到萬國碼的奇妙旅程</title>
+	<script>workName = "blog_unicode"</script>
+	<script>var basePath = "../portfolio/"; var pageBasePath = "../portfolio/";</script>
+	<link rel="stylesheet" href="../portfolio/style/reset.css">
+	<link rel="stylesheet" href="../portfolio/style/style_layout.css">
+	<link rel="stylesheet" href="../portfolio/style/style.css">
+	<link rel="stylesheet" href="../portfolio/style/article.css">
+	<link rel="stylesheet" href="style/style_blog.css">
+	<link rel="icon" type="image/png" href="../portfolio/web_icon.png" />
+	<!-- Article Specific CSS Illustrations -->
+	<style>
+		.css-illustration {
+			margin: 40px 0;
+			padding: 40px 20px;
+			background: #f8f9fa;
+			border-radius: 16px;
+			box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			font-family: 'Courier New', Courier, monospace;
+			overflow: hidden;
+		}
+
+		.css-illustration h4 {
+			margin-bottom: 24px;
+			font-family: sans-serif;
+			color: #333;
+		}
+
+		/* Mojibake Animation */
+		.mojibake-box {
+			font-size: 2rem;
+			font-weight: bold;
+			color: #e74c3c;
+			background: #fff;
+			padding: 20px 40px;
+			border-radius: 8px;
+			box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
+			letter-spacing: 2px;
+			animation: glitch 2s infinite;
+		}
+
+		@keyframes glitch {
+			0% { content: "Ã¢â€šÂ¬"; color: #e74c3c; }
+			25% { color: #8e44ad; }
+			50% { color: #2ecc71; }
+			75% { color: #f39c12; }
+			100% { color: #e74c3c; }
+		}
+
+		/* Unicode Mapping Graphic */
+		.mapping-flow {
+			display: flex;
+			align-items: center;
+			gap: 20px;
+			flex-wrap: wrap;
+			justify-content: center;
+		}
+		
+		.card-box {
+			background: #fff;
+			border: 2px solid #3498db;
+			border-radius: 12px;
+			padding: 20px;
+			text-align: center;
+			min-width: 120px;
+			box-shadow: 0 4px 15px rgba(52, 152, 219, 0.2);
+			transition: transform 0.3s ease;
+		}
+
+		.card-box:hover {
+			transform: translateY(-5px);
+		}
+
+		.card-box .char {
+			font-size: 3rem;
+			margin-bottom: 10px;
+		}
+
+		.card-box .label {
+			font-size: 0.9rem;
+			color: #666;
+			font-family: sans-serif;
+		}
+
+		.arrow {
+			font-size: 2rem;
+			color: #95a5a6;
+			animation: bounceRight 2s infinite;
+		}
+
+		@keyframes bounceRight {
+			0%, 100% { transform: translateX(0); }
+			50% { transform: translateX(10px); }
+		}
+
+		/* UTF8 Structure Graphic */
+		.utf8-grid {
+			display: flex;
+			flex-direction: column;
+			gap: 15px;
+			width: 100%;
+			max-width: 650px;
+			align-items: flex-start;
+		}
+
+		.byte-row {
+			display: flex;
+			align-items: center;
+			gap: 10px;
+		}
+
+		.byte-label {
+			width: 70px;
+			font-weight: bold;
+			color: #555;
+			font-family: sans-serif;
+			flex-shrink: 0;
+		}
+
+		.byte-example {
+			font-size: 1.5rem;
+			font-weight: bold;
+			color: #2c3e50;
+			width: 35px;
+			text-align: center;
+			flex-shrink: 0;
+			cursor: help;
+		}
+
+		.byte-blocks {
+			display: flex;
+			gap: 6px;
+		}
+
+		.bit {
+			flex: 1;
+			height: 30px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			background: #ecf0f1;
+			font-size: 0.8rem;
+			border-radius: 3px;
+			color: #7f8c8d;
+		}
+
+		.bit.control {
+			background: #e74c3c;
+			color: white;
+			font-weight: bold;
+		}
+
+		.bit.data {
+			background: #3498db;
+			color: white;
+		}
+
+		.bit-group {
+			display: flex;
+			gap: 2px;
+			padding: 4px;
+			background: rgba(0,0,0,0.05);
+			border-radius: 6px;
+			width: 130px;
+			flex-shrink: 0;
+		}
+
+		/* Visual: MySQL utf8 vs utf8mb4 */
+		.db-graphic {
+			display: flex;
+			gap: 40px;
+			align-items: flex-end;
+			width: 100%;
+			justify-content: center;
+			margin-top: 20px;
+		}
+		.db-col {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			gap: 15px;
+		}
+		.pipe {
+			width: 70px;
+			height: 100px;
+			border: 4px dashed #bdc3c7;
+			border-top: none;
+			border-radius: 0 0 10px 10px;
+			position: relative;
+			background: #f8f9fa;
+			display: flex;
+			align-items: flex-end;
+			justify-content: center;
+			padding-bottom: 10px;
+		}
+		.pipe.wide { width: 100px; border-color: #2ecc71; background: #eaeff2;}
+		.pipe::before {
+			content: '最大 3 Bytes';
+			position: absolute;
+			bottom: -25px;
+			font-size: 0.8rem;
+			color: #7f8c8d;
+			white-space: nowrap;
+		}
+		.pipe.wide::before {
+			content: '最大 4 Bytes';
+			color: #27ae60;
+		}
+		.emoji-block {
+			font-size: 2.5rem;
+			animation: dropIn 2s infinite;
+		}
+		.emoji-block.error {
+			animation: bounceReject 2s infinite;
+			opacity: 0.5;
+		}
+		
+		@keyframes dropIn {
+			0% { transform: translateY(-60px); opacity: 0; }
+			20% { opacity: 1; }
+			50% { transform: translateY(0); opacity: 1; }
+			100% { transform: translateY(0); opacity: 1; }
+		}
+		@keyframes bounceReject {
+			0% { transform: translateY(-60px); opacity: 0; }
+			20% { opacity: 1; }
+			40% { transform: translateY(-10px); }
+			60% { transform: translateY(-30px) rotate(15deg); }
+			100% { transform: translateY(20px) rotate(45deg); opacity: 0; }
+		}
+
+		/* Visual: JS String */
+		.js-array {
+			display: inline-flex;
+			gap: 8px;
+			background: #2d2d2d;
+			padding: 15px 20px;
+			border-radius: 8px;
+			color: #e6e1dc;
+			font-family: 'Consolas', monospace;
+			font-size: 1.2rem;
+			align-items: center;
+			box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+			flex-wrap: wrap;
+			justify-content: center;
+		}
+		.js-cell {
+			background: #4d4d4d;
+			padding: 10px 15px;
+			border-radius: 6px;
+			border: 1px solid #666;
+			position: relative;
+		}
+		.js-cell::after {
+			content: '16-bit';
+			position: absolute;
+			bottom: -18px;
+			left: 50%;
+			transform: translateX(-50%);
+			font-size: 0.7rem;
+			color: #999;
+		}
+		.js-operator { color: #da4939; margin: 0 10px;}
+		.js-keyword { color: #cc7832; font-weight: bold;}
+		.js-string { color: #a5c261; }
+		.js-comment { color: #bc9458; font-style: italic; font-size: 1rem; width: 100%; text-align: center; margin-top: 15px;}
+		.js-highlight { color: #ffc66d; font-weight: bold; font-size: 1.5rem;}
+		
+		/* Visual: URL Encoding */
+		.url-encode-box {
+			background: #fff;
+			border: 2px solid #e0e0e0;
+			border-radius: 8px;
+			padding: 20px;
+			width: 100%;
+			max-width: 500px;
+		}
+		.url-row {
+			display: flex;
+			align-items: center;
+			margin-bottom: 10px;
+			font-family: monospace;
+			font-size: 1.1rem;
+			word-break: break-all;
+		}
+		.url-label {
+			min-width: 80px;
+			color: #7f8c8d;
+			font-family: sans-serif;
+			font-size: 0.9rem;
+			font-weight: bold;
+		}
+		.url-text { color: #2980b9; }
+		.url-encoded { color: #e67e22; background: #fdf2e9; padding: 2px 4px; border-radius: 4px;}
+
+	</style>
+</head>
+
+<body>
+	<header></header>
+	<div class="container mt-xl">
+		<h1>Unicode 深度介紹：從亂碼到萬國碼的奇妙旅程</h1>
+		<div class="blog-article-tags" style="display: flex; gap: 8px; margin-top: 12px; margin-bottom: 24px;">
+			<span style="padding: 4px 12px; background: #f0f0f0; border-radius: 4px; font-size: 14px; color: #555; border: 1px solid #e0e0e0;">開發</span>
+			<span style="padding: 4px 12px; background: #f0f0f0; border-radius: 4px; font-size: 14px; color: #555; border: 1px solid #e0e0e0;">知識</span>
+		</div>
+		<div class="row blog_header ">
+			<div class="col">
+				<p class="date">2026 / 03 / 22</p>
+			</div>
+			<div class="col">
+				<div class="iconbox">
+					<a href="#comments"><img src="image/icon/comment-next-outline.svg" alt=""></a>
+					<img src="image/icon/output.svg" alt="">
+					<div class="divider"></div>
+					<img src="image/icon/extra-life.svg" alt="">
+					<img src="image/icon/twitter.svg" alt="">
+					<img src="image/icon/facebook.svg" alt="">
+				</div>
+			</div>
+		</div>
+		<div class="article">
+			
+			<p>
+				你有沒有遇過打開一個純文字檔案或網頁時，滿滿的都是「」「Ã¢â€šÂ¬」「烫烫烫」這種讓人崩潰的神秘符號？
+				這種現象我們稱之為「亂碼 (Mojibake)」。而拯救這一切的超級英雄，就是我們今天要深度介紹的主角——<strong>Unicode (統一碼/萬國碼)</strong>。
+			</p>
+
+			<!-- Illustration: Mojibake -->
+			<div class="css-illustration">
+				<h4>當你沒有使用正確的編碼時...</h4>
+				<div class="mojibake-box">
+					Ã§Â§â„¢Ã©Â¼Â Ã¥Â Â°
+				</div>
+			</div>
+
+			<p class="highlight">
+				# 為什麼電腦需要「編碼」？<br>
+				# 什麼是亂碼？編碼的戰國時代<br>
+				# Unicode 的核心概念：碼點 (Code Point)<br>
+				# Unicode 與 UTF-8 到底是什麼關係？<br>
+				# 視覺化解析 UTF-8 編碼規則<br>
+				# 現代開發的實際應用狀況（資料庫、網頁、程式語言）<br>
+				# 結語：我們每天都在用的超級標準
+			</p>
+			<hr class="lg">
+
+			<h2>為什麼電腦需要「編碼」？</h2>
+			<p>
+				在深入探討之前，我們必須先了解一個核心概念：<strong>電腦是個只認識數字（而且是 0 和 1）的笨蛋</strong>。
+				它不知道什麼是「A」，也不知道什麼是「好」，更不認識「😂」。為了讓電腦能夠儲存、處理和傳輸這些人類看得懂的文字符號，我們必須建立一本「對照表」，把每一個字元都對應到一串特定的數字，這個過程就叫做<strong>字元編碼 (Character Encoding)</strong>。
+			</p>
+
+			<hr>
+
+			<h2>什麼是亂碼？編碼的戰國時代</h2>
+			<p>
+				在 Unicode 誕生之前，電腦的世界就像是個沒統一語言的巴別塔。早期的美國人發明了 <strong>ASCII</strong> 編碼，他們認為所有的英文字母大小寫、數字加上一些基本標點符號，加起來一百多個字就夠用了。於是他們唯獨用了 <strong>7 個位元 (Bits)</strong> 來編碼，這表示 ASCII 字典的容量上限只有 <strong>2 的 7 次方 = 128 個位置</strong>。
+			</p>
+			
+			<p>
+				這對講英文的國家來說很完美，但對其他國家來說就慘了！因為 <strong>位數容量根本不夠用</strong>。
+				光是我們常用的中文字就有好幾萬個，128 個位子連冰山一角都塞不下。其他像是歐洲語言帶有重音符號的字母（例如 é、ö）、俄文的西里爾字母、日語的假名等等，全都在這 128 個位置裡找不到自己的家。
+			</p>
+			
+			<p>
+				於是，為了解決「位子不夠」的問題，各國開始各自為政，發明自己的「方言編碼對照表」。例如台灣發明了需要 2 個 Byte (16 Bits) 組合的 <strong>Big5</strong>，中國大陸發明了 <strong>GB2312</strong>，日本有 <strong>Shift_JIS</strong>。
+			</p>
+			
+			<p>
+				這帶來了更可怕的災難——<strong>編碼衝突</strong>。既然各國的「方言對照表」都不一樣，那同一串二進位數字在不同國家就會被翻譯成不同的字！<br><br>
+				舉個最經典的具體例子：<br>
+				假設你在新電腦上寫了一份純文字檔，裡面只有「<strong>中文</strong>」兩個字，並且電腦使用先進的 UTF-8 編碼儲存，它在底層會被轉換成 6 個 Byte 的數字：<code>E4 B8 AD E6 96 87</code>。<br>
+				但當你把這個檔案傳給一位使用老舊系統的朋友，他的電腦預設傻傻地用台灣早期的 <strong>Big5</strong> 對照表去強分解讀這串數字（Big5 的規則是每 2 個 Byte 拼成一個中文字），於是慘劇發生了：<br>
+				👉 <code>E4 B8</code> 在 Big5 對照表裡是「<strong>銝</strong>」<br>
+				👉 <code>AD E6</code> 在 Big5 對照表裡是「<strong>剖</strong>」<br>
+				👉 <code>96 87</code> 在 Big5 對照表裡是「<strong>憿</strong>」<br><br>
+				最後，原本好端端的「中文」兩個字，在他的螢幕上就變成了火星文「<strong>銝剖憿</strong>」！這，就是所謂的<strong>亂碼 (Mojibake)</strong>。各種「烫烫烫」、「锟斤拷」也都是因為歷史上這種編碼雞同鴨講所產生的經典亂碼。
+			</p>
+
+			<hr>
+
+			<h2>1991 年 Unicode 登場：天下一統的萬國碼</h2>
+			<p>
+				為了解決編碼大戰帶來的災難，包括 Apple、微軟等各大科技領袖終於意識到必須終結這場混亂。在 <strong>1991 年 10 月</strong>，歷史性的第一版 <strong>《Unicode 1.0》</strong> 正式發布，並成立了非營利的 <strong>Unicode 聯盟 (Unicode Consortium)</strong> 來持續維護這本「字元聯合國辭典」。<br>
+				他們的宏大目標只有一個：<strong>為世界上所有的文字、符號，甚至古文化文字以及你天天在傳的 Emoji 表情符號，都分配一個「絕對唯一且永恆的身分證字號」！</strong>
+			</p>
+
+			<!-- Illustration: Unicode Mapping -->
+			<div class="css-illustration">
+				<h4>Unicode 的身分證對應關係</h4>
+				<div class="mapping-flow">
+					<div class="card-box">
+						<div class="char">🚀</div>
+						<div class="label">火箭 (Rocket)</div>
+					</div>
+					<div class="arrow">➔</div>
+					<div class="card-box">
+						<div class="char" style="font-size: 2rem; padding: 10px 0;">U+1F680</div>
+						<div class="label">碼點 (Code Point)</div>
+					</div>
+					<div class="arrow">➔</div>
+					<div class="card-box">
+						<div class="char" style="font-size: 1.5rem; padding: 15px 0;">F0 9F 9A 80</div>
+						<div class="label">二進制儲存 (UTF-8)</div>
+					</div>
+				</div>
+			</div>
+
+			<p>
+				這個身分證字號就叫做 <strong>碼點 (Code Point)</strong>。
+				通常會寫成 <code>U+</code> 加上十六進位的數字。例如大寫的英文字母「A」是 <code>U+0041</code>，而中文字「好」是 <code>U+597D</code>。目前的 Unicode 已經收錄了超過 15 萬個字符！世界上的每一種語言都在這個巨大的資料庫中有了自己的專屬位置。
+			</p>
+
+			<hr class="lg">
+
+			<h2>Unicode 與 UTF-8 到底差在哪裡？一個比喻馬上看懂！</h2>
+			<p>
+				這是新手最常搞混的問題，很多人以為它們是同一個東西。其實不是！簡單來說：<strong>Unicode 是「概念規定」，UTF-8 則是「具體實作」。</strong>
+			</p>
+
+			<div style="background: #eef2f5; padding: 25px; border-radius: 8px; margin: 25px 0; border-left: 5px solid #3498db; line-height: 1.8;">
+				<p style="margin:0; font-size: 1.1rem; color:#2c3e50;">
+					💡 <strong>打個生活化的比方：</strong><br><br>
+					
+					<strong>Unicode 就像是「健保局的系統名冊」：</strong><br>
+					它是一本超大字典，規定了「火箭 🚀」的專屬號碼是 <strong>U+1F680</strong>。<br>
+					但名單就只是名單，它<strong>並沒有規定護理師要用毛筆、鉛筆還是原子筆，拿多大張的紙把號碼抄下來存檔。</strong><br><br>
+					
+					<strong>UTF-8 就像是「實際寫下號碼存證的包裝方式」：</strong><br>
+					電腦硬碟只能存 <code>0</code> 和 <code>1</code>。當我們要真的把代表火箭的「U+1F680」存進硬碟時，必須要有一套發放「空白紙（位元組）」的規則：<br>
+					你可以選用另一種笨方法叫作 <strong>UTF-32</strong>（規定每個字元不論長短，一律都發滿 4 張空白紙來寫，用不到的紙就留空，這極度浪費空間）。<br>
+					也可以選用 <strong>UTF-8</strong> 這種超級聰明的彈性魔法。它看到英文字母，只發 1 張紙寫；看到中文字，發 3 張紙寫；看到 Emoji，才拿 4 張紙寫。
+				</p>
+			</div>
+			
+			<p>
+				也就是說，<strong>Unicode 是那一本巨大的概念字典，告訴你每個字對應的身分證密碼。而 UTF-8 則是電腦設計出來，為了「把號碼以最省空間的方式抄進硬碟裡」，所採用的一套二進位打包規則。</strong>這兩者可以說是「靈魂」與「肉體」的關係。
+			</p>
+
+			<h3>UTF-8 的空間魔法：可變長度編碼</h3>
+			<p>
+				如果我們把所有字都用固定的空間（比如 4 個位元組）來存，那英文本來只需要 1 個位元組，硬塞進 4 個位元組就會浪費大量的空間！
+				所以 UTF-8 發明了「伸縮自如」的魔法：
+				<ul>
+					<li><strong>英文字母與數字：</strong>只用 1 個 Byte (兼容原本的 ASCII)。</li>
+					<li><strong>拉丁文等符號：</strong>使用 2 個 Bytes。</li>
+					<li><strong>中文字、日文等：</strong>大多使用 3 個 Bytes。</li>
+					<li><strong>Emoji 和罕見字：</strong>使用 4 個 Bytes。</li>
+				</ul>
+			</p>
+
+			<!-- Illustration: UTF-8 Structure -->
+			<div class="css-illustration">
+				<h4>CSS 圖解：UTF-8 的動態位元組結構</h4>
+				<p style="text-align:center; font-size: 0.9em; color:#666; margin-top:-10px;">紅色代表控制位元，藍色代表實際裝載碼點資料的位元</p>
+				<div class="utf8-grid">
+					<!-- 1 Byte -->
+					<div class="byte-row">
+						<div class="byte-label">1 Byte</div>
+						<div class="byte-example" title="英文字母、數字、基本標點 (如 A, B, 1, 2)">A</div>
+						<div class="byte-blocks">
+							<div class="bit-group">
+								<div class="bit control">0</div>
+								<div class="bit data">x</div><div class="bit data">x</div><div class="bit data">x</div>
+								<div class="bit data">x</div><div class="bit data">x</div><div class="bit data">x</div><div class="bit data">x</div>
+							</div>
+						</div>
+					</div>
+					<!-- 2 Bytes -->
+					<div class="byte-row">
+						<div class="byte-label">2 Bytes</div>
+						<div class="byte-example" title="希臘文、拉丁擴展、部分符號 (如 α, é, ©)">α</div>
+						<div class="byte-blocks">
+							<div class="bit-group">
+								<div class="bit control">1</div><div class="bit control">1</div><div class="bit control">0</div>
+								<div class="bit data">x</div><div class="bit data">x</div><div class="bit data">x</div><div class="bit data">x</div><div class="bit data">x</div>
+							</div>
+							<div class="bit-group">
+								<div class="bit control">1</div><div class="bit control">0</div>
+								<div class="bit data">x</div><div class="bit data">x</div><div class="bit data">x</div><div class="bit data">x</div><div class="bit data">x</div><div class="bit data">x</div>
+							</div>
+						</div>
+					</div>
+					<!-- 3 Bytes -->
+					<div class="byte-row">
+						<div class="byte-label">3 Bytes</div>
+						<div class="byte-example" title="絕大多數的中文字、日文假名等 (如 中, 文, あ)">中</div>
+						<div class="byte-blocks">
+							<div class="bit-group">
+								<div class="bit control">1</div><div class="bit control">1</div><div class="bit control">1</div><div class="bit control">0</div>
+								<div class="bit data">x</div><div class="bit data">x</div><div class="bit data">x</div><div class="bit data">x</div>
+							</div>
+							<div class="bit-group">
+								<div class="bit control">1</div><div class="bit control">0</div>
+								<div class="bit data">x</div><div class="bit data">x</div><div class="bit data">x</div><div class="bit data">x</div><div class="bit data">x</div><div class="bit data">x</div>
+							</div>
+							<div class="bit-group">
+								<div class="bit control">1</div><div class="bit control">0</div>
+								<div class="bit data">x</div><div class="bit data">x</div><div class="bit data">x</div><div class="bit data">x</div><div class="bit data">x</div><div class="bit data">x</div>
+							</div>
+						</div>
+					</div>
+					<!-- 4 Bytes (Emoji/Rare) -->
+					<div class="byte-row">
+						<div class="byte-label">4 Bytes</div>
+						<div class="byte-example" title="Emoji 表情符號、罕見古字等 (如 😂, 🚀, 𪚥)">🚀</div>
+						<div class="byte-blocks">
+							<div class="bit-group">
+								<div class="bit control">1</div><div class="bit control">1</div><div class="bit control">1</div><div class="bit control">1</div><div class="bit control">0</div>
+								<div class="bit data">x</div><div class="bit data">x</div><div class="bit data">x</div>
+							</div>
+							<div class="bit-group">
+								<div class="bit control">1</div><div class="bit control">0</div>
+								<div class="bit data">x</div><div class="bit data">x</div><div class="bit data">x</div><div class="bit data">x</div><div class="bit data">x</div><div class="bit data">x</div>
+							</div>
+							<div class="bit-group">
+								<div class="bit control">1</div><div class="bit control">0</div>
+								<div class="bit data">x</div><div class="bit data">x</div><div class="bit data">x</div><div class="bit data">x</div><div class="bit data">x</div><div class="bit data">x</div>
+							</div>
+							<div class="bit-group">
+								<div class="bit control">1</div><div class="bit control">0</div>
+								<div class="bit data">x</div><div class="bit data">x</div><div class="bit data">x</div><div class="bit data">x</div><div class="bit data">x</div><div class="bit data">x</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<div style="background: #fcfcfc; padding: 20px; border-radius: 8px; margin: 20px 0; border: 1px solid #eee; border-left: 5px solid #bdc3c7; color: #444; line-height: 1.8;">
+				<h4 style="margin-top: 0; color: #2c3e50;">🛠️ 補充：紅色「10」的用途——定位與自我防錯</h4>
+				<p style="margin-bottom: 10px;">仔細看圖表，除了 1 Byte 之外，後面跟隨的區塊都是紅色的 <code>10</code> 開頭。簡單來說，這些是給電腦看的「防呆標籤」，主要有兩個關鍵作用：</p>
+				<ul style="margin-left: 20px;">
+					<li style="margin-bottom: 8px;">
+						<strong>區分「開頭」與「後續」：</strong><br>
+						第一字節 (Leading Byte)：紅色的部分會告訴電腦這個字「總共有幾個 Byte」（例如 <code>110</code> 代表包含自己總共有兩個，<code>1110</code> 總共有三個）。<br>
+						後續字節 (Continuation Bytes)：也就是你看到的那些 <code>10</code>。它們保證了如果你從一段數據的中間開始讀取，電腦看到 <code>10</code> 能立刻知道：「這不是一個字的開頭，我得往回找。」
+					</li>
+					<li>
+						<strong>自我同步 (Self-Synchronization)：</strong><br>
+						如果傳輸過程中掉了一個 Byte，電腦看到下一個 <code>10</code> 開頭的數據就知道它是殘缺的，而不會誤把它當成一個新的 ASCII 字元（因為 ASCII 永遠會是以 <code>0</code> 開頭的 1 Byte 結構）。這大大增加了編碼在網路傳輸環境下的健壯性！
+					</li>
+				</ul>
+			</div>
+			
+			<p>
+				利用上面這些巧妙的開頭設計，電腦一眼就能看出每個字的長度與邊界，不容易解析錯誤。這就是為什麼如今網路上高達 98% 的網頁都是毫不猶豫地擁抱 UTF-8！
+			</p>
+
+			<hr class="lg">
+
+			<h2>現代開發的實際應用狀況：開發者必須知道的事</h2>
+			<p>
+				對於現代的軟體開發者來說，雖然 Unicode 和 UTF-8 已經是大統一標準，但實務上還是有幾個常遇到的「坑」和應用場景：
+			</p>
+
+			<h3>1. 資料庫的隱形地雷：MySQL 的 <code>utf8</code> 不是真的 UTF-8</h3>
+			<p>
+				這可能是後端工程師最常踩的坑！在早期的 MySQL 資料庫中，如果將資料表的編碼設定為 <code>utf8</code>，它<strong>最多只支援 3 個 Byte</strong> 的字元。一般中文字沒問題，但當使用者在手機上輸入需要 4 個 Byte 的 Emoji（像是 😂）時，資料庫就會直接報錯拒絕儲存，甚至把後面的字串截斷！
+			</p>
+			
+			<div class="css-illustration">
+				<h4>為什麼 Emoji 存不進早期的資料庫？</h4>
+				<div class="db-graphic">
+					<div class="db-col">
+						<div class="emoji-block error">😂<br><span style="font-size: 0.8rem; color:#777;">4 Bytes</span></div>
+						<div class="pipe"><span style="color:#bdc3c7; font-weight:bold;">utf8</span></div>
+					</div>
+					<div class="db-col">
+						<div class="emoji-block">😂<br><span style="font-size: 0.8rem; color:#777;">4 Bytes</span></div>
+						<div class="pipe wide"><span style="color:#27ae60; font-weight:bold;">utf8mb4</span></div>
+					</div>
+				</div>
+				<p style="margin-top: 35px; font-size: 0.9rem; color: #666; text-align: center;">
+					<strong>解決方案：</strong>現在建立資料庫時，標準做法是將字元集預設為 <code>utf8mb4</code> (mb4 代表 most bytes 4)，這樣才能無縫支援所有 Unicode 字元。
+				</p>
+			</div>
+
+			<h3>2. 程式語言的字串長度幻覺（JavaScript / Java）</h3>
+			<p>
+				你以為一個字的長度永遠是 1 嗎？在 JavaScript、Java 或 C# 這些語言中，字串底層通常使用 <strong>UTF-16</strong> 儲存。對於一般的英數字和中文，一個字元佔用 16 個位元（長度 1）。但對於 Emoji，必須使用兩個 16 位元的積木（稱為 Surrogate Pairs 代理對）來拼合。因此，程式會以為這是「兩個字元」。
+			</p>
+
+			<div class="css-illustration">
+				<h4>JavaScript 中的 Emoji 長度陷阱</h4>
+				<div class="js-array">
+					<span><span class="js-keyword">console</span>.log( <span class="js-string">"😂"</span>.length );</span>
+					<span class="js-operator">➜</span>
+					<span class="js-highlight">2</span>
+					
+					<div style="width: 100%; height: 20px;"></div>
+					
+					<span style="font-size: 0.9rem; color: #ccc; margin-right: 15px;">底層結構：</span>
+					<div class="js-cell">D83D (High)</div>
+					<div class="js-cell">DE02 (Low)</div>
+					
+					<div class="js-comment">// 因為 😂 需要用兩個 UTF-16 單元來儲存！</div>
+				</div>
+				<p style="margin-top: 25px; font-size: 0.9rem; color: #666; text-align: center;">
+					<strong>解決方案：</strong>在現代 JS 中，可以使用 <code>[..."😂"].length</code> 或 <code>Array.from("😂").length</code> 來獲得正確的字元數。
+				</p>
+			</div>
+
+			<h3>3. 為什麼網址貼上來會變成一大串 <code>%</code> 符號？ (網址 URL 編碼)</h3>
+			<p>
+				早期網路協定設計時非常保守，網址列 (URL) 的規範中，只允許包含基本的英文字母、數字和少數安全符號（即 ASCII 範圍內的東西）。
+				當網址中包含中文（例如：<code>https://example.com/測試</code>）時，瀏覽器在發出請求前，會自動幫你做「百分號編碼」(Percent-encoding)。
+			</p>
+
+			<div class="css-illustration">
+				<h4>UTF-8 在 URL 中的變身過程</h4>
+				<div class="url-encode-box">
+					<div class="url-row">
+						<div class="url-label">原始網址</div>
+						<div class="url-text">https://example.com/測試</div>
+					</div>
+					<div style="margin: 10px 0 10px 80px; color: #bdc3c7;">↓ UTF-8 二進制轉換並加上 %</div>
+					<div class="url-row">
+						<div class="url-label">實際傳輸</div>
+						<div class="url-text">https://example.com/<span class="url-encoded">%E6%B8%AC</span><span class="url-encoded">%E8%A9%A6</span></div>
+					</div>
+				</div>
+				<p style="margin-top: 15px; font-size: 0.9rem; color: #666; text-align: center;">
+					「測」的 UTF-8 是 E6 B8 AC，「試」的 UTF-8 是 E8 A9 A6。<br>把它們加上 <code>%</code> 就是你常看到的那一大長串亂碼網址了！
+				</p>
+			</div>
+			
+			<h3>4. 網頁的靈魂宣告：<code>&lt;meta charset="UTF-8"&gt;</code></h3>
+			<p>
+				網頁本質上就是一個純文字檔。如果瀏覽器在下載檔案時不知道是用什麼編碼存的，它就會「猜」。一旦猜錯，用戶看到的就會是一場災難。因此，在任何 HTML 文件的 <code>&lt;head&gt;</code> 第一行加上 <code>&lt;meta charset="UTF-8"&gt;</code> 是鐵規則，這是在告訴瀏覽器：「請用 UTF-8 來解析這份文件！」
+			</p>
+			
+			<hr class="lg">
+
+			<h2>結語：不可或缺的基石</h2>
+			<p>
+				Unicode 的偉大在於它的包容性。它讓你在發送一段訊息給地球另一端的日本朋友時，可以毫無障礙地顯示中文、日文和 😂 表情符號；更讓我們開發者從「切換編碼來修 Bug」的地獄中解脫出來。下次當你在打字時，不妨在心裡默默感謝一下這個默默運作的無名英雄吧！
+			</p>
+			
+			<hr>
+			<h2>延伸閱讀與參考資源</h2>
+			<p>
+				想要更深入探索，可以參考以下資源：<br>
+				<ul>
+					<li><a href="https://unicode.org/" target="_blank">Unicode Consortium 官方網站</a></li>
+					<li><a href="https://zh.wikipedia.org/zh-tw/Unicode" target="_blank">維基百科：Unicode</a></li>
+					<li><a href="https://www.youtube.com/watch?v=MijmeoH9LT4" target="_blank">YouTube: Characters, Symbols and the Unicode Miracle (Computerphile)</a></li>
+				</ul>
+			</p>
+		</div>
+	</div>
+
+	
+	<!-- Giscus Comments -->
+	<div id="comments" class="container mt-xl" style="padding-bottom: 60px; padding-top: 40px; border-top: 1px solid #eee;">
+		<script src="https://giscus.app/client.js"
+				data-repo="newslin-design/newslin-design.github.io"
+				data-repo-id="R_kgDOOXA3ww"
+				data-category="Announcements"
+				data-category-id="DIC_kwDOOXA3w84C5AiY"
+				data-mapping="pathname"
+				data-strict="0"
+				data-reactions-enabled="1"
+				data-emit-metadata="0"
+				data-input-position="top"
+				data-theme="light"
+				data-lang="zh-TW"
+				crossorigin="anonymous"
+				async>
+		</script>
+	</div>
+	<footer>
+	</footer>
+
+</body>
+<!-- 引用 portfolio/js/app.js 產生 header/footer -->
+<script src="../portfolio/js/app.js"></script>
+
+</html>

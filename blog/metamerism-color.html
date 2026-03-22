@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, maximum-scale=1.5">
+	<title>什麼是 Metamerism (同色異譜)？為什麼紅光加綠光會等於黃光？</title>
+	<script>workName = "blog_metamerism"</script>
+	<script>var basePath = "../portfolio/"; var pageBasePath = "../portfolio/";</script>
+	<link rel="stylesheet" href="../portfolio/style/reset.css">
+	<link rel="stylesheet" href="../portfolio/style/style_layout.css">
+	<link rel="stylesheet" href="../portfolio/style/style.css">
+	<link rel="stylesheet" href="../portfolio/style/article.css">
+	<link rel="stylesheet" href="style/style_blog.css">
+	<link rel="icon" type="image/png" href="../portfolio/web_icon.png" />
+	<!-- Article Specific CSS Illustrations -->
+	<style>
+		.css-illustration {
+			margin: 40px 0;
+			padding: 40px 20px;
+			background: #f8f9fa;
+			border-radius: 16px;
+			box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			font-family: 'Courier New', Courier, monospace;
+			overflow: hidden;
+		}
+
+		.color-mix {
+			display: flex;
+			align-items: center;
+			gap: 20px;
+			font-size: 2rem;
+			font-weight: bold;
+		}
+
+		.circle {
+			width: 100px;
+			height: 100px;
+			border-radius: 50%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			color: white;
+			box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+			font-size: 1.2rem;
+			text-align: center;
+		}
+
+		.circle-red { background: #e74c3c; }
+		.circle-green { background: #2ecc71; color: white; }
+		.circle-yellow { background: #f1c40f; color: #333; }
+		.circle-pure-yellow { background: #f39c12; color: white; }
+		
+		.css-illustration h4 { margin-bottom: 24px; font-family: sans-serif; color: #333; text-align: center;}
+		
+		@media (max-width: 768px) {
+			.color-mix {
+				flex-direction: column;
+				gap: 10px;
+			}
+			.circle {
+				width: 80px;
+				height: 80px;
+				font-size: 1rem;
+			}
+		}
+	</style>
+</head>
+
+<body>
+	<header></header>
+	<div class="container mt-xl">
+		<h1>什麼是 Metamerism (同色異譜)？為什麼紅光加綠光會等於黃光？</h1>
+		<div class="blog-article-tags" style="display: flex; gap: 8px; margin-top: 12px; margin-bottom: 24px;">
+			<span style="padding: 4px 12px; background: #f0f0f0; border-radius: 4px; font-size: 14px; color: #555; border: 1px solid #e0e0e0;">知識</span>
+			<span style="padding: 4px 12px; background: #f0f0f0; border-radius: 4px; font-size: 14px; color: #555; border: 1px solid #e0e0e0;">設計</span>
+		</div>
+		<div class="row blog_header ">
+			<div class="col">
+				<p class="date">2026 / 03 / 22</p>
+			</div>
+			<div class="col">
+				<div class="iconbox">
+					<a href="#comments"><img src="image/icon/comment-next-outline.svg" alt=""></a>
+					<img src="image/icon/output.svg" alt="">
+					<div class="divider"></div>
+					<img src="image/icon/extra-life.svg" alt="">
+					<img src="image/icon/twitter.svg" alt="">
+					<img src="image/icon/facebook.svg" alt="">
+				</div>
+			</div>
+		</div>
+		<div class="article">
+			
+			<p>
+				我們都知道在色光的三原色（RGB）中，「紅色光」加上「綠色光」會混合變成「黃色光」。但你曾想過為什麼嗎？
+				難道光波是可以相加的嗎？
+			</p>
+			
+			<p>
+				今天我們要來聊聊色彩學與視覺神經科學中非常有趣的一個現象——<strong>Metamerism (同色異譜)</strong>。
+			</p>
+
+			<hr class="lg">
+
+			<h2>光是電磁波，顏色是你的大腦「幻覺」</h2>
+			<p>
+				首先，我們必須釐清一個重要的物理概念：<strong>自然界中並沒有絕對的「顏色」，只有不同波長的「電磁波」</strong>。
+				我們所謂的顏色，其實是眼睛接收到這些電磁波後，大腦進行解讀所產生的「感受」。
+			</p>
+			
+			<p>
+				在光譜中，每一種單一波長的光對應著特定的表現，我們稱為<strong>單色光 (Monochromatic light)</strong>。<br>
+				例如：
+				<ul>
+					<li>紅光：波長大約 620–750 nm</li>
+					<li>純色黃光：波長大約 570–590 nm</li>
+					<li>綠光：波長大約 495–570 nm</li>
+				</ul>
+			</p>
+
+			<hr>
+
+			<h2>為什麼紅光 ＋ 綠光會變成黃光？</h2>
+			<p>
+				回到物理的本質，把 650 nm 的紅光跟 530 nm 的綠光照在一起，會發生什麼事？<br>
+				答案是：<strong>光波不會融合成一個 580 nm 的光波。</strong>
+				它們依舊是兩道平行的紅光與綠光電磁波，你的空間中同時存在著這兩種波長。
+			</p>
+			
+			<p>
+				但是！當這兩道光同時進入你的眼睛時，神奇的事情發生了，你看到的是「黃色」。<br>
+				這並不是因為光波發生了什麼化學反應，而是因為你眼睛裡的<strong>「感光細胞 (Cone cells)」</strong>被欺騙了。
+			</p>
+
+			<h3>L、M、S 視錐細胞的作用機制</h3>
+			<p>
+				人類的視網膜上有三種負責感受顏色的視錐細胞（這也是為什麼我們是三色視覺動物）：
+				<ul>
+					<li><strong>L 受體 (Long)：</strong>對長波長（偏紅光）敏感。</li>
+					<li><strong>M 受體 (Medium)：</strong>對中波長（偏綠光）敏感。</li>
+					<li><strong>S 受體 (Short)：</strong>對短波長（偏藍光）敏感。</li>
+				</ul>
+			</p>
+			
+			<p>
+				當一束<strong>「純色黃光」(波長 570–590 nm)</strong> 進入眼睛時，它的波長剛好介於 L 和 M 的敏感區間之間，所以它會<strong>同時刺激 L 受體和 M 受體</strong>。<br>
+				此時，大腦收到訊號：「L 和 M 同時都有反應！」，大腦就把這種訊號解讀為「黃色」。
+			</p>
+			
+			<p>
+				接著，當我們把<strong>紅光 (刺激 L 受體)</strong> 和 <strong>綠光 (刺激 M 受體)</strong> 同時照進眼睛時，L 和 M 受體也同時感受到了刺激。<br>
+				對於大腦來說，它收到的訊號依然是：「L 和 M 同時都有反應！」<br>
+				於是，大腦再次做出了相同的解讀：「嗯，這個訊號也是黃色。」
+			</p>
+
+			<div class="css-illustration">
+				<h4>有兩種方式可以讓你看到「黃色」</h4>
+				<div class="color-mix" style="margin-bottom: 40px; text-align:center;">
+					<div class="circle circle-red">紅光 波長<br>刺激 L</div>
+					<div>+</div>
+					<div class="circle circle-green">綠光 波長<br>刺激 M</div>
+					<div>=</div>
+					<div class="circle circle-yellow">大腦解讀<br>是黃色</div>
+				</div>
+				<div class="color-mix" style="text-align:center;">
+					<div class="circle circle-pure-yellow">純黃光波段<br>刺激 L & M</div>
+					<div>=</div>
+					<div class="circle circle-yellow">大腦解讀<br>是黃色</div>
+				</div>
+			</div>
+
+			<hr class="lg">
+
+			<h2>這就是 Metamerism (同色異譜)</h2>
+			<p>
+				因為人類的眼睛只靠這三種受體來採樣光譜，從而產生極大的簡化。<br>
+				<strong>兩種物理特性（光譜功率分佈）截然不同的光，但在人類眼睛看起來卻完全一樣的現象，就稱為 Metamerism (同色異譜/條件等色)。</strong>
+			</p>
+			
+			<p>
+				換言之，在你眼前的黃色有兩種：
+				<ol>
+					<li>物理上真的只有 580 nm 波長的「單一黃光」。</li>
+					<li>物理上是 650 nm 紅光與 530 nm 綠光混合的「複合光」。</li>
+				</ol>
+				雖然它們的光譜成分完全不一樣，但對人類來說，它們是 <strong>Metamers (同色異譜體)</strong>，肉眼絕對無法分辨。
+			</p>
+
+			<h2>我們生活中的 Metamerism 應用</h2>
+			<p>
+				正是因為同色異譜效應，我們今天才能擁有彩色的電視和電腦螢幕！<br>
+				螢幕上那些鮮豔的黃色皮卡丘、橘色的夕陽，其實螢幕本身根本沒有發出任何黃色或橘色的光波。<br>
+				螢幕上只有這三種發光體：紅色(R)、綠色(G)和藍色(B)。<br>
+				它只是巧妙地利用這三種顏色調配比例，來模擬出能騙過你大腦 L、M、S 受體的特定刺激組合，讓你「以為」看到了千變萬化的顏色。
+			</p>
+
+			<hr>
+			<h2>總結</h2>
+			<p>
+				顏色不是世界本身的物理屬性，而是大腦對光譜的生物學解釋。
+				紅光加綠光等於黃光，不是因為物理波長加起來變成黃色波長，而是因為兩種不同的光源刺激，在我們的視網膜神經叢上產生了相同的訊號組合。
+			</p>
+		</div>
+	</div>
+
+	
+	<!-- Giscus Comments -->
+	<div id="comments" class="container mt-xl" style="padding-bottom: 60px; padding-top: 40px; border-top: 1px solid #eee;">
+		<script src="https://giscus.app/client.js"
+				data-repo="newslin-design/newslin-design.github.io"
+				data-repo-id="R_kgDOOXA3ww"
+				data-category="Announcements"
+				data-category-id="DIC_kwDOOXA3w84C5AiY"
+				data-mapping="pathname"
+				data-strict="0"
+				data-reactions-enabled="1"
+				data-emit-metadata="0"
+				data-input-position="top"
+				data-theme="light"
+				data-lang="zh-TW"
+				crossorigin="anonymous"
+				async>
+		</script>
+	</div>
+	<footer>
+	</footer>
+
+</body>
+<!-- 引用 portfolio/js/app.js 產生 header/footer -->
+<script src="../portfolio/js/app.js"></script>
+
+</html>

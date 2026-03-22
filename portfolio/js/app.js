@@ -647,7 +647,22 @@ try {
 			</li>`;
 	}
 
-	var headerHtml = `
+	var headerHtml = '';
+	if (typeof workName !== 'undefined' && (workName === 'blog' || workName.startsWith('blog_'))) {
+		headerHtml = `
+                    <div class="container">
+                        <a href="${pageBasePath}../index.html">
+                            <div class="logo">
+                                <div></div>
+                            </div>
+                        </a>
+                        <ul class="row flex-jus-end">
+                            <li><a href="${pageBasePath}../password.html">Portfolio</a></li>
+                            <li><a href="${pageBasePath}../index.html">Blog</a></li>
+                        </ul>
+                    </div>`;
+	} else {
+		headerHtml = `
                     <div class="container">
                         <a href="${pageBasePath}index.html">
                             <div class="logo">
@@ -657,11 +672,12 @@ try {
                         <ul class="row flex-jus-end">
                             <li><a href="${pageBasePath}index.html">Design</a></li>
                             <li><a href="${pageBasePath}index.html#development">Development</a></li>
-                            <li><a href="${pageBasePath}../blog/">Blog</a></li>
+                            <li><a href="${pageBasePath}../index.html">Blog</a></li>
                             <li><a href="${pageBasePath}about.html">Resume</a></li>
                             ${langLinks}
                         </ul>
-                    </div>`
+                    </div>`;
+	}
 	header[0].innerHTML = headerHtml;
 
 	// Header smaller on scroll
