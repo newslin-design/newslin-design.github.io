@@ -92,7 +92,7 @@ p.date {
 }
 
 .article hr.lg {
-    background-image: url(../../image/blog/icon/separator.png);
+    background-image: url(../image/icon/separator.png);
     background-position: center;
     background-repeat: no-repeat;
     margin: 84px auto;

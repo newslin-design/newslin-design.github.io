@@ -29,7 +29,12 @@
 			overflow: hidden;
 		}
 
-		.css-illustration h4 { margin-bottom: 24px; font-family: sans-serif; color: #333; text-align: center;}
+		.css-illustration h4 {
+			margin-bottom: 24px;
+			font-family: sans-serif;
+			color: #333;
+			text-align: center;
+		}
 
 		/* Eye / Luma Chroma visual */
 		.luma-chroma-box {
@@ -39,14 +44,14 @@
 			gap: 30px;
 			flex-wrap: wrap;
 		}
-		
+
 		.vision-card {
 			background: white;
 			border-radius: 12px;
 			padding: 20px;
 			text-align: center;
 			width: 200px;
-			box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+			box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
 		}
 
 		.vision-icon {
@@ -100,59 +105,181 @@
 			width: 100%;
 			max-width: 850px;
 		}
-		.cg-head { font-weight: bold; font-style: italic; text-align: center; color: #333; font-size: 1.05rem; }
-		.cg-row-label { font-weight: bold; font-style: italic; color: #222; text-align: left; font-size: 1.1rem; }
-		.cg-group { display: grid; gap: 0; overflow: hidden; }
-		.cg-cell { width: 100%; aspect-ratio: 1/1; display: block; }
+
+		.cg-head {
+			font-weight: bold;
+			font-style: italic;
+			text-align: center;
+			color: #333;
+			font-size: 1.05rem;
+		}
+
+		.cg-row-label {
+			font-weight: bold;
+			font-style: italic;
+			color: #222;
+			text-align: left;
+			font-size: 1.1rem;
+		}
+
+		.cg-group {
+			display: grid;
+			gap: 0;
+			overflow: hidden;
+		}
+
+		.cg-cell {
+			width: 100%;
+			aspect-ratio: 1/1;
+			display: block;
+		}
 
 		/* Luma grays - 8 tones */
-		.l-a { background: #808080; }
-		.l-b { background: #c0c0c0; }
-		.l-c { background: #b0b0b0; }
-		.l-d { background: #e0e0e0; }
-		.l-e { background: #a0a0a0; }
-		.l-f { background: #909090; }
-		.l-g { background: #c8c8c8; }
-		.l-h { background: #585858; }
+		.l-a {
+			background: #808080;
+		}
+
+		.l-b {
+			background: #c0c0c0;
+		}
+
+		.l-c {
+			background: #b0b0b0;
+		}
+
+		.l-d {
+			background: #e0e0e0;
+		}
+
+		.l-e {
+			background: #a0a0a0;
+		}
+
+		.l-f {
+			background: #909090;
+		}
+
+		.l-g {
+			background: #c8c8c8;
+		}
+
+		.l-h {
+			background: #585858;
+		}
 
 		/* Chroma - 8 vivid colors matching reference */
-		.ch-1 { background: #ffe600; }
-		.ch-2 { background: #0066ff; }
-		.ch-3 { background: #cc00cc; }
-		.ch-4 { background: #ff0000; }
-		.ch-5 { background: #00aa00; }
-		.ch-6 { background: #ffaacc; }
-		.ch-7 { background: #3399ff; }
-		.ch-8 { background: #9966ff; }
+		.ch-1 {
+			background: #ffe600;
+		}
+
+		.ch-2 {
+			background: #0066ff;
+		}
+
+		.ch-3 {
+			background: #cc00cc;
+		}
+
+		.ch-4 {
+			background: #ff0000;
+		}
+
+		.ch-5 {
+			background: #00aa00;
+		}
+
+		.ch-6 {
+			background: #ffaacc;
+		}
+
+		.ch-7 {
+			background: #3399ff;
+		}
+
+		.ch-8 {
+			background: #9966ff;
+		}
 
 		/* Luma+Chroma combined via overlay */
-		.cg-mix { position: relative; }
+		.cg-mix {
+			position: relative;
+		}
+
 		.cg-mix::after {
 			content: '';
 			position: absolute;
-			top: 0; left: 0; right: 0; bottom: 0;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
 			mix-blend-mode: color;
 			opacity: 1;
 		}
-		.cg-mix.m-1::after { background: #ffe600; }
-		.cg-mix.m-2::after { background: #0066ff; }
-		.cg-mix.m-3::after { background: #cc00cc; }
-		.cg-mix.m-4::after { background: #ff0000; }
-		.cg-mix.m-5::after { background: #00aa00; }
-		.cg-mix.m-6::after { background: #ffaacc; }
-		.cg-mix.m-7::after { background: #3399ff; }
-		.cg-mix.m-8::after { background: #9966ff; }
+
+		.cg-mix.m-1::after {
+			background: #ffe600;
+		}
+
+		.cg-mix.m-2::after {
+			background: #0066ff;
+		}
+
+		.cg-mix.m-3::after {
+			background: #cc00cc;
+		}
+
+		.cg-mix.m-4::after {
+			background: #ff0000;
+		}
+
+		.cg-mix.m-5::after {
+			background: #00aa00;
+		}
+
+		.cg-mix.m-6::after {
+			background: #ffaacc;
+		}
+
+		.cg-mix.m-7::after {
+			background: #3399ff;
+		}
+
+		.cg-mix.m-8::after {
+			background: #9966ff;
+		}
 
 		@media (max-width: 768px) {
-			.classic-grid { grid-template-columns: 1fr; gap: 20px; }
-			.cg-head { display: none; }
-			.cg-row-label { text-align: left; border-bottom: 2px solid #ddd; padding-bottom: 5px; margin-top: 15px; }
-			.cg-mobile-label { display: block; text-align: center; font-size: 0.85rem; margin-bottom: 4px; color: #888; }
+			.classic-grid {
+				grid-template-columns: 1fr;
+				gap: 20px;
+			}
+
+			.cg-head {
+				display: none;
+			}
+
+			.cg-row-label {
+				text-align: left;
+				border-bottom: 2px solid #ddd;
+				padding-bottom: 5px;
+				margin-top: 15px;
+			}
+
+			.cg-mobile-label {
+				display: block;
+				text-align: center;
+				font-size: 0.85rem;
+				margin-bottom: 4px;
+				color: #888;
+			}
 		}
+
 		@media (min-width: 769px) {
-			.cg-mobile-label { display: none; }
+			.cg-mobile-label {
+				display: none;
+			}
 		}
-		
+
 		.data-saving {
 			text-align: center;
 			margin-top: 10px;
@@ -184,86 +311,274 @@
 			border-left: 5px solid #3498db;
 			line-height: 1.8;
 		}
-		.callout-box p { margin: 0; font-size: 1.05rem; color: #2c3e50; }
-		.callout-box code { background: #dfe6ed; padding: 2px 6px; border-radius: 4px; font-size: 0.9em; }
-		.callout-box.warn { border-left-color: #f39c12; background: #fef9e7; }
-		.callout-box.cinema { border-left-color: #8e44ad; background: #f5eef8; }
+
+		.callout-box p {
+			margin: 0;
+			font-size: 1.05rem;
+			color: #2c3e50;
+		}
+
+		.callout-box code {
+			background: #dfe6ed;
+			padding: 2px 6px;
+			border-radius: 4px;
+			font-size: 0.9em;
+		}
+
+		.callout-box.warn {
+			border-left-color: #f39c12;
+			background: #fef9e7;
+		}
+
+		.callout-box.cinema {
+			border-left-color: #8e44ad;
+			background: #f5eef8;
+		}
 
 		/* Animated Bandwidth Chart */
-		.bw-chart { width: 100%; max-width: 600px; display: flex; flex-direction: column; gap: 20px; margin-top: 20px; }
-		.bw-row { display: flex; align-items: center; gap: 15px; }
-		.bw-label { width: 70px; font-weight: bold; font-size: 1.1rem; color: #34495e; text-align: right; flex-shrink: 0; }
-		.bw-track { flex: 1; height: 32px; background: #ecf0f1; border-radius: 6px; overflow: hidden; position: relative; }
+		.bw-chart {
+			width: 100%;
+			max-width: 600px;
+			display: flex;
+			flex-direction: column;
+			gap: 20px;
+			margin-top: 20px;
+		}
+
+		.bw-row {
+			display: flex;
+			align-items: center;
+			gap: 15px;
+		}
+
+		.bw-label {
+			width: 70px;
+			font-weight: bold;
+			font-size: 1.1rem;
+			color: #34495e;
+			text-align: right;
+			flex-shrink: 0;
+		}
+
+		.bw-track {
+			flex: 1;
+			height: 32px;
+			background: #ecf0f1;
+			border-radius: 6px;
+			overflow: hidden;
+			position: relative;
+		}
+
 		.bw-fill {
-			height: 100%; border-radius: 6px; display: flex; align-items: center; justify-content: flex-end; padding-right: 12px;
-			color: white; font-weight: bold; font-size: 0.9rem;
+			height: 100%;
+			border-radius: 6px;
+			display: flex;
+			align-items: center;
+			justify-content: flex-end;
+			padding-right: 12px;
+			color: white;
+			font-weight: bold;
+			font-size: 0.9rem;
 			animation: growBar 1.2s ease-out forwards;
 			width: 0;
 		}
-		.bw-fill.full { background: linear-gradient(135deg, #e74c3c, #c0392b); }
-		.bw-fill.mid  { background: linear-gradient(135deg, #f39c12, #e67e22); }
-		.bw-fill.low  { background: linear-gradient(135deg, #27ae60, #2ecc71); }
-		.bw-percent { width: 55px; font-weight: bold; font-size: 1rem; color: #555; flex-shrink: 0; }
-		@keyframes growBar { from { width: 0; } to { width: var(--target-width); } }
 
-		/* Interactive Blur Comparison */
+		.bw-fill.full {
+			background: linear-gradient(135deg, #e74c3c, #c0392b);
+		}
+
+		.bw-fill.mid {
+			background: linear-gradient(135deg, #f39c12, #e67e22);
+		}
+
+		.bw-fill.low {
+			background: linear-gradient(135deg, #27ae60, #2ecc71);
+		}
+
+		.bw-percent {
+			width: 55px;
+			font-weight: bold;
+			font-size: 1rem;
+			color: #555;
+			flex-shrink: 0;
+		}
+
+		@keyframes growBar {
+			from {
+				width: 0;
+			}
+
+			to {
+				width: var(--target-width);
+			}
+		}
+
+		/* Interactive Image Comparison Slider */
 		.blur-compare {
-			position: relative; width: 100%; max-width: 500px;
-			aspect-ratio: 2/1; overflow: hidden; border-radius: 12px;
-			box-shadow: 0 4px 20px rgba(0,0,0,0.1); margin: 20px auto;
+			position: relative;
+			width: 100%;
+			overflow: hidden;
+			border-radius: 12px;
+			box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+			margin: 20px auto;
 			cursor: col-resize;
+			user-select: none;
+			-webkit-user-select: none;
+			height: 400px;
+			position: relative;
+			max-width: 1200px;
+			aspect-ratio: 16 / 9;
+			overflow: hidden;
+			margin: 0 auto;
 		}
-		.blur-compare .blur-layer,
-		.blur-compare .sharp-layer {
-			position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-			display: grid; grid-template-columns: repeat(8,1fr); grid-template-rows: repeat(4,1fr);
+
+
+
+		.blur-compare .bc-img-bottom,
+		.blur-compare .bc-img-top {
+			display: block;
+			width: 100%;
+			height: 100%;
+			position: absolute;
+			top: 0;
+			left: 0;
+			object-fit: cover;
+			margin: 0;
 		}
-		.blur-compare .blur-layer { filter: blur(8px) saturate(1.2); z-index: 1; clip-path: inset(0 50% 0 0); }
-		.blur-compare .sharp-layer { z-index: 0; }
-		.blur-compare .bc-cell { width: 100%; height: 100%; }
+
+		/* 確保頂層圖片在最上方 */
+		.blur-compare .bc-img-top {
+			z-index: 1;
+			clip-path: inset(0 50% 0 0);
+		}
+
+		.blur-compare .bc-img-top {
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			clip-path: inset(0 50% 0 0);
+			z-index: 1;
+		}
+
 		.blur-compare .divider-line {
-			position: absolute; top: 0; bottom: 0; left: 50%; width: 3px;
-			background: white; z-index: 10; transform: translateX(-50%);
-			box-shadow: 0 0 8px rgba(0,0,0,0.3);
+			position: absolute;
+			top: 0;
+			bottom: 0;
+			left: 50%;
+			width: 3px;
+			background: white;
+			z-index: 10;
+			transform: translateX(-50%);
+			box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+			pointer-events: none;
 		}
+
 		.blur-compare .divider-line::after {
-			content: '⟨⟩'; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
-			background: white; color: #555; padding: 6px 4px; border-radius: 20px; font-size: 0.7rem;
-			box-shadow: 0 2px 8px rgba(0,0,0,0.2); white-space: nowrap;
+			content: '⟨⟩';
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			background: white;
+			color: #555;
+			padding: 6px 4px;
+			border-radius: 20px;
+			font-size: 0.7rem;
+			box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+			white-space: nowrap;
 		}
+
 		.blur-compare .bc-label {
-			position: absolute; bottom: 8px; z-index: 11; background: rgba(0,0,0,0.6);
-			color: white; padding: 3px 10px; border-radius: 4px; font-size: 0.75rem; font-family: sans-serif;
+			position: absolute;
+			bottom: 8px;
+			z-index: 11;
+			background: rgba(0, 0, 0, 0.6);
+			color: white;
+			padding: 3px 10px;
+			border-radius: 4px;
+			font-size: 0.75rem;
+			font-family: sans-serif;
+			pointer-events: none;
 		}
-		.blur-compare .bc-label.left { left: 8px; }
-		.blur-compare .bc-label.right { right: 8px; }
+
+		.blur-compare .bc-label.left {
+			left: 8px;
+		}
+
+		.blur-compare .bc-label.right {
+			right: 8px;
+		}
 
 		/* HDMI Comparison Cards */
-		.hdmi-cards { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; margin: 25px 0; }
+		.hdmi-cards {
+			display: flex;
+			gap: 20px;
+			flex-wrap: wrap;
+			justify-content: center;
+			margin: 25px 0;
+		}
+
 		.hdmi-card {
-			background: white; border-radius: 12px; padding: 25px; text-align: center;
-			box-shadow: 0 4px 15px rgba(0,0,0,0.08); flex: 1; min-width: 220px; max-width: 320px;
+			background: white;
+			border-radius: 12px;
+			padding: 25px;
+			text-align: center;
+			box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+			flex: 1;
+			min-width: 220px;
+			max-width: 320px;
 			transition: transform 0.3s ease;
 		}
-		.hdmi-card:hover { transform: translateY(-5px); }
-		.hdmi-card .hc-icon { font-size: 2.5rem; margin-bottom: 12px; }
-		.hdmi-card .hc-title { font-weight: bold; font-size: 1.15rem; color: #2c3e50; margin-bottom: 8px; }
-		.hdmi-card .hc-bw { font-size: 2rem; font-weight: bold; margin: 10px 0; }
-		.hdmi-card .hc-bw.slow { color: #e67e22; }
-		.hdmi-card .hc-bw.fast { color: #27ae60; }
-		.hdmi-card .hc-detail { font-size: 0.9rem; color: #7f8c8d; line-height: 1.6; text-align: left; }
+
+		.hdmi-card:hover {
+			transform: translateY(-5px);
+		}
+
+		.hdmi-card .hc-icon {
+			font-size: 2.5rem;
+			margin-bottom: 12px;
+		}
+
+		.hdmi-card .hc-title {
+			font-weight: bold;
+			font-size: 1.15rem;
+			color: #2c3e50;
+			margin-bottom: 8px;
+		}
+
+		.hdmi-card .hc-bw {
+			font-size: 2rem;
+			font-weight: bold;
+			margin: 10px 0;
+		}
+
+		.hdmi-card .hc-bw.slow {
+			color: #e67e22;
+		}
+
+		.hdmi-card .hc-bw.fast {
+			color: #27ae60;
+		}
+
+		.hdmi-card .hc-detail {
+			font-size: 0.9rem;
+			color: #7f8c8d;
+			line-height: 1.6;
+			text-align: left;
+		}
 
 		table.custom-table {
 			width: 100%;
 			border-collapse: collapse;
 			margin: 30px 0;
 			background: white;
-			box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+			box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
 			border-radius: 8px;
 			overflow: hidden;
 		}
 
-		table.custom-table th, table.custom-table td {
+		table.custom-table th,
+		table.custom-table td {
 			padding: 15px;
 			text-align: left;
 			border-bottom: 1px solid #eee;
@@ -286,8 +601,10 @@
 	<div class="container mt-xl">
 		<h1>什麼是色度抽樣？圖解 4:4:4、4:2:2 與 4:2:0 的祕密</h1>
 		<div class="blog-article-tags" style="display: flex; gap: 8px; margin-top: 12px; margin-bottom: 24px;">
-			<span style="padding: 4px 12px; background: #f0f0f0; border-radius: 4px; font-size: 14px; color: #555; border: 1px solid #e0e0e0;">知識</span>
-			<span style="padding: 4px 12px; background: #f0f0f0; border-radius: 4px; font-size: 14px; color: #555; border: 1px solid #e0e0e0;">影音</span>
+			<span
+				style="padding: 4px 12px; background: #f0f0f0; border-radius: 4px; font-size: 14px; color: #555; border: 1px solid #e0e0e0;">知識</span>
+			<span
+				style="padding: 4px 12px; background: #f0f0f0; border-radius: 4px; font-size: 14px; color: #555; border: 1px solid #e0e0e0;">影音</span>
 		</div>
 		<div class="row blog_header ">
 			<div class="col">
@@ -305,13 +622,15 @@
 			</div>
 		</div>
 		<div class="article">
-			
+
 			<p>
-				你知道嗎？<strong>你現在在 Netflix 上觀看的每一秒 4K 電影畫面，其實有整整 75% 的色彩資訊已經被悄悄丟棄了</strong>——而你的眼睛完全沒有發現。這不是 Bug，而是一個天才級的工程設計。
+				你知道嗎？<strong>你現在在 Netflix 上觀看的每一秒 4K 電影畫面，其實有整整 75% 的色彩資訊已經被悄悄丟棄了</strong>——而你的眼睛完全沒有發現。這不是
+				Bug，而是一個天才級的工程設計。
 			</p>
-			
+
 			<p>
-				當你購買螢幕、相機或影音擷取卡時，規格表上可能會出現一串神祕的數字：「支援 <strong>4:4:4</strong>」、「輸出 <strong>4:2:2</strong>」或「影片編碼為 <strong>4:2:0</strong>」。這串數字到底是什麼密碼？它對我們看到的畫面有什麼影響？為什麼 HDMI 線材的頻寬不夠時，你看到的色彩就會被偷偷「降級」？
+				當你購買螢幕、相機或影音擷取卡時，規格表上可能會出現一串神祕的數字：「支援 <strong>4:4:4</strong>」、「輸出 <strong>4:2:2</strong>」或「影片編碼為
+				<strong>4:2:0</strong>」。這串數字到底是什麼密碼？它對我們看到的畫面有什麼影響？為什麼 HDMI 線材的頻寬不夠時，你看到的色彩就會被偷偷「降級」？
 			</p>
 
 			<p>
@@ -319,32 +638,45 @@
 			</p>
 
 			<p class="highlight" style="line-height: 1.8;">
-				<a href="#rgb-basics" style="color: inherit; text-decoration: none; border-bottom: none;"># 先從 RGB 說起：畫面的基本盤</a><br>
-				<a href="#human-eye" style="color: inherit; text-decoration: none; border-bottom: none;"># 人類眼睛的漏洞：對「明暗」比對「色彩」更敏感</a><br>
-				<a href="#interactive-grid" style="color: inherit; text-decoration: none; border-bottom: none;"># 圖解時間：4:4:4 vs 4:2:2 vs 4:2:0 到底是什麼？</a><br>
-				<a href="#bandwidth" style="color: inherit; text-decoration: none; border-bottom: none;"># 頻寬節省有多驚人？一秒搞懂</a><br>
-				<a href="#summary" style="color: inherit; text-decoration: none; border-bottom: none;"># 總結表格：我們該如何選擇？</a><br>
-				<a href="#software" style="color: inherit; text-decoration: none; border-bottom: none;"># 軟體內部的色彩魔術：看影片、玩遊戲與剪輯有什麼差別？</a><br>
-				<a href="#hardware" style="color: inherit; text-decoration: none; border-bottom: none;"># 硬體與線材的妥協：最常見的畫質降級陷阱</a><br>
-				<a href="#references" style="color: inherit; text-decoration: none; border-bottom: none;"># 延伸閱讀與參考資源</a>
+				<a href="#rgb-basics" style="color: inherit; text-decoration: none; border-bottom: none;"># 先從 RGB
+					說起：畫面的基本盤</a><br>
+				<a href="#human-eye" style="color: inherit; text-decoration: none; border-bottom: none;">#
+					人類眼睛的漏洞：對「明暗」比對「色彩」更敏感</a><br>
+				<a href="#interactive-grid" style="color: inherit; text-decoration: none; border-bottom: none;">#
+					圖解時間：4:4:4 vs 4:2:2 vs 4:2:0 到底是什麼？</a><br>
+				<a href="#bandwidth" style="color: inherit; text-decoration: none; border-bottom: none;">#
+					頻寬節省有多驚人？一秒搞懂</a><br>
+				<a href="#summary" style="color: inherit; text-decoration: none; border-bottom: none;">#
+					總結表格：我們該如何選擇？</a><br>
+				<a href="#software" style="color: inherit; text-decoration: none; border-bottom: none;">#
+					軟體內部的色彩魔術：看影片、玩遊戲與剪輯有什麼差別？</a><br>
+				<a href="#hardware" style="color: inherit; text-decoration: none; border-bottom: none;">#
+					硬體與線材的妥協：最常見的畫質降級陷阱</a><br>
+				<a href="#references" style="color: inherit; text-decoration: none; border-bottom: none;">#
+					延伸閱讀與參考資源</a>
 			</p>
 
 			<hr class="lg">
 
 			<h2 id="rgb-basics">先從 RGB 說起：畫面的基本盤</h2>
 			<p>
-				我們都知道電腦、顯示卡、電視螢幕最常使用的是 <strong>RGB 色彩空間</strong>。畫面上每一個小小的像素 (Pixel)，都是由紅 (Red)、綠 (Green)、藍 (Blue) 這三個原色燈光組合而成的。
+				我們都知道電腦、顯示卡、電視螢幕最常使用的是 <strong>RGB 色彩空間</strong>。畫面上每一個小小的像素 (Pixel)，都是由紅 (Red)、綠 (Green)、藍 (Blue)
+				這三個原色燈光組合而成的。
 			</p>
 
 			<div class="callout-box" style="border-left-color: #3498db; background-color: #ebf5fb;">
 				<p style="margin:0;">
 					🖥️ <strong>為什麼電腦桌面必須是 4:4:4 (Full RGB)？</strong><br>
-					一般電腦在顯示桌面、作業系統（Windows / macOS）和網頁文書軟體時，預設絕對是使用 4:4:4 原生訊號。因為電腦畫面包含了大量的高對比邊緣，尤其是<strong>文字</strong>。如果輸出的色彩被降級（例如被迫共用顏色變成 4:2:2 或 4:2:0），你會立刻發現螢幕上的字體邊緣出現彩色的毛邊（Color Fringing）、模糊，甚至細小線條直接消失。這對閱讀和精準滑鼠點擊是非常痛苦的。因此，顯示卡只要有能力，一定會優先輸出無損色彩給螢幕！
+					一般電腦在顯示桌面、作業系統（Windows / macOS）和網頁文書軟體時，預設絕對是使用 4:4:4
+					原生訊號。因為電腦畫面包含了大量的高對比邊緣，尤其是<strong>文字</strong>。如果輸出的色彩被降級（例如被迫共用顏色變成 4:2:2 或
+					4:2:0），你會立刻發現螢幕上的字體邊緣出現彩色的毛邊（Color
+					Fringing）、模糊，甚至細小線條直接消失。這對閱讀和精準滑鼠點擊是非常痛苦的。因此，顯示卡只要有能力，一定會優先輸出無損色彩給螢幕！
 				</p>
 			</div>
-			
+
 			<p>
-				但問題來了：如果我們要把一部 4K 解析度、60fps 的影片，每一格畫面的每一個像素的 R、G、B 資訊都完整記錄下來並傳輸，那個檔案大小和需要的網路頻寬會是<strong>極度恐怖的天文數字</strong>！
+				但問題來了：如果我們要把一部 4K 解析度、60fps 的影片，每一格畫面的每一個像素的 R、G、B
+				資訊都完整記錄下來並傳輸，那個檔案大小和需要的網路頻寬會是<strong>極度恐怖的天文數字</strong>！
 				為了解決這個傳輸瓶頸，聰明的工程師們把腦筋動到了「人類的眼睛」上。
 			</p>
 
@@ -368,44 +700,48 @@
 			<!-- Interactive Blur Comparison -->
 			<div class="css-illustration">
 				<h4>👁️ 親自試試看：你分得出差異嗎？</h4>
-				<p style="text-align:center; font-size: 0.9em; color:#666; margin-top:-10px; margin-bottom: 15px;">左側為「色度模糊」的模擬效果，右側保留完整色彩。拖動中間的分隔線來比較！</p>
+				<p style="text-align:center; font-size: 0.9em; color:#666; margin-top:-10px; margin-bottom: 15px;">以 Lab
+					色彩空間模擬色度抽樣效果：保留完整的 L（亮度）通道，將 a、b（色度）通道模糊至約 1/4 解析度。拖動中間的分隔線來比較！</p>
 				<div class="blur-compare" id="blurCompare">
-					<div class="blur-layer" id="blurLayer">
-						<div class="bc-cell" style="background:#e74c3c"></div><div class="bc-cell" style="background:#3498db"></div><div class="bc-cell" style="background:#f1c40f"></div><div class="bc-cell" style="background:#2ecc71"></div>
-						<div class="bc-cell" style="background:#9b59b6"></div><div class="bc-cell" style="background:#e67e22"></div><div class="bc-cell" style="background:#1abc9c"></div><div class="bc-cell" style="background:#e91e63"></div>
-						<div class="bc-cell" style="background:#3498db"></div><div class="bc-cell" style="background:#e74c3c"></div><div class="bc-cell" style="background:#2ecc71"></div><div class="bc-cell" style="background:#f1c40f"></div>
-						<div class="bc-cell" style="background:#e67e22"></div><div class="bc-cell" style="background:#9b59b6"></div><div class="bc-cell" style="background:#e91e63"></div><div class="bc-cell" style="background:#1abc9c"></div>
-						<div class="bc-cell" style="background:#f1c40f"></div><div class="bc-cell" style="background:#2ecc71"></div><div class="bc-cell" style="background:#e74c3c"></div><div class="bc-cell" style="background:#3498db"></div>
-						<div class="bc-cell" style="background:#1abc9c"></div><div class="bc-cell" style="background:#e91e63"></div><div class="bc-cell" style="background:#e67e22"></div><div class="bc-cell" style="background:#9b59b6"></div>
-						<div class="bc-cell" style="background:#2ecc71"></div><div class="bc-cell" style="background:#f1c40f"></div><div class="bc-cell" style="background:#9b59b6"></div><div class="bc-cell" style="background:#e74c3c"></div>
-						<div class="bc-cell" style="background:#e91e63"></div><div class="bc-cell" style="background:#1abc9c"></div><div class="bc-cell" style="background:#3498db"></div><div class="bc-cell" style="background:#e67e22"></div>
-					</div>
-					<div class="sharp-layer">
-						<div class="bc-cell" style="background:#e74c3c"></div><div class="bc-cell" style="background:#3498db"></div><div class="bc-cell" style="background:#f1c40f"></div><div class="bc-cell" style="background:#2ecc71"></div>
-						<div class="bc-cell" style="background:#9b59b6"></div><div class="bc-cell" style="background:#e67e22"></div><div class="bc-cell" style="background:#1abc9c"></div><div class="bc-cell" style="background:#e91e63"></div>
-						<div class="bc-cell" style="background:#3498db"></div><div class="bc-cell" style="background:#e74c3c"></div><div class="bc-cell" style="background:#2ecc71"></div><div class="bc-cell" style="background:#f1c40f"></div>
-						<div class="bc-cell" style="background:#e67e22"></div><div class="bc-cell" style="background:#9b59b6"></div><div class="bc-cell" style="background:#e91e63"></div><div class="bc-cell" style="background:#1abc9c"></div>
-						<div class="bc-cell" style="background:#f1c40f"></div><div class="bc-cell" style="background:#2ecc71"></div><div class="bc-cell" style="background:#e74c3c"></div><div class="bc-cell" style="background:#3498db"></div>
-						<div class="bc-cell" style="background:#1abc9c"></div><div class="bc-cell" style="background:#e91e63"></div><div class="bc-cell" style="background:#e67e22"></div><div class="bc-cell" style="background:#9b59b6"></div>
-						<div class="bc-cell" style="background:#2ecc71"></div><div class="bc-cell" style="background:#f1c40f"></div><div class="bc-cell" style="background:#9b59b6"></div><div class="bc-cell" style="background:#e74c3c"></div>
-						<div class="bc-cell" style="background:#e91e63"></div><div class="bc-cell" style="background:#1abc9c"></div><div class="bc-cell" style="background:#3498db"></div><div class="bc-cell" style="background:#e67e22"></div>
-					</div>
+					<!-- 底層：完整色彩 -->
+					<img class="bc-img-bottom" src="image/chroma/chroma-original.jpg" alt="完整色彩原圖">
+					<!-- 頂層：色度模糊（左側可見） -->
+					<img class="bc-img-top" id="imgTop" src="image/chroma/chroma-blurred.jpg"
+						alt="色度模糊模擬 — ab 通道降至約 1/4 解析度">
 					<div class="divider-line" id="dividerLine"></div>
-					<div class="bc-label left">色度模糊 (4:2:0)</div>
+					<div class="bc-label left">色度模糊 (4:2:0 模擬)</div>
 					<div class="bc-label right">完整色彩 (4:4:4)</div>
 				</div>
-				<p style="text-align:center; font-size: 0.85em; color:#999; margin-top: 12px;">💡 提示：在靜態且色彩雜亂的色塊中差異較明顯，但在自然照片和動態影片中幾乎不可分辨。</p>
+				<p style="text-align:center; font-size: 0.9em; color:#888; margin-top: 12px;">💡 左側為 Lab 模擬的色度模糊效果（ab
+					通道僅保留<strong>約 1/6 解析度</strong>），右側為原始完整色彩。<br>在自然照片中幾乎不可分辨。建議可以觀察平交道標示的黃黑叉叉，會發現左側的黃色邊緣有模糊的現象。</p>
 			</div>
-			
+
 			<p>
 				這就是色度抽樣的核心精神：<strong>利用大腦的視覺錯覺，保留 100% 絕對銳利的亮度資訊，但大膽地將色彩資訊丟棄掉一半以上。</strong>
 			</p>
-			
-			<!-- 圖層拆解對比圖 (建議圖片 1) -->
-			<img src="image/blog/chroma/luma-chroma-concept.jpg" alt="圖層拆解對比圖：包含清晰的黑白照片（Luma）、模糊的純色照片（Chroma），以及兩者疊加後得到銳利彩色照的對比。" style="width: 100%; height: auto; border-radius: 8px; margin: 30px 0; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
-			
+
+			<!-- 圖層拆解對比圖 -->
+			<div style="display: flex; gap: 8px; margin: 30px 0; width: 100%;">
+				<div style="flex: 1; min-width: 0; text-align: center;">
+					<img src="image/chroma/luma-only.jpg" alt="Luma（亮度）通道"
+						style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+					<p style="font-size: 0.8em; color: #666; margin-top: 6px;">Luma</p>
+				</div>
+				<div style="flex: 1; min-width: 0; text-align: center;">
+					<img src="image/chroma/chroma-only.jpg" alt="Chroma（色度）通道"
+						style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+					<p style="font-size: 0.8em; color: #666; margin-top: 6px;">Chroma</p>
+				</div>
+				<div style="flex: 1; min-width: 0; text-align: center;">
+					<img src="image/chroma/luma-chroma-combined.jpg" alt="Luma + Chroma 合成結果"
+						style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+					<p style="font-size: 0.8em; color: #666; margin-top: 6px;">Luma + Chroma</p>
+				</div>
+			</div>
+
 			<p>
-				既然視覺對色度造成的影響相對較小，工程師發明了<strong>「色度抽樣 (Chroma Subsampling)」</strong>。它是一種大幅縮減影像中色度訊息，來有效縮減檔案大小與節省頻寬的方法。在 YUV 格式中，如果我們削減色度資訊，最極端可以節省高達一半的資料量，且肉眼幾乎看不出畫質下降！
+				既然視覺對色度造成的影響相對較小，工程師發明了<strong>「色度抽樣 (Chroma Subsampling)」</strong>。它是一種大幅縮減影像中色度訊息，來有效縮減檔案大小與節省頻寬的方法。在
+				YUV 格式中，如果我們削減色度資訊，最極端可以節省高達一半的資料量，且肉眼幾乎看不出畫質下降！
 			</p>
 
 			<hr class="lg">
@@ -415,17 +751,20 @@
 				這三個數字代表了影像在一個 <strong>4 x 2 的像素區塊 (總共 8 個像素)</strong> 內的色彩取樣方式：
 			</p>
 
-			<div class="css-illustration anim-illustration" id="subsamplingAnimBox" style="background:#f8f9fa; border:1px solid #eee; border-radius: 8px; padding: 25px 15px; margin: 25px 0; text-align: center; position: relative;">
-				
+			<div class="css-illustration anim-illustration" id="subsamplingAnimBox"
+				style="background:#f8f9fa; border:1px solid #eee; border-radius: 8px; padding: 25px 15px; margin: 25px 0; text-align: center; position: relative;">
+
 				<!-- 4x2 像素示意圖 -->
 				<div style="margin-bottom: 30px; border-bottom: 1px dashed #ddd; padding-bottom: 25px;">
 					<div style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
-						<div class="anim-label-top" style="color: #e74c3c; font-weight: bold; font-size: 0.95rem; transition: 0.3s; transform-origin: center;">
+						<div class="anim-label-top"
+							style="color: #e74c3c; font-weight: bold; font-size: 0.95rem; transition: 0.3s; transform-origin: center;">
 							第一個數字：取樣寬度 (橫向 4 個像素)
 						</div>
-						
+
 						<div style="display: flex; align-items: stretch; justify-content: center; gap: 15px;">
-							<div class="anim-grid-container" style="display: grid; grid-template-columns: repeat(4, 40px); grid-template-rows: repeat(2, 40px); gap: 4px; background: #ddd; padding: 4px; border-radius: 6px; border: 2px solid #aaa; position: relative; overflow: hidden;">
+							<div class="anim-grid-container"
+								style="display: grid; grid-template-columns: repeat(4, 40px); grid-template-rows: repeat(2, 40px); gap: 4px; background: #ddd; padding: 4px; border-radius: 6px; border: 2px solid #aaa; position: relative; overflow: hidden;">
 								<div class="acell acell-1"></div>
 								<div class="acell acell-2"></div>
 								<div class="acell acell-3"></div>
@@ -435,44 +774,70 @@
 								<div class="acell acell-7"></div>
 								<div class="acell acell-8"></div>
 							</div>
-							
-							<div style="display: flex; flex-direction: column; justify-content: space-around; text-align: left; padding: 5px 0;">
-								<div class="anim-label-r1" style="color: #3498db; font-weight: bold; font-size: 0.95rem; transition: 0.3s; transform-origin: left;">← 第二個數字 (第一排)</div>
-								<div class="anim-label-r2" style="color: #2ecc71; font-weight: bold; font-size: 0.95rem; transition: 0.3s; transform-origin: left;">← 第三個數字 (第二排)</div>
+
+							<div
+								style="display: flex; flex-direction: column; justify-content: space-around; text-align: left; padding: 5px 0;">
+								<div class="anim-label-r1"
+									style="color: #3498db; font-weight: bold; font-size: 0.95rem; transition: 0.3s; transform-origin: left;">
+									← 第二個數字 (第一排)</div>
+								<div class="anim-label-r2"
+									style="color: #2ecc71; font-weight: bold; font-size: 0.95rem; transition: 0.3s; transform-origin: left;">
+									← 第三個數字 (第二排)</div>
 							</div>
 						</div>
-						<div style="display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 15px;">
-							<button id="btnPrevFmt" style="background: white; border: 1px solid #ccc; border-radius: 50%; width: 32px; height: 32px; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #555; transition: 0.2s; box-shadow: 0 2px 4px rgba(0,0,0,0.1);" aria-label="上一個格式">◀</button>
-							<div id="animStatusText" style="font-weight: bold; background: #333; color: white; padding: 6px 16px; border-radius: 20px; font-size: 0.85rem; letter-spacing: 1px; transition: 0.3s; min-width: 220px; text-align: center;">目前狀態：無壓縮 (4:4:4)</div>
-							<button id="btnNextFmt" style="background: white; border: 1px solid #ccc; border-radius: 50%; width: 32px; height: 32px; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #555; transition: 0.2s; box-shadow: 0 2px 4px rgba(0,0,0,0.1);" aria-label="下一個格式">▶</button>
+						<div
+							style="display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 15px;">
+							<button id="btnPrevFmt"
+								style="background: white; border: 1px solid #ccc; border-radius: 50%; width: 32px; height: 32px; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #555; transition: 0.2s; box-shadow: 0 2px 4px rgba(0,0,0,0.1);"
+								aria-label="上一個格式">◀</button>
+							<div id="animStatusText"
+								style="font-weight: bold; background: #333; color: white; padding: 6px 16px; border-radius: 20px; font-size: 0.85rem; letter-spacing: 1px; transition: 0.3s; min-width: 220px; text-align: center;">
+								目前狀態：無壓縮 (4:4:4)</div>
+							<button id="btnNextFmt"
+								style="background: white; border: 1px solid #ccc; border-radius: 50%; width: 32px; height: 32px; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #555; transition: 0.2s; box-shadow: 0 2px 4px rgba(0,0,0,0.1);"
+								aria-label="下一個格式">▶</button>
 						</div>
 					</div>
 				</div>
 
 				<!-- 大數字區塊與 Hover 觸發區 -->
-				<div style="display: flex; justify-content: center; align-items: flex-start; gap: 20px; flex-wrap: wrap;">
+				<div
+					style="display: flex; justify-content: center; align-items: flex-start; gap: 20px; flex-wrap: wrap;">
 					<!-- 數字 1 -->
-					<div class="hover-trigger" data-target="hl-width" style="display: flex; flex-direction: column; align-items: center; max-width: 140px; cursor: pointer; padding: 10px; border-radius: 8px; transition: 0.2s;">
+					<div class="hover-trigger" data-target="hl-width"
+						style="display: flex; flex-direction: column; align-items: center; max-width: 140px; cursor: pointer; padding: 10px; border-radius: 8px; transition: 0.2s;">
 						<div style="font-size: 2.5rem; font-weight: bold; color: #e74c3c; line-height: 1;">4</div>
 						<div style="margin-top: 10px; font-weight: bold; color: #333;">第一個數字</div>
-						<div style="font-size: 0.85rem; color: #666; margin-top: 5px;">參考區域的<br><b>像素寬度</b><br>(通常固定為 4)</div>
+						<div style="font-size: 0.85rem; color: #666; margin-top: 5px;">參考區域的<br><b>像素寬度</b><br>(通常固定為 4)
+						</div>
 					</div>
-					<div style="font-size: 2.5rem; font-weight: bold; color: #ccc; line-height: 1; margin-top: 15px;">:</div>
+					<div style="font-size: 2.5rem; font-weight: bold; color: #ccc; line-height: 1; margin-top: 15px;">:
+					</div>
 					<!-- 數字 2 -->
-					<div class="hover-trigger" data-target="hl-row1" style="display: flex; flex-direction: column; align-items: center; max-width: 140px; cursor: pointer; padding: 10px; border-radius: 8px; transition: 0.2s;">
-						<div id="animNum2" style="font-size: 2.5rem; font-weight: bold; color: #3498db; line-height: 1; transition: 0.3s;">4</div>
+					<div class="hover-trigger" data-target="hl-row1"
+						style="display: flex; flex-direction: column; align-items: center; max-width: 140px; cursor: pointer; padding: 10px; border-radius: 8px; transition: 0.2s;">
+						<div id="animNum2"
+							style="font-size: 2.5rem; font-weight: bold; color: #3498db; line-height: 1; transition: 0.3s;">
+							4</div>
 						<div style="margin-top: 10px; font-weight: bold; color: #333;">第二個數字</div>
-						<div style="font-size: 0.85rem; color: #666; margin-top: 5px;"><b>第一排</b> 4 個像素中<br>獨立色彩的數量</div>
+						<div style="font-size: 0.85rem; color: #666; margin-top: 5px;"><b>第一排</b> 4 個像素中<br>獨立色彩的數量
+						</div>
 					</div>
-					<div style="font-size: 2.5rem; font-weight: bold; color: #ccc; line-height: 1; margin-top: 15px;">:</div>
+					<div style="font-size: 2.5rem; font-weight: bold; color: #ccc; line-height: 1; margin-top: 15px;">:
+					</div>
 					<!-- 數字 3 -->
-					<div class="hover-trigger" data-target="hl-row2" style="display: flex; flex-direction: column; align-items: center; max-width: 140px; cursor: pointer; padding: 10px; border-radius: 8px; transition: 0.2s;">
-						<div id="animNum3" style="font-size: 2.5rem; font-weight: bold; color: #2ecc71; line-height: 1; transition: 0.3s;">4</div>
+					<div class="hover-trigger" data-target="hl-row2"
+						style="display: flex; flex-direction: column; align-items: center; max-width: 140px; cursor: pointer; padding: 10px; border-radius: 8px; transition: 0.2s;">
+						<div id="animNum3"
+							style="font-size: 2.5rem; font-weight: bold; color: #2ecc71; line-height: 1; transition: 0.3s;">
+							4</div>
 						<div style="margin-top: 10px; font-weight: bold; color: #333;">第三個數字</div>
-						<div style="font-size: 0.85rem; color: #666; margin-top: 5px;"><b>第二排</b> 4 個像素中<br>獨立色彩的數量</div>
+						<div style="font-size: 0.85rem; color: #666; margin-top: 5px;"><b>第二排</b> 4 個像素中<br>獨立色彩的數量
+						</div>
 					</div>
 				</div>
-				<p style="font-size: 0.8rem; color: #999; margin-top: 10px; margin-bottom: 0;">💡 將滑鼠移至上方三大數字，可查看對應的網格位置</p>
+				<p style="font-size: 0.8rem; color: #999; margin-top: 10px; margin-bottom: 0;">💡 將滑鼠移至上方三大數字，可查看對應的網格位置
+				</p>
 			</div>
 
 			<p>
@@ -487,33 +852,69 @@
 					<div class="cg-head">Luma</div>
 					<div class="cg-head">Chroma</div>
 					<div class="cg-head">Luma + Chroma</div>
-					
+
 					<div class="cg-row-label">4:4:4</div>
 					<div>
 						<div class="cg-mobile-label">Luma</div>
 						<div class="cg-group" style="grid-template-columns:repeat(4,1fr)">
-							<div class="cg-cell l-a"></div><div class="cg-cell l-b"></div><div class="cg-cell l-c"></div><div class="cg-cell l-d"></div>
-							<div class="cg-cell l-e"></div><div class="cg-cell l-f"></div><div class="cg-cell l-g"></div><div class="cg-cell l-h"></div>
-							<div class="cg-cell l-b"></div><div class="cg-cell l-d"></div><div class="cg-cell l-f"></div><div class="cg-cell l-h"></div>
-							<div class="cg-cell l-a"></div><div class="cg-cell l-c"></div><div class="cg-cell l-e"></div><div class="cg-cell l-g"></div>
+							<div class="cg-cell l-a"></div>
+							<div class="cg-cell l-b"></div>
+							<div class="cg-cell l-c"></div>
+							<div class="cg-cell l-d"></div>
+							<div class="cg-cell l-e"></div>
+							<div class="cg-cell l-f"></div>
+							<div class="cg-cell l-g"></div>
+							<div class="cg-cell l-h"></div>
+							<div class="cg-cell l-b"></div>
+							<div class="cg-cell l-d"></div>
+							<div class="cg-cell l-f"></div>
+							<div class="cg-cell l-h"></div>
+							<div class="cg-cell l-a"></div>
+							<div class="cg-cell l-c"></div>
+							<div class="cg-cell l-e"></div>
+							<div class="cg-cell l-g"></div>
 						</div>
 					</div>
 					<div>
 						<div class="cg-mobile-label">Chroma</div>
 						<div class="cg-group" style="grid-template-columns:repeat(4,1fr)">
-							<div class="cg-cell ch-1"></div><div class="cg-cell ch-2"></div><div class="cg-cell ch-6"></div><div class="cg-cell ch-8"></div>
-							<div class="cg-cell ch-4"></div><div class="cg-cell ch-5"></div><div class="cg-cell ch-6"></div><div class="cg-cell ch-7"></div>
-							<div class="cg-cell ch-2"></div><div class="cg-cell ch-1"></div><div class="cg-cell ch-7"></div><div class="cg-cell ch-4"></div>
-							<div class="cg-cell ch-8"></div><div class="cg-cell ch-3"></div><div class="cg-cell ch-5"></div><div class="cg-cell ch-1"></div>
+							<div class="cg-cell ch-1"></div>
+							<div class="cg-cell ch-2"></div>
+							<div class="cg-cell ch-6"></div>
+							<div class="cg-cell ch-8"></div>
+							<div class="cg-cell ch-4"></div>
+							<div class="cg-cell ch-5"></div>
+							<div class="cg-cell ch-6"></div>
+							<div class="cg-cell ch-7"></div>
+							<div class="cg-cell ch-2"></div>
+							<div class="cg-cell ch-1"></div>
+							<div class="cg-cell ch-7"></div>
+							<div class="cg-cell ch-4"></div>
+							<div class="cg-cell ch-8"></div>
+							<div class="cg-cell ch-3"></div>
+							<div class="cg-cell ch-5"></div>
+							<div class="cg-cell ch-1"></div>
 						</div>
 					</div>
 					<div>
 						<div class="cg-mobile-label">Luma + Chroma</div>
 						<div class="cg-group" style="grid-template-columns:repeat(4,1fr)">
-							<div class="cg-cell cg-mix l-a m-1"></div><div class="cg-cell cg-mix l-b m-2"></div><div class="cg-cell cg-mix l-c m-6"></div><div class="cg-cell cg-mix l-d m-8"></div>
-							<div class="cg-cell cg-mix l-e m-4"></div><div class="cg-cell cg-mix l-f m-5"></div><div class="cg-cell cg-mix l-g m-6"></div><div class="cg-cell cg-mix l-h m-7"></div>
-							<div class="cg-cell cg-mix l-b m-2"></div><div class="cg-cell cg-mix l-d m-1"></div><div class="cg-cell cg-mix l-f m-7"></div><div class="cg-cell cg-mix l-h m-4"></div>
-							<div class="cg-cell cg-mix l-a m-8"></div><div class="cg-cell cg-mix l-c m-3"></div><div class="cg-cell cg-mix l-e m-5"></div><div class="cg-cell cg-mix l-g m-1"></div>
+							<div class="cg-cell cg-mix l-a m-1"></div>
+							<div class="cg-cell cg-mix l-b m-2"></div>
+							<div class="cg-cell cg-mix l-c m-6"></div>
+							<div class="cg-cell cg-mix l-d m-8"></div>
+							<div class="cg-cell cg-mix l-e m-4"></div>
+							<div class="cg-cell cg-mix l-f m-5"></div>
+							<div class="cg-cell cg-mix l-g m-6"></div>
+							<div class="cg-cell cg-mix l-h m-7"></div>
+							<div class="cg-cell cg-mix l-b m-2"></div>
+							<div class="cg-cell cg-mix l-d m-1"></div>
+							<div class="cg-cell cg-mix l-f m-7"></div>
+							<div class="cg-cell cg-mix l-h m-4"></div>
+							<div class="cg-cell cg-mix l-a m-8"></div>
+							<div class="cg-cell cg-mix l-c m-3"></div>
+							<div class="cg-cell cg-mix l-e m-5"></div>
+							<div class="cg-cell cg-mix l-g m-1"></div>
 						</div>
 					</div>
 				</div>
@@ -521,13 +922,16 @@
 
 			<p>
 				數字表示在 4 個像素的寬度中，上下兩排的 4 個像素全都有自己獨立的色彩。它<strong>沒有使用到色度抽樣</strong>，呈現了最完整的亮度與色度。
-				<br><strong>關鍵補充：</strong> 雖然 4:4:4 經常與 RGB 混為一談，但在數學定義上其實不同。RGB 是直接把訊號分為紅綠藍，而 4:4:4 通常指的是 YCbCr 色彩空間。不過在 4:4:4 的無損狀態下，YCbCr 保留了與 RGB 完全同等的信息量，因此兩者可以互換且無損。
-				<br><strong>為什麼電腦螢幕需要它？</strong> 黑白細小文字非常依賴高對比與銳利的邊緣。如果螢幕輸出降級為有色度抽樣的格式，文字邊緣就會出現彩色沾染（Color Fringing）與模糊現象。
+				<br><strong>關鍵補充：</strong> 雖然 4:4:4 經常與 RGB 混為一談，但在數學定義上其實不同。RGB 是直接把訊號分為紅綠藍，而 4:4:4 通常指的是 YCbCr
+				色彩空間。不過在 4:4:4 的無損狀態下，YCbCr 保留了與 RGB 完全同等的信息量，因此兩者可以互換且無損。
+				<br><strong>為什麼電腦螢幕需要它？</strong> 黑白細小文字非常依賴高對比與銳利的邊緣。如果螢幕輸出降級為有色度抽樣的格式，文字邊緣就會出現彩色沾染（Color
+				Fringing）與模糊現象。
 			</p>
-			
+
 			<!-- 電腦文字邊沿銳利度檢測範例圖 (建議圖片 2) -->
-			<img src="image/blog/chroma/text-fringing.jpg" alt="電腦文字邊沿銳利度檢測範例圖：對比無損 4:4:4 的文字邊緣與 4:2:0 電腦螢幕上文字邊緣溢色、糊掉的慘況。" style="width: 100%; height: auto; border-radius: 8px; margin: 20px 0 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
-			
+			<img src="image/chroma/text-fringing.jpg" alt="電腦文字邊沿銳利度檢測範例圖：對比無損 4:4:4 的文字邊緣與 4:2:0 電腦螢幕上文字邊緣溢色、糊掉的慘況。"
+				style="width: 100%; height: auto; border-radius: 8px; margin: 20px 0 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+
 			<p>
 				<strong>適合場景：</strong> 高階數位相機 RAW 檔、底片掃描器、電影後期調色製作、與電腦工作用顯示器。
 			</p>
@@ -545,28 +949,56 @@
 					<div>
 						<div class="cg-mobile-label">Luma</div>
 						<div class="cg-group" style="grid-template-columns:repeat(4,1fr)">
-							<div class="cg-cell l-a"></div><div class="cg-cell l-b"></div><div class="cg-cell l-c"></div><div class="cg-cell l-d"></div>
-							<div class="cg-cell l-e"></div><div class="cg-cell l-f"></div><div class="cg-cell l-g"></div><div class="cg-cell l-h"></div>
-							<div class="cg-cell l-b"></div><div class="cg-cell l-d"></div><div class="cg-cell l-f"></div><div class="cg-cell l-h"></div>
-							<div class="cg-cell l-a"></div><div class="cg-cell l-c"></div><div class="cg-cell l-e"></div><div class="cg-cell l-g"></div>
+							<div class="cg-cell l-a"></div>
+							<div class="cg-cell l-b"></div>
+							<div class="cg-cell l-c"></div>
+							<div class="cg-cell l-d"></div>
+							<div class="cg-cell l-e"></div>
+							<div class="cg-cell l-f"></div>
+							<div class="cg-cell l-g"></div>
+							<div class="cg-cell l-h"></div>
+							<div class="cg-cell l-b"></div>
+							<div class="cg-cell l-d"></div>
+							<div class="cg-cell l-f"></div>
+							<div class="cg-cell l-h"></div>
+							<div class="cg-cell l-a"></div>
+							<div class="cg-cell l-c"></div>
+							<div class="cg-cell l-e"></div>
+							<div class="cg-cell l-g"></div>
 						</div>
 					</div>
 					<div>
 						<div class="cg-mobile-label">Chroma</div>
 						<div class="cg-group" style="grid-template-columns:repeat(2,1fr)">
-							<div class="cg-cell ch-1" style="aspect-ratio:2/1"></div><div class="cg-cell ch-8" style="aspect-ratio:2/1"></div>
-							<div class="cg-cell ch-4" style="aspect-ratio:2/1"></div><div class="cg-cell ch-6" style="aspect-ratio:2/1"></div>
-							<div class="cg-cell ch-2" style="aspect-ratio:2/1"></div><div class="cg-cell ch-4" style="aspect-ratio:2/1"></div>
-							<div class="cg-cell ch-8" style="aspect-ratio:2/1"></div><div class="cg-cell ch-1" style="aspect-ratio:2/1"></div>
+							<div class="cg-cell ch-1" style="aspect-ratio:2/1"></div>
+							<div class="cg-cell ch-8" style="aspect-ratio:2/1"></div>
+							<div class="cg-cell ch-4" style="aspect-ratio:2/1"></div>
+							<div class="cg-cell ch-6" style="aspect-ratio:2/1"></div>
+							<div class="cg-cell ch-2" style="aspect-ratio:2/1"></div>
+							<div class="cg-cell ch-4" style="aspect-ratio:2/1"></div>
+							<div class="cg-cell ch-8" style="aspect-ratio:2/1"></div>
+							<div class="cg-cell ch-1" style="aspect-ratio:2/1"></div>
 						</div>
 					</div>
 					<div>
 						<div class="cg-mobile-label">Luma + Chroma</div>
 						<div class="cg-group" style="grid-template-columns:repeat(4,1fr)">
-							<div class="cg-cell cg-mix l-a m-1"></div><div class="cg-cell cg-mix l-b m-1"></div><div class="cg-cell cg-mix l-c m-8"></div><div class="cg-cell cg-mix l-d m-8"></div>
-							<div class="cg-cell cg-mix l-e m-4"></div><div class="cg-cell cg-mix l-f m-4"></div><div class="cg-cell cg-mix l-g m-6"></div><div class="cg-cell cg-mix l-h m-6"></div>
-							<div class="cg-cell cg-mix l-b m-2"></div><div class="cg-cell cg-mix l-d m-2"></div><div class="cg-cell cg-mix l-f m-4"></div><div class="cg-cell cg-mix l-h m-4"></div>
-							<div class="cg-cell cg-mix l-a m-8"></div><div class="cg-cell cg-mix l-c m-8"></div><div class="cg-cell cg-mix l-e m-1"></div><div class="cg-cell cg-mix l-g m-1"></div>
+							<div class="cg-cell cg-mix l-a m-1"></div>
+							<div class="cg-cell cg-mix l-b m-1"></div>
+							<div class="cg-cell cg-mix l-c m-8"></div>
+							<div class="cg-cell cg-mix l-d m-8"></div>
+							<div class="cg-cell cg-mix l-e m-4"></div>
+							<div class="cg-cell cg-mix l-f m-4"></div>
+							<div class="cg-cell cg-mix l-g m-6"></div>
+							<div class="cg-cell cg-mix l-h m-6"></div>
+							<div class="cg-cell cg-mix l-b m-2"></div>
+							<div class="cg-cell cg-mix l-d m-2"></div>
+							<div class="cg-cell cg-mix l-f m-4"></div>
+							<div class="cg-cell cg-mix l-h m-4"></div>
+							<div class="cg-cell cg-mix l-a m-8"></div>
+							<div class="cg-cell cg-mix l-c m-8"></div>
+							<div class="cg-cell cg-mix l-e m-1"></div>
+							<div class="cg-cell cg-mix l-g m-1"></div>
 						</div>
 					</div>
 				</div>
@@ -575,7 +1007,8 @@
 			<p>
 				水平方向每兩個像素共用一個顏色，垂直方向仍維持原比例不共用。
 				雖然留存的色彩訊號佔全彩的二分之一，但在加上 100% 完整的亮度 Y 之後，總數據量大約是 4:4:4 的 2/3。
-				<br><strong>為什麼適合綠幕去背 (Keying)？</strong> 因為比起 4:2:0，它在水平方向多了整整一倍的色彩資訊！這讓軟體在演算「髮絲邊緣」或「半透明物件」去背時，能有更精準的顏色邊界判斷，邊緣會乾淨非常多。
+				<br><strong>為什麼適合綠幕去背 (Keying)？</strong> 因為比起
+				4:2:0，它在水平方向多了整整一倍的色彩資訊！這讓軟體在演算「髮絲邊緣」或「半透明物件」去背時，能有更精準的顏色邊界判斷，邊緣會乾淨非常多。
 				<br><strong>適合場景：</strong> 專業廣播電視、高階錄影、需要進行進階綠幕去背與特效的電影後製素材。
 			</p>
 
@@ -587,46 +1020,75 @@
 					<div class="cg-head">Luma</div>
 					<div class="cg-head">Chroma</div>
 					<div class="cg-head">Luma + Chroma</div>
-					
+
 					<div class="cg-row-label">4:2:0</div>
 					<div>
 						<div class="cg-mobile-label">Luma</div>
 						<div class="cg-group" style="grid-template-columns:repeat(4,1fr)">
-							<div class="cg-cell l-a"></div><div class="cg-cell l-b"></div><div class="cg-cell l-c"></div><div class="cg-cell l-d"></div>
-							<div class="cg-cell l-e"></div><div class="cg-cell l-f"></div><div class="cg-cell l-g"></div><div class="cg-cell l-h"></div>
-							<div class="cg-cell l-b"></div><div class="cg-cell l-d"></div><div class="cg-cell l-f"></div><div class="cg-cell l-h"></div>
-							<div class="cg-cell l-a"></div><div class="cg-cell l-c"></div><div class="cg-cell l-e"></div><div class="cg-cell l-g"></div>
+							<div class="cg-cell l-a"></div>
+							<div class="cg-cell l-b"></div>
+							<div class="cg-cell l-c"></div>
+							<div class="cg-cell l-d"></div>
+							<div class="cg-cell l-e"></div>
+							<div class="cg-cell l-f"></div>
+							<div class="cg-cell l-g"></div>
+							<div class="cg-cell l-h"></div>
+							<div class="cg-cell l-b"></div>
+							<div class="cg-cell l-d"></div>
+							<div class="cg-cell l-f"></div>
+							<div class="cg-cell l-h"></div>
+							<div class="cg-cell l-a"></div>
+							<div class="cg-cell l-c"></div>
+							<div class="cg-cell l-e"></div>
+							<div class="cg-cell l-g"></div>
 						</div>
 					</div>
 					<div>
 						<div class="cg-mobile-label">Chroma</div>
 						<div class="cg-group" style="grid-template-columns:repeat(2,1fr)">
-							<div class="cg-cell ch-1"></div><div class="cg-cell ch-8"></div>
-							<div class="cg-cell ch-2"></div><div class="cg-cell ch-1"></div>
+							<div class="cg-cell ch-1"></div>
+							<div class="cg-cell ch-8"></div>
+							<div class="cg-cell ch-2"></div>
+							<div class="cg-cell ch-1"></div>
 						</div>
 					</div>
 					<div>
 						<div class="cg-mobile-label">Luma + Chroma</div>
 						<div class="cg-group" style="grid-template-columns:repeat(4,1fr)">
-							<div class="cg-cell cg-mix l-a m-1"></div><div class="cg-cell cg-mix l-b m-1"></div><div class="cg-cell cg-mix l-c m-8"></div><div class="cg-cell cg-mix l-d m-8"></div>
-							<div class="cg-cell cg-mix l-e m-1"></div><div class="cg-cell cg-mix l-f m-1"></div><div class="cg-cell cg-mix l-g m-8"></div><div class="cg-cell cg-mix l-h m-8"></div>
-							<div class="cg-cell cg-mix l-b m-2"></div><div class="cg-cell cg-mix l-d m-2"></div><div class="cg-cell cg-mix l-f m-1"></div><div class="cg-cell cg-mix l-h m-1"></div>
-							<div class="cg-cell cg-mix l-a m-2"></div><div class="cg-cell cg-mix l-c m-2"></div><div class="cg-cell cg-mix l-e m-1"></div><div class="cg-cell cg-mix l-g m-1"></div>
+							<div class="cg-cell cg-mix l-a m-1"></div>
+							<div class="cg-cell cg-mix l-b m-1"></div>
+							<div class="cg-cell cg-mix l-c m-8"></div>
+							<div class="cg-cell cg-mix l-d m-8"></div>
+							<div class="cg-cell cg-mix l-e m-1"></div>
+							<div class="cg-cell cg-mix l-f m-1"></div>
+							<div class="cg-cell cg-mix l-g m-8"></div>
+							<div class="cg-cell cg-mix l-h m-8"></div>
+							<div class="cg-cell cg-mix l-b m-2"></div>
+							<div class="cg-cell cg-mix l-d m-2"></div>
+							<div class="cg-cell cg-mix l-f m-1"></div>
+							<div class="cg-cell cg-mix l-h m-1"></div>
+							<div class="cg-cell cg-mix l-a m-2"></div>
+							<div class="cg-cell cg-mix l-c m-2"></div>
+							<div class="cg-cell cg-mix l-e m-1"></div>
+							<div class="cg-cell cg-mix l-g m-1"></div>
 						</div>
 					</div>
 				</div>
 			</div>
 
 			<p>
-				第一行的 4 個像素每兩個共用一個顏色 (4:2)，而第二行則「完全不採樣色度」(以尾角的 0 表示)，直接借用上一行的顏色！這意味著一個 <strong>2x2 的田字型區域，4 個像素共用著同 1 個色彩</strong>。留存的色度僅為 4:4:4 格式的四分之一！
-				<br><strong>我們真的看不出差別嗎？</strong> 雖然在動態連續的真實影像 (像電影、Vlog) 中人眼很難察覺差異，但在處理高對比、高飽和度的圖文（例如紅色底圖配上綠色細字的 UI 設計），或是邊緣銳利的高速移動紅光下，4:2:0 就會露出破綻，邊緣會出現明顯的鋸齒與色塊溢出。
-				<br><strong>適合場景：</strong> 我們日常生活中幾乎所有的終端影片！不管是 YouTube、Netflix、藍光光碟 (Blu-ray)、遊戲機實況錄影、家用電視接收的訊號，全都是 4:2:0，因為它是大幅縮減頻寬與儲存空間的完美方案。
+				第一行的 4 個像素每兩個共用一個顏色 (4:2)，而第二行則「完全不採樣色度」(以尾角的 0 表示)，直接借用上一行的顏色！這意味著一個 <strong>2x2 的田字型區域，4 個像素共用著同 1
+					個色彩</strong>。留存的色度僅為 4:4:4 格式的四分之一！
+				<br><strong>我們真的看不出差別嗎？</strong> 雖然在動態連續的真實影像 (像電影、Vlog) 中人眼很難察覺差異，但在處理高對比、高飽和度的圖文（例如紅色底圖配上綠色細字的 UI
+				設計），或是邊緣銳利的高速移動紅光下，4:2:0 就會露出破綻，邊緣會出現明顯的鋸齒與色塊溢出。
+				<br><strong>適合場景：</strong> 我們日常生活中幾乎所有的終端影片！不管是 YouTube、Netflix、藍光光碟 (Blu-ray)、遊戲機實況錄影、家用電視接收的訊號，全都是
+				4:2:0，因為它是大幅縮減頻寬與儲存空間的完美方案。
 			</p>
 
 			<hr class="lg">
 
 			<h2 id="bandwidth">頻寬節省有多驚人？一秒搞懂</h2>
-			
+
 			<div class="callout-box">
 				<p>
 					💡 <strong>一格 4K 未壓縮畫面需要多少頻寬？</strong><br><br>
@@ -648,34 +1110,44 @@
 				<div class="bw-chart">
 					<div class="bw-row">
 						<div class="bw-label">4:4:4</div>
-						<div class="bw-track"><div class="bw-fill full" style="--target-width:100%">~11.9 Gbps</div></div>
+						<div class="bw-track">
+							<div class="bw-fill full" style="--target-width:100%">~11.9 Gbps</div>
+						</div>
 						<div class="bw-percent">100%</div>
 					</div>
 					<div class="bw-row">
 						<div class="bw-label">4:2:2</div>
-						<div class="bw-track"><div class="bw-fill mid" style="--target-width:67%">~7.9 Gbps</div></div>
+						<div class="bw-track">
+							<div class="bw-fill mid" style="--target-width:67%">~7.9 Gbps</div>
+						</div>
 						<div class="bw-percent">67%</div>
 					</div>
 					<div class="bw-row">
 						<div class="bw-label">4:2:0</div>
-						<div class="bw-track"><div class="bw-fill low" style="--target-width:50%">~6.0 Gbps</div></div>
+						<div class="bw-track">
+							<div class="bw-fill low" style="--target-width:50%">~6.0 Gbps</div>
+						</div>
 						<div class="bw-percent">50%</div>
 					</div>
 				</div>
-				<p style="text-align:center; font-size: 0.85em; color:#999; margin-top: 15px;">以 4K (3840×2160) / 60fps / 8-bit 未壓縮為計算基準</p>
+				<p style="text-align:center; font-size: 0.85em; color:#999; margin-top: 15px;">以 4K (3840×2160) / 60fps
+					/ 8-bit 未壓縮為計算基準</p>
 			</div>
 
 			<div class="callout-box cinema">
 				<p>
 					🎬 <strong>電影小知識：好萊塢為何堅持 4:4:4？</strong><br><br>
-					在好萊塢的後期製作流程中，一部電影可能需要經過 調色 → 特效合成 → 綠幕去背 → 字幕疊加 等數十道工序。每一次處理都會對色彩做數學運算。如果源素材就已經是 4:2:0（色彩資訊只剩 25%），那每做一次運算，誤差就會被放大一次，最終畫面邊緣會出現可見的色帶 (Banding) 和色彩斷階。<br><br>
-					所以專業電影攝影機（如 ARRI ALEXA、RED V-RAPTOR）都會以 4:4:4 甚至 RAW 格式拍攝，確保後期擁有最大的色彩操作空間。等到最終發行為串流或藍光時，才會壓縮成 4:2:0 輸出給觀眾。
+					在好萊塢的後期製作流程中，一部電影可能需要經過 調色 → 特效合成 → 綠幕去背 → 字幕疊加 等數十道工序。每一次處理都會對色彩做數學運算。如果源素材就已經是 4:2:0（色彩資訊只剩
+					25%），那每做一次運算，誤差就會被放大一次，最終畫面邊緣會出現可見的色帶 (Banding) 和色彩斷階。<br><br>
+					所以專業電影攝影機（如 ARRI ALEXA、RED V-RAPTOR）都會以 4:4:4 甚至 RAW 格式拍攝，確保後期擁有最大的色彩操作空間。等到最終發行為串流或藍光時，才會壓縮成 4:2:0
+					輸出給觀眾。
 				</p>
 			</div>
 
 			<h2 id="summary">總結表格：我們該如何選擇？</h2>
 			<p>
-				除非你用的是高解析度電視作為極限的電腦螢幕 (看非常細小的紅色文字在黑色背景上時，4:2:0 的邊緣會模糊溢色)，這三種格式對於一般影片觀賞的影響微乎其微。數字越高代表畫面色彩細緻度越高，但也代表需要越佔用硬碟層級的頻寬。
+				除非你用的是高解析度電視作為極限的電腦螢幕 (看非常細小的紅色文字在黑色背景上時，4:2:0
+				的邊緣會模糊溢色)，這三種格式對於一般影片觀賞的影響微乎其微。數字越高代表畫面色彩細緻度越高，但也代表需要越佔用硬碟層級的頻寬。
 			</p>
 
 			<table class="custom-table">
@@ -724,34 +1196,47 @@
 				雖然你的螢幕接收著 4:4:4 的完美訊號，但在電腦內部運作時，軟體會根據用途進行不同的色彩轉換：
 			</p>
 			<ul style="line-height: 1.8; margin-bottom: 30px;">
-				<li>🍿 <strong>看影片 (YouTube / Netflix)</strong><br>這些影片檔案本身為了節省頻寬，早就被壓製成 4:2:0 的格式了。當你用電腦播放時，播放軟體和顯示卡（GPU）會進行「解碼」，並在內部把 4:2:0 的色彩資訊「插值放大」回 4:4:4，然後再送到螢幕上。所以你螢幕吃到的是 4:4:4 的訊號，但骨子裡流著 4:2:0 的細節。</li>
-				<li>🎮 <strong>玩 3D 遊戲 (PC Game)</strong><br>遊戲引擎在渲染即時畫面時，都是直接以完整的 RGB (4:4:4) 進行運算，所以你看到的色彩細節是最飽滿、邊緣最銳利的。</li>
-				<li>✂️ <strong>影片剪輯 (Premiere Pro / Resolve)</strong><br>在剪輯軟體中，你可以自由選擇。專業攝影機可能會錄製 4:2:2（確保綠幕去背邊緣乾淨、調色空間大），但如果是要上傳到 YouTube 發布，最後通常還是會選擇匯出成 4:2:0 來適應網路傳輸。</li>
+				<li>🍿 <strong>看影片 (YouTube / Netflix)</strong><br>這些影片檔案本身為了節省頻寬，早就被壓製成 4:2:0
+					的格式了。當你用電腦播放時，播放軟體和顯示卡（GPU）會進行「解碼」，並在內部把 4:2:0 的色彩資訊「插值放大」回 4:4:4，然後再送到螢幕上。所以你螢幕吃到的是 4:4:4
+					的訊號，但骨子裡流著 4:2:0 的細節。</li>
+				<li>🎮 <strong>玩 3D 遊戲 (PC Game)</strong><br>遊戲引擎在渲染即時畫面時，都是直接以完整的 RGB (4:4:4)
+					進行運算，所以你看到的色彩細節是最飽滿、邊緣最銳利的。</li>
+				<li>✂️ <strong>影片剪輯 (Premiere Pro / Resolve)</strong><br>在剪輯軟體中，你可以自由選擇。專業攝影機可能會錄製
+					4:2:2（確保綠幕去背邊緣乾淨、調色空間大），但如果是要上傳到 YouTube 發布，最後通常還是會選擇匯出成 4:2:0 來適應網路傳輸。</li>
 			</ul>
 
 			<hr class="lg">
 
 			<h2 id="hardware">硬體與線材的妥協：最常見的畫質降級陷阱</h2>
 			<p>
-				理解了軟體的運作後，你可能會好奇：「既然 4:4:4 這麼好，為什麼很多人接上 4K 電視後，文字還是糊的？」答案往往出在——<strong>你的硬體與線材頻寬不夠</strong>。這是很多電腦玩家會遇到的陷阱。
+				理解了軟體的運作後，你可能會好奇：「既然 4:4:4 這麼好，為什麼很多人接上 4K
+				電視後，文字還是糊的？」答案往往出在——<strong>你的硬體與線材頻寬不夠</strong>。這是很多電腦玩家會遇到的陷阱。
 			</p>
 			<p>
-				顯示卡要送畫面給螢幕，就像是在水管裡送水，這條「水管」的粗細就是線材的頻寬（例如 HDMI 2.0 管子細，HDMI 2.1 管子粗）。決定這根水管會不會塞爆的三個關鍵是：<strong>解析度 + 更新率 + 色彩抽樣</strong>。
+				顯示卡要送畫面給螢幕，就像是在水管裡送水，這條「水管」的粗細就是線材的頻寬（例如 HDMI 2.0 管子細，HDMI 2.1 管子粗）。決定這根水管會不會塞爆的三個關鍵是：<strong>解析度 + 更新率
+					+ 色彩抽樣</strong>。
 			</p>
 
-			<div class="css-illustration" style="background: #f8f9fa; padding: 25px; border-radius: 8px; margin-bottom: 30px;">
+			<div class="css-illustration"
+				style="background: #f8f9fa; padding: 25px; border-radius: 8px; margin-bottom: 30px;">
 				<h4 style="margin-top:0;">🌊 水管塞爆情境模擬</h4>
 				<div style="display:flex; flex-direction: column; gap: 15px;">
-					<div style="background: white; border-left: 5px solid #2ecc71; padding: 15px; border-radius: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+					<div
+						style="background: white; border-left: 5px solid #2ecc71; padding: 15px; border-radius: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
 						<strong>🟢 情境 A：頻寬充足，完美顯示</strong><br>
 						<span style="font-size: 0.9em; color:#666;">目標輸出：4K 解析度 + 60Hz 更新率 + 4:4:4 抽樣</span><br>
 						結果：一般的 HDMI 2.0 線材頻寬剛好可以順利通過這波資料量，桌面文字清晰無比。
 					</div>
-					<div style="background: white; border-left: 5px solid #e74c3c; padding: 15px; border-radius: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+					<div
+						style="background: white; border-left: 5px solid #e74c3c; padding: 15px; border-radius: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
 						<strong>🔴 情境 B：頻寬爆表，被迫硬體降級</strong><br>
-						<span style="font-size: 0.9em; color:#666;">目標輸出：4K 解析度 + <strong>120Hz 高更新率</strong> (但你仍使用舊的 HDMI 2.0 線材)</span><br>
-						結果：水管塞爆了！為了硬是擠出 120Hz 的流暢度，顯示卡驅動程式（NVIDIA/AMD）會自動妥協，<strong>偷偷把色彩抽樣從 4:4:4 降級成 4:2:2 或 4:2:0</strong>。<br>
-						👉 <strong>最終現象：</strong>你的遊戲確實變順暢了（120Hz），但當你切回桌面看網頁時，受限於色彩被抽樣合併，你會發現文字邊緣糊糊的、看起來很刺眼。這就是因為受限於硬體線材，電腦被迫放棄了 4:4:4。
+						<span style="font-size: 0.9em; color:#666;">目標輸出：4K 解析度 + <strong>120Hz 高更新率</strong> (但你仍使用舊的
+							HDMI 2.0 線材)</span><br>
+						結果：水管塞爆了！為了硬是擠出 120Hz 的流暢度，顯示卡驅動程式（NVIDIA/AMD）會自動妥協，<strong>偷偷把色彩抽樣從 4:4:4 降級成 4:2:2 或
+							4:2:0</strong>。<br>
+						👉
+						<strong>最終現象：</strong>你的遊戲確實變順暢了（120Hz），但當你切回桌面看網頁時，受限於色彩被抽樣合併，你會發現文字邊緣糊糊的、看起來很刺眼。這就是因為受限於硬體線材，電腦被迫放棄了
+						4:4:4。
 					</div>
 				</div>
 			</div>
@@ -780,14 +1265,17 @@
 						</div>
 					</div>
 				</div>
-				<p style="text-align:center; font-size: 0.85em; color:#999; margin-top: 10px;">DisplayPort 1.4 (32.4 Gbps) 需搭配 DSC 視覺無損壓縮技術才能達到 4K/120Hz 4:4:4</p>
+				<p style="text-align:center; font-size: 0.85em; color:#999; margin-top: 10px;">DisplayPort 1.4 (32.4
+					Gbps) 需搭配 DSC 視覺無損壓縮技術才能達到 4K/120Hz 4:4:4</p>
 			</div>
 
 			<div class="callout-box warn">
 				<p>
 					⚠️ <strong>買線材的實用建議</strong><br><br>
-					如果你需要在 4K 電視上用電腦工作（閱讀文字），務必確認線材和電視接口都支援 <strong>4:4:4</strong> 輸出！很多人買了 4K 電視接電腦後覺得「文字怎麼看起來糊糊的」，其實就是因為 HDMI 接口或電視設定自動降級為 4:2:0 所造成的色彩沾染。<br><br>
-					🔧 <strong>檢查方式：</strong>進入電視設定，尋找「HDMI Ultra HD Deep Color」或「Input Signal Plus」等選項並開啟它，這樣才能讓接口釋放完整的 18 Gbps 頻寬。
+					如果你需要在 4K 電視上用電腦工作（閱讀文字），務必確認線材和電視接口都支援 <strong>4:4:4</strong> 輸出！很多人買了 4K
+					電視接電腦後覺得「文字怎麼看起來糊糊的」，其實就是因為 HDMI 接口或電視設定自動降級為 4:2:0 所造成的色彩沾染。<br><br>
+					🔧 <strong>檢查方式：</strong>進入電視設定，尋找「HDMI Ultra HD Deep Color」或「Input Signal Plus」等選項並開啟它，這樣才能讓接口釋放完整的
+					18 Gbps 頻寬。
 				</p>
 			</div>
 
@@ -798,42 +1286,38 @@
 				色度抽樣是影像工程中最優雅的妥協之一——它不是粗暴地壓低畫質，而是巧妙地利用人類視覺的特性，在「看得到的品質」和「傳得動的頻寬」之間找到了完美的平衡點。
 			</p>
 			<p>
-				下次當你在挑選螢幕或 HDMI 線材時，看到「支援 4K 60Hz <strong>4:4:4</strong>」時，你就會知道——那代表這條線材擁有足夠的頻寬，能夠無損傳輸最頂級的色彩表現。而如果你只是在客廳追劇看電影，<strong>4:2:0 就已經是最佳方案</strong>了，因為你的大腦根本不會發現少了那 75% 的色彩資訊！
+				下次當你在挑選螢幕或 HDMI 線材時，看到「支援 4K 60Hz
+				<strong>4:4:4</strong>」時，你就會知道——那代表這條線材擁有足夠的頻寬，能夠無損傳輸最頂級的色彩表現。而如果你只是在客廳追劇看電影，<strong>4:2:0
+					就已經是最佳方案</strong>了，因為你的大腦根本不會發現少了那 75% 的色彩資訊！
 			</p>
 
 			<hr>
 			<h2 id="references">延伸閱讀與參考資源</h2>
 			<p>
 				想要更深入探索，可以參考以下資源：
-				<ul>
-					<li><a href="https://zh.wikipedia.org/wiki/%E8%89%B2%E5%BA%A6%E6%8A%BD%E6%A8%A3" target="_blank">維基百科：色度抽樣</a></li>
-					<li><a href="https://www.rtings.com/tv/learn/chroma-subsampling" target="_blank">RTINGS：色度抽樣實測對比與深入分析</a></li>
-					<li><a href="https://www.youtube.com/watch?v=fo1SmlUbKOo" target="_blank">YouTube: Chroma Subsampling Explained (Techquickie)</a></li>
-					<li><a href="https://www.hdmi.org/spec/hdmi2_1" target="_blank">HDMI 官方規格對照表</a></li>
-				</ul>
+			<ul>
+				<li><a href="https://zh.wikipedia.org/wiki/%E8%89%B2%E5%BA%A6%E6%8A%BD%E6%A8%A3"
+						target="_blank">維基百科：色度抽樣</a></li>
+				<li><a href="https://www.rtings.com/tv/learn/chroma-subsampling"
+						target="_blank">RTINGS：色度抽樣實測對比與深入分析</a></li>
+				<li><a href="https://www.youtube.com/watch?v=fo1SmlUbKOo" target="_blank">YouTube: Chroma Subsampling
+						Explained (Techquickie)</a></li>
+				<li><a href="https://www.hdmi.org/spec/hdmi2_1" target="_blank">HDMI 官方規格對照表</a></li>
+			</ul>
 			</p>
-			
+
 		</div>
 	</div>
 
-	
+
 	<!-- Giscus Comments -->
-	<div id="comments" class="container mt-xl" style="padding-bottom: 60px; padding-top: 40px; border-top: 1px solid #eee;">
-		<script src="https://giscus.app/client.js"
-				data-repo="newslin-design/newslin-design.github.io"
-				data-repo-id="R_kgDOOXA3ww"
-				data-category="Announcements"
-				data-category-id="DIC_kwDOOXA3w84C5AiY"
-				data-mapping="pathname"
-				data-strict="0"
-				data-reactions-enabled="1"
-				data-emit-metadata="0"
-				data-input-position="top"
-				data-theme="light"
-				data-lang="zh-TW"
-				crossorigin="anonymous"
-				async>
-		</script>
+	<div id="comments" class="container mt-xl"
+		style="padding-bottom: 60px; padding-top: 40px; border-top: 1px solid #eee;">
+		<script src="https://giscus.app/client.js" data-repo="newslin-design/newslin-design.github.io"
+			data-repo-id="R_kgDOOXA3ww" data-category="Announcements" data-category-id="DIC_kwDOOXA3w84C5AiY"
+			data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0"
+			data-input-position="top" data-theme="light" data-lang="zh-TW" crossorigin="anonymous" async>
+			</script>
 	</div>
 	<footer>
 	</footer>
@@ -842,131 +1326,217 @@
 <!-- 引用 portfolio/js/app.js 產生 header/footer -->
 <script src="../portfolio/js/app.js"></script>
 <script>
-// Interactive Blur Comparison Slider
-(function() {
-	const container = document.getElementById('blurCompare');
-	if (!container) return;
-	const blurLayer = document.getElementById('blurLayer');
-	const dividerLine = document.getElementById('dividerLine');
-	let isDragging = false;
+	// Interactive Image Comparison Slider
+	(function () {
+		const container = document.getElementById('blurCompare');
+		if (!container) return;
+		const imgTop = document.getElementById('imgTop');
+		const dividerLine = document.getElementById('dividerLine');
+		let isDragging = false;
 
-	function updatePosition(clientX) {
-		const rect = container.getBoundingClientRect();
-		let x = clientX - rect.left;
-		x = Math.max(0, Math.min(x, rect.width));
-		const percent = (x / rect.width) * 100;
-		blurLayer.style.clipPath = 'inset(0 ' + (100 - percent) + '% 0 0)';
-		dividerLine.style.left = percent + '%';
-	}
+		function updatePosition(clientX) {
+			const rect = container.getBoundingClientRect();
+			let x = Math.max(0, Math.min(clientX - rect.left, rect.width));
+			const percent = (x / rect.width) * 100;
+			imgTop.style.clipPath = 'inset(0 ' + (100 - percent) + '% 0 0)';
+			dividerLine.style.left = percent + '%';
+		}
 
-	container.addEventListener('mousedown', function(e) { isDragging = true; updatePosition(e.clientX); e.preventDefault(); });
-	document.addEventListener('mousemove', function(e) { if (isDragging) updatePosition(e.clientX); });
-	document.addEventListener('mouseup', function() { isDragging = false; });
-	container.addEventListener('touchstart', function(e) { isDragging = true; updatePosition(e.touches[0].clientX); e.preventDefault(); }, { passive: false });
-	document.addEventListener('touchmove', function(e) { if (isDragging) updatePosition(e.touches[0].clientX); });
-	document.addEventListener('touchend', function() { isDragging = false; });
-})();
+		container.addEventListener('mousedown', function (e) { isDragging = true; updatePosition(e.clientX); e.preventDefault(); });
+		document.addEventListener('mousemove', function (e) { if (isDragging) updatePosition(e.clientX); });
+		document.addEventListener('mouseup', function () { isDragging = false; });
+		container.addEventListener('touchstart', function (e) { isDragging = true; updatePosition(e.touches[0].clientX); e.preventDefault(); }, { passive: false });
+		document.addEventListener('touchmove', function (e) { if (isDragging) updatePosition(e.touches[0].clientX); });
+		document.addEventListener('touchend', function () { isDragging = false; });
+	})();
 </script>
 <style>
-/* Auto-looping Subsampling CSS */
-.acell {
-	background: white; border-radius: 3px; opacity: 1;
-	transition: background 0.5s ease, opacity 0.3s ease;
-}
-.hover-trigger:hover { background: #e9ecef !important; }
+	/* Auto-looping Subsampling CSS */
+	.acell {
+		background: white;
+		border-radius: 3px;
+		opacity: 1;
+		transition: background 0.5s ease, opacity 0.3s ease;
+	}
 
-/* Hover Highlight States */
-.hl-width .acell { border: 2px solid #e74c3c; box-sizing: border-box; }
-.hl-width .anim-label-top { transform: scale(1.05); text-shadow: 0 0 5px rgba(231,76,60,0.3); }
+	.hover-trigger:hover {
+		background: #e9ecef !important;
+	}
 
-.hl-row1 .acell-5, .hl-row1 .acell-6, .hl-row1 .acell-7, .hl-row1 .acell-8 { opacity: 0.2; }
-.hl-row1 .anim-label-r1 { transform: scale(1.05) translateX(-5px); text-shadow: 0 0 5px rgba(52,152,219,0.3); }
+	/* Hover Highlight States */
+	.hl-width .acell {
+		border: 2px solid #e74c3c;
+		box-sizing: border-box;
+	}
 
-.hl-row2 .acell-1, .hl-row2 .acell-2, .hl-row2 .acell-3, .hl-row2 .acell-4 { opacity: 0.2; }
-.hl-row2 .anim-label-r2 { transform: scale(1.05) translateX(-5px); text-shadow: 0 0 5px rgba(46,204,113,0.3); }
+	.hl-width .anim-label-top {
+		transform: scale(1.05);
+		text-shadow: 0 0 5px rgba(231, 76, 60, 0.3);
+	}
 
-/* Animation Colors (using preset palette) */
-.fmt-444 .acell-1 { background: #e74c3c; } .fmt-444 .acell-2 { background: #3498db; } .fmt-444 .acell-3 { background: #f1c40f; } .fmt-444 .acell-4 { background: #2ecc71; }
-.fmt-444 .acell-5 { background: #9b59b6; } .fmt-444 .acell-6 { background: #e67e22; } .fmt-444 .acell-7 { background: #1abc9c; } .fmt-444 .acell-8 { background: #e91e63; }
+	.hl-row1 .acell-5,
+	.hl-row1 .acell-6,
+	.hl-row1 .acell-7,
+	.hl-row1 .acell-8 {
+		opacity: 0.2;
+	}
 
-.fmt-422 .acell-1, .fmt-422 .acell-2 { background: #e74c3c; } .fmt-422 .acell-3, .fmt-422 .acell-4 { background: #f1c40f; }
-.fmt-422 .acell-5, .fmt-422 .acell-6 { background: #9b59b6; } .fmt-422 .acell-7, .fmt-422 .acell-8 { background: #1abc9c; }
+	.hl-row1 .anim-label-r1 {
+		transform: scale(1.05) translateX(-5px);
+		text-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
+	}
 
-.fmt-420 .acell-1, .fmt-420 .acell-2, .fmt-420 .acell-5, .fmt-420 .acell-6 { background: #e74c3c; } 
-.fmt-420 .acell-3, .fmt-420 .acell-4, .fmt-420 .acell-7, .fmt-420 .acell-8 { background: #f1c40f; }
+	.hl-row2 .acell-1,
+	.hl-row2 .acell-2,
+	.hl-row2 .acell-3,
+	.hl-row2 .acell-4 {
+		opacity: 0.2;
+	}
+
+	.hl-row2 .anim-label-r2 {
+		transform: scale(1.05) translateX(-5px);
+		text-shadow: 0 0 5px rgba(46, 204, 113, 0.3);
+	}
+
+	/* Animation Colors (using preset palette) */
+	.fmt-444 .acell-1 {
+		background: #e74c3c;
+	}
+
+	.fmt-444 .acell-2 {
+		background: #3498db;
+	}
+
+	.fmt-444 .acell-3 {
+		background: #f1c40f;
+	}
+
+	.fmt-444 .acell-4 {
+		background: #2ecc71;
+	}
+
+	.fmt-444 .acell-5 {
+		background: #9b59b6;
+	}
+
+	.fmt-444 .acell-6 {
+		background: #e67e22;
+	}
+
+	.fmt-444 .acell-7 {
+		background: #1abc9c;
+	}
+
+	.fmt-444 .acell-8 {
+		background: #e91e63;
+	}
+
+	.fmt-422 .acell-1,
+	.fmt-422 .acell-2 {
+		background: #e74c3c;
+	}
+
+	.fmt-422 .acell-3,
+	.fmt-422 .acell-4 {
+		background: #f1c40f;
+	}
+
+	.fmt-422 .acell-5,
+	.fmt-422 .acell-6 {
+		background: #9b59b6;
+	}
+
+	.fmt-422 .acell-7,
+	.fmt-422 .acell-8 {
+		background: #1abc9c;
+	}
+
+	.fmt-420 .acell-1,
+	.fmt-420 .acell-2,
+	.fmt-420 .acell-5,
+	.fmt-420 .acell-6 {
+		background: #e74c3c;
+	}
+
+	.fmt-420 .acell-3,
+	.fmt-420 .acell-4,
+	.fmt-420 .acell-7,
+	.fmt-420 .acell-8 {
+		background: #f1c40f;
+	}
 </style>
 <script>
-// Auto-Looping Subsampling Animation & Hover Elements
-(function() {
-	const container = document.getElementById('subsamplingAnimBox');
-	if(!container) return;
-	
-	const states = ['fmt-444', 'fmt-422', 'fmt-420'];
-	const val2 = ['4', '2', '2'];
-	const actualVal3 = ['4', '2', '0'];
-	const texts = ['🟢 目前狀態：無壓縮 (4:4:4)', '🟡 目前狀態：色彩減半 (4:2:2)', '🔴 目前狀態：色彩剩四分之一 (4:2:0)'];
-	let currentIndex = 0;
-	let loopInterval;
-	
-	const num2El = document.getElementById('animNum2');
-	const num3El = document.getElementById('animNum3');
-	const statusText = document.getElementById('animStatusText');
-	
-	function switchState() {
-		container.classList.remove(...states);
-		container.classList.add(states[currentIndex]);
-		num2El.innerText = val2[currentIndex];
-		num3El.innerText = actualVal3[currentIndex];
-		statusText.innerText = texts[currentIndex];
-	}
-	
-	function startLoop() {
-		stopLoop(); // Clear any existing interval
-		loopInterval = setInterval(() => {
-			currentIndex = (currentIndex + 1) % states.length;
-			switchState();
-		}, 3000); // 3 seconds per stat
-	}
-	function stopLoop() { clearInterval(loopInterval); }
+	// Auto-Looping Subsampling Animation & Hover Elements
+	(function () {
+		const container = document.getElementById('subsamplingAnimBox');
+		if (!container) return;
 
-	function manualChange(offset) {
-		stopLoop();
-		currentIndex = (currentIndex + offset + states.length) % states.length;
-		switchState();
-		startLoop(); // Restart auto-loop after manual interaction
-	}
-	
-	// Initial state setup
-	switchState();
-	startLoop();
-	
-	// Buttons logic
-	const btnPrev = document.getElementById('btnPrevFmt');
-	const btnNext = document.getElementById('btnNextFmt');
-	if (btnPrev && btnNext) {
-		btnPrev.addEventListener('click', () => manualChange(-1));
-		btnNext.addEventListener('click', () => manualChange(1));
-		
-		// Add active hover styles via JS to keep it self-contained
-		[btnPrev, btnNext].forEach(btn => {
-			btn.addEventListener('mouseenter', () => btn.style.background = '#f1f1f1');
-			btn.addEventListener('mouseleave', () => btn.style.background = 'white');
-		});
-	}
-	
-	// Hover logic on numbers
-	const triggers = container.querySelectorAll('.hover-trigger');
-	triggers.forEach(t => {
-		t.addEventListener('mouseenter', () => {
+		const states = ['fmt-444', 'fmt-422', 'fmt-420'];
+		const val2 = ['4', '2', '2'];
+		const actualVal3 = ['4', '2', '0'];
+		const texts = ['🟢 目前狀態：無壓縮 (4:4:4)', '🟡 目前狀態：色彩減半 (4:2:2)', '🔴 目前狀態：色彩剩四分之一 (4:2:0)'];
+		let currentIndex = 0;
+		let loopInterval;
+
+		const num2El = document.getElementById('animNum2');
+		const num3El = document.getElementById('animNum3');
+		const statusText = document.getElementById('animStatusText');
+
+		function switchState() {
+			container.classList.remove(...states);
+			container.classList.add(states[currentIndex]);
+			num2El.innerText = val2[currentIndex];
+			num3El.innerText = actualVal3[currentIndex];
+			statusText.innerText = texts[currentIndex];
+		}
+
+		function startLoop() {
+			stopLoop(); // Clear any existing interval
+			loopInterval = setInterval(() => {
+				currentIndex = (currentIndex + 1) % states.length;
+				switchState();
+			}, 3000); // 3 seconds per stat
+		}
+		function stopLoop() { clearInterval(loopInterval); }
+
+		function manualChange(offset) {
 			stopLoop();
-			container.classList.add(t.dataset.target);
+			currentIndex = (currentIndex + offset + states.length) % states.length;
+			switchState();
+			startLoop(); // Restart auto-loop after manual interaction
+		}
+
+		// Initial state setup
+		switchState();
+		startLoop();
+
+		// Buttons logic
+		const btnPrev = document.getElementById('btnPrevFmt');
+		const btnNext = document.getElementById('btnNextFmt');
+		if (btnPrev && btnNext) {
+			btnPrev.addEventListener('click', () => manualChange(-1));
+			btnNext.addEventListener('click', () => manualChange(1));
+
+			// Add active hover styles via JS to keep it self-contained
+			[btnPrev, btnNext].forEach(btn => {
+				btn.addEventListener('mouseenter', () => btn.style.background = '#f1f1f1');
+				btn.addEventListener('mouseleave', () => btn.style.background = 'white');
+			});
+		}
+
+		// Hover logic on numbers
+		const triggers = container.querySelectorAll('.hover-trigger');
+		triggers.forEach(t => {
+			t.addEventListener('mouseenter', () => {
+				stopLoop();
+				container.classList.add(t.dataset.target);
+			});
+			t.addEventListener('mouseleave', () => {
+				container.classList.remove(t.dataset.target);
+				startLoop();
+			});
 		});
-		t.addEventListener('mouseleave', () => {
-			container.classList.remove(t.dataset.target);
-			startLoop();
-		});
-	});
-})();
+	})();
 </script>
 
 </html>
