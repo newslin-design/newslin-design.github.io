@@ -250,11 +250,12 @@
 
 		@media (max-width: 768px) {
 			.classic-grid {
-				grid-template-columns: 1fr;
+				grid-template-columns: 1fr 1fr 1fr;
 				gap: 20px;
 			}
 
-			.cg-head {
+			.cg-head,
+			.cg-row-label {
 				display: none;
 			}
 
@@ -676,7 +677,7 @@
 
 			<p>
 				你知道嗎？<strong>你現在在 Netflix 上觀看的每一秒 4K 電影畫面，其實有整整 75% 的色彩資訊已經被悄悄丟棄了</strong>——而你的眼睛完全沒有發現。這不是
-				Bug，是一個運行已久的工程設計。
+				Bug，是一個利用眼睛生理特性，運行已久的工程設計。
 			</p>
 
 			<p>
@@ -731,6 +732,26 @@
 				<li><strong>Y (Luminance) 亮度：</strong> 決定了畫面的明暗、輪廓與細節。可以把這層想像成一張高解析度的黑白照片。</li>
 				<li><strong>U/V (Chrominance) 色度：</strong> 決定了畫面上的顏色分佈。</li>
 			</ul>
+			<!-- 圖層拆解對比圖 -->
+			<div style="display: flex; gap: 8px; margin: 30px 0; width: 100%;">
+				<div style="flex: 1; min-width: 0; text-align: center;">
+					<img src="image/chroma/luma-only.jpg" alt="Luma（亮度）通道"
+						style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+					<p style="font-size: 0.9em; color: #666; margin: 6px 0">亮度 ( Y / Luma )</p>
+					<p style="font-size: 1.2em; color: #666; margin-top: 2px;">人類眼睛對<strong>亮度敏感</strong></p>
+				</div>
+				<div style="flex: 1; min-width: 0; text-align: center;">
+					<img src="image/chroma/chroma-only.jpg" alt="Chroma（色度）通道"
+						style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+					<p style="font-size: 0.9em; color: #666; margin-top: 6px;">色度 ( UV / Chroma )</p>
+
+				</div>
+				<div style="flex: 1; min-width: 0; text-align: center;">
+					<img src="image/chroma/luma-chroma-combined.jpg" alt="Luma + Chroma 合成結果"
+						style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+					<p style="font-size: 0.9em; color: #666; margin-top: 6px;">原始照片 ( Luma + Chroma )</p>
+				</div>
+			</div>
 
 			<p>
 				這牽涉到一個極為關鍵的視覺感官秘密：<strong>人類眼睛對於深淺（光暗變化）的敏感度，遠遠大於對色彩的解析能力。</strong><br>
@@ -760,24 +781,6 @@
 				這就是色度抽樣的核心精神：<strong>利用大腦的視覺錯覺，保留 100% 絕對銳利的亮度資訊，但大膽地將色彩資訊丟棄掉一半以上。</strong>
 			</p>
 
-			<!-- 圖層拆解對比圖 -->
-			<div style="display: flex; gap: 8px; margin: 30px 0; width: 100%;">
-				<div style="flex: 1; min-width: 0; text-align: center;">
-					<img src="image/chroma/luma-only.jpg" alt="Luma（亮度）通道"
-						style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
-					<p style="font-size: 0.8em; color: #666; margin-top: 6px;">Luma</p>
-				</div>
-				<div style="flex: 1; min-width: 0; text-align: center;">
-					<img src="image/chroma/chroma-only.jpg" alt="Chroma（色度）通道"
-						style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
-					<p style="font-size: 0.8em; color: #666; margin-top: 6px;">Chroma</p>
-				</div>
-				<div style="flex: 1; min-width: 0; text-align: center;">
-					<img src="image/chroma/luma-chroma-combined.jpg" alt="Luma + Chroma 合成結果"
-						style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
-					<p style="font-size: 0.8em; color: #666; margin-top: 6px;">Luma + Chroma</p>
-				</div>
-			</div>
 
 			<p>
 				既然視覺對色度造成的影響相對較小，工程師發明了<strong>「色度抽樣 (Chroma Subsampling)」</strong>。它是一種大幅縮減影像中色度訊息，來有效縮減檔案大小與節省頻寬的方法。在
@@ -886,7 +889,8 @@
 
 			<h3>4:4:4 格式 (無抽樣)</h3>
 
-			<div class="css-illustration" style="padding: 30px 10px; background: #fff; margin-top: 20px;">
+			<div class="css-illustration"
+				style="padding: 30px 10px; background: #fff; margin-top: 20px; max-width: 100%;">
 				<div class="classic-grid">
 					<div class="cg-head"></div>
 					<div class="cg-head">Luma</div>
@@ -963,7 +967,8 @@
 			<p>
 				數字表示在 4 個像素的寬度中，上下兩排的 4 個像素全都有自己獨立的色彩。它<strong>沒有使用到色度抽樣</strong>，呈現了最完整的亮度與色度。
 				<br>
-				<strong>適合場景：</strong> 高階數位相機 RAW 檔、底片掃描器、電影後期調色製作，以及電腦工作用的顯示器。
+				<strong>適合場景：</strong> 預算頂級的好萊塢電影、極端重度特效合成（VFX）、高階數位相機 RAW
+				檔，以及絕對不能有顏色誤差的電腦工作顯示器。它是<strong>不計儲存成本</strong>的最高畫質指標。
 			</p>
 
 			<div class="callout-box"
@@ -985,12 +990,6 @@
 					保留了與 RGB 完全同等的信息量，因此兩者可以互相轉換且畫質無損。
 				</p>
 			</div>
-
-			</p>
-
-			<!-- 電腦文字邊沿銳利度檢測範例圖 (建議圖片 2) -->
-			<img src="image/chroma/text-fringing.jpg" alt="電腦文字邊沿銳利度檢測範例圖：對比無損 4:4:4 的文字邊緣與 4:2:0 電腦螢幕上文字邊緣溢色、糊掉的慘況。"
-				style="width: 100%; height: auto; border-radius: 8px; margin: 20px 0 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
 
 
 			<h3>4:2:2 格式 (色彩減半)</h3>
@@ -1066,7 +1065,8 @@
 				雖然留存的色彩訊號佔全彩的二分之一，但在加上 100% 完整的亮度 Y 之後，總數據量大約是 4:4:4 的 2/3。
 				<br><strong>為什麼適合綠幕去背 (Keying)？</strong> 因為比起
 				4:2:0，它在水平方向多了整整一倍的色彩資訊！這讓軟體在演算「髮絲邊緣」或「半透明物件」去背時，能有更精準的顏色邊界判斷，邊緣會乾淨非常多。
-				<br><strong>適合場景：</strong> 專業廣播電視、高階錄影、需要進行進階綠幕去背與特效的電影後製素材。
+				<br><strong>適合場景：</strong> 專業廣播節目、商業廣告、多數電影的拍攝素材。它是畫質與檔案大小之間的<strong>完美甜蜜點</strong>，能以較低的儲存成本，提供足以應付 90%
+				進階綠幕去背與調色需求的畫質，是專業影視工業的<strong>絕對主力</strong>。
 			</p>
 
 			<h3>4:2:0 格式 (色彩剩四分之一)</h3>
@@ -1157,13 +1157,9 @@
 				</p>
 			</div>
 
-			<p>
-				下面用動態長條圖，讓你一眼看出三種格式的總數據量差異：
-			</p>
-
 			<!-- Animated Bandwidth Bar Chart -->
 			<div class="css-illustration">
-				<h4>📊 三種格式的資料傳輸量對比</h4>
+				<h4>三種格式的資料傳輸量對比</h4>
 				<div class="bw-chart">
 					<div class="bw-row">
 						<div class="bw-label">4:4:4</div>
@@ -1201,7 +1197,7 @@
 				</p>
 			</div>
 
-			<h2 id="summary">總結表格：我們該如何選擇？</h2>
+			<h2 id="summary">我們該如何選擇？</h2>
 			<p>
 				除非你用的是高解析度電視作為極限的電腦螢幕 (看非常細小的紅色文字在黑色背景上時，4:2:0
 				的邊緣會模糊溢色)，這三種格式對於一般影片觀賞的影響微乎其微。數字越高代表畫面色彩細緻度越高，但也代表需要越佔用硬碟層級的頻寬。
@@ -1275,29 +1271,60 @@
 			</p>
 
 			<div class="css-illustration"
-				style="background: #f8f9fa; padding: 25px; border-radius: 8px; margin-bottom: 30px;">
-				<h4 style="margin-top:0;">🌊 水管塞爆情境模擬</h4>
-				<div style="display:flex; flex-direction: column; gap: 15px;">
+				style="background: #f8f9fa; padding: 25px; border-radius: 8px; margin-bottom: 30px; font-family: sans-serif;">
+				<h4 style="margin-top:0; color: #2c3e50; font-size: 1.2rem;">🌊 水管塞爆情境模擬 <span
+						style="font-size: 0.8em; color: #7f8c8d; font-weight: normal;">(以 HDMI 2.0 線材為例)</span></h4>
+
+				<div style="display:flex; flex-direction: column; gap: 20px;">
+
 					<div
-						style="background: white; border-left: 5px solid #2ecc71; padding: 15px; border-radius: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
-						<strong>🟢 情境 A：頻寬充足，完美顯示</strong><br>
-						<span style="font-size: 0.9em; color:#666;">目標輸出：4K 解析度 + 60Hz 更新率 + 4:4:4 抽樣</span><br>
-						結果：一般的 HDMI 2.0 線材頻寬剛好可以順利通過這波資料量，桌面文字清晰無比。
+						style="background: white; border: 1px solid #e0e0e0; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.02);">
+						<div
+							style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px;">
+							<strong style="color: #27ae60; font-size: 1.1rem;">🟢 情境 A：頻寬充足，完美顯示</strong>
+
+						</div>
+						<div
+							style="background: #e6ebec; height: 36px; border-radius: 18px; width: 75%; position: relative; overflow: hidden; margin-bottom: 12px; border:1px solid #1111113a">
+							<div style="background: linear-gradient(90deg, #2ecc71, #27ae60); width: 95%; height: 100%; display: flex; align-items: center; 
+								padding-left: 10px; color: white; font-size: 1rem; font-weight: bold;">
+								4K 60Hz + 4:4:4 資料量剛好通過</div>
+						</div>
+						<p style="margin: 0; font-size: 0.95rem; line-height: 1.6em; color: #555;">
+							<strong>結果：</strong>一般的 HDMI 2.0 線材頻寬剛好可以順利通過這波資料量，桌面文字清晰無比。
+						</p>
 					</div>
+
 					<div
-						style="background: white; border-left: 5px solid #e74c3c; padding: 15px; border-radius: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
-						<strong>🔴 情境 B：頻寬爆表，被迫硬體降級</strong><br>
-						<span style="font-size: 0.9em; color:#666;">目標輸出：4K 解析度 + <strong>120Hz 高更新率</strong> (但你仍使用舊的
-							HDMI 2.0 線材)</span><br>
-						結果：水管塞爆了！為了硬是擠出 120Hz 的流暢度，顯示卡驅動程式（NVIDIA/AMD）會自動妥協，<strong>偷偷把色彩抽樣從 4:4:4 降級成 4:2:2 或
-							4:2:0</strong>。<br>
-						👉
-						<strong>最終現象：</strong>你的遊戲確實變順暢了（120Hz），但當你切回桌面看網頁時，受限於色彩被抽樣合併，你會發現文字邊緣糊糊的、看起來很刺眼。這就是因為受限於硬體線材，電腦被迫放棄了
-						4:4:4。
+						style="background: white; border: 1px solid #e0e0e0; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.02);">
+						<div
+							style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px;">
+							<strong style="color: #c0392b; font-size: 1.1rem;">🔴 情境 B：頻寬爆表，被迫降級</strong>
+						</div>
+
+						<div
+							style="background: #ecf0f1; height: 36px; border-radius: 18px; width: 100%; position: relative; margin-bottom: 12px; border: 1px dashed #e74c3c; ">
+							<div
+								style="background: linear-gradient(90deg, #e74c3c, #c0392b); width: 100%; height: 100%; display: flex; align-items: center; padding-left: 10px; color: white; font-size: 1rem; font-weight: bold; border-radius: 12px;">
+								4K + 120Hz + 4:4:4 資料量超出水管極限 (塞爆！)</div>
+							<div
+								style="position: absolute; right: 25%; top: -5px; bottom: -5px; width: 4px; background: #2c3e50; z-index: 2;">
+							</div>
+
+							<span
+								style="position: absolute; right: 26%; top: -20px; font-size: 0.75rem; color: #2c3e50; font-weight: bold;">HDMI
+								2.0 頻寬上限</span>
+						</div>
+
+						<p style="margin: 0; font-size: 0.95rem; line-height: 1.6em; color: #555;">
+							<strong>結果：</strong>為了硬是擠出 120Hz 的流暢度，顯示卡會自動妥協，<strong>偷偷把色彩降級成 4:2:2 或 4:2:0</strong>
+							以縮小資料體積。<br>
+							👉 <strong>最終現象：</strong>遊戲變順了，但切回桌面看網頁時，文字邊緣會糊糊的、看起來很刺眼。
+						</p>
 					</div>
+
 				</div>
 			</div>
-
 			<div class="css-illustration" style="background: #fff">
 				<h4>🔌 常見 HDMI 規格的頻寬極限</h4>
 				<div class="hdmi-cards">
