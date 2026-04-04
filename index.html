@@ -12,7 +12,7 @@
 	<link rel="stylesheet" href="portfolio/style/style.css">
 	<link rel="stylesheet" href="blog/style/style_blog.css">
 	<link rel="icon" type="image/png" href="portfolio/web_icon.png" />
-	
+
 	<!-- 複用與首頁類似的 card 配置樣式 -->
 	<link rel="stylesheet" href="portfolio/style/style_cardbox.css">
 
@@ -35,7 +35,7 @@
 			flex-direction: column;
 			gap: 24px;
 		}
-		
+
 		/* 簡單的卡片樣式 */
 		.blog-card {
 			display: flex;
@@ -43,23 +43,23 @@
 			background: #fff;
 			border-radius: 12px;
 			overflow: hidden;
-			box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+			box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
 			text-decoration: none;
 			color: #333;
 			transition: transform 0.3s ease, box-shadow 0.3s ease;
 		}
-		
+
 		.blog-card:hover {
-			box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+			box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
 		}
-		
+
 		.blog-card-img {
 			width: 30%;
 			min-width: 250px;
 			background-size: cover;
 			background-position: center;
 		}
-		
+
 		.blog-card-content {
 			padding: 24px 32px;
 			display: flex;
@@ -67,29 +67,30 @@
 			justify-content: center;
 			flex: 1;
 		}
-		
+
 		.blog-card-date {
 			color: #888;
 			font-size: 14px;
 			margin-bottom: 8px;
 		}
-		
+
 		.blog-card-title {
 			font-size: 24px;
 			font-weight: 500;
 			margin-bottom: 12px;
 		}
-		
+
 		.blog-card-excerpt {
 			color: #666;
 			font-size: 16px;
 			line-height: 1.6;
 		}
-		
+
 		@media (max-width: 768px) {
 			.blog-card {
 				flex-direction: column;
 			}
+
 			.blog-card-img {
 				width: 100%;
 				height: 200px;
@@ -102,7 +103,7 @@
 			margin-bottom: 24px;
 			flex-wrap: wrap;
 		}
-		
+
 		.filter-btn {
 			padding: 8px 16px;
 			border: 1px solid #ddd;
@@ -113,11 +114,11 @@
 			font-size: 14px;
 			transition: all 0.3s ease;
 		}
-		
+
 		.filter-btn:hover {
 			background: #f0f0f0;
 		}
-		
+
 		.filter-btn.active {
 			background: #333;
 			color: #fff;
@@ -145,15 +146,15 @@
 	<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PMLJXPC" height="0" width="0"
 			style="display:none;visibility:hidden"></iframe></noscript>
 	<!-- End Google Tag Manager (noscript) -->
-	
+
 	<header></header>
-	
+
 	<div class="container mt-xl mb-xxl">
 		<div class="session-border pt-xs pb-xs mb-lg">
 			<h2>Blog</h2>
 			<p>Learning notes, thoughts, and technical shares.</p>
 		</div>
-		
+
 		<!-- Tag 過濾器 -->
 		<div class="blog-filters" id="blog-filters">
 			<button class="filter-btn active" data-filter="all">全部 (All)</button>
@@ -166,7 +167,9 @@
 		<div class="blog-list" id="blog-list">
 			<!-- 文章列表 -->
 			<a href="blog/chroma-subsampling.html" class="blog-card" data-tags="知識,影音">
-				<div class="blog-card-img" style="background: linear-gradient(135deg, #3498db, #2c3e50);"></div>
+				<div class="blog-card-img" style="background-image: url('blog/image/chroma/cover.jpg');">
+				</div>
+
 				<div class="blog-card-content">
 					<div class="blog-card-tags">
 						<span class="blog-card-tag">知識</span>
@@ -196,8 +199,10 @@
 			</a>
 
 			<a href="blog/unicode-intro.html" class="blog-card" data-tags="開發,知識">
-				<div class="blog-card-img" style="position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; background-color: #f8f9fa;">
-					<video class="blog-card-video" src="blog/image/unicode-intro.mp4" muted loop playsinline style="width: 100%; height: 100%; object-fit: cover;"></video>
+				<div class="blog-card-img"
+					style="position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; background-color: #f8f9fa;">
+					<video class="blog-card-video" src="blog/image/unicode-intro.mp4" muted loop playsinline
+						style="width: 100%; height: 100%; object-fit: cover;"></video>
 				</div>
 				<div class="blog-card-content">
 					<div class="blog-card-tags">
@@ -213,7 +218,9 @@
 			</a>
 
 			<a href="blog/how-to-use-nihonngo-input.html" class="blog-card" data-tags="日語,教學">
-				<div class="blog-card-img" style="background-image: url('blog/image/001/A_nighttime_shot_of_a_Tokyo_rainy_night_building_reflectio_.jpg');"></div>
+				<div class="blog-card-img"
+					style="background-image: url('blog/image/001/A_nighttime_shot_of_a_Tokyo_rainy_night_building_reflectio_.jpg');">
+				</div>
 				<div class="blog-card-content">
 					<div class="blog-card-tags">
 						<span class="blog-card-tag">日語</span>
@@ -276,4 +283,5 @@
 		});
 	});
 </script>
+
 </html>

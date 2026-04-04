@@ -295,7 +295,7 @@
 				grid-template-rows: repeat(2, 30px) !important;
 			}
 
-			.anim-illustration .hover-trigger > div:first-child {
+			.anim-illustration .hover-trigger>div:first-child {
 				font-size: 1.8rem !important;
 			}
 
@@ -310,11 +310,11 @@
 			}
 
 			/* 大數字區塊：縮小間距與冒號，避免換行 */
-			.anim-illustration > div[style*="gap: 20px"] {
+			.anim-illustration>div[style*="gap: 20px"] {
 				gap: 6px !important;
 			}
 
-			.anim-illustration > div[style*="gap: 20px"] > div[style*="font-size: 2.5rem"] {
+			.anim-illustration>div[style*="gap: 20px"]>div[style*="font-size: 2.5rem"] {
 				font-size: 1.8rem !important;
 				margin-top: 10px !important;
 			}
@@ -676,7 +676,7 @@
 
 			<p>
 				你知道嗎？<strong>你現在在 Netflix 上觀看的每一秒 4K 電影畫面，其實有整整 75% 的色彩資訊已經被悄悄丟棄了</strong>——而你的眼睛完全沒有發現。這不是
-				Bug，而是一個天才級的工程設計。
+				Bug，是一個運行已久的工程設計。
 			</p>
 
 			<p>
@@ -685,7 +685,7 @@
 			</p>
 
 			<p>
-				今天要帶大家用最直覺的圖解，徹底搞懂「<strong>色度抽樣 (Chroma Subsampling)</strong>」這個拯救了全世界網路頻寬的偉大發明！
+				今天要帶大家用最直覺的圖解，徹底搞懂「<strong>色度抽樣 (Chroma Subsampling)</strong>」這個拯救了全世界影像頻寬的偉大發明！
 			</p>
 
 			<p class="highlight" style="line-height: 1.8;">
@@ -715,20 +715,9 @@
 				這三個原色燈光組合而成的。
 			</p>
 
-			<div class="callout-box" style="border-left-color: #3498db; background-color: #ebf5fb;">
-				<p style="margin:0;">
-					🖥️ <strong>為什麼電腦桌面必須是 4:4:4 (Full RGB)？</strong><br>
-					一般電腦在顯示桌面、作業系統（Windows / macOS）和網頁文書軟體時，預設絕對是使用 4:4:4
-					原生訊號。因為電腦畫面包含了大量的高對比邊緣，尤其是<strong>文字</strong>。如果輸出的色彩被降級（例如被迫共用顏色變成 4:2:2 或
-					4:2:0），你會立刻發現螢幕上的字體邊緣出現彩色的毛邊（Color
-					Fringing）、模糊，甚至細小線條直接消失。這對閱讀和精準滑鼠點擊是非常痛苦的。因此，顯示卡只要有能力，一定會優先輸出無損色彩給螢幕！
-				</p>
-			</div>
-
 			<p>
-				但問題來了：如果我們要把一部 4K 解析度、60fps 的影片，每一格畫面的每一個像素的 R、G、B
-				資訊都完整記錄下來並傳輸，那個檔案大小和需要的網路頻寬會是<strong>極度恐怖的天文數字</strong>！
-				為了解決這個傳輸瓶頸，聰明的工程師們把腦筋動到了「人類的眼睛」上。
+				然而這會衍生出一個問題：若要完整記錄並傳輸 4K、60fps 影片中每個像素的 RGB
+				原始數據，將會產生<strong>極為龐大的檔案體積與頻寬需求</strong>。為了突破此一傳輸瓶頸，工程師們決定轉而從「人類視覺系統的感知特性」來尋求解決方案。
 			</p>
 
 			<hr>
@@ -973,19 +962,36 @@
 
 			<p>
 				數字表示在 4 個像素的寬度中，上下兩排的 4 個像素全都有自己獨立的色彩。它<strong>沒有使用到色度抽樣</strong>，呈現了最完整的亮度與色度。
-				<br><strong>關鍵補充：</strong> 雖然 4:4:4 經常與 RGB 混為一談，但在數學定義上其實不同。RGB 是直接把訊號分為紅綠藍，而 4:4:4 通常指的是 YCbCr
-				色彩空間。不過在 4:4:4 的無損狀態下，YCbCr 保留了與 RGB 完全同等的信息量，因此兩者可以互換且無損。
-				<br><strong>為什麼電腦螢幕需要它？</strong> 黑白細小文字非常依賴高對比與銳利的邊緣。如果螢幕輸出降級為有色度抽樣的格式，文字邊緣就會出現彩色沾染（Color
-				Fringing）與模糊現象。
+				<br>
+				<strong>適合場景：</strong> 高階數位相機 RAW 檔、底片掃描器、電影後期調色製作，以及電腦工作用的顯示器。
+			</p>
+
+			<div class="callout-box"
+				style="border-left-color: #3498db; background-color: #ebf5fb; padding: 15px; margin-bottom: 20px;">
+				<p style="margin:0;">
+					🖥️ <strong>為什麼電腦桌面必須是 4:4:4 (Full RGB)？</strong><br><br>
+					與動態影片平滑的色彩過渡不同，電腦介面充滿了極為銳利的高對比邊緣，特別是<strong>文字</strong>。作業系統極度依賴每個像素精準的色彩資訊，來進行字體的邊緣平滑（次像素渲染技術）。<br><br>
+					如果在連接螢幕或電視時，因為<strong>線材頻寬不足</strong>（例如 HDMI 規格太舊），導致顯示卡被迫將色彩降級輸出（變成 4:2:2 或
+					4:2:0），相鄰像素就會被迫「共用顏色」。這會讓字體邊緣瞬間崩壞，出現刺眼的彩色毛邊（Color Fringing）、模糊，甚至細小線條直接消失。因此，只要效能與頻寬允許，電腦絕對會死守 4:4:4
+					的無損輸出，這是維持閱讀體驗的最後底線！
+				</p>
+			</div>
+
+			<div class="callout-box cinema"
+				style="background-color: #f8f9fa; padding: 15px; border-left: 4px solid #6c757d;">
+				<p style="margin:0;">
+					💡 <strong>技術補充：4:4:4 不等於 RGB？</strong><br>
+					雖然 4:4:4 經常與 RGB 混為一談，但在數學定義上其實不同。RGB 是直接把訊號分為紅、綠、藍，而 4:4:4 通常指的是 YCbCr 色彩空間。不過在 4:4:4 的無損狀態下，YCbCr
+					保留了與 RGB 完全同等的信息量，因此兩者可以互相轉換且畫質無損。
+				</p>
+			</div>
+
 			</p>
 
 			<!-- 電腦文字邊沿銳利度檢測範例圖 (建議圖片 2) -->
 			<img src="image/chroma/text-fringing.jpg" alt="電腦文字邊沿銳利度檢測範例圖：對比無損 4:4:4 的文字邊緣與 4:2:0 電腦螢幕上文字邊緣溢色、糊掉的慘況。"
 				style="width: 100%; height: auto; border-radius: 8px; margin: 20px 0 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
 
-			<p>
-				<strong>適合場景：</strong> 高階數位相機 RAW 檔、底片掃描器、電影後期調色製作、與電腦工作用顯示器。
-			</p>
 
 			<h3>4:2:2 格式 (色彩減半)</h3>
 
