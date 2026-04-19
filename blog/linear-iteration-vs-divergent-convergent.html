@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, maximum-scale=1.5">
+	<title>線性反覆 vs 發散收斂：AI 時代下判斷路徑的兩種走法</title>
+	<script>workName = "blog_divergent_convergent"</script>
+	<script>var basePath = "../portfolio/"; var pageBasePath = "../portfolio/";</script>
+	<link rel="stylesheet" href="../portfolio/style/reset.css">
+	<link rel="stylesheet" href="../portfolio/style/style_layout.css">
+	<link rel="stylesheet" href="../portfolio/style/style.css">
+	<link rel="stylesheet" href="../portfolio/style/article.css">
+	<link rel="stylesheet" href="style/style_blog.css">
+	<link rel="icon" type="image/png" href="../portfolio/web_icon.png" />
+	<style>
+		.thinking-illustration {
+			margin: 40px 0;
+			padding: 48px 24px;
+			background: #f6f2ea;
+			border-radius: 16px;
+			box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			overflow: hidden;
+		}
+
+		.thinking-illustration h4 {
+			margin-bottom: 28px;
+			font-family: sans-serif;
+			color: #333;
+			text-align: center;
+			letter-spacing: 0.05em;
+		}
+
+		.thinking-illustration .caption {
+			margin-top: 20px;
+			font-size: 14px;
+			color: #8a7e68;
+			font-style: italic;
+			text-align: center;
+		}
+
+		/* 線性反覆 */
+		.linear-flow {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			flex-wrap: wrap;
+			gap: 8px;
+		}
+		.linear-node {
+			width: 64px;
+			height: 64px;
+			border-radius: 50%;
+			background: #c9b89a;
+			color: #3a2f1f;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			font-weight: bold;
+			font-family: 'Georgia', serif;
+			box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+			flex-shrink: 0;
+		}
+		.linear-node.ghost {
+			background: transparent;
+			border: 2px dashed #c9b89a;
+			color: #c9b89a;
+		}
+		.linear-arrow {
+			color: #3a2f1f;
+			font-size: 1.4rem;
+		}
+		.linear-dots { color: #3a2f1f; font-size: 1.4rem; padding-left: 4px; }
+
+		/* 發散收斂樹 */
+		.tree-wrap {
+			position: relative;
+			width: 100%;
+			max-width: 560px;
+		}
+		.tree-svg { width: 100%; height: auto; display: block; }
+
+		/* 共用 */
+		.section-label {
+			display: flex;
+			align-items: baseline;
+			gap: 12px;
+			margin-top: 48px;
+			margin-bottom: 8px;
+			border-top: 1px solid #e6ddcc;
+			padding-top: 32px;
+		}
+		.section-label .roman {
+			font-family: 'Georgia', serif;
+			font-style: italic;
+			font-size: 2rem;
+			color: #a89773;
+		}
+		.section-label .tag {
+			font-size: 12px;
+			letter-spacing: 0.2em;
+			color: #a89773;
+			text-transform: uppercase;
+		}
+
+		.quote-block {
+			margin: 48px 0;
+			padding: 32px 28px;
+			border: 1px solid #d9cfb9;
+			border-radius: 8px;
+			background: #faf6ee;
+			font-size: 1.1rem;
+			color: #3a2f1f;
+			line-height: 1.8;
+		}
+		.quote-block .para-mark {
+			font-family: 'Georgia', serif;
+			font-style: italic;
+			font-size: 2rem;
+			color: #c46a3a;
+			display: block;
+			margin-bottom: 12px;
+		}
+		.quote-block em {
+			color: #c46a3a;
+			font-style: italic;
+			font-weight: bold;
+		}
+
+		.chat-block {
+			margin: 24px 0;
+			background: #f4f6f8;
+			border-radius: 12px;
+			padding: 20px 24px;
+			border-left: 4px solid #a89773;
+		}
+		.chat-block .who {
+			font-weight: bold;
+			color: #555;
+			font-size: 14px;
+			margin-bottom: 6px;
+		}
+		.chat-block p {
+			margin: 6px 0;
+			color: #333;
+			line-height: 1.7;
+		}
+
+		/* 典範轉移時間軸 */
+		.paradigm-timeline {
+			width: 100%;
+			max-width: 640px;
+			margin: 0 auto;
+		}
+		.paradigm-row {
+			display: grid;
+			grid-template-columns: 80px 1fr;
+			align-items: center;
+			gap: 16px;
+			padding: 14px 0;
+			border-bottom: 1px dashed #d9cfb9;
+		}
+		.paradigm-row:last-child { border-bottom: none; }
+		.paradigm-year {
+			font-family: 'Georgia', serif;
+			font-style: italic;
+			color: #a89773;
+			font-size: 14px;
+			text-align: right;
+		}
+		.paradigm-bar {
+			display: flex;
+			align-items: center;
+			gap: 12px;
+		}
+		.paradigm-dot {
+			width: 14px; height: 14px; border-radius: 50%;
+			background: #a8b5a0;
+			flex-shrink: 0;
+			box-shadow: 0 0 0 4px #f6f2ea;
+		}
+		.paradigm-dot.highlight { background: #c46a3a; }
+		.paradigm-text strong { display: block; color: #3a2f1f; font-size: 15px; }
+		.paradigm-text span { font-size: 13px; color: #7a6f58; }
+
+		/* 兩極化雙峰圖 */
+		.polar-chart {
+			width: 100%; max-width: 640px; margin: 0 auto;
+		}
+		.polar-bars {
+			display: grid;
+			grid-template-columns: 1fr 80px 1fr;
+			gap: 20px;
+			align-items: end;
+			min-height: 180px;
+		}
+		.polar-col { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+		.polar-bar-box {
+			width: 100%;
+			background: linear-gradient(180deg, #a8b5a0, #4a7a5a);
+			border-radius: 6px 6px 0 0;
+			position: relative;
+			display: flex; align-items: flex-start; justify-content: center;
+			padding-top: 10px;
+			color: #fff;
+			font-family: 'Georgia', serif;
+			font-weight: bold;
+		}
+		.polar-bar-box.right {
+			background: linear-gradient(180deg, #d9a878, #c46a3a);
+		}
+		.polar-middle {
+			width: 100%;
+			background: #e6ddcc;
+			border-radius: 6px 6px 0 0;
+			color: #8a7e68;
+			display: flex; align-items: flex-end; justify-content: center;
+			padding-bottom: 8px;
+			font-size: 12px;
+			text-align: center;
+		}
+		.polar-label {
+			font-size: 13px; color: #3a2f1f; text-align: center; line-height: 1.5;
+		}
+		.polar-label strong { display: block; font-size: 14px; }
+
+		/* 業界數據卡 */
+		.stat-grid {
+			display: grid;
+			grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+			gap: 16px;
+			margin: 24px 0 16px;
+		}
+		.stat-card {
+			background: #fff;
+			border: 1px solid #e6ddcc;
+			border-radius: 12px;
+			padding: 20px 18px;
+			display: flex; flex-direction: column; gap: 6px;
+		}
+		.stat-number {
+			font-family: 'Georgia', serif;
+			font-size: 2.2rem;
+			font-weight: bold;
+			color: #c46a3a;
+			line-height: 1.1;
+		}
+		.stat-number.neg { color: #a73b3b; }
+		.stat-number.pos { color: #4a7a5a; }
+		.stat-title { font-size: 13px; color: #3a2f1f; font-weight: bold; }
+		.stat-desc { font-size: 12px; color: #7a6f58; line-height: 1.5; }
+
+		@media (max-width: 768px) {
+			.linear-node { width: 52px; height: 52px; font-size: 14px; }
+			.polar-bars { grid-template-columns: 1fr 60px 1fr; gap: 8px; }
+		}
+	</style>
+</head>
+
+<body>
+	<header></header>
+	<div class="container mt-xl">
+		<h1>線性反覆 vs 發散收斂：AI 時代下判斷路徑的兩種走法</h1>
+		<div class="blog-article-tags" style="display: flex; gap: 8px; margin-top: 12px; margin-bottom: 24px;">
+			<span style="padding: 4px 12px; background: #f0f0f0; border-radius: 4px; font-size: 14px; color: #555; border: 1px solid #e0e0e0;">設計</span>
+			<span style="padding: 4px 12px; background: #f0f0f0; border-radius: 4px; font-size: 14px; color: #555; border: 1px solid #e0e0e0;">思考</span>
+		</div>
+		<div class="row blog_header ">
+			<div class="col">
+				<p class="date">2026 / 04 / 19</p>
+			</div>
+			<div class="col">
+				<div class="iconbox">
+					<a href="#comments"><img src="image/icon/comment-next-outline.svg" alt=""></a>
+					<img src="image/icon/output.svg" alt="">
+					<div class="divider"></div>
+					<img src="image/icon/extra-life.svg" alt="">
+					<img src="image/icon/twitter.svg" alt="">
+					<img src="image/icon/facebook.svg" alt="">
+				</div>
+			</div>
+		</div>
+		<div class="article">
+
+			<p>
+				前陣子跟學長聊天時提到一個滿值得記下來的觀察：現在的大學生使用 AI，並沒有想像中「AI 原生」，反而多半停留在用對話框生成報告、生張圖就交差的狀態。
+				學長的同事去南台大學分享後回饋，學生問的問題是「Claude 是什麼、怎麼拚？」；看畢設發表，也只是把 AI 當成「幫我生一張圖」的工具。
+			</p>
+
+			<p>
+				這段對話讓人聯想到致遠學長最近分享的一張 Thinking Tool 圖卡：<strong>線性反覆 vs 發散收斂</strong>。
+				同樣是「修改到對」，但走法決定結果的天花板。把這張圖放回學長同事觀察到的學生樣態，似乎正好解釋了為什麼現在這波 AI 使用方式「比不用還要危險」。
+			</p>
+
+			<hr class="lg">
+
+			<div class="section-label">
+				<div class="roman">i.</div>
+				<div class="tag">錯誤的觀念 · Linear Iteration</div>
+			</div>
+			<h2>線性反覆：一條路走到底</h2>
+
+			<p>
+				最常見的 AI 使用方式是這樣的：丟一個 prompt 進去 → 看結果 → 「嗯再改一下」 → 再丟 → 「再幫我順一下」 → 再丟。
+				每一輪看起來都在進步，但其實都是在<strong>同一個初始想法的延長線上</strong>做微調。
+			</p>
+
+			<div class="thinking-illustration">
+				<h4>LINEAR ITERATION · 始終同一條路徑</h4>
+				<div class="linear-flow">
+					<div class="linear-node">V1</div>
+					<div class="linear-arrow">→</div>
+					<div class="linear-node">V1.1</div>
+					<div class="linear-arrow">→</div>
+					<div class="linear-node">V1.2</div>
+					<div class="linear-arrow">→</div>
+					<div class="linear-node">V1.3</div>
+					<div class="linear-arrow">→</div>
+					<div class="linear-node">V1.4</div>
+					<div class="linear-arrow">→</div>
+					<div class="linear-node ghost">V1.5</div>
+					<div class="linear-dots">…</div>
+				</div>
+				<p class="caption">重複修改同一個版本,每一步都只比前一步好一點點</p>
+			</div>
+
+			<p>
+				這就是線性反覆：看似在進步，其實被困在最初那個想法的框架裡；跳不出來，也看不見別的可能。
+				當學生把 AI 當成「幫我把 V1 變成 V1.5 的機器」時，他根本沒經歷過「我原本的方向會不會本來就不對？」的思辨。
+				大腦外包發生的，不是執行，而是<strong>判斷</strong>。
+			</p>
+
+			<hr>
+
+			<div class="section-label">
+				<div class="roman">ii.</div>
+				<div class="tag">正確的觀念 · Divergent then Convergent</div>
+			</div>
+			<h2>發散再收斂：樹狀的判斷過程</h2>
+
+			<p>
+				真正有效的做法是：先讓 AI 陪你<strong>展開多個平行提案</strong>，每個提案走不同的路徑、不同的假設、不同的角度；
+				再從中挑出每個方案最好的那一塊，整合成下一版。
+			</p>
+
+			<div class="thinking-illustration">
+				<h4>DIVERGENT → CONVERGENT · 樹狀/網狀判斷過程</h4>
+				<div class="tree-wrap">
+					<svg class="tree-svg" viewBox="0 0 560 360" xmlns="http://www.w3.org/2000/svg">
+						<!-- 發散連線 -->
+						<line x1="280" y1="60" x2="80" y2="180" stroke="#3a3a2f" stroke-width="1.5"/>
+						<line x1="280" y1="60" x2="210" y2="180" stroke="#3a3a2f" stroke-width="1.5"/>
+						<line x1="280" y1="60" x2="350" y2="180" stroke="#3a3a2f" stroke-width="1.5"/>
+						<line x1="280" y1="60" x2="480" y2="180" stroke="#3a3a2f" stroke-width="1.5"/>
+
+						<!-- 提案橫虛線 -->
+						<line x1="80" y1="205" x2="480" y2="205" stroke="#b8a885" stroke-width="1" stroke-dasharray="3,4"/>
+
+						<!-- 收斂連線（紅色） -->
+						<path d="M 95 215 Q 200 300 280 320" stroke="#c46a3a" stroke-width="1.5" fill="none"/>
+						<path d="M 225 215 Q 260 290 280 320" stroke="#c46a3a" stroke-width="1.5" fill="none"/>
+						<path d="M 365 215 Q 320 290 280 320" stroke="#c46a3a" stroke-width="1.5" fill="none"/>
+						<path d="M 465 215 Q 370 300 280 320" stroke="#c46a3a" stroke-width="1.5" fill="none"/>
+
+						<!-- V1 -->
+						<circle cx="280" cy="60" r="34" fill="#a8b5a0" stroke="#3a3a2f" stroke-width="1.2"/>
+						<text x="280" y="66" text-anchor="middle" font-family="Georgia, serif" font-size="18" font-weight="bold" fill="#2a2a1f">V1</text>
+
+						<!-- 提案 ABCD -->
+						<g font-family="Georgia, serif" font-size="15" fill="#3a2f1f" text-anchor="middle">
+							<rect x="50" y="170" width="60" height="42" fill="#ede0c8" stroke="#3a2f1f" stroke-width="1"/>
+							<text x="80" y="188" font-size="10">提案</text>
+							<text x="80" y="204" font-style="italic" font-weight="bold">A</text>
+							<circle cx="95" cy="175" r="3" fill="#c46a3a"/>
+
+							<rect x="180" y="170" width="60" height="42" fill="#ede0c8" stroke="#3a2f1f" stroke-width="1"/>
+							<text x="210" y="188" font-size="10">提案</text>
+							<text x="210" y="204" font-style="italic" font-weight="bold">B</text>
+							<circle cx="225" cy="175" r="3" fill="#c46a3a"/>
+
+							<rect x="320" y="170" width="60" height="42" fill="#ede0c8" stroke="#3a2f1f" stroke-width="1"/>
+							<text x="350" y="188" font-size="10">提案</text>
+							<text x="350" y="204" font-style="italic" font-weight="bold">C</text>
+							<circle cx="365" cy="175" r="3" fill="#c46a3a"/>
+
+							<rect x="450" y="170" width="60" height="42" fill="#ede0c8" stroke="#3a2f1f" stroke-width="1"/>
+							<text x="480" y="188" font-size="10">提案</text>
+							<text x="480" y="204" font-style="italic" font-weight="bold">D</text>
+							<circle cx="465" cy="175" r="3" fill="#c46a3a"/>
+						</g>
+
+						<!-- V2 -->
+						<circle cx="280" cy="320" r="34" fill="#a8b5a0" stroke="#3a3a2f" stroke-width="1.2"/>
+						<text x="280" y="326" text-anchor="middle" font-family="Georgia, serif" font-size="18" font-weight="bold" fill="#2a2a1f">V2</text>
+						<circle cx="268" cy="312" r="2.5" fill="#c46a3a"/>
+						<circle cx="292" cy="312" r="2.5" fill="#c46a3a"/>
+						<circle cx="272" cy="328" r="2.5" fill="#c46a3a"/>
+						<circle cx="292" cy="328" r="2.5" fill="#c46a3a"/>
+
+						<!-- 標籤 -->
+						<text x="30" y="70" font-family="Georgia, serif" font-style="italic" font-size="14" fill="#4a7a5a" font-weight="bold">發散 →</text>
+						<text x="30" y="322" font-family="Georgia, serif" font-style="italic" font-size="14" fill="#4a7a5a" font-weight="bold">收斂 →</text>
+					</svg>
+				</div>
+				<p class="caption">從 V1 展開多個平行提案,挑出每個方案最好的那一塊,再整合成 V2</p>
+			</div>
+
+			<p>
+				判斷過程變成<strong>樹狀的、網狀的</strong>，而不是單線。每一輪你都能看到別的路徑，有機會問自己：
+				「A 提案的結構好，但 C 提案的切入角度更好，有沒有辦法整合？」——這才是真的在做設計判斷，而不是在修錯字。
+			</p>
+
+			<div class="quote-block">
+				<span class="para-mark">¶</span>
+				線性反覆只在修「這一版」；發散收斂在問<em>「有沒有更好的可能」</em>。
+			</div>
+
+			<hr class="lg">
+
+			<h2>為什麼這件事在 AI 時代特別重要？</h2>
+
+			<p>
+				過去「發散」是有門檻的：你要會畫 wireframe、會排版、會做 mockup，才能一次產出好幾個提案。大多數人受不了這個成本，所以自然就被線性反覆困住。
+			</p>
+
+			<p>
+				但 AI 出現之後，發散的邊際成本趨近於零——你可以在三分鐘內讓它生出四個完全不同風格的提案。
+				照理說，這應該讓「發散收斂」的思維方式更普及才對。
+			</p>
+
+			<p>
+				可是實際上呢？我們看到的反而是相反的結果：因為 AI 連 V1 都可以直接幫你生出來，大多數人乾脆連「我要往哪個方向發散」都不想了。
+				一個 prompt 丟進去，拿到結果，「幫我再改一下」——
+				<strong>AI 把線性反覆的速度加快了十倍，但判斷的深度沒有跟著變深</strong>。這就是學長說的「大腦外包」真正可怕的地方。
+			</p>
+
+			<h2>設計師被淘汰的，不是技能，是判斷力</h2>
+
+			<p>
+				這幾天 Claude Design 推出後，設計圈又在討論「設計師要失業了」。其中 Denny 的〈Claude Design 對設計師的真正衝擊〉是近期看到切入角度比較完整的一篇——他沒有停在「會不會失業」的二元問題，而是拆成心態、產業結構、組織、決策圈幾個層面來談。下面整理他文章裡幾個看下來特別有感的觀點。
+			</p>
+
+			<h3>「Everyone is Designer」從願景變成事實</h3>
+			<p>
+				Denny 提到，他在<strong>數位設計與商業應用</strong>課程第四講放過一張只有四個字的投影片：<em>Everyone is Designer</em>。
+				在 2024 年之前，這句話是一種「設計民主化」的理想——代表好的設計思維應該滲透組織的每一個角色。
+				但 Claude Design 推出之後，這句話不再是願景，而是<strong>正在發生的事實</strong>。
+			</p>
+			<p>
+				這個轉變為什麼重要？因為設計師過去二十年賴以為生的，從來不是「會畫線框圖」本身，而是「會畫線框圖的人很少」這件事。
+				John Maeda 在 Design in Tech Report 裡把設計拆成三類：<strong>Classical Design（古典設計）、Design Thinking（設計思維）、Computational Design（運算設計）</strong>。
+				Denny 的判斷是：往後的數位設計，會是後兩者的結合——設計思維是商業裡的創新思考模式，運算設計是工具，而 Claude Design 把這兩件事直接綁在一起。
+			</p>
+
+			<h3>這是設計產業的第三次典範轉移</h3>
+			<p>
+				每一次典範轉移，都會有一批設計師被淘汰，也會有一批新的設計師變得更有價值。
+				Denny 認為 Claude Design 觸發的，是設計產業的第三次典範轉移。
+			</p>
+			<p>
+				過去每次工具轉換——從手繪到 Photoshop、從 Photoshop 到 Figma——都讓部分技能貶值，同時開放新可能。
+				但設計師都靠著「對工具的熟悉度」和「個人創意」活了下來，因為每次新工具的學習門檻都還存在，而且主要對設計師開放。
+			</p>
+			<p>
+				Claude Design 這次的關鍵差別是：<strong>門檻幾乎是零</strong>。
+				Anthropic 在發佈時明確說，這個工具是為「<em>沒有設計背景的創辦人、PM 和行銷人員</em>」而設計的。
+				執行技能的稀缺性，不是被另一個工具接手，而是被完整地「數位化」掉了。
+			</p>
+
+			<div class="thinking-illustration">
+				<h4>設計工具的典範轉移史</h4>
+				<div class="paradigm-timeline">
+					<div class="paradigm-row">
+						<div class="paradigm-year">~ 1990</div>
+						<div class="paradigm-bar">
+							<div class="paradigm-dot"></div>
+							<div class="paradigm-text">
+								<strong>手繪 / 製版</strong>
+								<span>技能門檻極高，主要對受訓設計師開放</span>
+							</div>
+						</div>
+					</div>
+					<div class="paradigm-row">
+						<div class="paradigm-year">1990s</div>
+						<div class="paradigm-bar">
+							<div class="paradigm-dot"></div>
+							<div class="paradigm-text">
+								<strong>Photoshop / Illustrator</strong>
+								<span>第一次轉移：桌面軟體取代手工製版</span>
+							</div>
+						</div>
+					</div>
+					<div class="paradigm-row">
+						<div class="paradigm-year">2010s</div>
+						<div class="paradigm-bar">
+							<div class="paradigm-dot"></div>
+							<div class="paradigm-text">
+								<strong>Sketch / Figma</strong>
+								<span>第二次轉移：雲端協作 + 畫布概念，門檻仍在設計師端</span>
+							</div>
+						</div>
+					</div>
+					<div class="paradigm-row">
+						<div class="paradigm-year">2026</div>
+						<div class="paradigm-bar">
+							<div class="paradigm-dot highlight"></div>
+							<div class="paradigm-text">
+								<strong>Claude Design / AI 原生工具</strong>
+								<span>第三次轉移：門檻歸零,明確對非設計背景開放</span>
+							</div>
+						</div>
+					</div>
+				</div>
+				<p class="caption">每一次轉移都讓部分技能貶值,但這次的學習成本第一次降到「對所有人都是零」</p>
+			</div>
+
+			<h3>會倖存的，是複雜度高的那一端</h3>
+			<p>
+				Denny 引用 McKinsey 2018 的研究：設計指數前 25% 的企業，營收成長速度是市場基準的兩倍。
+				但「前 25%」的核心不是有多少設計師，而是——設計能不能進入 C-Level 決策、能不能平衡質性與量性研究、能不能整合跨功能組織。
+			</p>
+			<p>
+				他的結論是：設計產業會出現兩極化。極少數人在<strong>真正複雜、高利害關係</strong>的問題上工作；大量的人則在做 <strong>AI 輸出的後處理</strong>。
+				這跟 Claude Code 發表後，低階工程師需求下降、高階工程師反而更搶手的曲線，幾乎是一樣的形狀。
+			</p>
+
+			<div class="thinking-illustration">
+				<h4>設計師需求的兩極化</h4>
+				<div class="polar-chart">
+					<div class="polar-bars">
+						<div class="polar-col">
+							<div class="polar-bar-box right" style="height: 160px;">高</div>
+							<div class="polar-label"><strong>AI 輸出後處理</strong>大量、低單價、可替代</div>
+						</div>
+						<div class="polar-col">
+							<div class="polar-middle" style="height: 60px;">中階<br>執行</div>
+							<div class="polar-label"><strong>消失中</strong>原本的 V1→V1.5</div>
+						</div>
+						<div class="polar-col">
+							<div class="polar-bar-box" style="height: 140px;">高</div>
+							<div class="polar-label"><strong>高複雜度判斷</strong>少數、高單價、難取代</div>
+						</div>
+					</div>
+				</div>
+				<p class="caption">中間的「線性反覆」職位被抽走,兩端同時長高——跟 Claude Code 之後的工程師曲線幾乎一致</p>
+			</div>
+			<p>
+				換句話說，會被淘汰的，其實不是會用 Figma 的人、也不是會生圖的人，而是<strong>只會線性反覆的人</strong>——
+				只會把「V1 改到 V1.5」的人。因為這件事 AI 已經比你快、比你便宜了。
+			</p>
+			<p>
+				但「能同時展開四個根本不同方向的提案、能判斷哪個切入點才真的回應了問題、能從四個不同角度整合出 V2」這種樹狀判斷力，
+				AI 目前還沒辦法替你完成。它可以是你發散的加速器，但收斂的那一刀，還是得你來下。
+			</p>
+
+			<h3>組織與決策圈：水平溝通比產出更重要</h3>
+			<p>
+				Denny 文章最後的兩個層面，放回發散收斂的脈絡來看特別值得拉出來：
+			</p>
+			<ul>
+				<li>
+					<strong>組織層面</strong>——in-house 設計部門的規模大小，跟企業績效沒有直接關係。
+					重要的是：設計能不能在組織裡產生<strong>水平溝通效應</strong>，讓行銷、業務、策略、工程的討論都能以使用者視角進行。
+					設計師該做的從來不是產出漂亮簡報，而是把設計思維傳遞出去。
+				</li>
+				<li>
+					<strong>決策圈層面</strong>——身為管理者，Claude Design 真正丟給你的問題是：你對自己業務的<em>文脈（context）</em>，理解夠深嗎？
+					你能不能寫出一個 prompt，讓 AI 產出真正契合（Problem-Solution Fit）的設計？
+					還是你只能描述「我想要像某某網站那樣」，然後拿到一個看起來對、但實際上沒解決問題的東西？
+				</li>
+			</ul>
+			<p>
+				這兩件事對回到發散收斂的框架來看非常一致：<strong>水平溝通</strong>就是發散的來源（你要有夠多角度才展得開）；<strong>context 的深度</strong>就是收斂的基準（你要夠懂才挑得出對的那一塊）。
+				AI 把中間的產出環節拿走了，剩下來的正是這兩端。
+			</p>
+
+			<h2>業界實際上正在發生什麼？</h2>
+			<p>
+				如果只停留在觀點層面，很容易變成「大家都在擔心而已」。把近期幾份產業報告拉出來看，想確認這些判斷到底有沒有數據支撐——看下來的感覺是：<strong>幾乎都在往兩極化的方向走</strong>。
+			</p>
+
+			<div class="stat-grid">
+				<div class="stat-card">
+					<div class="stat-number neg">-7%</div>
+					<div class="stat-title">Figma 股價單日跌幅</div>
+					<div class="stat-desc">Claude Design 發表隔天,Adobe、Wix、GoDaddy 同步下挫</div>
+				</div>
+				<div class="stat-card">
+					<div class="stat-number neg">-67%</div>
+					<div class="stat-title">Entry-level 工程職缺</div>
+					<div class="stat-desc">相較 2022 年的降幅,設計職缺同步停滯</div>
+				</div>
+				<div class="stat-card">
+					<div class="stat-number neg">~80K</div>
+					<div class="stat-title">Q1 2026 科技業裁員數</div>
+					<div class="stat-desc">其中約 50% 被歸因於 AI 取代</div>
+				</div>
+				<div class="stat-card">
+					<div class="stat-number pos">$85–100K</div>
+					<div class="stat-title">AI 原生 junior 的起薪</div>
+					<div class="stat-desc">會與 AI 協作的新人拿到溢價,commodity 工作費率則在崩跌</div>
+				</div>
+			</div>
+
+			<ul>
+				<li>
+					<strong>資本市場已經即時重新定價。</strong>
+					Claude Design 發表隔天，<em>Figma 股價下跌 7%</em>，Adobe、Wix、GoDaddy 同步下挫——華爾街幾乎是在一天之內把整個「設計軟體類別」的估值重新算了一遍（<a href="https://techcrunch.com/2026/04/17/anthropic-launches-claude-design-a-new-product-for-creating-quick-visuals/" target="_blank" rel="noopener">TechCrunch</a>）。
+				</li>
+				<li>
+					<strong>Entry-level 職缺正在崩盤。</strong>
+					自 2022 年以來，初階工程師職缺數下降了約 <em>67%</em>，Q1 2026 科技業裁員近 80,000 人，其中約 50% 被歸因於 AI（<a href="https://www.tomshardware.com/tech-industry/tech-industry-lays-off-nearly-80-000-employees-in-the-first-quarter-of-2026-almost-50-percent-of-affected-positions-cut-due-to-ai" target="_blank" rel="noopener">Tom's Hardware</a>、<a href="https://hakia.com/news/junior-developer-crisis-2026/" target="_blank" rel="noopener">Hakia</a>）。
+				</li>
+				<li>
+					<strong>設計職缺從 ChatGPT 之後就沒再長回來。</strong>
+					Lenny's Newsletter 彙整的職缺資料顯示，PM 與工程職缺在 2024 後陸續回升，但<em>設計職缺一直沒有跟上</em>——一個可能的解釋是 AI 讓工程師跳過設計流程直接出貨（<a href="https://www.lennysnewsletter.com/p/state-of-the-product-job-market-in-ee9" target="_blank" rel="noopener">Lenny's Newsletter</a>）。
+				</li>
+				<li>
+					<strong>薪資也在兩極化。</strong>
+					會用 AI 工作的 junior 拿到的 offer 落在 <em>$85K–$100K</em>，而純粹的 commodity 創意工作（只會生圖、只會排版）費率則在崩跌（<a href="https://codeconductor.ai/blog/future-of-junior-developers-ai/" target="_blank" rel="noopener">Code Conductor</a>）。
+				</li>
+				<li>
+					<strong>BCG 的整體判斷：AI 會「重塑」比「取代」更多的職位。</strong>
+					但重塑的方向是——把重複性高、判斷密度低的部分交出去，人類留在判斷與整合的那一端（<a href="https://www.bcg.com/publications/2026/ai-will-reshape-more-jobs-than-it-replaces" target="_blank" rel="noopener">BCG</a>）。
+				</li>
+			</ul>
+			<p>
+				這些數據其實都指向同一件事：<strong>線性反覆的工作，價格正在崩盤；發散收斂的工作，價格正在拉開差距。</strong>
+				學長同事觀察到的「junior 需求越來越少、部分專案直接跳過設計師由 AI 開發」，並不是個案，而是整個產業正在發生的結構性調整。
+			</p>
+
+			<h2>學校尤其不該追求效率</h2>
+
+			<p>
+				回到一開始跟學長的對話，當時的回應是這樣的：
+			</p>
+
+			<div class="chat-block">
+				<div class="who">我</div>
+				<p>如果生圖沒有思考過、只是全權給 AI 發想，這個在學校裡面倒是挺危險的——學校目的還是在學習，不是在追求效率 XD</p>
+			</div>
+
+			<p>
+				業界用 AI 追求效率，這沒問題——因為業界的人，判斷力早就在過去幾年練出來了，AI 對他們來說是加速發散與收斂的槓桿。
+				但學生還在「長出判斷力」的階段。如果一開始就把發散交給 AI、收斂也交給 AI，中間那段「為什麼選 B 不選 D」的思辨訓練，整個被跳過了。
+			</p>
+
+			<p>
+				結果就是：畢業時作品很多，但每一份作品都是 V1.5——沒有任何一份，是經過 A / B / C / D 真正比較過之後收斂而來的。
+			</p>
+
+			<hr>
+
+			<h2>給自己的三個檢查點</h2>
+			<p>
+				順著上面這些觀點與數據整理下來，無論是在學、還是已經在業界，用 AI 工作時或許可以隨時問自己這三件事：
+			</p>
+			<ol>
+				<li><strong>我現在是在修 V1.5，還是在問「有沒有更好的可能」？</strong>——如果連續五輪都只在微調同一個方向，八成已經陷入線性反覆。</li>
+				<li><strong>我有讓 AI 同時產出過幾個根本不同方向的提案嗎？</strong>——發散的成本現在幾乎是零，不用白不用。</li>
+				<li><strong>這次的收斂，是我在做判斷，還是 AI 在做判斷？</strong>——如果連為什麼選 B 都說不出來，那這份產出不是你的。</li>
+			</ol>
+
+			<p>
+				工具會一直進化，但判斷路徑的兩種走法不會變。
+				線性反覆的天花板，就是 V1 的天花板；發散收斂的天花板，是你願意展開多大的可能性。
+			</p>
+
+			<p style="text-align: right; color: #8a7e68; margin-top: 48px; font-style: italic;">
+				—— 感謝致遠學長的 Thinking Tool 圖卡與對話啟發
+			</p>
+		</div>
+	</div>
+
+
+	<!-- Giscus Comments -->
+	<div id="comments" class="container mt-xl" style="padding-bottom: 60px; padding-top: 40px; border-top: 1px solid #eee;">
+		<script src="https://giscus.app/client.js"
+				data-repo="newslin-design/newslin-design.github.io"
+				data-repo-id="R_kgDOOXA3ww"
+				data-category="Announcements"
+				data-category-id="DIC_kwDOOXA3w84C5AiY"
+				data-mapping="pathname"
+				data-strict="0"
+				data-reactions-enabled="1"
+				data-emit-metadata="0"
+				data-input-position="top"
+				data-theme="light"
+				data-lang="zh-TW"
+				crossorigin="anonymous"
+				async>
+		</script>
+	</div>
+	<footer>
+	</footer>
+
+</body>
+<script src="../portfolio/js/app.js"></script>
+
+</html>
