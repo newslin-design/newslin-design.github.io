@@ -3,6 +3,11 @@
 
 <head>
 	<meta charset="UTF-8">
+	<script>
+		if (!sessionStorage.getItem('portfolioAuth')) {
+			window.location.replace('../../password.html');
+		}
+	</script>
 	<meta name="viewport" content="width=device-width initial-scale=1.0,user-scalable=0,maximum-scale=1.5">
 	<title>Portfolio - ポートフォリオ</title>
 	<script>workName = "home"; lang = "ja"; basePath = "../";</script>

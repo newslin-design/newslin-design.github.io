@@ -1,0 +1,1435 @@
+<!DOCTYPE html>
+<html lang="zh-TW"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 產品與解決方案探索代理 - 提案簡報</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=Outfit:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        /* 1. THE SETUP & GLOBAL STYLES */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #050914;
+            margin: 0;
+            overflow: hidden;
+            width: 100vw;
+            height: 100vh;
+            font-family: 'Inter', sans-serif;
+            color: #E2E8F0;
+        }
+
+        /* Fullscreen Slide Dimensions */
+        .slide-container {
+            align-items: center;
+            background-color: #0B132B;
+            display: none;
+            flex-direction: column;
+            height: 100vh;
+            width: 100vw;
+            justify-content: flex-start;
+            overflow: hidden;
+            padding: 60px 80px;
+            position: fixed;
+            top: 0;
+            left: 0;
+        }
+
+        .slide-container.active {
+            display: flex;
+        }
+
+        .slide-container[contenteditable="true"] {
+            cursor: text;
+            user-select: text;
+        }
+
+        .slide-container[contenteditable="true"] * {
+            user-select: text;
+        }
+
+        .slide-container[contenteditable="true"]:focus,
+        .slide-container[contenteditable="true"] *:focus {
+            outline: none;
+        }
+
+        /* Abstract Background Elements */
+        .slide-container::before,
+        .slide-container::after {
+            content: '';
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(100px);
+            z-index: 0;
+            opacity: 0.15;
+            pointer-events: none;
+        }
+
+        .slide-container::before {
+            background: #00E5FF;
+            width: 500px;
+            height: 500px;
+            top: -200px;
+            left: -150px;
+        }
+
+        .slide-container::after {
+            background: #7B2CBF;
+            width: 600px;
+            height: 600px;
+            bottom: -250px;
+            right: -200px;
+        }
+
+        .slide-container>* {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* 2. TYPOGRAPHY */
+        h1,
+        h2,
+        h3,
+        h4 {
+            font-family: 'Outfit', sans-serif;
+            color: #FFFFFF;
+            font-weight: 600;
+        }
+
+        h1 {
+            font-size: 64px;
+            line-height: 1.1;
+            margin-bottom: 20px;
+        }
+
+        h1 span {
+            color: #00E5FF;
+        }
+
+        .slide-title {
+            font-size: 42px;
+            margin-bottom: 40px;
+            text-align: left;
+            width: 100%;
+            color: #FFFFFF;
+            border-bottom: 2px solid #2A3A5A;
+            padding-bottom: 15px;
+        }
+
+        .slide-title span {
+            color: #00E5FF;
+        }
+
+        h3 {
+            font-size: 28px;
+            margin-bottom: 15px;
+            color: #00E5FF;
+        }
+
+        p,
+        li,
+        th,
+        td {
+            font-size: 20px;
+            line-height: 1.6;
+            color: #CBD5E1;
+        }
+
+        .subtitle {
+            font-size: 24px;
+            color: #94A3B8;
+            font-weight: 300;
+        }
+
+        strong {
+            color: #FFFFFF;
+            font-weight: 600;
+        }
+
+        .content-area {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            width: 100%;
+            justify-content: center;
+        }
+
+        /* 3. LAYOUTS */
+
+        /* Title Layout */
+        .title-layout {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            height: 100%;
+            align-items: center;
+            max-width: 900px;
+        }
+
+        /* Section Title Layout */
+        .section-title-layout {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            height: 100%;
+            align-items: center;
+        }
+
+        .section-title-layout h2 {
+            font-size: 64px;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, #00E5FF, #7B2CBF);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            border: none;
+            padding: 0;
+        }
+
+        .section-title-layout hr {
+            width: 80px;
+            height: 4px;
+            background-color: #00E5FF;
+            border: none;
+            margin: 30px 0;
+        }
+
+        /* Lists */
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .bullet-list li {
+            margin-bottom: 15px;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .bullet-list li::before {
+            content: '▹';
+            color: #00E5FF;
+            position: absolute;
+            left: 0;
+            top: 0;
+            font-size: 22px;
+            line-height: 1.6;
+        }
+
+        /* Two Column Layout */
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            width: 100%;
+            align-items: start;
+        }
+
+        /* Tiled Content */
+        .tiled-content {
+            display: flex;
+            gap: 30px;
+            width: 100%;
+            justify-content: space-between;
+            align-items: stretch;
+        }
+
+        .tile {
+            background-color: #151E32;
+            border: 1px solid #2A3A5A;
+            border-radius: 12px;
+            padding: 30px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .tile .icon {
+            font-size: 40px;
+            color: #00E5FF;
+            margin-bottom: 20px;
+        }
+
+        .tile h3 {
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+
+        .tile p {
+            font-size: 18px;
+        }
+
+        /* Two Column Tiled */
+        .two-column.tiled>div {
+            background-color: #151E32;
+            border: 1px solid #2A3A5A;
+            border-radius: 12px;
+            padding: 40px;
+            height: 100%;
+        }
+
+        /* Image Wrapper */
+        .image-wrapper {
+            border-radius: 12px;
+            border: 1px solid #2A3A5A;
+            overflow: hidden;
+            width: 100%;
+            height: 100%;
+            max-height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #0A0F1D;
+        }
+
+        .image-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .image-wrapper.contain img {
+            object-fit: contain;
+            padding: 20px;
+        }
+
+        /* Table Layout */
+        .table-layout {
+            width: 90%;
+            margin: 0 auto;
+            background-color: #151E32;
+            border-radius: 12px;
+            border: 1px solid #2A3A5A;
+            overflow: hidden;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th,
+        td {
+            padding: 20px 25px;
+            border-bottom: 1px solid #2A3A5A;
+        }
+
+        th {
+            background-color: #1A243A;
+            color: #00E5FF;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            font-size: 22px;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .table-summary {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #00E5FF;
+            text-align: center;
+            background: rgba(0, 229, 255, 0.1);
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        /* Q&A Layout */
+        .qa-layout {
+            text-align: center;
+            margin: auto;
+        }
+
+        .qa-layout h2 {
+            font-size: 90px;
+            margin-bottom: 20px;
+            color: #00E5FF;
+            border: none;
+        }
+
+        .qa-layout p {
+            font-size: 30px;
+        }
+
+        /* Helpers */
+        .highlight {
+            color: #00E5FF;
+        }
+
+        /* Navigation Controls */
+        .slide-nav {
+            position: fixed;
+            bottom: 30px;
+            right: 40px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            z-index: 100;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .slide-nav:hover,
+        .slide-nav.edit-visible {
+            opacity: 1;
+        }
+
+        .slide-nav button {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: 1px solid #2A3A5A;
+            background: rgba(21, 30, 50, 0.85);
+            color: #CBD5E1;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            backdrop-filter: blur(8px);
+        }
+
+        .slide-nav button:hover {
+            background: rgba(0, 229, 255, 0.15);
+            border-color: #00E5FF;
+            color: #00E5FF;
+        }
+
+        .slide-nav button:disabled {
+            opacity: 0.3;
+            cursor: default;
+        }
+
+        .slide-nav button.edit-active {
+            background: rgba(0, 229, 255, 0.25);
+            border-color: #00E5FF;
+            color: #00E5FF;
+            box-shadow: 0 0 12px rgba(0, 229, 255, 0.3);
+        }
+
+        .slide-counter {
+            font-size: 14px;
+            color: #94A3B8;
+            font-variant-numeric: tabular-nums;
+            min-width: 50px;
+            text-align: center;
+        }
+
+        /* Table of Contents Panel */
+        .toc-panel {
+            position: fixed;
+            bottom: 90px;
+            right: 40px;
+            width: 320px;
+            max-height: 70vh;
+            background: rgba(11, 19, 43, 0.95);
+            border: 1px solid #2A3A5A;
+            border-radius: 12px;
+            padding: 16px 0;
+            z-index: 101;
+            overflow-y: auto;
+            backdrop-filter: blur(12px);
+            display: none;
+        }
+
+        .toc-panel.open {
+            display: block;
+        }
+
+        .toc-panel .toc-item {
+            padding: 10px 20px;
+            font-size: 14px;
+            color: #94A3B8;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.15s;
+            border-left: 3px solid transparent;
+        }
+
+        .toc-panel .toc-item:hover {
+            background: rgba(0, 229, 255, 0.08);
+            color: #E2E8F0;
+        }
+
+        .toc-panel .toc-item.current {
+            color: #00E5FF;
+            border-left-color: #00E5FF;
+            background: rgba(0, 229, 255, 0.05);
+        }
+
+        .toc-panel .toc-num {
+            font-size: 12px;
+            min-width: 24px;
+            color: #4A5568;
+            font-variant-numeric: tabular-nums;
+        }
+
+        /* Progress bar */
+        .slide-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #00E5FF, #7B2CBF);
+            z-index: 100;
+            transition: width 0.3s ease;
+        }
+
+        .flex-center {
+            align-items: center;
+        }
+
+        /* Bridge Diagram */
+        .bridge-diagram {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            margin-bottom: 50px;
+            position: relative;
+            margin-top: 20px;
+        }
+
+        .bridge-line {
+            position: absolute;
+            top: 50%;
+            left: 5%;
+            right: 5%;
+            height: 6px;
+            background: linear-gradient(90deg, #2A3A5A, #00E5FF, #7B2CBF, #2A3A5A);
+            transform: translateY(-50%);
+            z-index: 0;
+            box-shadow: 0 0 15px rgba(0, 229, 255, 0.4);
+            border-radius: 10px;
+        }
+
+        .bridge-box {
+            background: #151E32;
+            border: 2px solid #2A3A5A;
+            border-radius: 12px;
+            padding: 30px 20px;
+            text-align: center;
+            width: 30%;
+            z-index: 2;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .bridge-box i {
+            font-size: 36px;
+            color: #94A3B8;
+        }
+
+        .bridge-box.active {
+            border-color: #00E5FF;
+            background: #0d1f2f;
+            box-shadow: 0 0 25px rgba(0, 229, 255, 0.15);
+        }
+
+        .bridge-box.active i {
+            color: #00E5FF;
+        }
+
+        .bridge-box h4 {
+            font-size: 24px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Slide 1: Title_Slide -->
+    <div class="slide-container active" id="slide1" contenteditable="false">
+        <div class="title-layout">
+            <h1 contenteditable="false">ATEN 產品推薦 AI Agent</h1>
+            <p class="subtitle" style="margin-top: 20px;" contenteditable="false">從模糊需求到精準方案，加速專案成型的&nbsp;<span style="color: rgb(0, 229, 255); font-weight: 600;" contenteditable="false">AI</span><strong style="color: rgb(0, 229, 255);">業務分身</strong></p>
+        </div>
+    </div>
+
+    <!-- Slide 2: Tiled_Text_With_Icons -->
+    <div class="slide-container" id="slide2" contenteditable="false">
+        <h2 class="slide-title" contenteditable="false">現有 B2B 銷售漏斗與痛點分析</h2>
+        <div class="content-area">
+            <div class="tiled-content">
+                <div class="tile">
+                    <div class="icon"><i class="fa-solid fa-comments"></i></div>
+                    <h3 contenteditable="false">1. 專案成型前 (Pre-project)</h3>
+                    <p contenteditable="false">包含「解決方案提案」到「產品清單」。客戶通常帶著模糊的情境與痛點來詢問，需要花費大量時間溝通、釐清規格，最終產出產品型號清分單。</p>
+                </div>
+                <div class="tile">
+                    <div class="icon"><i class="fa-solid fa-file-invoice-dollar"></i></div>
+                    <h3 contenteditable="false">2. 售前階段 (Pre-sales)</h3>
+                    <p contenteditable="false"><strong>現有痛點：</strong>業務需跨越多個獨立系統比對型號、料號與價格，耗費大量行政時間。(註：此階段之自動化 ANZ
+                        團隊已著手處理)</p>
+                </div>
+                <div class="tile">
+                    <div class="icon"><i class="fa-solid fa-headset"></i></div>
+                    <h3 contenteditable="false">3. 售後階段 (Post-sales)</h3>
+                    <p contenteditable="false">目前已有 FAE AI 正在準備開放至官方網站，專注於提供客戶售後的智能技術支援與問題排除。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 3: Bridge Graphic & Updated Text -->
+    <div class="slide-container" id="slide3" contenteditable="false">
+        <h2 class="slide-title" contenteditable="false">我們的目標：<span contenteditable="false">建構專案成型前的輔助系統</span></h2>
+        <div class="content-area" style="justify-content: flex-start; padding-top: 20px;">
+
+            <!-- 橋樑視覺圖 -->
+            <div class="bridge-diagram">
+                <div class="bridge-line"></div>
+                <div class="bridge-box">
+                    <i class="fa-solid fa-cloud-showers-heavy"></i>
+                    <h4 contenteditable="false">客戶的模糊痛點</h4>
+                </div>
+                <div class="bridge-box active">
+                    <i class="fa-solid fa-robot"></i>
+                    <h4 style="color: #00E5FF;" contenteditable="false">我們的 AI 探索代理<br><span style="font-size: 18px; color: #94A3B8; font-weight: 400;" contenteditable="false">(橋樑)</span></h4>
+                </div>
+                <div class="bridge-box">
+                    <i class="fa-solid fa-server"></i>
+                    <h4 contenteditable="false">售前系統</h4>
+                </div>
+            </div>
+
+            <!-- 說明文字 -->
+            <div style="background: rgba(21, 30, 50, 0.6); padding: 30px; border-radius: 12px; border-left: 4px solid #00E5FF;">
+                <ul class="bullet-list">
+                    <li contenteditable="false"><strong style="color: #00E5FF; font-size: 22px;">系統目標：</strong>
+                        <br>在客戶或業務只有「環境需求」或「痛點」時，透過 AI
+                        快速引導，讓使用者理解並找到最適合的解決方案或產品型號。
+                    </li>
+                    <li style="margin-top: 20px;" contenteditable="false"><strong style="color: #00E5FF; font-size: 22px;">無縫接軌銷售流程：</strong>
+                        <br>我們的系統作為漏斗的最前端，負責將「模糊需求」收斂為「明確的產品清單」，並有機會在未來直接串接 ANZ 的售前系統，正式進入專案報價階段。
+                    </li>
+                    <li style="margin-top: 20px;" contenteditable="false"><strong style="color: #00E5FF; font-size: 22px;">預期效益：</strong>
+                        <br>大幅縮短「需求探索」的週期，提升商機轉換率，同時降低業務的前期溝通成本。
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Slide 4: Section_Title -->
+    <div class="slide-container" id="slide4" contenteditable="false">
+        <div class="section-title-layout">
+            <h2 contenteditable="false">預計產出與成果</h2>
+            <hr>
+            <p class="subtitle" contenteditable="false">Deliverables &amp; Outcomes</p>
+        </div>
+    </div>
+
+    <!-- Slide 5: Two_Column_Tiled_Text -->
+    <div class="slide-container" id="slide5" contenteditable="false">
+        <h2 class="slide-title" contenteditable="false">使用者能得到什麼？ (User Value)</h2>
+        <div class="content-area">
+            <div class="two-column tiled">
+                <div>
+                    <h3 style="color: #94A3B8;" contenteditable="false"><i class="fa-solid fa-comment-dots"></i> Before:
+                        模糊的非結構化資訊</h3>
+                    <ul class="bullet-list" style="margin-top: 20px;">
+                        <li contenteditable="false"><strong>口語痛點：</strong>「我有4台電腦和12個螢幕，需要互相切換有建議的產品?」</li>
+                        <li contenteditable="false"><strong>競品連結：</strong>「這是一台 StarTech 的設備 (附上一長串網址)」</li>
+                        <li contenteditable="false"><strong>模糊情境：</strong>「我要蓋一間會議室，常常會有1~2人或用筆電投影簡報，現場螢幕有兩個...」</li>
+                    </ul>
+                </div>
+                <div style="border-color: #00E5FF; background: rgba(0, 229, 255, 0.03);">
+                    <h3 style="color: #00E5FF;" contenteditable="false"><i class="fa-solid fa-file-contract"></i> After:
+                        標準化報表與規格清單</h3>
+                    <ul class="bullet-list" style="margin-top: 20px;">
+                        <li contenteditable="false">產出符合規格的<strong>產品比較</strong>與建議選擇優缺點。</li>
+                        <li contenteditable="false">自動提煉規格並對標，生成<strong>「跨產品規格比較表」</strong>。</li>
+                        <li contenteditable="false">自動解析語意，精準產出對應的<strong>「系統連線圖」</strong>和精確的<strong>「產品型號清單」</strong>。
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 6: Tiled_Text_With_Icons -->
+    <div class="slide-container" id="slide6" contenteditable="false">
+        <h2 class="slide-title" contenteditable="false">情境一：從模糊需求找到對應產品</h2>
+        <div class="content-area">
+            <div class="tiled-content">
+                <div class="tile">
+                    <div class="icon"><i class="fa-solid fa-brain"></i></div>
+                    <h3 contenteditable="false">1. 意圖解析與規格收斂</h3>
+                    <p contenteditable="false">系統能聽懂口語情境（如「1台PC、2個螢幕」），並自動轉換為實質的硬體參數（至少需 3 In 2 Out）。</p>
+                </div>
+                <div class="tile">
+                    <div class="icon"><i class="fa-solid fa-magnifying-glass"></i></div>
+                    <h3 contenteditable="false">2. 產品資料庫智能檢索</h3>
+                    <p contenteditable="false">將收斂後的參數自動對接產品 API，篩選出完全符合條件的現行產品型號。</p>
+                </div>
+                <div class="tile">
+                    <div class="icon"><i class="fa-solid fa-scale-balanced"></i></div>
+                    <h3 contenteditable="false">3. 動態推薦與優缺點分析</h3>
+                    <p contenteditable="false">產出 2~3 款最合適產品並列出建議（例如：「型號 A 性價比高；型號 B 支援無縫切換但價格較高」），輔助快速決策。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 7: Tiled_Text_With_Icons -->
+    <div class="slide-container" id="slide7" contenteditable="false">
+        <h2 class="slide-title" contenteditable="false">情境二：從競品或硬規格找到精確產品</h2>
+        <div class="content-area">
+            <div class="tiled-content">
+                <div class="tile">
+                    <div class="icon"><i class="fa-solid fa-code"></i></div>
+                    <h3 contenteditable="false">1. 規格轉譯收斂</h3>
+                    <p contenteditable="false">將口語描述轉化為指定的 JSON 格式（如：<code contenteditable="false">{"type": "matrix", "video_in": "15-20"}</code>）。</p>
+                </div>
+                <div class="tile">
+                    <div class="icon"><i class="fa-solid fa-globe"></i></div>
+                    <h3 contenteditable="false">2. 競品網址解析</h3>
+                    <p contenteditable="false">業務貼上競品網址，AI 自動讀取內容並轉換成標準化規格 JSON。</p>
+                </div>
+                <div class="tile">
+                    <div class="icon"><i class="fa-solid fa-database"></i></div>
+                    <h3 contenteditable="false">3. 精準資料檢索</h3>
+                    <p contenteditable="false">將規格 JSON 作為 Query 參數，精確檢索 Builder 產品庫，找出完全符合的自家產品。</p>
+                </div>
+                <div class="tile">
+                    <div class="icon"><i class="fa-solid fa-table-columns"></i></div>
+                    <h3 contenteditable="false">4. 動態生成建議</h3>
+                    <p contenteditable="false">根據規格資料，用 UI 動態生成跨品牌比較表，輔助業務快速掌握差異。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 8: Tiled_Text_With_Icons -->
+    <div class="slide-container" id="slide8" contenteditable="false">
+        <h2 class="slide-title" contenteditable="false">情境三：從模糊需求到具體解決方案</h2>
+        <div class="content-area">
+            <div class="tiled-content">
+                <div class="tile">
+                    <div class="icon"><i class="fa-solid fa-tags"></i></div>
+                    <h3 contenteditable="false">漸進式需求收斂</h3>
+                    <p contenteditable="false">透過對話引導，將「蓋會議室」轉化為精確的方案 Tag (如：[中型空間 10~17人], [需要 in-room PC])。</p>
+                </div>
+                <div class="tile">
+                    <div class="icon"><i class="fa-solid fa-filter"></i></div>
+                    <h3 contenteditable="false">基於 Tag 方案過濾</h3>
+                    <p contenteditable="false">自動串接 Builder 內已結構化的解決方案資料庫，在現有的 2000 多個方案中進行精準篩選。</p>
+                </div>
+                <div class="tile">
+                    <div class="icon"><i class="fa-solid fa-sitemap"></i></div>
+                    <h3 contenteditable="false">智能視覺化輔助</h3>
+                    <p contenteditable="false">產出型號清單後，透過產品 Port Render 將參數轉換為視覺化的連線圖，讓架構一目了然。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 9: Section_Title -->
+    <div class="slide-container" id="slide9" contenteditable="false">
+        <div class="section-title-layout">
+            <h2 contenteditable="false">使用 AI 的技術與流程</h2>
+            <hr>
+            <p class="subtitle" contenteditable="false">AI Tech &amp; Agentic Workflow</p>
+        </div>
+    </div>
+
+    <!-- Slide 10: Two_Column_Tiled_Text -->
+    <div class="slide-container" id="slide10" contenteditable="false">
+        <h2 class="slide-title" contenteditable="false">核心架構：「翻譯官」與「分析師」專業分工</h2>
+        <div class="content-area">
+            <div class="two-column tiled">
+                <div>
+                    <h3 contenteditable="false"><i class="fa-solid fa-language"></i> 翻譯官 (Translator Agent)</h3>
+                    <p style="color: #28de49; margin-bottom: 15px;" contenteditable="false">專注於資料的降噪與結構化</p>
+                    <ul class="bullet-list">
+                        <li contenteditable="false">負責將客戶模糊的口語、冗長的競品網址，精煉成後端看得懂的<strong>「產品篩選規格 JSON」</strong>與「需求總結」。
+                        </li>
+                        <li contenteditable="false">配備「小翻譯員」與專屬工具箱 (如網頁爬取、專屬資訊集) 應對複雜場景。</li>
+                        <li contenteditable="false">確保傳遞給資料庫的查詢條件 100% 精確。</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 contenteditable="false"><i class="fa-solid fa-chart-pie"></i> 分析師 (Analyst Agent)</h3>
+                    <p style="color: #28de49; margin-bottom: 15px;" contenteditable="false">專注於業務價值賦能與溝通</p>
+                    <ul class="bullet-list">
+                        <li contenteditable="false">處理心臟地帶（Data Retrieval）檢索出的 100% 真實資料，<strong>完全排除 AI 幻覺</strong>。
+                        </li>
+                        <li contenteditable="false">將冰冷的檢索資料，結合翻譯官傳遞的需求總結，重新包裝成「客戶聽得懂的語言」。</li>
+                        <li contenteditable="false">強制輸出結構化資料交由前端渲染 UI。</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 11: Tiled_Text_With_Icons -->
+    <div class="slide-container" id="slide11" contenteditable="false">
+        <h2 class="slide-title" contenteditable="false">核心運作管線 (Workflow Pipeline)</h2>
+        <div class="content-area">
+            <div class="tiled-content">
+                <div class="tile">
+                    <div class="icon"><i class="fa-solid fa-arrows-split-up-and-left"></i></div>
+                    <h3 contenteditable="false">1. 統一流程</h3>
+                    <p contenteditable="false">無論是白話文情境還是競品分析，皆採用同一套標準化管線。</p>
+                </div>
+                <div class="tile">
+                    <div class="icon"><i class="fa-solid fa-bullseye"></i></div>
+                    <h3 contenteditable="false">2. 意圖推論約束</h3>
+                    <p contenteditable="false">透過往返溝通進行意圖推論，有效約束 AI 解決空間，確保方向不偏離。</p>
+                </div>
+                <div class="tile">
+                    <div class="icon"><i class="fa-solid fa-toolbox"></i></div>
+                    <h3 contenteditable="false">3. 豐富武器庫</h3>
+                    <p contenteditable="false">翻譯官具備「詢問框架模板」、「網頁爬取」等 Tools。</p>
+                </div>
+                <div class="tile">
+                    <div class="icon"><i class="fa-solid fa-code"></i></div>
+                    <h3 contenteditable="false">4. UI 結構化輸出</h3>
+                    <p contenteditable="false">分析師最終輸出 UI JSON，產出高質感的比較表與解決方案清單。</p>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 30px;">
+                <a href="http://10.3.64.130:5173/project/18724ced-8591-4ec6-b3c9-ab4b67158bec" target="_blank" style="display: inline-flex; align-items: center; gap: 10px; padding: 14px 32px; background: linear-gradient(90deg, #00E5FF, #7B2CBF); color: #FFFFFF; font-family: 'Outfit', sans-serif; font-size: 18px; font-weight: 600; border-radius: 8px; text-decoration: none; transition: opacity 0.2s;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
+                    <i class="fa-solid fa-diagram-project"></i> 前往連線圖
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 12: Table -->
+    <div class="slide-container" id="slide12" contenteditable="false">
+        <h2 class="slide-title" contenteditable="false">預估 Token 成本分析</h2>
+        <div class="content-area">
+            <div class="table-layout">
+                <table>
+                    <thead>
+                        <tr>
+                            <th contenteditable="false">方案等級</th>
+                            <th contenteditable="false">推薦模型</th>
+                            <th contenteditable="false">預估成本 (每千次完整任務)</th>
+                            <th contenteditable="false">適用場景</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td contenteditable="false"><strong>高性價比方案</strong></td>
+                            <td contenteditable="false">GPT-4o mini<br>Claude 3.5 Haiku</td>
+                            <td contenteditable="false">約 $2 ~ $4 USD</td>
+                            <td contenteditable="false">日常規格對標、短文句意理解。<br>適合大規模、高頻率部署。</td>
+                        </tr>
+                        <tr>
+                            <td contenteditable="false"><strong>高階旗艦方案</strong></td>
+                            <td contenteditable="false">GPT-4o<br>Claude 3.5 Sonnet</td>
+                            <td contenteditable="false">約 $40 ~ $60 USD</td>
+                            <td contenteditable="false">複雜競品網頁長文解析、深度邏輯推理。<br>適合關鍵業務節點。</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p class="table-summary" style="font-size: 28px;" contenteditable="false">
+                <strong>📊 PoC 實機測試數據 (使用 GPT-4o mini)：</strong><br>
+                目前 Prototype 運行 12 輪完整對話循環測試 (共發送 77 次 Request)，總花費僅 <strong>0.02 美元 (約台幣 0.6 元)</strong>。<br>
+                實證只要流程設計得當，日常營運成本低，具備大量客戶使用的可行性。
+            </p>
+        </div>
+    </div>
+
+    <!-- Slide 13: Section_Title -->
+    <div class="slide-container" id="slide13" contenteditable="false">
+        <div class="section-title-layout">
+            <h2 contenteditable="false">未來開發藍圖與優化方向</h2>
+            <hr>
+            <p class="subtitle" contenteditable="false">Future Roadmap &amp; Governance</p>
+        </div>
+    </div>
+
+    <!-- Slide 14: Tiled_Text_With_Icons -->
+    <div class="slide-container" id="slide14" contenteditable="false">
+        <h2 class="slide-title" contenteditable="false">產品體驗與工具擴展 (Milestones)</h2>
+        <div class="content-area">
+            <div class="tiled-content">
+                <div class="tile">
+                    <div class="icon"><i class="fa-solid fa-user-check"></i></div>
+                    <h3 contenteditable="false">1. 需求詳細定義</h3>
+                    <p contenteditable="false">深入分析用戶輸入習慣，優化對應的 UI 輸出（如客戶習慣的產品比較表格欄位）。</p>
+                </div>
+                <div class="tile">
+                    <div class="icon"><i class="fa-solid fa-toolbox"></i></div>
+                    <h3 contenteditable="false">2. 完善專屬工具庫</h3>
+                    <p contenteditable="false">盤整可用資源供 AI 調用 (API, Builder)，涵蓋更廣泛的資料檢索，提升精準度並降低 Token。</p>
+                </div>
+                <div class="tile">
+                    <div class="icon"><i class="fa-solid fa-desktop"></i></div>
+                    <h3 contenteditable="false">3. 前端視覺呈現</h3>
+                    <p contenteditable="false">將 AI 產出的 JSON 轉換成高品質的比較表、系統連線圖與業務指導說明。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 15: Image_Right_Text_Left -->
+    <div class="slide-container" id="slide15" contenteditable="false">
+        <h2 class="slide-title" contenteditable="false">基於 Harness Engineering 的 AI 治理與防護</h2>
+        <div class="content-area">
+            <div class="tiled-content">
+                <div class="tile">
+                    <div class="icon"><i class="fa-solid fa-shield-halved"></i></div>
+                    <h3 contenteditable="false">零幻覺與高穩定流程</h3>
+                    <p contenteditable="false">產品檢索絕不依賴 LLM 內部記憶，強制透過 JSON 呼叫 Builder API 查詢，確保資料 100%
+                        真實存在。同時建構防呆與自動重試機制
+                        (Fallback)，即使在多輪對話中仍能產出一致、可靠的數據結果。</p>
+                </div>
+                <div class="tile">
+                    <div class="icon"><i class="fa-solid fa-ban"></i></div>
+                    <h3 contenteditable="false">惡意流量攔截 (Guardrails)</h3>
+                    <p contenteditable="false">導入多層前置防護機制，包含意圖分類器與關鍵字過濾，自動識別並攔截與業務無關的問題、Prompt Injection
+                        攻擊及惡意指令注入，有效防止系統資源濫用與資料外洩風險。</p>
+                </div>
+                <div class="tile">
+                    <div class="icon"><i class="fa-solid fa-coins"></i></div>
+                    <h3 contenteditable="false">Token 最佳化</h3>
+                    <p contenteditable="false">透過精簡系統 Prompt、壓縮上下文歷史、移除冗餘欄位等策略，以最小 Token
+                        量達成最精確輸出。搭配分層模型調度（簡單任務用輕量模型、複雜推理用旗艦模型），大幅降低長期營運成本。</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 16: Section_Title -->
+    <div class="slide-container" id="slide16" contenteditable="false">
+        <div class="section-title-layout">
+            <h2 contenteditable="false">商業效益</h2>
+            <hr>
+            <p class="subtitle" contenteditable="false">Value Proposition</p>
+        </div>
+    </div>
+
+    <!-- Slide 17: Tiled_Text_With_Icons -->
+    <div class="slide-container" id="slide17" contenteditable="false">
+        <h2 class="slide-title" contenteditable="false">各角色的商業賦能與價值總結</h2>
+        <div class="content-area">
+            <div class="tiled-content">
+                <div class="tile" style="border-top: 4px solid #00E5FF;">
+                    <div class="icon"><i class="fa-solid fa-users"></i></div>
+                    <h3 contenteditable="false">終端客戶 / SI</h3>
+                    <ul class="bullet-list" style="margin-top: 15px;">
+                        <li contenteditable="false"><strong>降低門檻：</strong> 無需背誦產品型號，用自然語言說明需求即可找到解法。</li>
+                        <li contenteditable="false"><strong>提高信心：</strong> 視覺化系統連線圖，確認設備配置符合現場佈線需求。</li>
+                    </ul>
+                </div>
+                <div class="tile" style="border-top: 4px solid #7B2CBF;">
+                    <div class="icon"><i class="fa-solid fa-handshake"></i></div>
+                    <h3 contenteditable="false">代理商 / 經銷商</h3>
+                    <ul class="bullet-list" style="margin-top: 15px;">
+                        <li contenteditable="false"><strong>快速規格匹配：</strong> 取得標案規格書後，能極速比對並找到對應的自家型號。</li>
+                        <li contenteditable="false"><strong>提升效率：</strong> 大幅縮短投標前期的準備與規劃時間。</li>
+                    </ul>
+                </div>
+                <div class="tile" style="border-top: 4px solid #00E5FF;">
+                    <div class="icon"><i class="fa-solid fa-user-tie"></i></div>
+                    <h3 contenteditable="false">內部業務 (初階尤佳)</h3>
+                    <ul class="bullet-list" style="margin-top: 15px;">
+                        <li contenteditable="false"><strong>自動化競品分析：</strong> 免去翻閱 Data Sheet，透過連結秒獲對標清單。</li>
+                        <li contenteditable="false"><strong>輔助銷售策略：</strong> 自動產出競爭優勢與限制場域提示，全面提升銷售效能。</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 18: Q&A -->
+    <div class="slide-container" id="slide18" contenteditable="false">
+        <div class="qa-layout">
+            <h2 contenteditable="false">Q &amp; A</h2>
+            <p contenteditable="false">感謝您的聆聽與指教</p>
+        </div>
+    </div>
+
+    <!-- Slide 19: Section_Title -->
+    <div class="slide-container" id="slide19" contenteditable="false">
+        <div class="section-title-layout">
+            <h2 contenteditable="false">附錄 (Appendix)</h2>
+            <hr>
+        </div>
+    </div>
+
+    <!-- Slide 20: Two_Column_Tiled_Text -->
+    <div class="slide-container" id="slide20" contenteditable="false">
+        <h2 class="slide-title" contenteditable="false">戰略定位：為什麼現在先不要做「售前報價 AI」？</h2>
+        <div class="content-area">
+            <div class="two-column tiled">
+                <div style="border-color: #00E5FF;">
+                    <h3 style="color: #00E5FF;" contenteditable="false">生成式 AI 的強項</h3>
+                    <ul class="bullet-list" style="margin-top: 20px;">
+                        <li contenteditable="false">處理高度的<strong>不確定性</strong>與模糊需求。</li>
+                        <li contenteditable="false">強大的語意理解能力，能將口語轉化為系統參數。</li>
+                        <li contenteditable="false">最適合應用於漏斗最前端的「需求探索」階段。</li>
+                    </ul>
+                </div>
+                <div style="border-color: #7B2CBF;">
+                    <h3 style="color: #7B2CBF;" contenteditable="false">傳統自動化系統的強項</h3>
+                    <ul class="bullet-list" style="margin-top: 20px;">
+                        <li contenteditable="false">絕對精準、<strong>零隨機性</strong>。</li>
+                        <li contenteditable="false">售前資料包含機密價格，錯一個料號就無法出貨，不容許任何幻覺 (Hallucination) 風險。</li>
+                        <li contenteditable="false">此極度要求確定性的任務，應由 ANZ 團隊建置嚴謹的後台系統來處理。</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 21: Two_Column_Tiled_Text -->
+    <div class="slide-container" id="slide21" contenteditable="false">
+        <h2 class="slide-title" contenteditable="false">為什麼不直接讓 AI 爬取官網找產品？</h2>
+        <div class="content-area">
+            <div class="two-column tiled">
+                <div>
+                    <h3 style="color: #EF4444;" contenteditable="false"><i class="fa-solid fa-triangle-exclamation"></i>
+                        實測痛點與底層限制</h3>
+                    <ul class="bullet-list" style="margin-top: 20px;">
+                        <li contenteditable="false"><strong>非結構化困境：</strong> HTML 充滿無關雜訊，浪費 Token 且稀釋核心資訊。</li>
+                        <li contenteditable="false"><strong>上下文迷失：</strong> 長文本容易讓 AI 漏看關鍵數值，導致填補常識產生致命幻覺。</li>
+                        <li contenteditable="false"><strong>多模態落差：</strong> B2B 核心拓撲圖與 I/O 圖形資訊遺失，AI 無法理解全貌。</li>
+                        <li contenteditable="false"><strong>行銷詞彙干擾：</strong> 難以穩定提煉「限制條件」或必定搭配的關聯性。</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 style="color: #22C55E;" contenteditable="false"><i class="fa-solid fa-lightbulb"></i> 建議有效作法
+                    </h3>
+                    <ul class="bullet-list" style="margin-top: 20px;">
+                        <li contenteditable="false"><strong>API 規格篩選：</strong> 建立參數化網址機制，讓 AI直接傳遞參數抓取乾淨過濾結果。<br><code style="font-size: 14px; color: #94A3B8; background: rgba(0,229,255,0.08); padding: 4px 8px; border-radius: 4px; margin-top: 6px; display: inline-block;" contenteditable="false">GET /api/products?type=matrix&amp;video_in=15-20&amp;video_out=8&amp;resolution=4K</code>
+                        </li>
+                        <li contenteditable="false"><strong>多代理協作：</strong> 分層檢索，先判定大類別，再由特定 Agent 爬取子目錄。</li>
+                        <li contenteditable="false"><strong>重整資料結構：</strong> 根本解法，從後端將規格與行銷分離，提供純淨 API (Builder 的 proAV
+                            已完成)。</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 22: Table -->
+    <div class="slide-container" id="slide22" contenteditable="false">
+        <h2 class="slide-title" contenteditable="false">為何選擇 Agent + Function Calling？</h2>
+        <div class="content-area">
+            <div class="table-layout">
+                <table>
+                    <thead>
+                        <tr>
+                            <th contenteditable="false">比較維度</th>
+                            <th contenteditable="false">微調 (LoRA) 訓練專屬模型</th>
+                            <th contenteditable="false">單純 RAG (文件檢索)</th>
+                            <th style="color:#FFF; background:#00E5FF;" contenteditable="false">Agentic RAG + Function
+                                Calling (本作法)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td contenteditable="false"><strong>前期開發成本</strong></td>
+                            <td contenteditable="false"><span style="color:#EF4444;" contenteditable="false">🔴
+                                    極高</span> (需備妥萬筆資料與算力)</td>
+                            <td contenteditable="false"><span style="color:#F59E0B;" contenteditable="false">🟡
+                                    中等</span> (需建置向量資料庫)</td>
+                            <td style="background: rgba(0,229,255,0.05);" contenteditable="false"><span style="color:#F59E0B;" contenteditable="false">🟡 中等</span> (需設計
+                                API 與定義 Prompt)</td>
+                        </tr>
+                        <tr>
+                            <td contenteditable="false"><strong>後續維護成本</strong></td>
+                            <td contenteditable="false"><span style="color:#EF4444;" contenteditable="false">🔴
+                                    極高</span> (規格變更需重訓)</td>
+                            <td contenteditable="false"><span style="color:#F59E0B;" contenteditable="false">🟡
+                                    中等</span> (需持續更新向量庫)</td>
+                            <td style="background: rgba(0,229,255,0.05);" contenteditable="false"><span style="color:#22C55E;" contenteditable="false">🟢 極低</span> (AI
+                                端無須修改，無縫接軌)</td>
+                        </tr>
+                        <tr>
+                            <td contenteditable="false"><strong>運行 Token 成本</strong></td>
+                            <td contenteditable="false"><span style="color:#22C55E;" contenteditable="false">🟢
+                                    較低</span> (Prompt 較短)</td>
+                            <td contenteditable="false"><span style="color:#EF4444;" contenteditable="false">🔴
+                                    偏高</span> (需塞入大量 Context)</td>
+                            <td style="background: rgba(0,229,255,0.05);" contenteditable="false"><span style="color:#F59E0B;" contenteditable="false">🟡 中等</span> (僅依賴
+                                JSON 結果)</td>
+                        </tr>
+                        <tr>
+                            <td contenteditable="false"><strong>資料準確度</strong></td>
+                            <td contenteditable="false"><span style="color:#EF4444;" contenteditable="false">🔴 低</span>
+                                (料號易生幻覺)</td>
+                            <td contenteditable="false"><span style="color:#F59E0B;" contenteditable="false">🟡
+                                    中等</span> (精確數值易錯)</td>
+                            <td style="background: rgba(0,229,255,0.05);" contenteditable="false"><span style="color:#22C55E;" contenteditable="false">🟢 極高 100%</span>
+                                (直接調用真實 API 資料)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 23: FAQ Appendix -->
+    <div class="slide-container" id="slide23" contenteditable="false">
+        <h2 class="slide-title" contenteditable="false">常見問題預備 (FAQ)</h2>
+        <div class="content-area">
+            <div class="tiled-content">
+                <div class="tile">
+                    <div class="icon"><i class="fa-solid fa-language"></i></div>
+                    <h3 contenteditable="false">多語系支援</h3>
+                    <p contenteditable="false">LLM 本身已具備多語言理解與生成能力，系統可直接支援英文、日文等語系客戶。產品資料庫的對應語系欄位，即可切換輸出語言。</p>
+                </div>
+                <div class="tile">
+                    <div class="icon"><i class="fa-solid fa-chart-line"></i></div>
+                    <h3 contenteditable="false">準確率與 KPI 衡量</h3>
+                    <p contenteditable="false">透過「規格命中率」與「使用者採納率」兩個維度量化追蹤。未來有機會串接 Salesforce 的 Pardot，讓用戶直接送出產品
+                        List，以驗證規格命中率（從詢問次數轉換為
+                        Leads）及使用者採納率（最終成案比例）。</p>
+                </div>
+                <div class="tile">
+                    <div class="icon"><i class="fa-solid fa-graduation-cap"></i></div>
+                    <h3 contenteditable="false">推薦結果的品質提升</h3>
+                    <p contenteditable="false">目前 AI 僅依據規格參數進行匹配，但前線 Sales 擁有場域經驗與搭配知識（如特定產業偏好、常見組合）。未來需將這些隱性知識結構化為
+                        Skill，讓 AI
+                        具備同等判斷力，從「規格符合」進化到「情境最適推薦」。以及在試配度分數也更加準確，例如:port 比需求更高規的會有更高的比重加權</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Progress Bar -->
+    <div class="slide-progress" id="progressBar" style="width: 4.34783%;"></div>
+
+    <!-- Table of Contents -->
+    <div class="toc-panel" id="tocPanel">
+        <div class="toc-item"><span class="toc-num">1</span>AI 產品與解決方案探索代理</div>
+        <div class="toc-item"><span class="toc-num">2</span>現有 B2B 銷售漏斗與痛點分析</div>
+        <div class="toc-item"><span class="toc-num">3</span>我們的目標：建構專案成型前的輔助系統</div>
+        <div class="toc-item"><span class="toc-num">4</span>預計產出與成果</div>
+        <div class="toc-item"><span class="toc-num">5</span>使用者能得到什麼？ (User Value)</div>
+        <div class="toc-item"><span class="toc-num">6</span>情境一：從模糊需求找到對應產品</div>
+        <div class="toc-item"><span class="toc-num">7</span>情境二：從競品或硬規格找到精確產品</div>
+        <div class="toc-item current"><span class="toc-num">8</span>情境三：從模糊需求到具體解決方案</div>
+        <div class="toc-item"><span class="toc-num">9</span>使用 AI 的技術與流程</div>
+        <div class="toc-item"><span class="toc-num">10</span>核心架構：「翻譯官」與「分析師」專業分工</div>
+        <div class="toc-item"><span class="toc-num">11</span>核心運作管線 (Workflow Pipeline)</div>
+        <div class="toc-item"><span class="toc-num">12</span>預估 Token 成本分析</div>
+        <div class="toc-item"><span class="toc-num">13</span>未來開發藍圖與優化方向</div>
+        <div class="toc-item"><span class="toc-num">14</span>產品體驗與工具擴展 (Milestones)</div>
+        <div class="toc-item"><span class="toc-num">15</span>基於 Harness Engineering 的 AI 治理與防護</div>
+        <div class="toc-item"><span class="toc-num">16</span>商業效益</div>
+        <div class="toc-item"><span class="toc-num">17</span>各角色的商業賦能與價值總結</div>
+        <div class="toc-item"><span class="toc-num">18</span>Q &amp; A</div>
+        <div class="toc-item"><span class="toc-num">19</span>附錄 (Appendix)</div>
+        <div class="toc-item"><span class="toc-num">20</span>戰略定位：為什麼現在先不要做「售前報價 AI」？</div>
+        <div class="toc-item"><span class="toc-num">21</span>為什麼不直接讓 AI 爬取官網找產品？</div>
+        <div class="toc-item"><span class="toc-num">22</span>為何選擇 Agent + Function Calling？</div>
+        <div class="toc-item"><span class="toc-num">23</span>常見問題預備 (FAQ)</div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="slide-nav edit-visible">
+        <button id="btnExport" onclick="exportHTML()" title="匯出 HTML" style=""><i class="fa-solid fa-download"></i></button>
+        <button id="btnSave" onclick="saveSlides()" title="儲存" style="" class=""><i class="fa-solid fa-floppy-disk"></i></button>
+        <button id="btnReset" onclick="resetSlides()" title="還原" style=""><i class="fa-solid fa-rotate-left"></i></button>
+        <button id="btnEdit" onclick="toggleEditMode()" title="編輯模式" class="edit-active"><i class="fa-solid fa-pen"></i></button>
+        <button id="btnPrev" onclick="changeSlide(-1)" disabled=""><i class="fa-solid fa-chevron-left"></i></button>
+        <span class="slide-counter" id="slideCounter">1 / 23</span>
+        <button id="btnNext" onclick="changeSlide(1)"><i class="fa-solid fa-chevron-right"></i></button>
+        <button id="btnToc" onclick="toggleToc()" title="目錄" class=""><i class="fa-solid fa-list"></i></button>
+    </div>
+
+    <script>
+        const PPT_VERSION = '1.0.0';
+        const slides = document.querySelectorAll('.slide-container');
+        const totalSlides = slides.length;
+        let currentSlide = 0;
+        let editMode = false;
+
+        // Build TOC
+        function buildToc() {
+            const tocPanel = document.getElementById('tocPanel');
+            tocPanel.innerHTML = '';
+            slides.forEach((slide, i) => {
+                const title = slide.querySelector('h1, h2');
+                const text = title ? title.textContent.trim() : 'Slide ' + (i + 1);
+                const item = document.createElement('div');
+                item.className = 'toc-item' + (i === currentSlide ? ' current' : '');
+                item.innerHTML = '<span class="toc-num">' + (i + 1) + '</span>' + text;
+                item.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    currentSlide = i;
+                    showSlide(currentSlide);
+                    tocPanel.classList.remove('open');
+                    document.getElementById('btnToc').classList.remove('edit-active');
+                });
+                tocPanel.appendChild(item);
+            });
+        }
+
+        function toggleToc() {
+            const tocPanel = document.getElementById('tocPanel');
+            const btn = document.getElementById('btnToc');
+            const isOpen = tocPanel.classList.toggle('open');
+            btn.classList.toggle('edit-active', isOpen);
+            if (isOpen) buildToc();
+        }
+
+        function toggleEditMode() {
+            editMode = !editMode;
+            const btn = document.getElementById('btnEdit');
+            const nav = document.querySelector('.slide-nav');
+            btn.classList.toggle('edit-active', editMode);
+            nav.classList.toggle('edit-visible', editMode);
+            document.getElementById('btnSave').style.display = editMode ? '' : 'none';
+            document.getElementById('btnExport').style.display = editMode ? '' : 'none';
+            document.getElementById('btnReset').style.display = editMode ? '' : 'none';
+            slides.forEach(s => {
+                s.contentEditable = editMode ? 'true' : 'false';
+                s.querySelectorAll('h1, h2, h3, h4, p, li, td, th, span, code').forEach(el => {
+                    el.contentEditable = editMode ? 'true' : 'false';
+                });
+            });
+        }
+
+        function saveSlides() {
+            const payload = {
+                version: PPT_VERSION,
+                time: new Date().toLocaleString('zh-TW'),
+                data: Array.from(slides).map(s => s.innerHTML)
+            };
+            localStorage.setItem('ppt-slides', JSON.stringify(payload));
+            console.log('[PPT 儲存]', payload);
+            const btn = document.getElementById('btnSave');
+            btn.classList.add('edit-active');
+            setTimeout(() => btn.classList.remove('edit-active'), 800);
+        }
+
+        function loadSlides() {
+            const saved = localStorage.getItem('ppt-slides');
+            if (!saved) return;
+            const payload = JSON.parse(saved);
+
+            // Version mismatch detection
+            if (payload.version && payload.version !== PPT_VERSION) {
+                const useLocal = confirm(
+                    '偵測到原始檔案已更新（版本 ' + PPT_VERSION + '）\n' +
+                    '但瀏覽器中有舊版編輯資料（版本 ' + payload.version + '，儲存於 ' + (payload.time || '未知時間') + '）\n\n' +
+                    '按「確定」→ 載入瀏覽器編輯資料\n' +
+                    '按「取消」→ 使用最新原始檔案（編輯資料將清除）'
+                );
+                if (!useLocal) {
+                    localStorage.removeItem('ppt-slides');
+                    return;
+                }
+            }
+
+            const data = payload.data || payload;
+            data.forEach((html, i) => {
+                if (slides[i]) slides[i].innerHTML = html;
+            });
+        }
+
+        function resetSlides() {
+            localStorage.removeItem('ppt-slides');
+            location.reload();
+        }
+
+        function exportHTML() {
+            // Temporarily disable contentEditable to get clean HTML
+            slides.forEach(s => {
+                s.contentEditable = 'false';
+                s.querySelectorAll('h1, h2, h3, h4, p, li, td, th, span, code').forEach(el => {
+                    el.contentEditable = 'false';
+                });
+                s.classList.remove('active');
+            });
+            // Keep first slide active in exported file
+            slides[0].classList.add('active');
+
+            const html = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+
+            // Restore current state
+            slides[0].classList.remove('active');
+            slides[currentSlide].classList.add('active');
+            slides.forEach(s => {
+                s.contentEditable = 'true';
+                s.querySelectorAll('h1, h2, h3, h4, p, li, td, th, span, code').forEach(el => {
+                    el.contentEditable = 'true';
+                });
+            });
+
+            const blob = new Blob([html], { type: 'text/html' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = 'ppt.html';
+            a.click();
+            URL.revokeObjectURL(a.href);
+        }
+
+        function showSlide(index) {
+            slides.forEach(s => s.classList.remove('active'));
+            slides[index].classList.add('active');
+            document.getElementById('slideCounter').textContent = (index + 1) + ' / ' + totalSlides;
+            document.getElementById('btnPrev').disabled = index === 0;
+            document.getElementById('btnNext').disabled = index === totalSlides - 1;
+            document.getElementById('progressBar').style.width = ((index + 1) / totalSlides * 100) + '%';
+            history.replaceState(null, '', '#' + slides[index].id);
+            // Close TOC on slide change
+            document.getElementById('tocPanel').classList.remove('open');
+            document.getElementById('btnToc').classList.remove('edit-active');
+        }
+
+        function changeSlide(dir) {
+            const next = currentSlide + dir;
+            if (next >= 0 && next < totalSlides) {
+                currentSlide = next;
+                showSlide(currentSlide);
+            }
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (editMode) return;
+            if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ' || e.key === 'PageDown') {
+                e.preventDefault();
+                changeSlide(1);
+            } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp' || e.key === 'PageUp') {
+                e.preventDefault();
+                changeSlide(-1);
+            } else if (e.key === 'Home') {
+                e.preventDefault();
+                currentSlide = 0;
+                showSlide(currentSlide);
+            } else if (e.key === 'End') {
+                e.preventDefault();
+                currentSlide = totalSlides - 1;
+                showSlide(currentSlide);
+            }
+        });
+
+        // Click to advance (click left 30% = prev, right 70% = next)
+        document.addEventListener('click', (e) => {
+            if (editMode) return;
+            if (e.target.closest('.slide-nav')) return;
+            if (e.target.closest('.toc-panel')) return;
+            if (e.target.closest('a')) return;
+            const x = e.clientX / window.innerWidth;
+            if (x < 0.3) changeSlide(-1);
+            else changeSlide(1);
+        });
+
+        // Initialize from hash or first slide
+        function initFromHash() {
+            const hash = window.location.hash.slice(1);
+            if (hash) {
+                const idx = Array.from(slides).findIndex(s => s.id === hash);
+                if (idx !== -1) { currentSlide = idx; }
+            }
+            showSlide(currentSlide);
+        }
+        window.addEventListener('hashchange', () => {
+            const hash = window.location.hash.slice(1);
+            const idx = Array.from(slides).findIndex(s => s.id === hash);
+            if (idx !== -1) { currentSlide = idx; showSlide(currentSlide); }
+        });
+        loadSlides();
+        initFromHash();
+    </script>
+
+    <!-- Code injected by live-server -->
+    <script>
+        // <![CDATA[  <-- For SVG support
+        if ('WebSocket' in window) {
+            (function () {
+                function refreshCSS() {
+                    var sheets = [].slice.call(document.getElementsByTagName("link"));
+                    var head = document.getElementsByTagName("head")[0];
+                    for (var i = 0; i < sheets.length; ++i) {
+                        var elem = sheets[i];
+                        var parent = elem.parentElement || head;
+                        parent.removeChild(elem);
+                        var rel = elem.rel;
+                        if (elem.href && typeof rel != "string" || rel.length == 0 || rel.toLowerCase() == "stylesheet") {
+                            var url = elem.href.replace(/(&|\?)_cacheOverride=\d+/, '');
+                            elem.href = url + (url.indexOf('?') >= 0 ? '&' : '?') + '_cacheOverride=' + (new Date().valueOf());
+                        }
+                        parent.appendChild(elem);
+                    }
+                }
+                var protocol = window.location.protocol === 'http:' ? 'ws://' : 'wss://';
+                var address = protocol + window.location.host + window.location.pathname + '/ws';
+                var socket = new WebSocket(address);
+                socket.onmessage = function (msg) {
+                    if (msg.data == 'reload') window.location.reload();
+                    else if (msg.data == 'refreshcss') refreshCSS();
+                };
+                if (sessionStorage && !sessionStorage.getItem('IsThisFirstTime_Log_From_LiveServer')) {
+                    console.log('Live reload enabled.');
+                    sessionStorage.setItem('IsThisFirstTime_Log_From_LiveServer', true);
+                }
+            })();
+        }
+        else {
+            console.error('Upgrade your browser. This Browser is NOT supported WebSocket for Live-Reloading.');
+        }
+        // ]]>
+    </script>
+
+
+<!-- Code injected by live-server -->
+<script>
+	// <![CDATA[  <-- For SVG support
+	if ('WebSocket' in window) {
+		(function () {
+			function refreshCSS() {
+				var sheets = [].slice.call(document.getElementsByTagName("link"));
+				var head = document.getElementsByTagName("head")[0];
+				for (var i = 0; i < sheets.length; ++i) {
+					var elem = sheets[i];
+					var parent = elem.parentElement || head;
+					parent.removeChild(elem);
+					var rel = elem.rel;
+					if (elem.href && typeof rel != "string" || rel.length == 0 || rel.toLowerCase() == "stylesheet") {
+						var url = elem.href.replace(/(&|\?)_cacheOverride=\d+/, '');
+						elem.href = url + (url.indexOf('?') >= 0 ? '&' : '?') + '_cacheOverride=' + (new Date().valueOf());
+					}
+					parent.appendChild(elem);
+				}
+			}
+			var protocol = window.location.protocol === 'http:' ? 'ws://' : 'wss://';
+			var address = protocol + window.location.host + window.location.pathname + '/ws';
+			var socket = new WebSocket(address);
+			socket.onmessage = function (msg) {
+				if (msg.data == 'reload') window.location.reload();
+				else if (msg.data == 'refreshcss') refreshCSS();
+			};
+			if (sessionStorage && !sessionStorage.getItem('IsThisFirstTime_Log_From_LiveServer')) {
+				console.log('Live reload enabled.');
+				sessionStorage.setItem('IsThisFirstTime_Log_From_LiveServer', true);
+			}
+		})();
+	}
+	else {
+		console.error('Upgrade your browser. This Browser is NOT supported WebSocket for Live-Reloading.');
+	}
+	// ]]>
+</script>
+
+
+</body></html>

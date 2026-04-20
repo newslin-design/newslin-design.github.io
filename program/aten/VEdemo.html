@@ -401,10 +401,52 @@
         /* 右側欄 */
         .sidebar-right {
             width: 320px;
+            min-width: 40px;
             background: #16213e;
             padding: 20px;
             overflow-y: auto;
             border-left: 1px solid #0f3460;
+            transition: width 0.3s ease, padding 0.3s ease;
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .sidebar-right.collapsed {
+            width: 40px;
+            padding: 20px 0;
+            overflow: hidden;
+        }
+
+        .sidebar-right.collapsed > *:not(.sidebar-toggle) {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .sidebar-toggle {
+            position: absolute;
+            top: 10px;
+            left: -16px;
+            width: 32px;
+            height: 32px;
+            background: #0f3460;
+            border: 1px solid #00d4ff;
+            border-radius: 50%;
+            color: #00d4ff;
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar-toggle:hover {
+            background: #1e5a8e;
+        }
+
+        .sidebar-right.collapsed .sidebar-toggle {
+            transform: rotate(180deg);
         }
 
         .sidebar-right h2 {
@@ -575,7 +617,8 @@
         </div>
 
         <!-- 右側欄:屬性編輯與 JSON -->
-        <div class="sidebar-right">
+        <div class="sidebar-right" id="sidebarRight">
+            <button class="sidebar-toggle" onclick="toggleSidebar()" title="收合/展開側邊欄">◀</button>
             <h2>⚙️ 螢幕屬性</h2>
             <div id="propertiesPanel">
                 <p style="color: #888; text-align: center; padding: 40px 20px;">請選擇一個螢幕以編輯其屬性</p>
@@ -599,6 +642,12 @@
     </div>
 
     <script>
+        // 側邊欄收合/展開
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebarRight');
+            sidebar.classList.toggle('collapsed');
+        }
+
         // 全域狀態
         let screens = [];
         let selectedScreen = null;
