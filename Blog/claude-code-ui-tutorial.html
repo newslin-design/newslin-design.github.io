@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, maximum-scale=1.5">
+	<title>Claude Code UI 入門教學:從對話框到能改檔案的 AI 助手</title>
+	<script>workName = "blog_claude_code_ui"</script>
+	<script>var basePath = "../portfolio/"; var pageBasePath = "../portfolio/";</script>
+	<link rel="stylesheet" href="../portfolio/style/reset.css">
+	<link rel="stylesheet" href="../portfolio/style/style_layout.css">
+	<link rel="stylesheet" href="../portfolio/style/style.css">
+	<link rel="stylesheet" href="../portfolio/style/article.css">
+	<link rel="stylesheet" href="style/style_blog.css">
+	<link rel="icon" type="image/png" href="../portfolio/web_icon.png" />
+	<style>
+		/* ========== 共用 ========== */
+		.section-label {
+			display: flex;
+			align-items: baseline;
+			gap: 12px;
+			margin-top: 48px;
+			margin-bottom: 8px;
+			border-top: 1px solid #e6ddcc;
+			padding-top: 32px;
+		}
+
+		.section-label .roman {
+			font-family: 'Georgia', serif;
+			font-style: italic;
+			font-size: 2rem;
+			color: #a89773;
+		}
+
+		.section-label .tag {
+			font-size: 12px;
+			letter-spacing: 0.2em;
+			color: #a89773;
+			text-transform: uppercase;
+		}
+
+		.illustration {
+			margin: 36px 0;
+			padding: 36px 22px;
+			background: #f6f2ea;
+			border-radius: 16px;
+			box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+		}
+
+		.illustration h4 {
+			margin-bottom: 24px;
+			font-family: sans-serif;
+			color: #333;
+			text-align: center;
+			letter-spacing: 0.05em;
+		}
+
+		.illustration .caption {
+			margin-top: 18px;
+			font-size: 14px;
+			color: #8a7e68;
+			font-style: italic;
+			text-align: center;
+		}
+
+		.quote-block {
+			margin: 40px 0;
+			padding: 28px 26px;
+			border: 1px solid #d9cfb9;
+			border-radius: 8px;
+			background: #faf6ee;
+			font-size: 1.08rem;
+			color: #3a2f1f;
+			line-height: 1.8;
+		}
+
+		.quote-block .para-mark {
+			font-family: 'Georgia', serif;
+			font-style: italic;
+			font-size: 2rem;
+			color: #c46a3a;
+			display: block;
+			margin-bottom: 8px;
+		}
+
+		.quote-block em {
+			color: #c46a3a;
+			font-style: italic;
+			font-weight: bold;
+		}
+
+		/* ========== 對話框 vs Claude Code 對比 ========== */
+		.compare-pair {
+			display: grid;
+			grid-template-columns: 1fr 1fr;
+			gap: 20px;
+			width: 100%;
+			max-width: 720px;
+			margin: 0 auto;
+		}
+
+		.compare-card {
+			background: #fff;
+			border: 1px solid #e6ddcc;
+			border-radius: 12px;
+			padding: 22px 20px;
+			display: flex;
+			flex-direction: column;
+			gap: 10px;
+		}
+
+		.compare-card .badge {
+			display: inline-block;
+			font-family: 'Georgia', serif;
+			font-style: italic;
+			font-size: 13px;
+			color: #a89773;
+			letter-spacing: 0.1em;
+		}
+
+		.compare-card h5 {
+			margin: 0;
+			font-size: 16px;
+			color: #3a2f1f;
+		}
+
+		.compare-card ul.feat {
+			list-style: none;
+			padding: 0;
+			margin: 0;
+			font-size: 13px;
+			color: #3a2f1f;
+		}
+
+		.compare-card ul.feat li {
+			padding: 6px 0;
+			border-bottom: 1px dashed #ece4d2;
+			line-height: 1.5;
+		}
+
+		.compare-card ul.feat li:last-child {
+			border-bottom: none;
+		}
+
+		.compare-card.chat ul.feat li::before {
+			content: "·";
+			color: #a89773;
+			margin-right: 8px;
+			font-weight: bold;
+		}
+
+		.compare-card.cc ul.feat li::before {
+			content: "✓";
+			color: #4a7a5a;
+			margin-right: 8px;
+			font-weight: bold;
+		}
+
+		/* ========== 終端機 / UI 模擬視窗 ========== */
+		.mock-window {
+			width: 100%;
+			max-width: 720px;
+			border-radius: 10px;
+			overflow: hidden;
+			box-shadow: 0 12px 28px rgba(0, 0, 0, 0.18);
+			background: #1e1e1e;
+			color: #d4d4d4;
+			font-family: 'Consolas', 'Menlo', monospace;
+			font-size: 13px;
+			line-height: 1.6;
+		}
+
+		.mock-window .titlebar {
+			display: flex;
+			align-items: center;
+			gap: 6px;
+			background: #2d2d2d;
+			padding: 8px 14px;
+			border-bottom: 1px solid #111;
+		}
+
+		.mock-window .titlebar .dot {
+			width: 12px;
+			height: 12px;
+			border-radius: 50%;
+		}
+
+		.mock-window .titlebar .dot.r {
+			background: #ff5f57;
+		}
+
+		.mock-window .titlebar .dot.y {
+			background: #febc2e;
+		}
+
+		.mock-window .titlebar .dot.g {
+			background: #28c840;
+		}
+
+		.mock-window .titlebar .name {
+			margin-left: 12px;
+			color: #aaa;
+			font-size: 12px;
+		}
+
+		.mock-window .body {
+			padding: 16px 18px;
+			white-space: pre-wrap;
+		}
+
+		.mock-window .prompt {
+			color: #6cb6ff;
+		}
+
+		.mock-window .user {
+			color: #ffd866;
+		}
+
+		.mock-window .ai {
+			color: #a8d989;
+		}
+
+		.mock-window .dim {
+			color: #888;
+		}
+
+		.mock-window .accent {
+			color: #c46a3a;
+		}
+
+		/* ========== 流程圖 ========== */
+		.flow-row {
+			display: grid;
+			grid-template-columns: repeat(4, 1fr);
+			gap: 10px;
+			width: 100%;
+			max-width: 680px;
+		}
+
+		.flow-step {
+			background: #fff;
+			border: 1.5px solid #d9cfb9;
+			border-radius: 10px;
+			padding: 14px 10px;
+			text-align: center;
+			display: flex;
+			flex-direction: column;
+			gap: 6px;
+		}
+
+		.flow-step .num {
+			font-family: 'Georgia', serif;
+			font-style: italic;
+			font-size: 12px;
+			color: #a89773;
+		}
+
+		.flow-step .ttl {
+			font-size: 14px;
+			font-weight: bold;
+			color: #3a2f1f;
+		}
+
+		.flow-step .why {
+			font-size: 11px;
+			color: #7a6f58;
+			line-height: 1.4;
+		}
+
+		/* ========== 安裝清單 ========== */
+		.install-grid {
+			display: grid;
+			grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+			gap: 14px;
+			margin: 20px 0;
+		}
+
+		.install-card {
+			background: #fff;
+			border: 1px solid #e6ddcc;
+			border-radius: 10px;
+			padding: 16px 16px;
+			display: flex;
+			flex-direction: column;
+			gap: 6px;
+		}
+
+		.install-card .name {
+			font-size: 15px;
+			font-weight: bold;
+			color: #3a2f1f;
+		}
+
+		.install-card .why {
+			font-size: 12px;
+			color: #7a6f58;
+			line-height: 1.55;
+		}
+
+		.install-card .req {
+			margin-top: 4px;
+			display: inline-block;
+			font-size: 11px;
+			padding: 2px 8px;
+			border-radius: 999px;
+			align-self: flex-start;
+		}
+
+		.install-card .req.must {
+			background: #fde9dd;
+			color: #8a3f1a;
+		}
+
+		.install-card .req.opt {
+			background: #e6efe0;
+			color: #2d4a36;
+		}
+
+		/* ========== 指令表 ========== */
+		.cmd-list {
+			width: 100%;
+			border-collapse: collapse;
+			margin: 20px 0;
+			font-size: 14px;
+		}
+
+		.cmd-list th,
+		.cmd-list td {
+			text-align: left;
+			padding: 10px 12px;
+			border-bottom: 1px solid #ece4d2;
+		}
+
+		.cmd-list th {
+			background: #f6f2ea;
+			color: #6b5030;
+			font-weight: 600;
+			font-size: 12px;
+			letter-spacing: 0.05em;
+		}
+
+		.cmd-list code {
+			background: #f4ece0;
+			color: #c46a3a;
+			padding: 2px 6px;
+			border-radius: 4px;
+			font-family: 'Consolas', monospace;
+		}
+
+		/* ========== Skill 範圍對比 ========== */
+		.scope-pair {
+			display: grid;
+			grid-template-columns: 1fr 1fr;
+			gap: 16px;
+			width: 100%;
+			max-width: 680px;
+		}
+
+		.scope-card {
+			padding: 18px 18px;
+			border-radius: 12px;
+			border: 1px dashed;
+			display: flex;
+			flex-direction: column;
+			gap: 8px;
+		}
+
+		.scope-card.global {
+			background: #f1e6d4;
+			border-color: #c9a878;
+			color: #6b5030;
+		}
+
+		.scope-card.project {
+			background: #e6efe0;
+			border-color: #7a9b82;
+			color: #2d4a36;
+		}
+
+		.scope-card .ttl {
+			font-weight: bold;
+			font-size: 15px;
+		}
+
+		.scope-card .path {
+			font-family: 'Consolas', monospace;
+			font-size: 12px;
+			background: rgba(255, 255, 255, 0.6);
+			padding: 4px 8px;
+			border-radius: 4px;
+		}
+
+		.scope-card .desc {
+			font-size: 13px;
+			line-height: 1.55;
+		}
+
+		/* ========== 安全提醒卡 ========== */
+		.warn-card {
+			margin: 24px 0;
+			padding: 18px 20px;
+			background: #fef4e8;
+			border-left: 4px solid #c46a3a;
+			border-radius: 6px;
+		}
+
+		.warn-card .ttl {
+			font-weight: bold;
+			color: #8a3f1a;
+			margin-bottom: 6px;
+			font-size: 15px;
+		}
+
+		.warn-card p {
+			margin: 4px 0 !important;
+			font-size: 14px !important;
+			line-height: 1.65 !important;
+			color: #5a3a1a;
+		}
+
+		/* ========== Worktree 視覺 ========== */
+		.tree-wrap {
+			width: 100%;
+			max-width: 600px;
+		}
+
+		.tree-svg {
+			width: 100%;
+			height: auto;
+			display: block;
+		}
+
+		@media (max-width: 768px) {
+			.compare-pair,
+			.scope-pair {
+				grid-template-columns: 1fr;
+			}
+
+			.flow-row {
+				grid-template-columns: repeat(2, 1fr);
+			}
+		}
+	</style>
+</head>
+
+<body>
+	<header></header>
+	<div class="container mt-xl">
+		<h1>Claude Code UI 入門教學:從對話框到能改檔案的 AI 助手</h1>
+		<div class="blog-article-tags" style="display: flex; gap: 8px; margin-top: 12px; margin-bottom: 24px;">
+			<span
+				style="padding: 4px 12px; background: #f0f0f0; border-radius: 4px; font-size: 14px; color: #555; border: 1px solid #e0e0e0;">開發</span>
+			<span
+				style="padding: 4px 12px; background: #f0f0f0; border-radius: 4px; font-size: 14px; color: #555; border: 1px solid #e0e0e0;">教學</span>
+			<span
+				style="padding: 4px 12px; background: #f0f0f0; border-radius: 4px; font-size: 14px; color: #555; border: 1px solid #e0e0e0;">AI</span>
+		</div>
+		<div class="row blog_header ">
+			<div class="col">
+				<p class="date">2026 / 04 / 24</p>
+			</div>
+			<div class="col">
+				<div class="iconbox">
+					<a href="#comments"><img src="image/icon/comment-next-outline.svg" alt=""></a>
+					<img src="image/icon/output.svg" alt="">
+					<div class="divider"></div>
+					<img src="image/icon/extra-life.svg" alt="">
+					<img src="image/icon/twitter.svg" alt="">
+					<img src="image/icon/facebook.svg" alt="">
+				</div>
+			</div>
+		</div>
+
+		<div class="article">
+
+			<p>
+				用過 ChatGPT、Claude 對話框的人都會有一種感覺——它很聰明,但每次都要重新貼一次背景、貼一次檔案、再把它生出來的東西複製回專案。
+				幾輪下來,Token 燒完了,專案還是亂的。
+			</p>
+
+			<p>
+				<strong>Claude Code</strong> 是 Anthropic 推出的 AI 編碼助手,跟對話框最大的不同是:
+				它能<strong>直接讀寫你電腦上的檔案、執行指令、控制瀏覽器</strong>,而且能記住整個專案的脈絡。
+				原本 CLI 終端機的版本對非工程師有點門檻,所以官方後來陸續釋出了桌面 UI 版本與 IDE 整合(VS Code、JetBrains)。
+			</p>
+
+			<p>
+				這篇是寫給<strong>從對話框轉過來的人</strong>的入門教學——
+				不會去細談每個指令的所有參數,而是把「為什麼要換」「環境怎麼裝」「UI 長怎樣」「最常用的幾個指令」「Skill 跟 Memory 怎麼開始用」串成一條可以照著做的線。
+			</p>
+
+			<p class="highlight">
+				# <a href="#a01">為什麼從對話框換到 Claude Code</a><br>
+				# <a href="#a02">環境準備:該裝哪些東西、為什麼要裝</a><br>
+				# <a href="#a03">Claude Code UI 的版面導覽</a><br>
+				# <a href="#a04">第一次用:/init、Plan、Memory</a><br>
+				# <a href="#a05">Skill:把流程打包,全局與專案的差異</a><br>
+				# <a href="#a06">Worktree:同一個專案開多個分身</a><br>
+				# <a href="#a07">安全性:授權、權限、不要把鑰匙交出去</a>
+			</p>
+
+			<hr class="lg">
+
+			<div class="section-label" id="a01">
+				<div class="roman">i.</div>
+				<div class="tag">WHY · Chatbox vs Claude Code</div>
+			</div>
+			<h2>為什麼從對話框換到 Claude Code</h2>
+
+			<p>
+				最直接的差別只有一句話:對話框只能「聊」,Claude Code 可以「動手」。
+				但這個「動手」帶出來的所有副作用,才是真正改變使用體驗的地方。
+			</p>
+
+			<div class="illustration">
+				<h4>同一件事,兩種做法</h4>
+				<div class="compare-pair">
+					<div class="compare-card chat">
+						<span class="badge">CHATBOX</span>
+						<h5>對話框 / 網頁版聊天</h5>
+						<ul class="feat">
+							<li>每次都要把檔案貼進去</li>
+							<li>很容易超過上下文上限</li>
+							<li>產出要自己手動貼回專案</li>
+							<li>沒有專案記憶,下次重新講</li>
+							<li>無法執行任何程式</li>
+							<li>無法檢查實際結果</li>
+						</ul>
+					</div>
+					<div class="compare-card cc">
+						<span class="badge">CLAUDE CODE</span>
+						<h5>能直接動手的 AI 助手</h5>
+						<ul class="feat">
+							<li>自己掃資料夾、找需要的檔案</li>
+							<li>只讀必要的部分,Token 更省</li>
+							<li>直接修改、新增、刪除檔案</li>
+							<li>記住專案脈絡(.claude / Memory)</li>
+							<li>能執行指令、跑 dev server</li>
+							<li>能控制瀏覽器,直接驗證結果</li>
+						</ul>
+					</div>
+				</div>
+				<p class="caption">對話框的瓶頸是「上下文」與「來回貼貼」;Claude Code 直接把這兩件事做掉了</p>
+			</div>
+
+			<h3>1. 直接改檔案 = 省 Token、省力氣</h3>
+			<p>
+				對話框版本,一個專案稍微大一點,你可能要把十幾個檔案貼進去,還很容易超過上下文。
+				Claude Code 用的是<strong>「按需讀取」</strong>:它只在需要時打開那一份檔案、讀必要的幾行,改完就直接寫回去。
+				整個流程從「複製→貼上→再複製」變成「告訴它要做什麼,它做完讓你 review」。
+			</p>
+
+			<h3>2. 聰明檢索:整個專案都看得到</h3>
+			<p>
+				只要你的檔案結構有規範(命名統一、圖片/影片/音樂分資料夾),它就能很準地找到對的位置。
+				「把所有用到舊 Logo 的 HTML 全改掉」「把首頁那個按鈕的文字同步到所有頁」——這種需要跨檔案的修改,在對話框做不出來,在 Claude Code 是日常。
+			</p>
+
+			<h3>3. 能執行程式、能開瀏覽器</h3>
+			<p>
+				它可以自己跑 <code>npm install</code>、<code>npm run dev</code>、生成檔案、做投影片、開 server,
+				甚至打開瀏覽器,點按鈕、填表單、截圖回報結果——也就是說,它能<strong>自己驗證做出來的東西到底對不對</strong>。
+			</p>
+
+			<h3>4. 有記憶、可累積</h3>
+			<p>
+				可以建立 <code>.claude/</code> 資料夾或 <code>CLAUDE.md</code> 來告訴 Claude「這個專案是什麼、怎麼運作」,
+				也能用 Memory 持續累積使用者偏好,不必每次重新解釋。
+				甚至可以把常用流程打包成 <strong>Skill</strong>,下次一個指令就跑完。
+			</p>
+
+			<div class="quote-block">
+				<span class="para-mark">¶</span>
+				從對話框換到 Claude Code,最大的轉變不是 AI 變聰明了,而是<em>它從「給你建議」變成「替你執行」</em>——
+				你的角色也從「執行者」變成「review 與決策者」。
+			</div>
+
+			<hr>
+
+			<div class="section-label" id="a02">
+				<div class="roman">ii.</div>
+				<div class="tag">SETUP · Environment</div>
+			</div>
+			<h2>環境準備:該裝哪些東西、為什麼要裝</h2>
+
+			<p>
+				Claude Code UI 雖然把終端機那一段藏起來了,但它底層還是會呼叫一些工具。
+				下面這幾個是<strong>幾乎一定會用到的</strong>,搭配它們之後,Claude 才能順暢地跑指令、版控、開預覽。
+			</p>
+
+			<div class="install-grid">
+				<div class="install-card">
+					<span class="req must">必裝</span>
+					<div class="name">Git / GitHub Desktop</div>
+					<div class="why">
+						Claude 改檔案時,你需要看 diff、能 revert。Git 是它的安全網。
+						加上 Worktree 功能(後面會講)也要靠 Git。
+					</div>
+				</div>
+				<div class="install-card">
+					<span class="req must">必裝</span>
+					<div class="name">Node.js</div>
+					<div class="why">
+						Claude Code CLI 本身、大多數前端 dev server、許多 MCP 套件都要 Node.js。
+						建議裝 LTS 版本就好。
+					</div>
+				</div>
+				<div class="install-card">
+					<span class="req opt">建議</span>
+					<div class="name">Python</div>
+					<div class="why">
+						寫腳本、跑資料處理、產生 PPT/PDF 時會需要。
+						不裝也能用,但很多 Skill 會假設你有。
+					</div>
+				</div>
+				<div class="install-card">
+					<span class="req must">推薦</span>
+					<div class="name">VS Code</div>
+					<div class="why">
+						有官方的 Claude Code 整合擴充,可以邊看 diff 邊跟 Claude 對話,比純 UI 順很多。
+					</div>
+				</div>
+			</div>
+
+			<h3>VS Code 推薦的幾個延伸套件</h3>
+			<p>
+				如果你跟我一樣常常請 Claude 寫 HTML、寫筆記、畫流程圖,這幾個延伸套件會讓「邊寫邊預覽」這件事變得很自然:
+			</p>
+			<ul>
+				<li><strong>Markdown Preview Enhanced</strong>——側邊即時預覽 Markdown,支援數學、流程圖、PDF 匯出。</li>
+				<li><strong>Markdown Preview Mermaid Support</strong>——讓 Markdown 內的 <code>mermaid</code> 區塊直接渲染成圖。Claude 很常用 Mermaid 來畫架構圖。</li>
+				<li><strong>Live Server / Live Preview</strong>——HTML/CSS 改完即時看到結果,不用每次重新整理。</li>
+			</ul>
+
+			<div class="illustration">
+				<h4>環境拼圖:每塊各自負責什麼</h4>
+				<div class="flow-row">
+					<div class="flow-step">
+						<div class="num">01</div>
+						<div class="ttl">Git</div>
+						<div class="why">版控 + Worktree 的基礎</div>
+					</div>
+					<div class="flow-step">
+						<div class="num">02</div>
+						<div class="ttl">Node.js</div>
+						<div class="why">Claude Code 本體與大多套件</div>
+					</div>
+					<div class="flow-step">
+						<div class="num">03</div>
+						<div class="ttl">VS Code</div>
+						<div class="why">看 diff、即時預覽、邊改邊聊</div>
+					</div>
+					<div class="flow-step">
+						<div class="num">04</div>
+						<div class="ttl">Claude Code</div>
+						<div class="why">能讀寫檔案的 AI 助手本體</div>
+					</div>
+				</div>
+				<p class="caption">環境裝完後,接下來才會把專案丟進去開始用</p>
+			</div>
+
+			<hr>
+
+			<div class="section-label" id="a03">
+				<div class="roman">iii.</div>
+				<div class="tag">UI · Layout Tour</div>
+			</div>
+			<h2>Claude Code UI 的版面導覽</h2>
+
+			<p>
+				打開之後第一眼看到的,大致是「左邊專案/工作區、中間對話、底下輸入、右邊或上方狀態列」這樣的結構。
+				跟 ChatGPT 那種純對話介面比起來,多了非常多<strong>跟「檔案」、「執行」、「狀態」</strong>有關的元素。
+			</p>
+
+			<div class="illustration">
+				<h4>主要介面區塊示意</h4>
+				<div class="mock-window">
+					<div class="titlebar">
+						<div class="dot r"></div>
+						<div class="dot y"></div>
+						<div class="dot g"></div>
+						<div class="name">Claude Code — newslin-design.github.io</div>
+					</div>
+					<div class="body"><span class="dim">▎ 工作區</span>  <span class="accent">newslin-design.github.io (main)</span>
+<span class="dim">▎ 模型</span>    Claude Opus 4.7   <span class="dim">·  權限模式: Plan</span>
+
+<span class="prompt">›</span> <span class="user">幫我新增一篇 blog,主題是 Claude Code UI 教學</span>
+
+<span class="ai">● 開始分析需求...</span>
+<span class="dim">  ↳ 讀取 Blog/linear-iteration-vs-divergent-convergent.html (參考寫法)</span>
+<span class="dim">  ↳ 讀取 index.html (找到列表插入點)</span>
+<span class="dim">  ↳ 計畫:</span>
+<span class="dim">     1. 建立 Blog/claude-code-ui-tutorial.html</span>
+<span class="dim">     2. 在 index.html 加入卡片</span>
+
+<span class="accent">[ Approve ]   [ Edit Plan ]   [ Cancel ]</span></div>
+				</div>
+				<p class="caption">UI 版會把 CLI 的純文字流程包成可點擊的卡片與按鈕,Plan 模式特別友善</p>
+			</div>
+
+			<h3>幾個容易忽略但很重要的小區塊</h3>
+			<ul>
+				<li><strong>左上的工作區切換</strong>——可以快速切到不同專案,各自帶著不同的 <code>CLAUDE.md</code> 與 Memory。</li>
+				<li><strong>模型切換</strong>——預設 Opus,需要省成本可以切到 Sonnet 或 Haiku;簡單任務用 Haiku 快很多。</li>
+				<li><strong>權限模式(Mode)</strong>——「Plan / Auto Edit / Auto Run」三檔差很多,後面安全性會講。</li>
+				<li><strong>Token 用量</strong>——隨時注意,當前對話超過 80% 時就該考慮 <code>/compact</code> 或開新對話。</li>
+			</ul>
+
+			<hr>
+
+			<div class="section-label" id="a04">
+				<div class="roman">iv.</div>
+				<div class="tag">FIRST RUN · Init / Plan / Memory</div>
+			</div>
+			<h2>第一次用:/init、Plan、Memory</h2>
+
+			<p>
+				開好專案的第一件事,不是叫它寫東西,而是讓它<strong>先認識專案</strong>。
+				這件事做完之後,接下來所有對話的精準度都會差非常多。
+			</p>
+
+			<h3>Step 1 · /init 讓 Claude 替你寫 CLAUDE.md</h3>
+			<p>
+				在輸入框打 <code>/init</code>,Claude 會自己掃過整個專案,然後產出一份 <code>CLAUDE.md</code>——
+				裡面會描述「這個專案的用途、技術棧、檔案結構慣例、常用指令」等。
+				這份檔案會在每次對話開頭自動載入,等於是專案的常駐簡報。
+			</p>
+
+			<div class="illustration">
+				<h4>/init 後產出的 CLAUDE.md 大致長什麼樣</h4>
+				<div class="mock-window">
+					<div class="titlebar">
+						<div class="dot r"></div>
+						<div class="dot y"></div>
+						<div class="dot g"></div>
+						<div class="name">CLAUDE.md</div>
+					</div>
+					<div class="body"><span class="accent"># newslin-design.github.io</span>
+
+<span class="ai">## Project Overview</span>
+個人作品集 + Blog 靜態網站,使用純 HTML/CSS/JS,
+透過 GitHub Pages 部署。
+
+<span class="ai">## Structure</span>
+- portfolio/    主作品集頁面與共用樣式 / JS
+- Blog/         所有 blog 文章,共用 portfolio 的樣式
+- image/, music/  靜態資源
+
+<span class="ai">## Conventions</span>
+- 文章命名:kebab-case.html
+- 圖片放 Blog/image/ 下對應主題資料夾
+- Header / Footer 由 portfolio/js/app.js 注入
+
+<span class="ai">## Commands</span>
+- 預覽:用 VS Code Live Server 開 index.html</div>
+				</div>
+				<p class="caption">這份檔案可以再手動補強——例如加上「我習慣的語氣」「不要做 X」</p>
+			</div>
+
+			<h3>Step 2 · 善用 Plan 模式</h3>
+			<p>
+				按 <code>Shift + Tab</code> 切換到 <strong>Plan 模式</strong>(或從右上角 mode 切換)。
+				這個模式最棒的是——Claude 不會直接動檔案,而是<strong>先把要做的步驟列給你看</strong>,你按 Approve 它才往下走。
+				對於不熟內容的請求,先讓它列計畫,99% 的災難都能在這裡攔截。
+			</p>
+
+			<h3>Step 3 · Memory:讓它記住「你」</h3>
+			<p>
+				Memory 跟 CLAUDE.md 的差別是:CLAUDE.md 是「描述專案」,Memory 是「描述使用者本人」。
+				比如「我喜歡終端用 bash 不要 PowerShell」「回覆請用繁體中文」「commit message 寫在 50 字內」——
+				這些跨專案都成立的偏好,丟到 Memory 後,任何專案開新對話它都會帶上。
+			</p>
+
+			<table class="cmd-list">
+				<thead>
+					<tr>
+						<th>指令</th>
+						<th>用途</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td><code>/init</code></td>
+						<td>掃描專案,產生 CLAUDE.md</td>
+					</tr>
+					<tr>
+						<td><code>/skills</code></td>
+						<td>列出目前可用的 Skill</td>
+					</tr>
+					<tr>
+						<td><code>/context</code></td>
+						<td>查看當前對話佔用了多少 Token</td>
+					</tr>
+					<tr>
+						<td><code>/compact</code></td>
+						<td>壓縮對話歷史,釋放上下文空間</td>
+					</tr>
+					<tr>
+						<td><code>/clear</code></td>
+						<td>清空當前對話,但保留 Memory 與 CLAUDE.md</td>
+					</tr>
+					<tr>
+						<td><code>/memory</code></td>
+						<td>查看 / 編輯使用者層級的 Memory</td>
+					</tr>
+					<tr>
+						<td><code>Shift + Tab</code></td>
+						<td>切換 Plan / Auto Edit / Auto Run 三種權限模式</td>
+					</tr>
+				</tbody>
+			</table>
+
+			<hr>
+
+			<div class="section-label" id="a05">
+				<div class="roman">v.</div>
+				<div class="tag">SKILL · Package your workflow</div>
+			</div>
+			<h2>Skill:把流程打包,全局與專案的差異</h2>
+
+			<p>
+				Skill 是 Claude Code 一個非常好用的概念——
+				把你<strong>常做的固定流程</strong>(例如「QA 流程」「跑 lighthouse 然後產報告」「依範本生封面圖」)寫成一個 Skill,
+				下次只要打 <code>/某個-skill</code>,它就會照著預先寫好的指令完整跑一遍。
+			</p>
+
+			<h3>全局 Skill vs 專案 Skill</h3>
+			<p>
+				Skill 可以裝在兩個層級。差別不在功能,而在<strong>「適用範圍」</strong>:
+			</p>
+
+			<div class="illustration">
+				<h4>兩種 Skill 範圍的比較</h4>
+				<div class="scope-pair">
+					<div class="scope-card global">
+						<div class="ttl">全局 Skill</div>
+						<div class="path">~/.claude/skills/</div>
+						<div class="desc">
+							所有專案都看得到。適合放<strong>跨專案通用</strong>的流程,
+							例如「畫流程圖」「整理 commit message」「轉 PPT」。
+						</div>
+					</div>
+					<div class="scope-card project">
+						<div class="ttl">專案 Skill</div>
+						<div class="path">.claude/skills/</div>
+						<div class="desc">
+							只在這個專案的對話中出現。適合放<strong>專案特定</strong>的流程,
+							例如「依本站 blog 樣板新增文章」「跑這個專案的 build & deploy」。
+						</div>
+					</div>
+				</div>
+				<p class="caption">原則:會在多個專案重用 → 放全局;只跟這個專案有關 → 放專案內</p>
+			</div>
+
+			<h3>實際安裝一個 Skill:Nano Banana 出圖</h3>
+			<p>
+				<strong>Nano Banana</strong> 是 Google 最近推出的圖像生成模型(Gemini 2.5 Flash Image),
+				社群有人把它包成 Skill,讓 Claude 在對話中直接生圖。安裝步驟大致是:
+			</p>
+			<ol>
+				<li>到 <a href="https://aistudio.google.com/" target="_blank" rel="noopener">Google AI Studio</a> 申請 API Key。</li>
+				<li>把 Skill 檔案放到 <code>~/.claude/skills/nano-banana/</code>(全局)或專案內。</li>
+				<li>在 <code>.env</code> 或 Claude Code 設定中加入 <code>GEMINI_API_KEY</code>。</li>
+				<li>重新打開 UI,輸入 <code>/skills</code> 確認它出現在清單。</li>
+				<li>之後就能直接說「用 nano-banana 幫我生封面圖,主題是...」。</li>
+			</ol>
+
+			<div class="warn-card">
+				<div class="ttl">⚠ API Key 是錢,也是你的身份</div>
+				<p>API Key 本質上就是付費憑證。請放在 <code>.env</code>、加到 <code>.gitignore</code>,絕對不要 commit 上去。
+					有些 Skill 會請求把 Key 寫進設定檔——確認來源可信再裝。</p>
+			</div>
+
+			<hr>
+
+			<div class="section-label" id="a06">
+				<div class="roman">vi.</div>
+				<div class="tag">WORKTREE · Parallel branches</div>
+			</div>
+			<h2>Worktree:同一個專案開多個分身</h2>
+
+			<p>
+				Worktree 是 Git 內建但很少人用的功能,Claude Code 把它包成第一公民——意思是,
+				你可以讓 Claude 在<strong>同一個專案的不同分支</strong>上同時工作,而且彼此檔案完全隔離。
+			</p>
+
+			<div class="illustration">
+				<h4>單一工作目錄 vs Worktree 分身</h4>
+				<div class="tree-wrap">
+					<svg class="tree-svg" viewBox="0 0 580 260" xmlns="http://www.w3.org/2000/svg">
+						<!-- 主目錄 -->
+						<rect x="220" y="20" width="140" height="50" rx="8" fill="#a8b5a0" stroke="#3a3a2f" stroke-width="1.2" />
+						<text x="290" y="42" text-anchor="middle" font-family="Georgia, serif" font-size="14" font-weight="bold" fill="#2a2a1f">主專案</text>
+						<text x="290" y="58" text-anchor="middle" font-size="11" fill="#2a2a1f">main / 你日常工作的地方</text>
+
+						<!-- 分支線 -->
+						<line x1="290" y1="70" x2="100" y2="140" stroke="#3a3a2f" stroke-width="1.5" />
+						<line x1="290" y1="70" x2="290" y2="140" stroke="#3a3a2f" stroke-width="1.5" />
+						<line x1="290" y1="70" x2="480" y2="140" stroke="#3a3a2f" stroke-width="1.5" />
+
+						<!-- 分身 1 -->
+						<rect x="30" y="140" width="140" height="50" rx="8" fill="#ede0c8" stroke="#3a2f1f" stroke-width="1" />
+						<text x="100" y="162" text-anchor="middle" font-family="Georgia, serif" font-size="13" font-weight="bold" fill="#3a2f1f">Worktree A</text>
+						<text x="100" y="178" text-anchor="middle" font-size="10" fill="#6b5030">feat/blog-tutorial</text>
+
+						<!-- 分身 2 -->
+						<rect x="220" y="140" width="140" height="50" rx="8" fill="#ede0c8" stroke="#3a2f1f" stroke-width="1" />
+						<text x="290" y="162" text-anchor="middle" font-family="Georgia, serif" font-size="13" font-weight="bold" fill="#3a2f1f">Worktree B</text>
+						<text x="290" y="178" text-anchor="middle" font-size="10" fill="#6b5030">fix/header-nav</text>
+
+						<!-- 分身 3 -->
+						<rect x="410" y="140" width="140" height="50" rx="8" fill="#ede0c8" stroke="#3a2f1f" stroke-width="1" />
+						<text x="480" y="162" text-anchor="middle" font-family="Georgia, serif" font-size="13" font-weight="bold" fill="#3a2f1f">Worktree C</text>
+						<text x="480" y="178" text-anchor="middle" font-size="10" fill="#6b5030">refactor/css</text>
+
+						<!-- Claude 標示 -->
+						<text x="100" y="215" text-anchor="middle" font-size="11" fill="#c46a3a" font-weight="bold">🤖 Claude #1</text>
+						<text x="290" y="215" text-anchor="middle" font-size="11" fill="#c46a3a" font-weight="bold">🤖 Claude #2</text>
+						<text x="480" y="215" text-anchor="middle" font-size="11" fill="#c46a3a" font-weight="bold">🤖 Claude #3</text>
+
+						<text x="290" y="245" text-anchor="middle" font-size="11" fill="#7a6f58" font-style="italic">三個分身在獨立資料夾,不會互相覆蓋</text>
+					</svg>
+				</div>
+				<p class="caption">用 Worktree 並行多個任務,比起反覆 git checkout 安全也更不容易亂</p>
+			</div>
+
+			<h3>什麼時候特別好用?</h3>
+			<ul>
+				<li><strong>長任務跑 background</strong>——讓 A worktree 重構,你在主目錄繼續做別的。</li>
+				<li><strong>怕 AI 改壞的實驗</strong>——開個 worktree 讓它放手嘗試,不影響主分支。</li>
+				<li><strong>同時 review 兩個 PR 分支</strong>——不用每次 stash + checkout。</li>
+			</ul>
+
+			<hr>
+
+			<div class="section-label" id="a07">
+				<div class="roman">vii.</div>
+				<div class="tag">SAFETY · Permissions</div>
+			</div>
+			<h2>安全性:授權、權限、不要把鑰匙交出去</h2>
+
+			<p>
+				Claude Code 比對話框強的根源是「能動手」,但這也是它最危險的地方。
+				一個不假思索的 <code>Auto Run</code>,可能讓它跑了一個刪檔的腳本,或把含 Token 的檔案 commit 上去。
+				下面這幾條我自己列為基本紀律:
+			</p>
+
+			<div class="warn-card">
+				<div class="ttl">① 預設用 Plan 模式,不要一上來就 Auto Run</div>
+				<p>剛開始用、或是不熟的請求,讓它先列計畫。一旦你看出它「誤解了你的意圖」,Plan 模式幾乎是唯一能無痛攔截的時機。</p>
+			</div>
+
+			<div class="warn-card">
+				<div class="ttl">② 任何破壞性操作都應該手動確認</div>
+				<p><code>rm</code>、<code>git reset --hard</code>、<code>force push</code>、刪除分支、改 CI 設定——這幾類應該永遠保留人為決定權。</p>
+			</div>
+
+			<div class="warn-card">
+				<div class="ttl">③ 把秘密放對地方</div>
+				<p>API Key、密碼、Token 一律放 <code>.env</code> 並加到 <code>.gitignore</code>。
+					不要直接寫在 <code>CLAUDE.md</code> 或 Skill 設定裡——那些檔案會被讀進對話、也可能被 commit。</p>
+			</div>
+
+			<div class="warn-card">
+				<div class="ttl">④ 安裝來源不明的 Skill / MCP 要小心</div>
+				<p>Skill 與 MCP server 本質上就是<strong>會被 Claude 執行的程式碼</strong>。
+					裝之前看一下原始碼、確認來源可信,跟裝 npm 套件一樣的標準。</p>
+			</div>
+
+			<hr class="lg">
+
+			<h2>結語:從「指令」到「協作」</h2>
+			<p>
+				從對話框轉到 Claude Code 的過程,其實有點像當年從 Photoshop 轉到 Figma——
+				一開始覺得只是換工具,用一陣子才發現,真正改變的是「你跟產出之間的關係」。
+				對話框的時代,你像在請一個顧問;Claude Code 的時代,你像在帶一個剛報到的工程師——
+				既要給他清楚的脈絡(CLAUDE.md / Memory),也要為他設好欄杆(Plan 模式 / Worktree),
+				但作為交換,你能把自己的手從鍵盤上抬起來,專注在<strong>方向</strong>跟<strong>判斷</strong>。
+			</p>
+
+			<p>
+				這篇是入門教學,把環境跟 UI 跑通之後,接下來真正有趣的是——
+				怎麼設計自己的 Skill、怎麼寫好 CLAUDE.md、怎麼讓 Memory 替你累積品味。
+				那些就留到後面幾篇再展開吧。
+			</p>
+
+			<p style="text-align: right; color: #8a7e68; margin-top: 48px; font-style: italic;">
+				—— 寫在剛把這個專案完整接給 Claude Code 之後
+			</p>
+		</div>
+	</div>
+
+
+	<!-- Giscus Comments -->
+	<div id="comments" class="container mt-xl"
+		style="padding-bottom: 60px; padding-top: 40px; border-top: 1px solid #eee;">
+		<script src="https://giscus.app/client.js" data-repo="newslin-design/newslin-design.github.io"
+			data-repo-id="R_kgDOOXA3ww" data-category="Announcements" data-category-id="DIC_kwDOOXA3w84C5AiY"
+			data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0"
+			data-input-position="top" data-theme="light" data-lang="zh-TW" crossorigin="anonymous" async>
+			</script>
+	</div>
+	<footer>
+	</footer>
+
+</body>
+<script src="../portfolio/js/app.js"></script>
+
+</html>
