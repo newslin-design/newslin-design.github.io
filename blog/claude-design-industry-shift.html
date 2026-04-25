@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, maximum-scale=1.5">
+	<title>Claude Design 之後:設計產業正在發生什麼</title>
+	<script>workName = "blog_claude_design_industry"</script>
+	<script>var basePath = "../portfolio/"; var pageBasePath = "../portfolio/";</script>
+	<link rel="stylesheet" href="../portfolio/style/reset.css">
+	<link rel="stylesheet" href="../portfolio/style/style_layout.css">
+	<link rel="stylesheet" href="../portfolio/style/style.css">
+	<link rel="stylesheet" href="../portfolio/style/article.css">
+	<link rel="stylesheet" href="style/style_blog.css">
+	<link rel="icon" type="image/png" href="../portfolio/web_icon.png" />
+	<style>
+		.thinking-illustration {
+			margin: 40px 0;
+			padding: 48px 24px;
+			background: #f6f2ea;
+			border-radius: 16px;
+			box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			overflow: hidden;
+		}
+
+		.thinking-illustration h4 {
+			margin-bottom: 28px;
+			font-family: sans-serif;
+			color: #333;
+			text-align: center;
+			letter-spacing: 0.05em;
+		}
+
+		.thinking-illustration .caption {
+			margin-top: 20px;
+			font-size: 14px;
+			color: #8a7e68;
+			font-style: italic;
+			text-align: center;
+		}
+
+		.section-label {
+			display: flex;
+			align-items: baseline;
+			gap: 12px;
+			margin-top: 48px;
+			margin-bottom: 8px;
+			border-top: 1px solid #e6ddcc;
+			padding-top: 32px;
+		}
+
+		.section-label .roman {
+			font-family: 'Georgia', serif;
+			font-style: italic;
+			font-size: 2rem;
+			color: #a89773;
+		}
+
+		.section-label .tag {
+			font-size: 12px;
+			letter-spacing: 0.2em;
+			color: #a89773;
+			text-transform: uppercase;
+		}
+
+		.quote-block {
+			margin: 48px 0;
+			padding: 32px 28px;
+			border: 1px solid #d9cfb9;
+			border-radius: 8px;
+			background: #faf6ee;
+			font-size: 1.1rem;
+			color: #3a2f1f;
+			line-height: 1.8;
+		}
+
+		.quote-block .para-mark {
+			font-family: 'Georgia', serif;
+			font-style: italic;
+			font-size: 2rem;
+			color: #c46a3a;
+			display: block;
+			margin-bottom: 12px;
+		}
+
+		.quote-block em {
+			color: #c46a3a;
+			font-style: italic;
+			font-weight: bold;
+		}
+
+		/* 典範轉移時間軸 */
+		.paradigm-timeline {
+			width: 100%;
+			max-width: 640px;
+			margin: 0 auto;
+		}
+
+		.paradigm-row {
+			display: grid;
+			grid-template-columns: 80px 1fr;
+			align-items: center;
+			gap: 16px;
+			padding: 14px 0;
+			border-bottom: 1px dashed #d9cfb9;
+		}
+
+		.paradigm-row:last-child {
+			border-bottom: none;
+		}
+
+		.paradigm-year {
+			font-family: 'Georgia', serif;
+			font-style: italic;
+			color: #a89773;
+			font-size: 14px;
+			text-align: right;
+		}
+
+		.paradigm-bar {
+			display: flex;
+			align-items: center;
+			gap: 12px;
+		}
+
+		.paradigm-dot {
+			width: 14px;
+			height: 14px;
+			border-radius: 50%;
+			background: #a8b5a0;
+			flex-shrink: 0;
+			box-shadow: 0 0 0 4px #f6f2ea;
+		}
+
+		.paradigm-dot.highlight {
+			background: #c46a3a;
+		}
+
+		.paradigm-text strong {
+			display: block;
+			color: #3a2f1f;
+			font-size: 15px;
+		}
+
+		.paradigm-text span {
+			font-size: 13px;
+			color: #7a6f58;
+		}
+
+		/* 業界數據卡 */
+		.stat-grid {
+			display: grid;
+			grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+			gap: 16px;
+			margin: 24px 0 16px;
+		}
+
+		.stat-card {
+			background: #fff;
+			border: 1px solid #e6ddcc;
+			border-radius: 12px;
+			padding: 20px 18px;
+			display: flex;
+			flex-direction: column;
+			gap: 6px;
+		}
+
+		.stat-number {
+			font-family: 'Georgia', serif;
+			font-size: 2.2rem;
+			font-weight: bold;
+			color: #c46a3a;
+			line-height: 1.1;
+		}
+
+		.stat-number.neg {
+			color: #a73b3b;
+		}
+
+		.stat-number.pos {
+			color: #4a7a5a;
+		}
+
+		.stat-title {
+			font-size: 13px;
+			color: #3a2f1f;
+			font-weight: bold;
+		}
+
+		.stat-desc {
+			font-size: 12px;
+			color: #7a6f58;
+			line-height: 1.5;
+		}
+	</style>
+</head>
+
+<body>
+	<header></header>
+	<div class="container mt-xl">
+		<h1>Claude Design 之後:設計產業正在發生什麼</h1>
+		<div class="blog-article-tags" style="display: flex; gap: 8px; margin-top: 12px; margin-bottom: 24px;">
+			<span
+				style="padding: 4px 12px; background: #f0f0f0; border-radius: 4px; font-size: 14px; color: #555; border: 1px solid #e0e0e0;">設計</span>
+			<span
+				style="padding: 4px 12px; background: #f0f0f0; border-radius: 4px; font-size: 14px; color: #555; border: 1px solid #e0e0e0;">產業</span>
+		</div>
+		<div class="row blog_header ">
+			<div class="col">
+				<p class="date">2026 / 04 / 25</p>
+			</div>
+			<div class="col">
+				<div class="iconbox">
+					<a href="#comments"><img src="image/icon/comment-next-outline.svg" alt=""></a>
+					<img src="image/icon/output.svg" alt="">
+					<div class="divider"></div>
+					<img src="image/icon/extra-life.svg" alt="">
+					<img src="image/icon/twitter.svg" alt="">
+					<img src="image/icon/facebook.svg" alt="">
+				</div>
+			</div>
+		</div>
+		<div class="article">
+
+			<p>
+				前一篇〈<a href="linear-iteration-vs-divergent-convergent.html">線性反覆 vs
+					發散收斂</a>〉主要在談思考工具本身——把判斷力當成是 AI 時代真正稀缺的東西。但在那篇之外,還有一塊背景值得獨立拉出來看:Claude Design
+				發表之後,設計產業確實在發生一些結構性的變化。
+			</p>
+
+			<p>
+				這篇是把近期看到的兩條線索整理在一起:一條是社團貼文裡比較有系統的觀察,一條是公開的產業數據。兩條線索看下來,大致都指向同一個方向:<strong>中間消失,兩端拉開</strong>。
+			</p>
+
+			<hr class="lg">
+
+			<div class="section-label">
+				<div class="roman">i.</div>
+				<div class="tag">觀察 · From the Community</div>
+			</div>
+			<h2>一篇社團貼文看下來的幾個點</h2>
+
+			<p>
+				FB 社團「<strong>Denny's Digital Design 數位設計與商業應用</strong>」裡有一篇〈Claude Design 對設計師的真正衝擊〉,是近期看到切入角度比較完整的一篇——
+				沒有停在「會不會失業」的二元問題,而是拆成<em>心態、產業結構、組織、決策圈</em>幾個層面來談。下面整理這篇貼文裡幾個看下來特別有感的觀點。
+			</p>
+
+			<h3>「Everyone is Designer」從願景變成事實</h3>
+			<p>
+				貼文裡提到,<strong>數位設計與商業應用</strong>課程的第四講放過一張只有四個字的投影片:<em>Everyone is Designer</em>。
+				在 2024 年之前,這句話是一種「設計民主化」的理想——代表好的設計思維應該滲透組織的每一個角色。
+				但 Claude Design 推出之後,這句話不再是願景,而是<strong>正在發生的事實</strong>。
+			</p>
+			<p>
+				這個轉變為什麼重要?因為設計師過去二十年賴以為生的,從來不是「會畫線框圖」本身,而是「會畫線框圖的人很少」這件事。
+				John Maeda 在 Design in Tech Report 裡把設計拆成三類:<strong>Classical Design(古典設計)、Design
+					Thinking(設計思維)、Computational Design(運算設計)</strong>。
+				貼文中的判斷是:往後的數位設計,會是後兩者的結合——設計思維是商業裡的創新思考模式,運算設計是工具,而 Claude Design 把這兩件事直接綁在一起。
+			</p>
+
+			<h3>這也許是設計產業的第三次典範轉移</h3>
+
+			<p>
+				每一次典範轉移,都會有一批設計師被淘汰,也會有一批新的設計師變得更有價值。
+				貼文裡的看法是:Claude Design 所觸發的,是設計產業的第三次典範轉移。
+			</p>
+			<p>
+				過去每次工具轉換——從手繪到 Photoshop、從 Photoshop 到 Figma——都讓部分技能貶值,同時開放新可能。
+				但設計師都靠著「對工具的熟悉度」和「個人創意」活了下來,因為每次新工具的學習門檻都還存在,而且主要對設計師開放。
+			</p>
+			<p>
+				Claude Design 這次的關鍵差別是:<strong>門檻幾乎是零</strong>。
+				Anthropic 在發佈時明確說,這個工具是為「<em>沒有設計背景的創辦人、PM 和行銷人員</em>」而設計的。
+				執行技能的稀缺性,不是被另一個工具接手,而是被完整地「數位化」掉了。
+			</p>
+
+			<div class="thinking-illustration">
+				<h4>設計工具的典範轉移史</h4>
+				<div class="paradigm-timeline">
+					<div class="paradigm-row">
+						<div class="paradigm-year">~ 1990</div>
+						<div class="paradigm-bar">
+							<div class="paradigm-dot"></div>
+							<div class="paradigm-text">
+								<strong>手繪 / 製版</strong>
+								<span>技能門檻極高,主要對受訓設計師開放</span>
+							</div>
+						</div>
+					</div>
+					<div class="paradigm-row">
+						<div class="paradigm-year">1990s</div>
+						<div class="paradigm-bar">
+							<div class="paradigm-dot"></div>
+							<div class="paradigm-text">
+								<strong>Photoshop / Illustrator</strong>
+								<span>第一次轉移:桌面軟體取代手工製版</span>
+							</div>
+						</div>
+					</div>
+					<div class="paradigm-row">
+						<div class="paradigm-year">2010s</div>
+						<div class="paradigm-bar">
+							<div class="paradigm-dot"></div>
+							<div class="paradigm-text">
+								<strong>Sketch / Figma</strong>
+								<span>第二次轉移:雲端協作 + 畫布概念,門檻仍在設計師端</span>
+							</div>
+						</div>
+					</div>
+					<div class="paradigm-row">
+						<div class="paradigm-year">2026</div>
+						<div class="paradigm-bar">
+							<div class="paradigm-dot highlight"></div>
+							<div class="paradigm-text">
+								<strong>Claude Design / AI 原生工具</strong>
+								<span>第三次轉移:門檻歸零,明確對非設計背景開放</span>
+							</div>
+						</div>
+					</div>
+				</div>
+				<p class="caption">每一次轉移都讓部分技能貶值,但這次的學習成本第一次降到「對所有人都是零」</p>
+			</div>
+
+			<h3>倖存的,會是複雜度高的那一端</h3>
+			<p>
+				貼文裡引用了 McKinsey 2018 年 10 月發佈的〈<a
+					href="https://www.mckinsey.com/capabilities/tech-and-ai/our-insights/the-business-value-of-design"
+					target="_blank" rel="noopener">The Business Value of Design</a>〉——
+				這份報告建立了 <strong>McKinsey Design Index(MDI)</strong>,針對 300 家上市公司、5 年共約 200 萬筆財務資料與 10 萬筆設計行為進行分析。
+				結論是:MDI 前 25% 的企業,年營收成長率約 10%,其他企業則落在 3–6%,差距接近兩倍;5 年累積下來營收成長高 32 個百分點、股東總回報高 56 個百分點。
+				但「前 25%」的核心不是有多少設計師,而是——設計能不能進入 C-Level 決策、能不能平衡質性與量性研究、能不能整合跨功能組織。
+			</p>
+			<p>
+				貼文裡的結論是:設計產業會出現兩極化。極少數人在<strong>真正複雜、高利害關係</strong>的問題上工作;大量的人則在做 <strong>AI 輸出的後處理</strong>。
+				這跟 Claude Code 發表後,低階工程師需求下降、高階工程師反而更搶手的曲線,幾乎是一樣的形狀。
+			</p>
+
+			<h3>組織與決策圈:水平溝通比產出更重要</h3>
+			<p>
+				貼文最後提到的兩個層面值得拉出來看:
+			</p>
+			<ul>
+				<li>
+					<strong>組織層面</strong>——in-house 設計部門的規模大小,跟企業績效沒有直接關係。
+					重要的是:設計能不能在組織裡產生<strong>水平溝通效應</strong>,讓行銷、業務、策略、工程的討論都能以使用者視角進行。
+					設計師該做的從來不是產出漂亮簡報,而是把設計思維傳遞出去。
+				</li>
+				<li>
+					<strong>決策圈層面</strong>——身為管理者,Claude Design 真正丟給你的問題是:你對自己業務的<em>文脈(context)</em>,理解夠深嗎?
+					你能不能寫出一個 prompt,讓 AI 產出真正契合(Problem-Solution Fit)的設計?
+					還是你只能描述「我想要像某某網站那樣」,然後拿到一個看起來對、但實際上沒解決問題的東西?
+				</li>
+			</ul>
+			<p>
+				如果把這兩件事接回主篇的「發散收斂」框架:<strong>水平溝通</strong>就是發散的來源(你要有夠多角度才展得開);<strong>context
+					的深度</strong>就是收斂的基準(你要夠懂才挑得出對的那一塊)。
+				AI 把中間的產出環節拿走了,剩下來的正是這兩端。
+			</p>
+
+			<hr class="lg">
+
+			<div class="section-label">
+				<div class="roman">ii.</div>
+				<div class="tag">數據 · The Numbers</div>
+			</div>
+			<h2>業界實際上正在發生什麼?</h2>
+			<p>
+				觀點如果只停在文字層面,容易變成「大家都在擔心而已」。把近期幾份產業報告拉出來看,想確認這些判斷到底有沒有數據支撐——看下來的感覺是:<strong>幾乎都在往兩極化的方向走</strong>。
+			</p>
+
+			<div class="stat-grid">
+				<div class="stat-card">
+					<div class="stat-number neg">-7%</div>
+					<div class="stat-title">Figma 股價單日跌幅</div>
+					<div class="stat-desc">Claude Design 發表隔天,Adobe、Wix、GoDaddy 同步下挫</div>
+				</div>
+				<div class="stat-card">
+					<div class="stat-number neg">-67%</div>
+					<div class="stat-title">Entry-level 工程職缺</div>
+					<div class="stat-desc">相較 2022 年的降幅,設計職缺同步停滯</div>
+				</div>
+				<div class="stat-card">
+					<div class="stat-number neg">~80K</div>
+					<div class="stat-title">Q1 2026 科技業裁員數</div>
+					<div class="stat-desc">其中約 50% 被歸因於 AI 取代</div>
+				</div>
+				<div class="stat-card">
+					<div class="stat-number pos">$85–100K</div>
+					<div class="stat-title">AI 原生 junior 的起薪</div>
+					<div class="stat-desc">會與 AI 協作的新人拿到溢價,commodity 工作費率則在崩跌</div>
+				</div>
+			</div>
+
+			<ul>
+				<li>
+					<strong>資本市場已經即時重新定價。</strong>
+					Claude Design 發表隔天,<em>Figma 股價下跌 7%</em>,Adobe、Wix、GoDaddy 同步下挫——華爾街幾乎是在一天之內把整個「設計軟體類別」的估值重新算了一遍(<a
+						href="https://techcrunch.com/2026/04/17/anthropic-launches-claude-design-a-new-product-for-creating-quick-visuals/"
+						target="_blank" rel="noopener">TechCrunch</a>)。
+				</li>
+				<li>
+					<strong>Entry-level 職缺正在崩盤。</strong>
+					自 2022 年以來,初階工程師職缺數下降了約 <em>67%</em>,Q1 2026 科技業裁員近 80,000 人,其中約 50% 被歸因於 AI(<a
+						href="https://www.tomshardware.com/tech-industry/tech-industry-lays-off-nearly-80-000-employees-in-the-first-quarter-of-2026-almost-50-percent-of-affected-positions-cut-due-to-ai"
+						target="_blank" rel="noopener">Tom's Hardware</a>、<a
+						href="https://hakia.com/news/junior-developer-crisis-2026/" target="_blank"
+						rel="noopener">Hakia</a>)。
+				</li>
+				<li>
+					<strong>設計職缺從 ChatGPT 之後就沒再長回來。</strong>
+					Lenny's Newsletter 彙整的職缺資料顯示,PM 與工程職缺在 2024 後陸續回升,但<em>設計職缺一直沒有跟上</em>——一個可能的解釋是 AI
+					讓工程師跳過設計流程直接出貨(<a href="https://www.lennysnewsletter.com/p/state-of-the-product-job-market-in-ee9"
+						target="_blank" rel="noopener">Lenny's Newsletter</a>)。
+				</li>
+				<li>
+					<strong>薪資也在兩極化。</strong>
+					會用 AI 工作的 junior 拿到的 offer 落在 <em>$85K–$100K</em>,而純粹的 commodity 創意工作(只會生圖、只會排版)費率則在崩跌(<a
+						href="https://codeconductor.ai/blog/future-of-junior-developers-ai/" target="_blank"
+						rel="noopener">Code Conductor</a>)。
+				</li>
+				<li>
+					<strong>BCG 的整體判斷:AI 會「重塑」比「取代」更多的職位。</strong>
+					但重塑的方向是——把重複性高、判斷密度低的部分交出去,人類留在判斷與整合的那一端(<a
+						href="https://www.bcg.com/publications/2026/ai-will-reshape-more-jobs-than-it-replaces"
+						target="_blank" rel="noopener">BCG</a>)。
+				</li>
+			</ul>
+
+			<hr>
+
+			<h2>兩條線索合在一起</h2>
+
+			<p>
+				貼文觀察的是「結構為什麼會變」,數據呈現的是「結構已經在變了」。兩邊看下來的方向其實是同一個:
+			</p>
+
+			<div class="quote-block">
+				<span class="para-mark">¶</span>
+				會被淘汰的,其實不是會用 Figma 的人、也不是會生圖的人,而是<em>只會線性反覆的人</em>——
+				只會把「V1 改到 V1.5」的人。因為這件事 AI 已經比你快、比你便宜了。
+			</div>
+
+			<p>
+				但「能同時展開四個根本不同方向的提案、能判斷哪個切入點才真的回應了問題、能從四個不同角度整合出 V2」這種樹狀判斷力,
+				AI 目前還沒辦法替你完成。它可以是你發散的加速器,但收斂的那一刀,還是得你來下。
+			</p>
+
+			<p>
+				前輩同事觀察到的「junior 需求越來越少、部分專案直接跳過設計師由 AI 開發」,看起來似乎不只是單一公司的個案,而是產業正在發生的一種結構性變化。
+				如果這個變化是真的,那策略型設計師真正該練的,就不再是畫得比 AI 快,而是<strong>對問題的理解深度、對市場的脈絡感、以及發散前那個「該從哪些角度問」的判斷力</strong>。
+			</p>
+
+			<div
+				style="margin-top: 48px; padding: 24px 28px; background: #faf6ee; border: 1px solid #e6ddcc; border-radius: 8px;">
+				<p style="margin: 0 0 8px; font-size: 13px; color: #a89773; letter-spacing: 0.1em;">回到主篇</p>
+				<p style="margin: 0; line-height: 1.7;">
+					這篇是產業背景的整理。如果你想看「這套變化背後的思考工具」是怎麼運作的——也就是線性反覆 vs 發散收斂、以及為什麼這對學習階段特別重要——可以回到主篇:
+					<a href="linear-iteration-vs-divergent-convergent.html"
+						style="color: #c46a3a; font-weight: bold;">線性反覆 vs 發散收斂:關於 AI 時代的一些討論筆記</a>。
+				</p>
+			</div>
+
+			<p style="text-align: right; color: #8a7e68; margin-top: 48px; font-style: italic;">
+				—— 整理自 Denny's Digital Design 社團貼文與近期產業報告
+			</p>
+		</div>
+	</div>
+
+
+	<!-- Giscus Comments -->
+	<div id="comments" class="container mt-xl"
+		style="padding-bottom: 60px; padding-top: 40px; border-top: 1px solid #eee;">
+		<script src="https://giscus.app/client.js" data-repo="newslin-design/newslin-design.github.io"
+			data-repo-id="R_kgDOOXA3ww" data-category="Announcements" data-category-id="DIC_kwDOOXA3w84C5AiY"
+			data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0"
+			data-input-position="top" data-theme="light" data-lang="zh-TW" crossorigin="anonymous" async>
+			</script>
+	</div>
+	<footer>
+	</footer>
+
+</body>
+<script src="../portfolio/js/app.js"></script>
+
+</html>
