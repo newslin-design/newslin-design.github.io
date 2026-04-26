@@ -490,30 +490,41 @@
 		<div class="article">
 
 			<p>
-				用過 ChatGPT、Claude 對話框的人都會有一種感覺——它很聰明,但每次都要重新貼一次背景、貼一次檔案、再把它生出來的東西複製回專案。
-				幾輪下來,Token 燒完了,專案還是亂的。
+				做完一份新功能設計,想丟給對話框依公司 design system 幫你走查。
+				每一張畫面你都要先把規範文件貼一次、再把畫面描述一次,跑完一張關掉、重貼一輪才能跑下一張。
+				你做了 5 張,等於把同一份規範手動貼了 5 次——而且每次它的判斷標準還可能微微不一樣。
 			</p>
 
 			<p>
-				<strong>Claude Code</strong> 是 Anthropic 推出的 AI 編碼助手,跟對話框最大的不同是:
-				它能<strong>直接讀寫你電腦上的檔案、執行指令、控制瀏覽器</strong>,而且能記住整個專案的脈絡。
-				原本 CLI 終端機的版本對非工程師有點門檻,所以官方後來陸續釋出了桌面 UI 版本與 IDE 整合(VS Code、JetBrains)。
+				用對話框做設計、研究、文件這類工作,這種感覺反覆出現:
+				跟它討論過的東西明天就找不到、想接續會發現脈絡散了、同樣的規範要重貼很多次、整理出來的結果只能複製到 Word 才有地方放。
+				它不是不聰明,是<strong>「聊完不會留下任何東西在你電腦裡」</strong>——
+				對設計與研究這種<strong>「過程本身就是產出」</strong>的工作來說,光這一條就吃掉一半時間。
 			</p>
 
 			<p>
-				這篇是寫給<strong>從對話框轉過來的人</strong>的入門教學——
-				不會去細談每個指令的所有參數,而是把「為什麼要換」「環境怎麼裝」「UI 長怎樣」「最常用的幾個指令」「Skill 跟 Memory 怎麼開始用」串成一條可以照著做的線。
+				<strong>Claude Code</strong> 是 Anthropic 推出的 AI 助手,跟對話框最大的差異不在「聰明」——而是它能
+				<strong>直接讀寫你電腦上的檔案、執行指令、把過程留成檔案</strong>,而且整個專案的所有檔案它都看得到。
+				等於把 AI 從「對話視窗」搬進了你日常工作的<strong>資料夾</strong>裡。
+			</p>
+
+			<p>
+				這篇寫給<strong>設計、研究、PM 這類非工程角色</strong>:你習慣的素材是訪談逐字稿、PRD、會議筆記、Figma 與簡報——
+				而不是 React 跟 SQL。我會把「為什麼要換」「環境怎麼裝」「UI 長怎樣」「三種記憶要怎麼分」「最常用的幾個指令」串成一條可以照著做的線,
+				途中所有案例都會圍繞設計體驗部門的日常,而不是後端工程師的 commit。
 			</p>
 
 			<p class="highlight">
 				# <a href="#a01">為什麼從對話框換到 Claude Code</a><br>
-				# <a href="#a02">環境準備:該裝哪些東西、為什麼要裝</a><br>
+				# <a href="#a02">環境準備:桌面版與 CLI 版差在哪</a><br>
 				# <a href="#a03">Claude Code UI 的版面導覽</a><br>
-				# <a href="#a04">第一次用:/init、Plan、Memory</a><br>
-				# <a href="#a05">對話效率:@tag、Prompt Cache、壓縮失憶</a><br>
-				# <a href="#a06">Skill:把流程打包,全局與專案的差異</a><br>
-				# <a href="#a07">Worktree:同一個專案開多個分身</a><br>
-				# <a href="#a08">安全性:授權、權限、不要把鑰匙交出去</a>
+				# <a href="#a04">第一次用:/init 與 Plan 模式</a><br>
+				# <a href="#a05">三種「腦袋」:CLAUDE.md / Memory / Skill 各自記什麼</a><br>
+				# <a href="#a06">對話效率:@tag、Prompt Cache、壓縮失憶</a><br>
+				# <a href="#a07">Skill:把流程打包,全局與專案的差異</a><br>
+				# <a href="#a08">Worktree:同一個專案開多個分身</a><br>
+				# <a href="#a09">安全性:授權、權限、不要把鑰匙交出去</a><br>
+				# <a href="#a10">延伸玩法:把 Claude Code 當你的部落格 CMS</a>
 			</p>
 
 			<hr class="lg">
@@ -560,36 +571,46 @@
 				<p class="caption">對話框的瓶頸是「上下文」與「來回貼貼」;Claude Code 直接把這兩件事做掉了</p>
 			</div>
 
-			<h3>1. 直接改檔案 = 省 Token、省力氣</h3>
+			<h3>1. 從「外部顧問」變成「住在資料夾裡的同事」</h3>
 			<p>
-				對話框版本,一個專案稍微大一點,你可能要把十幾個檔案貼進去,還很容易超過上下文。
-				Claude Code 用的是<strong>「按需讀取」</strong>:它只在需要時打開那一份檔案、讀必要的幾行,改完就直接寫回去。
-				整個流程從「複製→貼上→再複製」變成「告訴它要做什麼,它做完讓你 review」。
+				對話框是外面那個視窗,你要把素材貼進去它才看得到;Claude Code 直接住在你的專案資料夾裡——
+				訪談、簡報、Figma 匯出、會議筆記,只要在資料夾裡,它打開就有。
+				而且它用<strong>「按需讀取」</strong>:不會一次塞滿上下文,只在需要時打開那一份檔、讀必要的幾行。
+				所以「把所有用到舊 Logo 的圖檔全換掉」「把首頁那段文案同步到所有頁面」這種跨檔修改,在對話框做不出來,在 Claude Code 是日常。
+				省下的不只 token,是<strong>「每次都要重講背景」的疲勞</strong>。
 			</p>
 
-			<h3>2. 聰明檢索:整個專案都看得到</h3>
+			<h3>2. 從「給你建議」變成「替你執行」</h3>
 			<p>
-				只要你的檔案結構有規範(命名統一、圖片/影片/音樂分資料夾),它就能很準地找到對的位置。
-				「把所有用到舊 Logo 的 HTML 全改掉」「把首頁那個按鈕的文字同步到所有頁」——這種需要跨檔案的修改,在對話框做不出來,在 Claude Code 是日常。
+				對話框最多回你「你可以這樣做」,動手的還是你;Claude Code 真的會去改檔、產 .pptx、commit 上去。
+				它能自己跑 <code>npm install</code>、開 dev server、生成檔案、做投影片,
+				甚至打開瀏覽器點按鈕、填表單、截圖回報結果——也就是說,它能<strong>自己驗證做出來的東西到底對不對</strong>,
+				不是丟一份「請你照這樣做」的清單給你。
+				你的角色從「執行者」變成「review 與決策者」,把手從鍵盤上抬起來,專注在判斷對錯。
 			</p>
 
-			<h3>3. 能執行程式、能開瀏覽器</h3>
+			<h3>3. 從「聊完就沒了」變成「過程會留下來」</h3>
 			<p>
-				它可以自己跑 <code>npm install</code>、<code>npm run dev</code>、生成檔案、做投影片、開 server,
-				甚至打開瀏覽器,點按鈕、填表單、截圖回報結果——也就是說,它能<strong>自己驗證做出來的東西到底對不對</strong>。
+				對話框的中途整理、決策、共識,全卡在那一個 chat history 裡——明天找不到、想接續會散掉、想傳給同事還要手動整理。
+				Claude Code 的每一階段中途產物都會寫成 <code>.md</code> / <code>.csv</code> / <code>.pptx</code> <strong>落在你的資料夾裡</strong>:
+				明天接得回去、下次能重跑、可以直接傳給同事。
+				研究方法、設計流程、整理邏輯,終於有地方<strong>沉澱</strong>——這也是 Case 1 那種「發散→收斂→再發散」能變成可重複流程的關鍵。
 			</p>
 
-			<h3>4. 有記憶、可累積</h3>
+			<h3>4. 從「通用 AI」變成「越用越懂你和你的專案」</h3>
 			<p>
-				可以建立 <code>.claude/</code> 資料夾或 <code>CLAUDE.md</code> 來告訴 Claude「這個專案是什麼、怎麼運作」,
-				也能用 Memory 持續累積使用者偏好,不必每次重新解釋。
-				甚至可以把常用流程打包成 <strong>Skill</strong>,下次一個指令就跑完。
+				可以建立 <code>CLAUDE.md</code> 告訴它「這個專案是什麼、怎麼運作」(<strong>專案規矩</strong>),
+				用 <strong>Memory</strong> 持續累積使用者偏好(<strong>你個人的習慣</strong>),
+				還能把常用流程打包成 <strong>Skill</strong>(<strong>固定動作</strong>),下次一個指令就跑完。
+				它跟著你和你的專案一起長,同一個流程做第三次,它比你還記得每個細節。
+				這三者的差別,後面 a05 會專門用「人腦三種記憶」拆開講。
 			</p>
 
-			<h3>四點相乘:從「幫你想」到「替你做完」</h3>
+			<h3>四點相乘:從「給你建議」到「替你做完整套流程」</h3>
 			<p>
-				單看每一點好像都只是「方便一點」,但它們<strong>疊加起來</strong>之後,Claude Code 就能夠處理過去要花半天、甚至一整天的完整任務。
-				以下幾個案例,都需要四點同時發揮才能做到——這也是它跟對話框最大的落差。
+				單看每一點好像都只是「方便一點」,但它們<strong>疊加起來</strong>之後——
+				它住在你資料夾裡(看得到全部)+ 真的會動手(不只給建議)+ 過程留得下來(可以重跑)+ 越用越懂你(會客製化)——
+				就能處理過去要花半天、甚至一整天的完整任務。以下幾個案例,都需要四點同時發揮才做得到。
 			</p>
 
 			<style>
@@ -716,385 +737,400 @@
 				<div class="case-card">
 					<div class="case-head">
 						<span class="case-num">Case 1</span>
-						<span class="case-ttl">把一整季的 Excel + Word 整合成分析報告</span>
+						<span class="case-ttl">使用者訪談:讓「發散→收斂→再發散」的中途過程都留下來</span>
 					</div>
 					<div class="case-ask">
-						「<code>reports/2026-Q1/</code> 下有:
-						<strong>50+ 份業務週報(.docx)</strong>、<strong>12 份分區 KPI 報表(.xlsx,結構各不同)</strong>、
-						還有<strong>20 份客戶訪談逐字稿(.docx)</strong>。
-						幫我先建一份檢索表(哪個檔案在講哪家客戶 / 哪個區 / 哪個產品線),
-						然後整合成:① 一份 Q1 整季營運報告(.docx)、② 一份給董事會的摘要簡報(.pptx)、
-						③ 一份可以篩選的總表(.xlsx),含 pivot)、④ Top 5 客戶的單獨摘要(.docx × 5)。」
+						「<code>research/2026-Q1-onboarding/</code> 下有 <strong>20 份新會員訪談逐字稿(.docx)</strong>。
+						幫我跑一輪研究綜合:① 從每份逐字稿抽出原始 quote → ② 跨訪談把 quote 合併成主題群 →
+						③ 再從每個主題群<strong>反向發散</strong>出可能的設計機會 → ④ 交給 PM 的 priority matrix。
+						每一階段的中途檔請都留在資料夾裡,下一階段要能讀到。」
 					</div>
 					<div class="case-flow">
-						<div class="step"><strong>1.</strong> 掃所有檔案,抽 metadata → <code>index.csv</code> 檢索表</div>
-						<div class="step"><strong>2.</strong> 依檢索表,只讀<strong>需要的片段</strong>(不爆 token)</div>
-						<div class="step"><strong>3.</strong> 跑 python 合併 12 份結構不同的 xlsx</div>
-						<div class="step"><strong>4.</strong> pandas 做 pivot、算趨勢、產圖表</div>
-						<div class="step"><strong>5.</strong> 用 python-docx / pptx 套模板灌進去</div>
-						<div class="step"><strong>6.</strong> 吐出 1+1+1+5 = 8 份檔案,命名整齊</div>
+						<div class="step"><strong>1.</strong> 掃逐字稿 → <code>themes/raw-quotes.md</code>(每段附檔名+段落)</div>
+						<div class="step"><strong>2.</strong> 收斂成主題群 → <code>themes/clusters.md</code></div>
+						<div class="step"><strong>3.</strong> 從 clusters 再發散 → <code>opportunities.md</code></div>
+						<div class="step"><strong>4.</strong> 對照頻率 / 影響打分 → <code>priority-matrix.md</code></div>
+						<div class="step"><strong>5.</strong> 整套流程封成 <code>/research-synthesize</code> skill</div>
+						<div class="step"><strong>6.</strong> 下次新訪談一鍵重跑,結構完全一致</div>
 					</div>
 					<div class="case-compare">
 						<div class="side bad">
 							<div class="side-ttl">對話框卡在哪</div>
 							<ul>
-								<li>82 份檔案 → <strong>貼不完</strong>,上下文瞬間爆掉</li>
-								<li>每份 xlsx 結構不同,<strong>沒辦法用程式批次處理</strong></li>
-								<li>不能建檢索表,所以每個問題都得重讀所有檔案</li>
-								<li>產不出帶 pivot 的 xlsx、套模板的 pptx</li>
-								<li>全程人工 = 3~5 個工作天</li>
+								<li>20 份逐字稿一份一份貼,中途 token 就爆掉</li>
+								<li>幫你發散→收斂→再發散沒問題,但<strong>中途的 quote 群、主題分類全在對話歷史裡</strong></li>
+								<li>明天想接續做、或想換個角度再發散一次,要重貼、重做一遍</li>
+								<li>下一輪訪談來了,等於整套再從零跑——<strong>研究流程沒辦法累積</strong></li>
 							</ul>
 						</div>
 						<div class="side good">
 							<div class="side-ttl">Claude Code 怎麼解</div>
 							<ul>
-								<li>第一步<strong>建 <code>index.csv</code></strong>(檔名 × 客戶 × 區 × 金額...)</li>
-								<li>之後所有查詢都先看檢索表 → <strong>只讀 3~5 份檔案</strong>就夠</li>
-								<li>寫 python 讀異質 xlsx、正規化欄位、做合併</li>
-								<li>跑 pandas pivot / matplotlib 圖 → 灌 pptx / docx</li>
-								<li>從 3 天壓到<strong>半小時</strong>,之後下一季直接重跑</li>
+								<li>每一階段的中途產物都<strong>寫成 <code>.md</code> 留在本地</strong></li>
+								<li>下一階段直接讀前一份檔案,不用人工貼上下文</li>
+								<li>明天想換角度?直接讀 <code>raw-quotes.md</code> 重跑收斂,不必重抽</li>
+								<li>整套寫進 skill → 下次訪談、別的研究案直接 <code>/research-synthesize</code></li>
 							</ul>
 						</div>
 					</div>
 					<div class="capabilities">
-						<span class="cap">① 批次讀 80+ 檔</span>
-						<span class="cap">② 建檢索表 省 token</span>
-						<span class="cap">③ 跑 pandas / 多格式輸出</span>
-						<span class="cap">④ 流程可重跑下一季</span>
+						<span class="cap">① 中途檔案本地化</span>
+						<span class="cap">② 階段間資訊同步</span>
+						<span class="cap">③ 流程可重複</span>
+						<span class="cap">④ 研究方法被沉澱</span>
 					</div>
 				</div>
 
 				<div class="warn-card" style="background:#f6f2ea;border-left-color:#a89773;margin:-8px 0 0;">
-					<div class="ttl" style="color:#6b5030;">💡 關鍵差異:檢索表(Index)</div>
+					<div class="ttl" style="color:#6b5030;">💡 關鍵差異:中途檔留在本地 = 後續流程都能同步</div>
 					<p style="color:#5a4a2a;">
-						對話框面對一堆檔案時,只能「全讀 → 塞爆」或「摘要 → 失真」。
-						Claude Code 可以<strong>先花一次 Token 掃過所有檔案、建一份 <code>index.csv</code></strong>——
-						之後每個問題先查表,再精準打開幾份檔案讀。
-						這是工程師處理大量資料的基本功,<strong>Claude Code 把它帶進了日常文書工作</strong>。
+						對話框也能跟你跑「<a href="linear-iteration-vs-divergent-convergent.html" target="_blank" rel="noopener">發散 → 收斂 → 再發散</a>」這種研究綜合的節奏——
+						但中途整理出來的「quote 群」「主題分類」「機會點」<strong>全都留在那一個對話視窗裡</strong>。
+						換個對話、明天再開、想換角度重跑,就得從頭來一次。
+					</p>
+					<p style="color:#5a4a2a;margin-top:8px;">
+						Claude Code 的差別是<strong>每一階段的中途產物都會寫成 <code>.md</code> 落在資料夾裡</strong>——
+						下一階段要再發散,它讀前一份 <code>.md</code> 就好;PM 想看你怎麼分類的,把資料夾丟過去就有;
+						把整套流程封成 Skill 之後,下一個專題就是按一個指令、跑出同樣結構的產出。
+						<strong>AI 享有完整的歷程資訊,你才真的有一個「會記得做過什麼」的助理</strong>,而不是每次都要從零交代的對談對象。
 					</p>
 				</div>
 
 				<div class="case-card">
 					<div class="case-head">
 						<span class="case-num">Case 2</span>
-						<span class="case-ttl">從程式碼反推一份設計規格書</span>
+						<span class="case-ttl">月度設計團隊簡報:多份資料一次整合,過程也記下來</span>
 					</div>
 					<div class="case-ask">
-						「幫我整理 PDFExportModal 的設計文件,包含元件規格、狀態、邊界條件、實際畫面。」
+						「幫我做 4 月份的設計團隊月會簡報。資料來源:
+						<code>research/</code> 下這個月的訪談摘要、<code>competitor/</code> 上週做的競品分析、
+						<code>metrics/2026-04.csv</code> 的關鍵指標、上次月會 <code>meetings/2026-03-review.md</code> 的 action item。
+						套 <code>templates/team-monthly.pptx</code> 的版型,每個段落都要交叉引用對應原始檔案,
+						討論過程整理成 <code>meetings/2026-04-prep.md</code> 留檔。」
 					</div>
 					<div class="case-flow">
-						<div class="step"><strong>1.</strong> 讀 <code>PDFExportModal.jsx</code> 與相依 hook</div>
-						<div class="step"><strong>2.</strong> 啟 dev server,瀏覽器跑流程截圖</div>
-						<div class="step"><strong>3.</strong> 對照 <code>docs/qa/CHANGELOG.md</code> 補已知限制</div>
-						<div class="step"><strong>4.</strong> 依 <code>CLAUDE.md</code> 的文件樣板產 <code>.md</code></div>
+						<div class="step"><strong>1.</strong> 同時讀四個來源資料夾,抓重點</div>
+						<div class="step"><strong>2.</strong> 跟你對話:這幾個訪談洞察適合上月會嗎?</div>
+						<div class="step"><strong>3.</strong> 對照上月 action item,標記完成 / 延期 / 新議題</div>
+						<div class="step"><strong>4.</strong> 套 <code>team-monthly.pptx</code> 模板,灌入內容</div>
+						<div class="step"><strong>5.</strong> 全程的取捨理由寫進 <code>2026-04-prep.md</code></div>
+						<div class="step"><strong>6.</strong> 下次月會直接讀這份,接得上脈絡</div>
 					</div>
 					<div class="case-compare">
 						<div class="side bad">
 							<div class="side-ttl">對話框卡在哪</div>
 							<ul>
-								<li>你得把 <strong>jsx + hook + store</strong> 全部貼進去,一下就超出上下文</li>
-								<li>沒辦法<strong>實際跑畫面</strong>,所有規格都只是「從程式碼推論」</li>
-								<li>產不出截圖,只能寫「此處為 XX 按鈕」的假圖說</li>
-								<li>下次程式一改,文件又過期,得從頭再來一次</li>
+								<li>四個來源逐份貼進去,token 還沒整理完就爆掉</li>
+								<li>它<strong>看不到上次月會在討論什麼</strong>,沒辦法接續追蹤</li>
+								<li>產不出 .pptx,只能給你一份 markdown,你自己再開 PowerPoint 排</li>
+								<li>這次決定「不放某張圖」的理由,下次月會它<strong>完全不知道</strong></li>
 							</ul>
 						</div>
 						<div class="side good">
 							<div class="side-ttl">Claude Code 怎麼解</div>
 							<ul>
-								<li>按需讀需要的檔案,跨 <strong>5 個 jsx</strong> 也不爆 token</li>
-								<li>啟 dev server + 瀏覽器,<strong>每個狀態實際走一次</strong></li>
-								<li>自動截圖放進 <code>docs/images/</code>,用 markdown 引用</li>
-								<li>下次再呼叫一次就是最新版,當作 <strong>living doc</strong> 用</li>
+								<li>四個資料夾它都看得到,<strong>不用貼,只要說「讀」</strong></li>
+								<li>讀上次 <code>meetings/</code> 下所有紀錄 → 自動接續追蹤</li>
+								<li>用 python-pptx 套模板直接出檔,排版風格一致</li>
+								<li>取捨理由 / 沒選的素材都記在 <code>prep.md</code>,<strong>下次它自己會讀</strong></li>
 							</ul>
 						</div>
 					</div>
 					<div class="capabilities">
-						<span class="cap">① 跨多檔改</span>
-						<span class="cap">② 聰明檢索</span>
-						<span class="cap">③ 執行 + 瀏覽器截圖</span>
-						<span class="cap">④ 依樣板格式</span>
+						<span class="cap">① 跨資料夾整合</span>
+						<span class="cap">② 跟過往會議接軌</span>
+						<span class="cap">③ 直接出 pptx 檔</span>
+						<span class="cap">④ 討論過程留檔</span>
 					</div>
+				</div>
+
+				<div class="warn-card" style="background:#f6f2ea;border-left-color:#a89773;margin:-8px 0 0;">
+					<div class="ttl" style="color:#6b5030;">💡 關鍵差異:它是「住在你資料夾裡」的助理</div>
+					<p style="color:#5a4a2a;">
+						對話框版的 AI 跟新進的實習生很像——每天上工你都得花 20 分鐘把背景講一遍。
+						Claude Code 不一樣,它<strong>住在你專案的資料夾裡</strong>,你之前所有的研究、會議、競品分析、簡報模板,
+						它打開資料夾就看得到。所以你只要說「做月會簡報」,它就會自己去翻該翻的檔案,還會主動問你「上個月說要追的那件事這次要不要再提?」——
+						那種感覺才比較接近<strong>真的有一個熟悉專案的同事在幫你</strong>。
+					</p>
 				</div>
 
 				<div class="case-card">
 					<div class="case-head">
 						<span class="case-num">Case 3</span>
-						<span class="case-ttl">把隨手想法變成已發布的 Blog 文章</span>
+						<span class="case-ttl">把 Figma 設計系統變成跨專案的設計守門員 Skill</span>
 					</div>
 					<div class="case-ask">
-						「我剛剛講了這段心得(語音轉文字),幫我寫一篇 blog,用我之前幾篇文章的語氣,發出去。」
+						「我們公司剛在 Figma 維護好一份正式的 Design System(顏色 token、字級、間距、元件規格)。
+						幫我:① 透過 Figma MCP 把這套規範抓出來、整理成本地 <code>~/.claude/skills/design-check/spec.md</code>;
+						② 把它打包成全局 Skill <code>/design-check</code>,任何設計專案都能呼叫;
+						③ 之後每個專案的設計稿(Figma 連結)交給它,要能比對是否符合規範、產出走查報告。
+						最後,設計討論時 Claude 應該能自己參與——例如『這個 modal 的 padding 跟系統規範差 4px、要改嗎?』」
 					</div>
 					<div class="case-flow">
-						<div class="step"><strong>1.</strong> 讀 <code>Blog/</code> 下過往 3 篇文章學語氣</div>
-						<div class="step"><strong>2.</strong> 產出 <code>Blog/{slug}.html</code>,套用樣板</div>
-						<div class="step"><strong>3.</strong> 更新 <code>index.html</code> 文章列表卡片</div>
-						<div class="step"><strong>4.</strong> <code>git commit</code> + <code>git push</code> → GitHub Pages 自動部署</div>
+						<div class="step"><strong>1.</strong> Figma MCP 連線 → 抓 design system 的 tokens / 元件</div>
+						<div class="step"><strong>2.</strong> 整理成 <code>spec.md</code>(顏色、字級、間距、元件規格)</div>
+						<div class="step"><strong>3.</strong> 包成 <code>/design-check</code> 全局 Skill,所有專案共用</div>
+						<div class="step"><strong>4.</strong> 新專案設計稿 → MCP 抓最新 frame → 對照 spec</div>
+						<div class="step"><strong>5.</strong> 產出走查報告(差異點、建議調整、可重用元件提示)</div>
+						<div class="step"><strong>6.</strong> 設計討論時 Claude 能即時引用規範,變成第三個 reviewer</div>
 					</div>
 					<div class="case-compare">
 						<div class="side bad">
 							<div class="side-ttl">對話框卡在哪</div>
 							<ul>
-								<li>能寫內容,但<strong>不能碰你電腦的檔案</strong></li>
-								<li>你得自己建 HTML、套樣板、貼進編輯器</li>
-								<li>還要手動更新<strong>首頁的文章列表卡片</strong>(最常忘)</li>
-								<li>commit、push、等 GitHub Pages 部署 → 全你自己</li>
+								<li>沒辦法直連 Figma,你得截圖 + 手抄 token 才能讓它「看到」</li>
+								<li>每個新專案都要重新貼一次設計系統說明</li>
+								<li>它<strong>沒辦法成為跨專案的工具</strong>——這次的對話結束就消失</li>
+								<li>設計 review 時要切視窗、複製貼上,根本插不進討論流</li>
 							</ul>
 						</div>
 						<div class="side good">
 							<div class="side-ttl">Claude Code 怎麼解</div>
 							<ul>
-								<li>讀過往文章學語氣 → 風格一致、不突兀</li>
-								<li>直接在 <code>Blog/</code> 建檔、套 template、自動補 meta</li>
-								<li>同步改 <code>index.html</code> 文章列表卡片</li>
-								<li>跑 <code>git commit + push</code>,你只按 approve 即上線</li>
+								<li>Figma MCP 直接連線,<strong>規範與設計稿都是即時抓的</strong></li>
+								<li>規範變動?Skill 裡叫 MCP 重抓一次就同步</li>
+								<li>全局 Skill 裝好一次,<strong>下個案子也能用</strong>,變成團隊資產</li>
+								<li>設計 review 時就在對話裡,「padding 差 4px」會自己提</li>
 							</ul>
 						</div>
 					</div>
 					<div class="capabilities">
-						<span class="cap">① 改多個檔案</span>
-						<span class="cap">② 學過往語氣</span>
-						<span class="cap">③ 執行 git 指令</span>
-						<span class="cap">④ Memory 存風格</span>
-					</div>
-				</div>
-
-				<div class="case-card">
-					<div class="case-head">
-						<span class="case-num">Case 4</span>
-						<span class="case-ttl">依設計規範 + 圖片 Library 產出一整套視覺物</span>
-					</div>
-					<div class="case-ask">
-						「下週產品發表要 8 張功能卡片。規範在 <code>design/design-system.md</code>
-						(顏色、字級、間距、圓角),icon 都在 <code>assets/icons/</code>(200+ SVG),
-						產品圖在 <code>assets/products/</code>。
-						我有一個 <code>/gen-card</code> skill 寫好了卡片樣板邏輯。
-						幫我依功能清單一次產 8 張——每張要挑最合適的 icon 與產品圖、遵守設計規範、
-						輸出 HTML 版(可嵌官網)+ 1920×1080 PNG 版(給行銷發社群)。」
-					</div>
-					<div class="case-flow">
-						<div class="step"><strong>1.</strong> 讀 <code>design-system.md</code>,抓 token 與規則</div>
-						<div class="step"><strong>2.</strong> 掃 <code>assets/icons/</code> 與 <code>products/</code>,建資產索引</div>
-						<div class="step"><strong>3.</strong> 依功能語意<strong>匹配最合適的 icon / 圖</strong></div>
-						<div class="step"><strong>4.</strong> 呼叫 <code>/gen-card</code> skill × 8 次</div>
-						<div class="step"><strong>5.</strong> 用 puppeteer 對 HTML 截圖產 PNG</div>
-						<div class="step"><strong>6.</strong> 存進 <code>output/launch-2026/</code>,命名整齊</div>
-					</div>
-					<div class="case-compare">
-						<div class="side bad">
-							<div class="side-ttl">對話框卡在哪</div>
-							<ul>
-								<li>規範文件貼完,200 個 icon 名稱根本貼不進去</li>
-								<li>沒辦法<strong>看圖</strong>挑 icon——只能靠檔名猜</li>
-								<li>產不出 HTML 檔,更不用說 PNG 輸出</li>
-								<li>8 張卡片 × 規範檢查 × 截圖 = 至少一整天人工</li>
-								<li>規範改了(例如主色微調),全部要重做</li>
-							</ul>
-						</div>
-						<div class="side good">
-							<div class="side-ttl">Claude Code 怎麼解</div>
-							<ul>
-								<li>先掃 asset 資料夾建索引,<strong>用圖像識別認 icon 語意</strong></li>
-								<li>Skill 裡寫好的規則自動套 → 8 張<strong>風格一致</strong></li>
-								<li>直接產 HTML、puppeteer 截圖成 PNG</li>
-								<li>規範改了?改一行 <code>design-system.md</code> 再跑一次</li>
-								<li>下次發表會直接<strong>重用同一套 skill + 索引</strong></li>
-							</ul>
-						</div>
-					</div>
-					<div class="capabilities">
-						<span class="cap">① 讀規範文件</span>
-						<span class="cap">② 掃 asset library 建索引</span>
-						<span class="cap">③ Skill 產多格式</span>
-						<span class="cap">④ 風格永遠一致</span>
+						<span class="cap">① Figma MCP 連線</span>
+						<span class="cap">② 規範變成可執行 Skill</span>
+						<span class="cap">③ 跨專案共用</span>
+						<span class="cap">④ 進入設計討論流程</span>
 					</div>
 				</div>
 
 			</div>
 
 			<div class="warn-card" style="background:#f6f2ea;border-left-color:#a89773;margin-top:20px;">
-				<div class="ttl" style="color:#6b5030;">🎨 為什麼這對設計師特別有感</div>
+				<div class="ttl" style="color:#6b5030;">🎨 為什麼這對設計部門特別有感</div>
 				<p style="color:#5a4a2a;">
-					設計師最怕的不是做一張圖,而是<strong>「做 20 張風格要一致的圖」</strong>或
-					<strong>「規範更新後全部要重做」</strong>。
-					把規範寫進 <code>.md</code>、把產圖流程寫進 Skill、把資產放進資料夾——
-					之後每一次新需求,Claude Code 都會<strong>從同一個 source 生出一致的東西</strong>,
-					規範改了只要改一次。這其實就是「Design System 的可執行版本」。
+					設計系統最大的痛不是「建出來」,而是<strong>「讓每個案子真的遵守」</strong>——
+					每個 PM 都覺得自己的需求「特別、應該破例」,設計師則只能靠肉眼比對。
+					把規範透過 Figma MCP 抓進 Skill 之後,Claude 就變成<strong>不會疲倦的設計守門員</strong>:
+					走查不漏、跨專案標準一致、規範改一次全部同步。
+					更關鍵的是——它能<strong>進到你的設計討論流</strong>裡,而不是另開一個工具。
 				</p>
 			</div>
 
-			<h3 style="margin-top: 40px;">延伸:把 Claude Code 當成你的 CMS(部落格後台)</h3>
+
 			<p>
-				Case 3 那個流程走順了之後,會忽然意識到——我好像不再需要 WordPress、Ghost、Notion Public、Medium 這類部落格後台了。
-				靜態 HTML + Git + Claude Code,剛好<strong>組成一套沒有管理介面、但什麼都能做的 CMS</strong>。
-				你的<strong>對話框就是後台</strong>、<strong>Git 就是資料庫</strong>、<strong>Claude Code 就是那個會幫你改版面、發文章、調 tag 的實習生</strong>。
+				注意這三個案例的共同點:<strong>每一步單獨來看都不難</strong>——你自己整理逐字稿、自己拼簡報、自己對照 Figma 規範——
+				真正累的是<strong>「來回切換」</strong>跟<strong>「中途過程沒地方放」</strong>。
+				Claude Code 的價值不在於任何一步做得特別神,而是<strong>把那些來回切換的摩擦拿掉</strong>,
+				並且<strong>把過程都留在資料夾裡可以再用</strong>,讓你專注在描述目標與做最後判斷。
+			</p>
+
+			<h3 style="margin-top: 40px;">「但我手上只有小專案,值得嗎?」</h3>
+			<p>
+				聽完前面三個案例,常見的反應是:這些好像都是有規模、有資料量、有跨專案資產的人才用得上;
+				我手上就只是幾份訪談、一份 PRD、一張設計稿,有必要動用 Claude Code 嗎?
 			</p>
 
 			<style>
-				.cms-table {
-					width: 100%;
-					border-collapse: collapse;
-					margin: 20px 0;
-					font-size: 13.5px;
-				}
-				.cms-table th, .cms-table td {
-					text-align: left;
-					padding: 10px 14px;
-					border-bottom: 1px solid #ece4d2;
-					vertical-align: top;
-					line-height: 1.55;
-				}
-				.cms-table th {
-					background: #f6f2ea;
-					color: #6b5030;
-					font-weight: 600;
-					font-size: 12px;
-					letter-spacing: 0.05em;
-				}
-				.cms-table td.op { color: #7a6f58; }
-				.cms-table td.said {
-					background: #faf6ee;
-					color: #3a2f1f;
-					font-style: italic;
-					border-left: 3px solid #c9a878;
-				}
-				.cms-table td.said::before {
-					content: "「";
-					color: #c9a878;
-				}
-				.cms-table td.said::after {
-					content: "」";
-					color: #c9a878;
-				}
-				.cms-pros {
+				.barrier-grid {
 					display: grid;
-					grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-					gap: 12px;
-					margin: 20px 0;
+					grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+					gap: 14px;
+					margin: 20px 0 8px;
 				}
-				.cms-pro {
-					background: #f6f2ea;
+				.barrier-card {
+					background: #eef5ea;
+					border: 1px solid #c9ddc0;
 					border-radius: 10px;
-					padding: 14px 16px;
+					padding: 16px 18px;
+					display: flex;
+					flex-direction: column;
+					gap: 6px;
 				}
-				.cms-pro .cms-pro-ttl {
-					font-size: 13px;
-					font-weight: 700;
-					color: #3a2f1f;
-					margin-bottom: 4px;
-				}
-				.cms-pro .cms-pro-desc {
+				.barrier-card .b-tag {
+					font-family: 'Georgia', serif;
+					font-style: italic;
 					font-size: 12px;
-					color: #7a6f58;
-					line-height: 1.55;
+					color: #4a7a5a;
+					letter-spacing: 0.06em;
+				}
+				.barrier-card .b-ttl {
+					font-size: 14px;
+					font-weight: 700;
+					color: #2d4a36;
+				}
+				.barrier-card .b-desc {
+					font-size: 12.5px;
+					color: #3a5a44;
+					line-height: 1.6;
+				}
+				.barrier-card code {
+					background: #fff;
+					color: #4a7a5a;
+					padding: 1px 5px;
+					border-radius: 3px;
+					font-size: 11.5px;
 				}
 			</style>
 
-			<div class="illustration" style="padding:22px 24px;">
-				<h4>傳統 CMS 的功能 → 在 Claude Code 裡你怎麼說</h4>
-				<table class="cms-table">
-					<thead>
-						<tr>
-							<th style="width:28%;">傳統後台功能</th>
-							<th style="width:36%;">你只要這樣說</th>
-							<th>Claude Code 實際做的事</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td class="op"><strong>發文</strong><br>建立新文章、套樣板</td>
-							<td class="said">把這段語音轉文字整理成一篇 blog,用我之前的語氣</td>
-							<td>讀過往文章學語氣 → 建 <code>Blog/xxx.html</code> → 補 meta → 更新首頁列表</td>
-						</tr>
-						<tr>
-							<td class="op"><strong>改標題 / 改內文</strong></td>
-							<td class="said">把「線性反覆」那篇的標題改成更口語一點</td>
-							<td>直接 <code>grep</code> 找到該檔 → 改 <code>&lt;title&gt;</code> + <code>h1</code> + 首頁卡片標題</td>
-						</tr>
-						<tr>
-							<td class="op"><strong>分類 / Tag 管理</strong></td>
-							<td class="said">給所有跟 AI 有關的文章加 <code>#AI</code> tag</td>
-							<td>掃整個 <code>Blog/</code> → 依關鍵字判斷 → 批次補 tag</td>
-						</tr>
-						<tr>
-							<td class="op"><strong>搜尋 / 篩選</strong></td>
-							<td class="said">列出 2026 年所有還沒有封面圖的文章</td>
-							<td>讀資料夾 → 檢查每篇的 <code>&lt;meta og:image&gt;</code> → 產 checklist</td>
-						</tr>
-						<tr>
-							<td class="op"><strong>媒體庫</strong><br>上傳 / 管理圖片</td>
-							<td class="said">用 nano-banana 幫這篇生封面圖,主題是 X,存對應資料夾</td>
-							<td>呼叫圖像 Skill → 存 <code>Blog/image/{slug}/cover.png</code> → 更新 og tag</td>
-						</tr>
-						<tr>
-							<td class="op"><strong>精選 / 置頂</strong></td>
-							<td class="said">首頁 featured 換成最新兩篇</td>
-							<td>讀 <code>index.html</code> featured 區塊 → 依時間排序重寫</td>
-						</tr>
-						<tr>
-							<td class="op"><strong>SEO / meta</strong></td>
-							<td class="said">幫新這篇補 OG、Twitter card、description</td>
-							<td>依 <code>CLAUDE.md</code> 定義的 meta 樣板自動填入</td>
-						</tr>
-						<tr>
-							<td class="op"><strong>批次編輯</strong></td>
-							<td class="said">所有舊文章底部都加一段「歡迎訂閱電子報」的 CTA</td>
-							<td>找到所有 <code>Blog/*.html</code> → 在固定位置插入 → diff 給你 review</td>
-						</tr>
-						<tr>
-							<td class="op"><strong>發布 / 部署</strong></td>
-							<td class="said">OK,幫我 commit 然後發出去</td>
-							<td><code>git add</code> + <code>commit</code>(訊息自動寫好)+ <code>push</code> → GitHub Pages 部署</td>
-						</tr>
-						<tr>
-							<td class="op"><strong>版本管理 / 還原</strong></td>
-							<td class="said">上一篇我改過頭了,還原到昨天的版本</td>
-							<td><code>git log</code> → 找到對應 commit → <code>git checkout</code> 那份檔案</td>
-						</tr>
-					</tbody>
-				</table>
-				<p class="caption">同樣的後台操作,在傳統 CMS 要點十幾次滑鼠,這裡就是一句話</p>
-			</div>
-
-			<h4>這套「無頭 CMS」的三個意外好處</h4>
-			<div class="cms-pros">
-				<div class="cms-pro">
-					<div class="cms-pro-ttl">🗄 沒有資料庫要維護</div>
-					<div class="cms-pro-desc">
-						內容就是 <code>.html</code> / <code>.md</code> 檔,<strong>Git 就是資料庫也是歷史紀錄</strong>。
-						不用備份、不怕 DB 壞掉、未來換平台只要複製資料夾。
+			<div class="barrier-grid">
+				<div class="barrier-card">
+					<span class="b-tag">COST</span>
+					<div class="b-ttl">桌面版安裝免錢</div>
+					<div class="b-desc">
+						下載桌面 App 不收一毛錢,你已經付的 Claude 訂閱費直接共用——<strong>「裝來看看」沒有任何代價</strong>。
+						不喜歡刪掉就好,你的檔案不會被改動。
 					</div>
 				</div>
-				<div class="cms-pro">
-					<div class="cms-pro-ttl">💰 部署完全免費</div>
-					<div class="cms-pro-desc">
-						GitHub Pages / Cloudflare Pages / Vercel 任一個都行,<strong>零主機費</strong>。
-						你只付 Claude 訂閱費,而這筆錢原本就花了。
+				<div class="barrier-card">
+					<span class="b-tag">RISK</span>
+					<div class="b-ttl">小專案才適合練手感</div>
+					<div class="b-desc">
+						反過來想:正因為手上只有 3 份檔案,出包風險低,<strong>剛好是你練「怎麼跟 AI 助理協作」最安全的場域</strong>。
+						等大專案來了你已經有手感了。
 					</div>
 				</div>
-				<div class="cms-pro">
-					<div class="cms-pro-ttl">🧩 後台隨你長</div>
-					<div class="cms-pro-desc">
-						想要「訂閱者清單」「瀏覽數分析」「RSS 產生器」?
-						寫一個 <strong>Skill</strong> 就多一個後台功能——不必等 CMS 開發者支援。
+				<div class="barrier-card">
+					<span class="b-tag">FLOOR</span>
+					<div class="b-ttl">不用懂 git 也能開始</div>
+					<div class="b-desc">
+						任何一個資料夾(就算只有兩份 docx)都能直接拖進去用。
+						<strong>Git、CLAUDE.md、Skill 都是「等你需要時再學」</strong>,門檻不在前面。
+					</div>
+				</div>
+				<div class="barrier-card">
+					<span class="b-tag">CONTINUITY</span>
+					<div class="b-ttl">對話歷史按專案分組</div>
+					<div class="b-desc">
+						對話框最痛的是<strong>「我上次跟它討論的那個東西在哪?」</strong>。
+						桌面版自動把對話依資料夾分組,翻得到、接得回去——光這點就贏對話框很多。
+					</div>
+				</div>
+				<div class="barrier-card">
+					<span class="b-tag">FILES</span>
+					<div class="b-ttl">小檔案也省去複製貼上</div>
+					<div class="b-desc">
+						就算只是「幫我看一份逐字稿」,直接 <code>@drag</code> 進來,比上傳到對話框、等它讀完、再把回覆抄回 Word 順太多。
+						<strong>每天省 20 分鐘的累積</strong>,小專案也很有感。
 					</div>
 				</div>
 			</div>
 
-			<div class="warn-card" style="background:#eef5ea;border-left-color:#6b9b7c;">
-				<div class="ttl" style="color:#2d4a36;">💡 適合誰用這套?</div>
-				<p style="color:#2d4a36;">
-					<strong>適合</strong>:個人部落格、作品集、技術筆記、小團隊的 docs 站——
-					內容量在幾百篇以內、不需要即時協作、想要完全掌握呈現方式的人。<br>
-					<strong>不適合</strong>:多作者同時編輯、需要即時預覽、內容編輯者不熟 git 的場景——
-					那種情況還是 Notion / Ghost / WordPress 比較對。
+			<style>
+				.growth-block {
+					margin: 28px 0 20px;
+					padding: 26px 28px;
+					background: linear-gradient(135deg, #eef5ea 0%, #e3efdb 100%);
+					border: 1.5px solid #7a9b82;
+					border-radius: 14px;
+				}
+				.growth-block .g-tag {
+					font-family: 'Georgia', serif;
+					font-style: italic;
+					font-size: 12px;
+					color: #4a7a5a;
+					letter-spacing: 0.1em;
+				}
+				.growth-block .g-ttl {
+					font-size: 19px;
+					font-weight: 700;
+					color: #2d4a36;
+					margin: 4px 0 10px;
+				}
+				.growth-block .g-lead {
+					font-size: 14px;
+					color: #2d4a36;
+					line-height: 1.75;
+					margin-bottom: 16px;
+				}
+				.growth-block .g-lead strong { color: #1a3522; }
+				.growth-stages {
+					display: grid;
+					grid-template-columns: repeat(4, 1fr);
+					gap: 10px;
+					margin: 16px 0 10px;
+				}
+				.growth-stage {
+					background: rgba(255,255,255,0.7);
+					border-radius: 10px;
+					padding: 12px 14px;
+					position: relative;
+				}
+				.growth-stage .gs-num {
+					font-family: 'Georgia', serif;
+					font-style: italic;
+					font-size: 11px;
+					color: #4a7a5a;
+				}
+				.growth-stage .gs-ttl {
+					font-size: 13px;
+					font-weight: 700;
+					color: #2d4a36;
+					margin: 2px 0 4px;
+				}
+				.growth-stage .gs-desc {
+					font-size: 11.5px;
+					color: #3a5a44;
+					line-height: 1.55;
+				}
+				.growth-block .g-foot {
+					font-size: 13px;
+					color: #2d4a36;
+					line-height: 1.7;
+					padding-top: 14px;
+					border-top: 1px dashed rgba(122,155,130,0.5);
+				}
+				.growth-block .g-foot strong { color: #1a3522; }
+				@media (max-width: 760px) {
+					.growth-stages { grid-template-columns: repeat(2, 1fr); }
+				}
+			</style>
+
+			<div class="growth-block">
+				<span class="g-tag">CORE INSIGHT</span>
+				<div class="g-ttl">🌱 你的流程會自然「長大」——不必先學完再上場</div>
+				<p class="g-lead">
+					很多人卡在「Skill / Memory / CLAUDE.md 聽起來好複雜,我要先弄懂才能開始」。
+					其實順序剛好相反——<strong>這些概念是你用了之後才會自然冒出來的需求</strong>,不是入場門票。
+				</p>
+
+				<div class="growth-stages">
+					<div class="growth-stage">
+						<div class="gs-num">DAY 1</div>
+						<div class="gs-ttl">只是請它整理</div>
+						<div class="gs-desc">把一份訪談丟進去,請它幫你抽痛點。<strong>什麼設定都不用</strong>。</div>
+					</div>
+					<div class="growth-stage">
+						<div class="gs-num">DAY 7</div>
+						<div class="gs-ttl">想固化做法</div>
+						<div class="gs-desc">「上次那種抽法很好」——你會自然想:能不能下次再來一次?<strong>這就是 Skill 的起點</strong>。</div>
+					</div>
+					<div class="growth-stage">
+						<div class="gs-num">DAY 21</div>
+						<div class="gs-ttl">嫌每次重講背景</div>
+						<div class="gs-desc">「我每次都要說我們是設計部門...」——<strong>這就是 CLAUDE.md 該寫了</strong>。</div>
+					</div>
+					<div class="growth-stage">
+						<div class="gs-num">DAY 60</div>
+						<div class="gs-ttl">嫌每次重講偏好</div>
+						<div class="gs-desc">「我每次都提醒它我語氣要直接」——<strong>這就是 Memory 該設了</strong>。</div>
+					</div>
+				</div>
+
+				<p class="g-foot">
+					不必反過來:讀完一堆教學、配置好所有東西、才敢開始用。
+					<strong>需求會自己浮現,你只要在那一刻順手把它寫下來就好</strong>——
+					今天用得越像「跟對話框一樣笨」也沒關係,只要在做,該長出來的能力就會自己長出來。
+					(這也是後面 a05 / a07 那些章節真正的閱讀方式——不是「先學會它們」,而是「等你需要它們的時候,回來看」。)
 				</p>
 			</div>
 
-			<p>
-				注意這三個案例的共同點:<strong>每一步單獨來看都不難</strong>——AI 寫大綱、你自己做投影片、你自己截圖、你自己 commit——
-				真正累的是<strong>「來回切換」</strong>。Claude Code 的價值不在於任何一步做得特別神,
-				而是<strong>把那些來回切換的摩擦全部拿掉</strong>,讓你只需要描述目標與做最後的判斷。
-			</p>
+			<div class="warn-card" style="background:#eef5ea;border-left-color:#6b9b7c;">
+				<div class="ttl" style="color:#2d4a36;">💡 一句話建議</div>
+				<p style="color:#2d4a36;">
+					如果你已經是 Claude 訂閱戶,<strong>桌面版下載安裝不會多花一毛錢、也不會動你的檔案</strong>。
+					今天有任何一份你正在處理的 docx / pptx / md,把它丟進去試一次「請 Claude 幫我整理」,
+					大概十分鐘你就會感覺到「這跟對話框是兩件事」——進階概念等需求自己浮現再學就好。
+				</p>
+			</div>
 
 			<div class="quote-block">
 				<span class="para-mark">¶</span>
@@ -1108,82 +1144,116 @@
 				<div class="roman">ii.</div>
 				<div class="tag">SETUP · Environment</div>
 			</div>
-			<h2>環境準備:該裝哪些東西、為什麼要裝</h2>
+			<h2>環境準備:桌面版與 CLI 版差在哪</h2>
 
 			<p>
-				Claude Code UI 雖然把終端機那一段藏起來了,但它底層還是會呼叫一些工具。
-				下面這幾個是<strong>幾乎一定會用到的</strong>,搭配它們之後,Claude 才能順暢地跑指令、版控、開預覽。
+				Claude Code 有<strong>兩個入口</strong>,門檻差很多。多數設計 / 研究 / PM 角色從<strong>桌面版</strong>開始就好——
+				下載安裝就能用,什麼開發工具都不用裝。
+				只有當你想跑 dev server、串外部 API、或寫比較進階的 Skill 時,才會碰到 CLI 版那條路。
 			</p>
 
-			<div class="install-grid">
-				<div class="install-card">
-					<span class="req must">必裝</span>
-					<div class="name">Git / GitHub Desktop</div>
-					<div class="why">
-						Claude 改檔案時,你需要看 diff、能 revert。Git 是它的安全網。
-						加上 Worktree 功能(後面會講)也要靠 Git。
+			<style>
+				.entry-pair {
+					display: grid;
+					grid-template-columns: 1fr 1fr;
+					gap: 16px;
+					margin: 20px 0;
+				}
+				.entry-card {
+					border-radius: 12px;
+					padding: 20px 22px;
+					display: flex;
+					flex-direction: column;
+					gap: 8px;
+				}
+				.entry-card.desktop {
+					background: #eef5ea;
+					border: 1.5px solid #7a9b82;
+				}
+				.entry-card.cli {
+					background: #fef4e8;
+					border: 1.5px solid #c9a878;
+				}
+				.entry-card .e-tag {
+					font-family: 'Georgia', serif;
+					font-style: italic;
+					font-size: 12px;
+					letter-spacing: 0.08em;
+				}
+				.entry-card.desktop .e-tag { color: #4a7a5a; }
+				.entry-card.cli .e-tag { color: #8a6a2a; }
+				.entry-card .e-ttl {
+					font-size: 17px;
+					font-weight: 700;
+					color: #3a2f1f;
+				}
+				.entry-card .e-line {
+					font-size: 13px;
+					color: #5a4a2a;
+					line-height: 1.6;
+				}
+				.entry-card .e-line strong { color: #3a2f1f; }
+				.entry-card ul {
+					margin: 6px 0 0;
+					padding-left: 16px;
+					font-size: 12.5px;
+					color: #5a4a2a;
+					line-height: 1.6;
+				}
+				.entry-card ul li { margin-bottom: 3px; }
+				@media (max-width: 720px) {
+					.entry-pair { grid-template-columns: 1fr; }
+				}
+			</style>
+
+			<div class="entry-pair">
+				<div class="entry-card desktop">
+					<span class="e-tag">RECOMMENDED · 設計 / 研究 / PM 從這裡開始</span>
+					<div class="e-ttl">桌面版(Claude Desktop App)</div>
+					<div class="e-line">
+						到官網下載 <code>.dmg</code> / <code>.exe</code>,雙擊安裝就完成。
+						<strong>不用裝 Node.js、不用裝 Git、不用懂指令</strong>。
 					</div>
+					<ul>
+						<li><strong>需要的:</strong>Claude 訂閱(Pro / Max / Team)</li>
+						<li><strong>不需要的:</strong>任何開發工具</li>
+						<li>能做的:讀寫檔案、跑內建 Skill、處理 docx/xlsx/pptx/md</li>
+						<li>適合:訪談整理、簡報製作、PRD 反推、文件批次編輯</li>
+					</ul>
 				</div>
-				<div class="install-card">
-					<span class="req must">必裝</span>
-					<div class="name">Node.js</div>
-					<div class="why">
-						Claude Code CLI 本身、大多數前端 dev server、許多 MCP 套件都要 Node.js。
-						建議裝 LTS 版本就好。
+				<div class="entry-card cli">
+					<span class="e-tag">ADVANCED · 想自己擴充才需要</span>
+					<div class="e-ttl">CLI 版 / VS Code 整合</div>
+					<div class="e-line">
+						走終端機指令,可以更深度跟 dev server、Git、外部 API 整合。
+						<strong>需要先裝 Node.js</strong>,因為 CLI 本體是 npm 套件。
 					</div>
-				</div>
-				<div class="install-card">
-					<span class="req opt">建議</span>
-					<div class="name">Python</div>
-					<div class="why">
-						寫腳本、跑資料處理、產生 PPT/PDF 時會需要。
-						不裝也能用,但很多 Skill 會假設你有。
-					</div>
-				</div>
-				<div class="install-card">
-					<span class="req must">推薦</span>
-					<div class="name">VS Code</div>
-					<div class="why">
-						有官方的 Claude Code 整合擴充,可以邊看 diff 邊跟 Claude 對話,比純 UI 順很多。
-					</div>
+					<ul>
+						<li><strong>需要的:</strong>Node.js LTS、Git、(視情況) Python</li>
+						<li>能多做:dev server 預覽、自動跑測試、自製 MCP 連線</li>
+						<li>適合:設計工程、自製 Skill、跨工具串接(例如 Figma MCP)</li>
+						<li>建議:有需求時再裝,不必一開始就學</li>
+					</ul>
 				</div>
 			</div>
 
-			<h3>VS Code 推薦的幾個延伸套件</h3>
+			<h3>什麼時候你會「升級」到 CLI 版?</h3>
 			<p>
-				如果你跟我一樣常常請 Claude 寫 HTML、寫筆記、畫流程圖,這幾個延伸套件會讓「邊寫邊預覽」這件事變得很自然:
+				多數情況下桌面版就夠用。下面這幾個場景才會讓你想往 CLI 版走:
 			</p>
 			<ul>
-				<li><strong>Markdown Preview Enhanced</strong>——側邊即時預覽 Markdown,支援數學、流程圖、PDF 匯出。</li>
-				<li><strong>Markdown Preview Mermaid Support</strong>——讓 Markdown 內的 <code>mermaid</code> 區塊直接渲染成圖。Claude 很常用 Mermaid 來畫架構圖。</li>
-				<li><strong>Live Server / Live Preview</strong>——HTML/CSS 改完即時看到結果,不用每次重新整理。</li>
+				<li><strong>串 Figma MCP 做設計守門員</strong>(Case 3 那種)——MCP 設定通常在 CLI 版比較好管理。</li>
+				<li><strong>想把 Skill 做得更複雜</strong>——例如要呼叫第三方 API、跑 puppeteer、處理大量影像。</li>
+				<li><strong>跟工程師協作</strong>——他們在跑 dev server、做 git worktree,你想跟他們在同一個流程裡。</li>
 			</ul>
 
-			<div class="illustration">
-				<h4>環境拼圖:每塊各自負責什麼</h4>
-				<div class="flow-row">
-					<div class="flow-step">
-						<div class="num">01</div>
-						<div class="ttl">Git</div>
-						<div class="why">版控 + Worktree 的基礎</div>
-					</div>
-					<div class="flow-step">
-						<div class="num">02</div>
-						<div class="ttl">Node.js</div>
-						<div class="why">Claude Code 本體與大多套件</div>
-					</div>
-					<div class="flow-step">
-						<div class="num">03</div>
-						<div class="ttl">VS Code</div>
-						<div class="why">看 diff、即時預覽、邊改邊聊</div>
-					</div>
-					<div class="flow-step">
-						<div class="num">04</div>
-						<div class="ttl">Claude Code</div>
-						<div class="why">能讀寫檔案的 AI 助手本體</div>
-					</div>
-				</div>
-				<p class="caption">環境裝完後,接下來才會把專案丟進去開始用</p>
+			<div class="warn-card" style="background:#eef5ea;border-left-color:#6b9b7c;">
+				<div class="ttl" style="color:#2d4a36;">💡 給設計部門的建議路徑</div>
+				<p style="color:#2d4a36;">
+					<strong>第一週:</strong>只裝桌面版,把現在手上的訪談 / 簡報 / PRD 各丟一份進去跑跑看。<br>
+					<strong>第二週:</strong>覺得很順之後,裝 Git(或 GitHub Desktop)讓檔案有版本歷史。<br>
+					<strong>第三週起:</strong>有特定需求(Figma MCP、自製 Skill)時,再考慮裝 Node.js + CLI 版。
+				</p>
 			</div>
 
 			<hr>
@@ -1458,9 +1528,9 @@
 
 			<div class="section-label" id="a04">
 				<div class="roman">iv.</div>
-				<div class="tag">FIRST RUN · Init / Plan / Memory</div>
+				<div class="tag">FIRST RUN · Init &amp; Plan</div>
 			</div>
-			<h2>第一次用:/init、Plan、Memory</h2>
+			<h2>第一次用:/init 與 Plan 模式</h2>
 
 			<p>
 				開好專案的第一件事,不是叫它寫東西,而是讓它<strong>先認識專案</strong>。
@@ -1512,11 +1582,11 @@
 				對於不熟內容的請求,先讓它列計畫,99% 的災難都能在這裡攔截。
 			</p>
 
-			<h3>Step 3 · Memory:讓它記住「你」</h3>
+			<h3>Step 3 · 認識三種「腦袋」</h3>
 			<p>
-				Memory 跟 CLAUDE.md 的差別是:CLAUDE.md 是「描述專案」,Memory 是「描述使用者本人」。
-				比如「我喜歡終端用 bash 不要 PowerShell」「回覆請用繁體中文」「commit message 寫在 50 字內」——
-				這些跨專案都成立的偏好,丟到 Memory 後,任何專案開新對話它都會帶上。
+				做完 <code>/init</code> 跟 Plan 模式之後,接下來就會碰到 Claude Code 三個讓人最常搞混的概念:
+				<strong>CLAUDE.md / Memory / Skill</strong>。下一節會用人腦的三種記憶把它們一次拆開——
+				先繼續看這節的常用指令表,再進入下一節。
 			</p>
 
 			<table class="cmd-list">
@@ -1562,6 +1632,226 @@
 
 			<div class="section-label" id="a05">
 				<div class="roman">v.</div>
+				<div class="tag">THREE BRAINS · Project / Memory / Skill</div>
+			</div>
+			<h2>三種「腦袋」:CLAUDE.md / Memory / Skill 各自記什麼</h2>
+
+			<p>
+				用 Claude Code 一陣子之後,會發現它「記得事情」的方式不只一種——
+				有些東西每次對話它都自動知道、有些是只有「你這個人」來才會被叫起來、有些是「叫它做某件事它就會」。
+				這對應到三個概念:<strong>CLAUDE.md / Memory / Skill</strong>,職責完全不同,但常常被混在一起講。
+			</p>
+
+			<p>
+				我自己用「<strong>人腦的三種記憶</strong>」來想,最不會搞混:
+			</p>
+
+			<style>
+				.brain-grid {
+					display: grid;
+					grid-template-columns: repeat(3, 1fr);
+					gap: 14px;
+					margin: 24px 0;
+				}
+				.brain-card {
+					border-radius: 12px;
+					padding: 18px 20px;
+					border: 1.5px solid;
+					display: flex;
+					flex-direction: column;
+					gap: 8px;
+				}
+				.brain-card.semantic {
+					background: #fef4e8;
+					border-color: #c9a878;
+				}
+				.brain-card.episodic {
+					background: #f0eaf5;
+					border-color: #9d83b8;
+				}
+				.brain-card.procedural {
+					background: #eef5ea;
+					border-color: #7a9b82;
+				}
+				.brain-card .b-icon {
+					font-size: 24px;
+					line-height: 1;
+				}
+				.brain-card .b-name {
+					font-family: 'Georgia', serif;
+					font-style: italic;
+					font-size: 12px;
+					letter-spacing: 0.05em;
+				}
+				.brain-card.semantic .b-name { color: #8a6a2a; }
+				.brain-card.episodic .b-name { color: #5a4275; }
+				.brain-card.procedural .b-name { color: #4a7a5a; }
+				.brain-card .b-ttl {
+					font-size: 16px;
+					font-weight: 700;
+					color: #3a2f1f;
+				}
+				.brain-card .b-ana {
+					font-size: 13px;
+					color: #5a4a2a;
+					line-height: 1.55;
+				}
+				.brain-card .b-ana strong { color: #3a2f1f; }
+				.brain-card .b-ex {
+					margin-top: 8px;
+					padding-top: 10px;
+					border-top: 1px dashed rgba(0,0,0,0.1);
+					font-size: 12px;
+					color: #5a4a2a;
+					line-height: 1.55;
+				}
+				@media (max-width: 760px) {
+					.brain-grid { grid-template-columns: 1fr; }
+				}
+				.brain-table {
+					width: 100%;
+					border-collapse: collapse;
+					margin: 24px 0 8px;
+					font-size: 13.5px;
+				}
+				.brain-table th, .brain-table td {
+					text-align: left;
+					padding: 11px 14px;
+					border-bottom: 1px solid #ece4d2;
+					vertical-align: top;
+					line-height: 1.55;
+				}
+				.brain-table th {
+					background: #f6f2ea;
+					color: #6b5030;
+					font-weight: 600;
+					font-size: 12px;
+					letter-spacing: 0.05em;
+				}
+				.brain-table td.col-name { font-weight: 700; color: #3a2f1f; }
+				.brain-table code {
+					background: #f4ece0;
+					color: #c46a3a;
+					padding: 1px 5px;
+					border-radius: 3px;
+					font-family: 'Consolas', monospace;
+					font-size: 11.5px;
+				}
+			</style>
+
+			<div class="brain-grid">
+				<div class="brain-card semantic">
+					<div class="b-icon">🧭</div>
+					<span class="b-name">SEMANTIC MEMORY</span>
+					<div class="b-ttl">CLAUDE.md ≈ 個性 + 工作環境的常識</div>
+					<div class="b-ana">
+						「<strong>我是誰、我在哪個專案、這裡的規矩是什麼</strong>」——
+						就像你進一家新公司第一天讀的員工手冊與專案 brief。
+						<strong>每次開對話都會被自動載入</strong>,你不用重講。
+					</div>
+					<div class="b-ex">
+						<strong>例如:</strong>「這是設計部門的研究專案,訪談稿放 <code>research/</code>,
+						整理時用使用者原話 + 內部主題分類兩欄。」
+					</div>
+				</div>
+				<div class="brain-card episodic">
+					<div class="b-icon">📓</div>
+					<span class="b-name">EPISODIC MEMORY</span>
+					<div class="b-ttl">Memory ≈ 長期記憶</div>
+					<div class="b-ana">
+						「<strong>我跟這個人相處過,記得他喜歡什麼、討厭什麼</strong>」——
+						像你跟一個老朋友相處久了,他記得你不愛香菜、簡報喜歡留白。
+						<strong>跟著「你這個人」跨專案累積</strong>,沒有時間限制。
+					</div>
+					<div class="b-ex">
+						<strong>例如:</strong>「使用者偏好繁體中文回覆、文章語氣避免說教詞、
+						簡報配色避免飽和橘」——任何專案開新對話都自動帶上。
+					</div>
+				</div>
+				<div class="brain-card procedural">
+					<div class="b-icon">🤸</div>
+					<span class="b-name">PROCEDURAL MEMORY</span>
+					<div class="b-ttl">Skill ≈ 肌肉記憶 / 練熟的招式</div>
+					<div class="b-ana">
+						「<strong>不用想,做就對了——我練過這套流程</strong>」——
+						像你打字、騎腳踏車、簽自己的名字,身體記得整套動作。
+						<strong>呼叫一次它就照固定步驟跑完</strong>,而且 Skill 之間還能互相呼叫。
+					</div>
+					<div class="b-ex">
+						<strong>例如:</strong>呼叫 <code>/research-synthesize</code> 一次跑完
+						「抽 quote → 群組成主題 → 反向發散機會點」整套流程。
+					</div>
+				</div>
+			</div>
+
+			<h3>用一個情境串起三者:設計部門新請了一位 AI 助理</h3>
+			<p>
+				想像你們部門新報到一位助理,你怎麼讓他發揮最大價值?三件事剛好對應上面三種記憶:
+			</p>
+			<ol>
+				<li>
+					<strong>第一天上班 → 給他讀「部門簡介 + 專案手冊」</strong>(<code>CLAUDE.md</code>)。
+					從此他知道你們是設計部門、檔案怎麼放、寫東西的語氣風格。
+				</li>
+				<li>
+					<strong>跟你共事久了 → 他記住你個人偏好</strong>(Memory)。
+					不用每次提醒「我講話直接點」「不要用 emoji」。
+				</li>
+				<li>
+					<strong>「每月設計團隊月會簡報」這種固定流程,你帶他走過幾次後 → 變成他會的招式</strong>(Skill)。
+					之後說「跑一次月會準備」,他就照著做。
+				</li>
+			</ol>
+
+			<h3>三者的責任、載入時機、改了影響誰</h3>
+			<table class="brain-table">
+				<thead>
+					<tr>
+						<th style="width:14%;">概念</th>
+						<th style="width:18%;">寫在哪</th>
+						<th style="width:14%;">範圍</th>
+						<th style="width:18%;">何時生效</th>
+						<th>改了會影響</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td class="col-name">CLAUDE.md</td>
+						<td><code>專案/CLAUDE.md</code></td>
+						<td>單一專案</td>
+						<td>每次對話開頭自動載入</td>
+						<td>這個專案以後所有對話。<strong>會吃 token</strong>,不要塞太雜。</td>
+					</tr>
+					<tr>
+						<td class="col-name">Memory</td>
+						<td><code>~/.claude/memory/</code></td>
+						<td>跨所有專案(你個人)</td>
+						<td>每次對話開頭自動載入(摘要)</td>
+						<td>所有專案、所有對話。長期累積,<strong>要定期整理</strong>免得變筆記墳場。</td>
+					</tr>
+					<tr>
+						<td class="col-name">Skill</td>
+						<td><code>專案/.claude/skills/</code> 或 <code>~/.claude/skills/</code></td>
+						<td>看你放哪一層</td>
+						<td>你呼叫 <code>/skill-name</code> 才執行</td>
+						<td>只在被呼叫的當下執行,<strong>不佔對話 token</strong>(這也是它的優勢)。</td>
+					</tr>
+				</tbody>
+			</table>
+
+			<div class="warn-card" style="background:#fef4e8;border-left-color:#c46a3a;">
+				<div class="ttl">⚠ 最常踩的雷</div>
+				<p>
+					很多人把<strong>所有東西都塞進 <code>CLAUDE.md</code></strong>——個人偏好、固定流程、長篇歷史脈絡。
+					結果是每次對話開頭就吃掉幾千 token、而且 Claude 還容易被無關內容干擾。
+					記住這個分工:<strong>專案知識 → CLAUDE.md;個人偏好 → Memory;固定流程 → Skill</strong>。
+				</p>
+			</div>
+
+			<hr>
+
+			<div class="section-label" id="a06">
+				<div class="roman">vi.</div>
 				<div class="tag">EFFICIENCY · Tokens &amp; Context</div>
 			</div>
 			<h2>對話效率:@tag、Prompt Cache、壓縮失憶</h2>
@@ -1806,8 +2096,8 @@
 
 			<hr>
 
-			<div class="section-label" id="a06">
-				<div class="roman">vi.</div>
+			<div class="section-label" id="a07">
+				<div class="roman">vii.</div>
 				<div class="tag">SKILL · Package your workflow</div>
 			</div>
 			<h2>Skill:把流程打包,全局與專案的差異</h2>
@@ -2050,8 +2340,8 @@
 
 			<hr>
 
-			<div class="section-label" id="a07">
-				<div class="roman">vii.</div>
+			<div class="section-label" id="a08">
+				<div class="roman">viii.</div>
 				<div class="tag">WORKTREE · Parallel branches</div>
 			</div>
 			<h2>Worktree:同一個專案開多個分身</h2>
@@ -2110,8 +2400,8 @@
 
 			<hr>
 
-			<div class="section-label" id="a08">
-				<div class="roman">viii.</div>
+			<div class="section-label" id="a09">
+				<div class="roman">ix.</div>
 				<div class="tag">SAFETY · Permissions</div>
 			</div>
 			<h2>安全性:授權、權限、不要把鑰匙交出去</h2>
@@ -2144,13 +2434,205 @@
 					裝之前看一下原始碼、確認來源可信,跟裝 npm 套件一樣的標準。</p>
 			</div>
 
+			<hr>
+
+			<div class="section-label" id="a10">
+				<div class="roman">x.</div>
+				<div class="tag">BONUS · Headless CMS</div>
+			</div>
+			<h2>延伸玩法:把 Claude Code 當你的部落格 CMS</h2>
+
+			<p>
+				前面那些都是工作場景。這一節是<strong>個人玩法</strong>——當你把 Claude Code 用順了之後,會發現它順便取代了一些原本要花錢用的工具,
+				最有感的就是<strong>部落格後台</strong>。這篇文章本身就是用這套流程寫出來、發布的。
+			</p>
+
+			<style>
+				.cms-table {
+					width: 100%;
+					border-collapse: collapse;
+					margin: 20px 0;
+					font-size: 13.5px;
+				}
+				.cms-table th, .cms-table td {
+					text-align: left;
+					padding: 10px 14px;
+					border-bottom: 1px solid #ece4d2;
+					vertical-align: top;
+					line-height: 1.55;
+				}
+				.cms-table th {
+					background: #f6f2ea;
+					color: #6b5030;
+					font-weight: 600;
+					font-size: 12px;
+					letter-spacing: 0.05em;
+				}
+				.cms-table td.op { color: #7a6f58; }
+				.cms-table td.said {
+					background: #faf6ee;
+					color: #3a2f1f;
+					font-style: italic;
+					border-left: 3px solid #c9a878;
+				}
+				.cms-table td.said::before {
+					content: "「";
+					color: #c9a878;
+				}
+				.cms-table td.said::after {
+					content: "」";
+					color: #c9a878;
+				}
+				.cms-pros {
+					display: grid;
+					grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+					gap: 12px;
+					margin: 20px 0;
+				}
+				.cms-pro {
+					background: #f6f2ea;
+					border-radius: 10px;
+					padding: 14px 16px;
+				}
+				.cms-pro .cms-pro-ttl {
+					font-size: 13px;
+					font-weight: 700;
+					color: #3a2f1f;
+					margin-bottom: 4px;
+				}
+				.cms-pro .cms-pro-desc {
+					font-size: 12px;
+					color: #7a6f58;
+					line-height: 1.55;
+				}
+			</style>
+
+			<h3>從「發 blog」這個動作開始想</h3>
+			<p>
+				一個常見的個人需求:腦中閃過一個想法、用語音轉文字記下來,想直接發成一篇 blog。
+				傳統做法:Notion / Ghost / WordPress 寫 → 排版 → 發布 → 同步首頁卡片 → 還要記得補 OG / SEO meta。
+				用 Claude Code 之後,流程會變這樣:
+			</p>
+			<div class="case-flow" style="margin:14px 0;">
+				<div class="step"><strong>1.</strong> 讀 <code>blog/</code> 下過往 3 篇文章學語氣</div>
+				<div class="step"><strong>2.</strong> 產出 <code>blog/{slug}.html</code>,套用樣板</div>
+				<div class="step"><strong>3.</strong> 更新 <code>index.html</code> 文章列表卡片</div>
+				<div class="step"><strong>4.</strong> <code>git commit</code> + <code>git push</code> → GitHub Pages 自動部署</div>
+			</div>
+			<p>
+				走順之後會忽然意識到——好像不再需要 WordPress、Ghost、Notion Public、Medium 這類部落格後台了。
+				靜態 HTML + Git + Claude Code,剛好<strong>組成一套沒有管理介面、但什麼都能做的 CMS</strong>。
+				你的<strong>對話框就是後台</strong>、<strong>Git 就是資料庫</strong>、<strong>Claude Code 就是那個會幫你改版面、發文章、調 tag 的實習生</strong>。
+			</p>
+
+			<div class="illustration" style="padding:22px 24px;">
+				<h4>傳統 CMS 的功能 → 在 Claude Code 裡你怎麼說</h4>
+				<table class="cms-table">
+					<thead>
+						<tr>
+							<th style="width:28%;">傳統後台功能</th>
+							<th style="width:36%;">你只要這樣說</th>
+							<th>Claude Code 實際做的事</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td class="op"><strong>發文</strong><br>建立新文章、套樣板</td>
+							<td class="said">把這段語音轉文字整理成一篇 blog,用我之前的語氣</td>
+							<td>讀過往文章學語氣 → 建 <code>blog/xxx.html</code> → 補 meta → 更新首頁列表</td>
+						</tr>
+						<tr>
+							<td class="op"><strong>改標題 / 改內文</strong></td>
+							<td class="said">把「線性反覆」那篇的標題改成更口語一點</td>
+							<td>直接 <code>grep</code> 找到該檔 → 改 <code>&lt;title&gt;</code> + <code>h1</code> + 首頁卡片標題</td>
+						</tr>
+						<tr>
+							<td class="op"><strong>分類 / Tag 管理</strong></td>
+							<td class="said">給所有跟 AI 有關的文章加 <code>#AI</code> tag</td>
+							<td>掃整個 <code>blog/</code> → 依關鍵字判斷 → 批次補 tag</td>
+						</tr>
+						<tr>
+							<td class="op"><strong>搜尋 / 篩選</strong></td>
+							<td class="said">列出 2026 年所有還沒有封面圖的文章</td>
+							<td>讀資料夾 → 檢查每篇的 <code>&lt;meta og:image&gt;</code> → 產 checklist</td>
+						</tr>
+						<tr>
+							<td class="op"><strong>媒體庫</strong><br>上傳 / 管理圖片</td>
+							<td class="said">用 nano-banana 幫這篇生封面圖,主題是 X,存對應資料夾</td>
+							<td>呼叫圖像 Skill → 存 <code>blog/image/{slug}/cover.png</code> → 更新 og tag</td>
+						</tr>
+						<tr>
+							<td class="op"><strong>精選 / 置頂</strong></td>
+							<td class="said">首頁 featured 換成最新兩篇</td>
+							<td>讀 <code>index.html</code> featured 區塊 → 依時間排序重寫</td>
+						</tr>
+						<tr>
+							<td class="op"><strong>SEO / meta</strong></td>
+							<td class="said">幫新這篇補 OG、Twitter card、description</td>
+							<td>依 <code>CLAUDE.md</code> 定義的 meta 樣板自動填入</td>
+						</tr>
+						<tr>
+							<td class="op"><strong>批次編輯</strong></td>
+							<td class="said">所有舊文章底部都加一段「歡迎訂閱電子報」的 CTA</td>
+							<td>找到所有 <code>blog/*.html</code> → 在固定位置插入 → diff 給你 review</td>
+						</tr>
+						<tr>
+							<td class="op"><strong>發布 / 部署</strong></td>
+							<td class="said">OK,幫我 commit 然後發出去</td>
+							<td><code>git add</code> + <code>commit</code>(訊息自動寫好)+ <code>push</code> → GitHub Pages 部署</td>
+						</tr>
+						<tr>
+							<td class="op"><strong>版本管理 / 還原</strong></td>
+							<td class="said">上一篇我改過頭了,還原到昨天的版本</td>
+							<td><code>git log</code> → 找到對應 commit → <code>git checkout</code> 那份檔案</td>
+						</tr>
+					</tbody>
+				</table>
+				<p class="caption">同樣的後台操作,在傳統 CMS 要點十幾次滑鼠,這裡就是一句話</p>
+			</div>
+
+			<h4>這套「無頭 CMS」的三個意外好處</h4>
+			<div class="cms-pros">
+				<div class="cms-pro">
+					<div class="cms-pro-ttl">🗄 沒有資料庫要維護</div>
+					<div class="cms-pro-desc">
+						內容就是 <code>.html</code> / <code>.md</code> 檔,<strong>Git 就是資料庫也是歷史紀錄</strong>。
+						不用備份、不怕 DB 壞掉、未來換平台只要複製資料夾。
+					</div>
+				</div>
+				<div class="cms-pro">
+					<div class="cms-pro-ttl">💰 部署完全免費</div>
+					<div class="cms-pro-desc">
+						GitHub Pages / Cloudflare Pages / Vercel 任一個都行,<strong>零主機費</strong>。
+						你只付 Claude 訂閱費,而這筆錢原本就花了。
+					</div>
+				</div>
+				<div class="cms-pro">
+					<div class="cms-pro-ttl">🧩 後台隨你長</div>
+					<div class="cms-pro-desc">
+						想要「訂閱者清單」「瀏覽數分析」「RSS 產生器」?
+						寫一個 <strong>Skill</strong> 就多一個後台功能——不必等 CMS 開發者支援。
+					</div>
+				</div>
+			</div>
+
+			<div class="warn-card" style="background:#eef5ea;border-left-color:#6b9b7c;">
+				<div class="ttl" style="color:#2d4a36;">💡 適合誰用這套?</div>
+				<p style="color:#2d4a36;">
+					<strong>適合</strong>:個人部落格、作品集、技術筆記、小團隊的 docs 站——
+					內容量在幾百篇以內、不需要即時協作、想要完全掌握呈現方式的人。<br>
+					<strong>不適合</strong>:多作者同時編輯、需要即時預覽、內容編輯者不熟 git 的場景——
+					那種情況還是 Notion / Ghost / WordPress 比較對。
+				</p>
+			</div>
+
 			<hr class="lg">
 
 			<h2>結語:從「指令」到「協作」</h2>
 			<p>
 				從對話框轉到 Claude Code 的過程,其實有點像當年從 Photoshop 轉到 Figma——
 				一開始覺得只是換工具,用一陣子才發現,真正改變的是「你跟產出之間的關係」。
-				對話框的時代,你像在請一個顧問;Claude Code 的時代,你像在帶一個剛報到的工程師——
+				對話框的時代,你像在請一個顧問;Claude Code 的時代,你像在帶一個剛報到的設計助理——
 				既要給他清楚的脈絡(CLAUDE.md / Memory),也要為他設好欄杆(Plan 模式 / Worktree),
 				但作為交換,你能把自己的手從鍵盤上抬起來,專注在<strong>方向</strong>跟<strong>判斷</strong>。
 			</p>
