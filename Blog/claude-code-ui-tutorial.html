@@ -141,7 +141,7 @@
 			position: relative;
 		}
 
-		.compare-card ul.feat li + li {
+		.compare-card ul.feat li+li {
 			border-top: 1px dashed #ece4d2;
 		}
 
@@ -417,7 +417,7 @@
 			padding: 18px 20px;
 			background: #fef4e8;
 			border-left: 4px solid #c46a3a;
-			border-radius: 6px;
+			border-radius: 3px;
 		}
 
 		.warn-card .ttl {
@@ -447,6 +447,7 @@
 		}
 
 		@media (max-width: 768px) {
+
 			.compare-pair,
 			.scope-pair {
 				grid-template-columns: 1fr;
@@ -524,7 +525,8 @@
 				# <a href="#a07">Skill:把流程打包,全局與專案的差異</a><br>
 				# <a href="#a08">Worktree:同一個專案開多個分身</a><br>
 				# <a href="#a09">安全性:授權、權限、不要把鑰匙交出去</a><br>
-				# <a href="#a10">延伸玩法:把 Claude Code 當你的部落格 CMS</a>
+				# <a href="#a10">延伸玩法:把 Claude Code 當你的部落格 CMS</a><br>
+				# <a href="#appendix-cowork">附錄:Cowork 跟 Claude Code 差在哪</a>
 			</p>
 
 			<hr class="lg">
@@ -592,7 +594,8 @@
 			<h3>3. 從「聊完就沒了」變成「過程會留下來」</h3>
 			<p>
 				對話框的中途整理、決策、共識,全卡在那一個 chat history 裡——明天找不到、想接續會散掉、想傳給同事還要手動整理。
-				Claude Code 的每一階段中途產物都會寫成 <code>.md</code> / <code>.csv</code> / <code>.pptx</code> <strong>落在你的資料夾裡</strong>:
+				Claude Code 的每一階段中途產物都會寫成 <code>.md</code> / <code>.csv</code> / <code>.pptx</code>
+				<strong>落在你的資料夾裡</strong>:
 				明天接得回去、下次能重跑、可以直接傳給同事。
 				研究方法、設計流程、整理邏輯,終於有地方<strong>沉澱</strong>——這也是 Case 1 那種「發散→收斂→再發散」能變成可重複流程的關鍵。
 			</p>
@@ -617,92 +620,137 @@
 				.case-grid {
 					display: flex;
 					flex-direction: column;
-					gap: 24px;
-					margin: 24px 0 8px;
+					gap: 28px;
+					margin: 28px 0 12px;
 				}
+
 				.case-card {
 					background: #fff;
 					border: 1px solid #e6ddcc;
 					border-left: 4px solid #c46a3a;
-					border-radius: 10px;
-					padding: 22px 24px;
+					border-radius: 3px;
+					padding: 26px 28px;
 				}
+
+				.case-card .section-cap {
+					display: block;
+					font-family: 'Georgia', serif;
+					font-style: italic;
+					font-size: 11.5px;
+					letter-spacing: 0.12em;
+					color: #a89773;
+					text-transform: uppercase;
+					margin: 18px 0 8px;
+				}
+
 				.case-compare {
 					display: grid;
 					grid-template-columns: 1fr 1fr;
-					gap: 12px;
-					margin: 14px 0 6px;
+					gap: 14px;
+					margin: 4px 0 8px;
 				}
+
 				.case-compare .side {
-					padding: 12px 14px;
-					border-radius: 8px;
-					font-size: 12.5px;
-					line-height: 1.6;
+					padding: 16px 18px;
+					border-radius: 10px;
+					font-size: 14px;
+					line-height: 1.75;
 				}
+
 				.case-compare .side .side-ttl {
-					font-size: 11px;
-					letter-spacing: 0.08em;
+					font-size: 12.5px;
+					letter-spacing: 0.1em;
 					font-weight: 700;
-					margin-bottom: 6px;
+					margin-bottom: 10px;
 					text-transform: uppercase;
 				}
+
 				.case-compare .side.bad {
 					background: #fdf0ea;
 					border: 1px solid #f3d5c4;
 					color: #7a3f1a;
 				}
-				.case-compare .side.bad .side-ttl { color: #b35a2a; }
+
+				.case-compare .side.bad .side-ttl {
+					color: #b35a2a;
+				}
+
 				.case-compare .side.good {
 					background: #eef5ea;
 					border: 1px solid #c9ddc0;
 					color: #2d4a36;
 				}
-				.case-compare .side.good .side-ttl { color: #4a7a5a; }
+
+				.case-compare .side.good .side-ttl {
+					color: #4a7a5a;
+				}
+
 				.case-compare .side ul {
 					margin: 0;
-					padding-left: 16px;
+					padding-left: 18px;
 					list-style: disc;
+					font-size: 17px;
 				}
-				.case-compare .side li { margin-bottom: 3px; }
+
+				.case-compare .side li {
+					margin-bottom: 6px;
+				}
+
+				.case-compare .side li:last-child {
+					margin-bottom: 0;
+				}
+
 				@media (max-width: 720px) {
-					.case-compare { grid-template-columns: 1fr; }
+					.case-compare {
+						grid-template-columns: 1fr;
+					}
 				}
+
 				.case-card .case-head {
 					display: flex;
 					align-items: center;
-					gap: 10px;
-					margin-bottom: 6px;
+					gap: 12px;
+					margin-bottom: 10px;
+					flex-wrap: wrap;
 				}
+
 				.case-card .case-num {
 					font-family: 'Georgia', serif;
 					font-style: italic;
-					font-size: 13px;
-					color: #a89773;
+					font-size: 13.5px;
+					color: #8a7656;
 					background: #f6f2ea;
-					padding: 2px 10px;
+					padding: 3px 12px;
 					border-radius: 999px;
+					letter-spacing: 0.04em;
 				}
+
 				.case-card .case-ttl {
-					font-size: 17px;
+					font-size: 19px;
 					font-weight: 700;
 					color: #3a2f1f;
+					line-height: 1.45;
 				}
+
 				.case-card .case-ask {
-					margin: 6px 0 14px;
-					padding: 10px 14px;
+					margin: 4px 0 8px;
+					padding: 16px 20px;
 					background: #faf6ee;
-					border-radius: 6px;
-					font-size: 13px;
-					color: #6b5030;
+					border-left: 3px solid #c9a878;
+					border-radius: 3px;
+					font-size: 14.5px;
+					color: #5a4a2a;
 					font-style: italic;
-					line-height: 1.6;
+					line-height: 1.8;
 				}
+
 				.case-card .case-flow {
 					display: flex;
 					flex-wrap: wrap;
 					gap: 6px;
 					margin-bottom: 10px;
 				}
+
 				.case-card .step {
 					flex: 1 1 auto;
 					min-width: 120px;
@@ -713,22 +761,28 @@
 					color: #6b5030;
 					line-height: 1.4;
 				}
-				.case-card .step strong { color: #3a2f1f; }
+
+				.case-card .step strong {
+					color: #3a2f1f;
+				}
+
 				.case-card .capabilities {
 					display: flex;
 					flex-wrap: wrap;
-					gap: 5px;
-					margin-top: 10px;
-					padding-top: 10px;
+					gap: 6px;
+					margin-top: 6px;
+					padding-top: 16px;
 					border-top: 1px dashed #ece4d2;
 				}
+
 				.case-card .cap {
-					font-size: 11px;
-					padding: 3px 9px;
+					font-size: 12px;
+					padding: 5px 12px;
 					border-radius: 999px;
 					background: #eef3ea;
 					color: #4a7a5a;
-					letter-spacing: 0.02em;
+					letter-spacing: 0.03em;
+					font-weight: 500;
 				}
 			</style>
 
@@ -784,7 +838,8 @@
 				<div class="warn-card" style="background:#f6f2ea;border-left-color:#a89773;margin:-8px 0 0;">
 					<div class="ttl" style="color:#6b5030;">💡 關鍵差異:中途檔留在本地 = 後續流程都能同步</div>
 					<p style="color:#5a4a2a;">
-						對話框也能跟你跑「<a href="linear-iteration-vs-divergent-convergent.html" target="_blank" rel="noopener">發散 → 收斂 → 再發散</a>」這種研究綜合的節奏——
+						對話框也能跟你跑「<a href="linear-iteration-vs-divergent-convergent.html" target="_blank"
+							rel="noopener">發散 → 收斂 → 再發散</a>」這種研究綜合的節奏——
 						但中途整理出來的「quote 群」「主題分類」「機會點」<strong>全都留在那一個對話視窗裡</strong>。
 						換個對話、明天再開、想換角度重跑,就得從頭來一次。
 					</p>
@@ -799,58 +854,58 @@
 				<div class="case-card">
 					<div class="case-head">
 						<span class="case-num">Case 2</span>
-						<span class="case-ttl">月度設計團隊簡報:多份資料一次整合,過程也記下來</span>
+						<span class="case-ttl">把公司的競品分析方法,包成 Claude 看得懂的本地工具</span>
 					</div>
 					<div class="case-ask">
-						「幫我做 4 月份的設計團隊月會簡報。資料來源:
-						<code>research/</code> 下這個月的訪談摘要、<code>competitor/</code> 上週做的競品分析、
-						<code>metrics/2026-04.csv</code> 的關鍵指標、上次月會 <code>meetings/2026-03-review.md</code> 的 action item。
-						套 <code>templates/team-monthly.pptx</code> 的版型,每個段落都要交叉引用對應原始檔案,
-						討論過程整理成 <code>meetings/2026-04-prep.md</code> 留檔。」
+						「我們部門做競品分析做了好幾年,累積了不少資產:產業地圖、評估維度框架、過往報告範例、簡報模板、訪談題庫。
+						幫我把這些全部整理成 Claude 看得懂的形式——
+						產業背景 / 公司定位 / 部門關注的軸線寫進 <code>.claude/CLAUDE.md</code>;
+						分析框架 / 評估流程 / 報告結構包成 <code>/competitor</code> Skill;
+						過往報告留在 <code>references/</code> 給它學語氣與深度。
+						之後我只要說『分析這家』,Claude 就會用我們部門的維度、語氣、模板去做。」
 					</div>
 					<div class="case-flow">
-						<div class="step"><strong>1.</strong> 同時讀四個來源資料夾,抓重點</div>
-						<div class="step"><strong>2.</strong> 跟你對話:這幾個訪談洞察適合上月會嗎?</div>
-						<div class="step"><strong>3.</strong> 對照上月 action item,標記完成 / 延期 / 新議題</div>
-						<div class="step"><strong>4.</strong> 套 <code>team-monthly.pptx</code> 模板,灌入內容</div>
-						<div class="step"><strong>5.</strong> 全程的取捨理由寫進 <code>2026-04-prep.md</code></div>
-						<div class="step"><strong>6.</strong> 下次月會直接讀這份,接得上脈絡</div>
+						<div class="step"><strong>1.</strong> 產業背景 / 公司定位寫進 <code>.claude/CLAUDE.md</code></div>
+						<div class="step"><strong>2.</strong> 評估維度 / 訪談題庫包成 <code>/competitor</code> Skill</div>
+						<div class="step"><strong>3.</strong> 過往報告放 <code>references/</code> 給 Claude 學語氣</div>
+						<div class="step"><strong>4.</strong> 簡報模板放 <code>templates/competitor.pptx</code></div>
+						<div class="step"><strong>5.</strong> 之後說「分析 [競品]」→ 自動跑完整流程</div>
+						<div class="step"><strong>6.</strong> 報告寫進 <code>docs/competitor/index.md</code> 累積</div>
 					</div>
 					<div class="case-compare">
 						<div class="side bad">
 							<div class="side-ttl">對話框卡在哪</div>
 							<ul>
-								<li>四個來源逐份貼進去,token 還沒整理完就爆掉</li>
-								<li>它<strong>看不到上次月會在討論什麼</strong>,沒辦法接續追蹤</li>
-								<li>產不出 .pptx,只能給你一份 markdown,你自己再開 PowerPoint 排</li>
-								<li>這次決定「不放某張圖」的理由,下次月會它<strong>完全不知道</strong></li>
+								<li>每次都要重貼產業背景、評估維度、過往範例</li>
+								<li>分析格式靠人腦記憶維持一致——做久了就漂走</li>
+								<li>哪些競品比過、哪些維度做過,沒有索引可查</li>
 							</ul>
 						</div>
 						<div class="side good">
 							<div class="side-ttl">Claude Code 怎麼解</div>
 							<ul>
-								<li>四個資料夾它都看得到,<strong>不用貼,只要說「讀」</strong></li>
-								<li>讀上次 <code>meetings/</code> 下所有紀錄 → 自動接續追蹤</li>
-								<li>用 python-pptx 套模板直接出檔,排版風格一致</li>
-								<li>取捨理由 / 沒選的素材都記在 <code>prep.md</code>,<strong>下次它自己會讀</strong></li>
+								<li>產業背景 / 部門立場寫一次 → 之後永遠帶上</li>
+								<li>Skill 鎖住分析框架 → 第 10 份跟第 1 份格式一致</li>
+								<li><code>index.md</code> 變成部門的競品知識資產,可累積</li>
 							</ul>
 						</div>
 					</div>
 					<div class="capabilities">
-						<span class="cap">① 跨資料夾整合</span>
-						<span class="cap">② 跟過往會議接軌</span>
-						<span class="cap">③ 直接出 pptx 檔</span>
-						<span class="cap">④ 討論過程留檔</span>
+						<span class="cap">① 部門 know-how 本地化</span>
+						<span class="cap">② 分析框架可重用</span>
+						<span class="cap">③ 報告格式一致</span>
+						<span class="cap">④ 知識可累積、可傳承</span>
 					</div>
 				</div>
 
 				<div class="warn-card" style="background:#f6f2ea;border-left-color:#a89773;margin:-8px 0 0;">
-					<div class="ttl" style="color:#6b5030;">💡 關鍵差異:它是「住在你資料夾裡」的助理</div>
+					<div class="ttl" style="color:#6b5030;">💡 關鍵差異:把部門 know-how 變成「可執行的文件」</div>
 					<p style="color:#5a4a2a;">
-						對話框版的 AI 跟新進的實習生很像——每天上工你都得花 20 分鐘把背景講一遍。
-						Claude Code 不一樣,它<strong>住在你專案的資料夾裡</strong>,你之前所有的研究、會議、競品分析、簡報模板,
-						它打開資料夾就看得到。所以你只要說「做月會簡報」,它就會自己去翻該翻的檔案,還會主動問你「上個月說要追的那件事這次要不要再提?」——
-						那種感覺才比較接近<strong>真的有一個熟悉專案的同事在幫你</strong>。
+						部門做了多年的東西,通常存在三個地方:<strong>幾位資深同事的腦中、散落各處的 PPT 範例、口耳相傳的「我們都這樣做」</strong>。
+						對話框完全接不上這些——你每次都要在開頭重貼一次。
+						Claude Code 的差別是:這些 know-how 一旦寫進 CLAUDE.md / Skill,就<strong>變成可執行的文件</strong>——
+						新人來了讀資料夾就會做、規範改了改一份、產出永遠是部門認得的格式。
+						這也是 Skill 的真正威力:<strong>把無形的「我們都這樣做」變成有形的、可以傳承的部門資產</strong>。
 					</p>
 				</div>
 
@@ -902,6 +957,114 @@
 					</div>
 				</div>
 
+				<div class="case-card">
+					<div class="case-head">
+						<span class="case-num">Case 4</span>
+						<span class="case-ttl">把 PM 給的 PRD,自動拆成設計輸入 + 走查 checklist</span>
+					</div>
+					<div class="case-ask">
+						「PM 剛丟一份 <code>requirements/2026-04-payment-flow.md</code> 過來,長 30 頁。
+						幫我:① 拆出明確的 user flow(每一步、每個分支、回退路徑);
+						② 列出所有需要的元件與狀態(空 / loading / error / success);
+						③ 把 PRD 裡模糊的、TBD 的、隱含假設的條目集中成一份『待釐清清單』;
+						④ 對照 <code>.claude/skills/design-check/spec.md</code>(我們的設計系統)指出可重用的元件;
+						⑤ 全部產出寫進 <code>design/2026-04-payment/</code>,每份檔案都附引用 PRD 的哪一段。」
+					</div>
+					<div class="case-flow">
+						<div class="step"><strong>1.</strong> 讀 PRD,抽出 user flow 與所有分支</div>
+						<div class="step"><strong>2.</strong> 列元件清單 + 各種狀態(loading / error / empty)</div>
+						<div class="step"><strong>3.</strong> 標出模糊 / TBD / 隱含假設,集中成「待釐清清單」</div>
+						<div class="step"><strong>4.</strong> 對照設計系統 → 哪些可重用、哪些要新做</div>
+						<div class="step"><strong>5.</strong> 產出 <code>design/2026-04-payment/</code> 目錄與檔案</div>
+						<div class="step"><strong>6.</strong> 每份輸出都引用回 PRD 對應段落,可追溯</div>
+					</div>
+					<div class="case-compare">
+						<div class="side bad">
+							<div class="side-ttl">對話框卡在哪</div>
+							<ul>
+								<li>30 頁 PRD 貼進去就卡關,還沒抽出來就爆 token</li>
+								<li>它不認識你們的設計系統,沒辦法標可重用元件</li>
+								<li>產出只在對話視窗裡——你還得抄到設計檔案</li>
+								<li>PRD 改版?整個流程從頭再跑一次,還容易漏</li>
+							</ul>
+						</div>
+						<div class="side good">
+							<div class="side-ttl">Claude Code 怎麼解</div>
+							<ul>
+								<li>按需讀 PRD,跨章節分析也不爆 token</li>
+								<li>讀本地 design-check skill → 自動標可重用元件</li>
+								<li>產出直接落地成檔案,打開資料夾就有完整設計輸入</li>
+								<li>PRD 改版:再跑一次,diff 你看就知道哪裡變了</li>
+							</ul>
+						</div>
+					</div>
+					<div class="capabilities">
+						<span class="cap">① 拆解大型文件</span>
+						<span class="cap">② 連動本地設計系統</span>
+						<span class="cap">③ 待釐清項目集中</span>
+						<span class="cap">④ PRD 改版可重跑</span>
+					</div>
+				</div>
+
+				<div class="case-card">
+					<div class="case-head">
+						<span class="case-num">Case 5</span>
+						<span class="case-ttl">月度設計團隊簡報:多份資料一次整合,過程也記下來</span>
+					</div>
+					<div class="case-ask">
+						「幫我做 4 月份的設計團隊月會簡報。資料來源:
+						<code>research/</code> 下這個月的訪談摘要、<code>competitor/</code> 上週做的競品分析、
+						<code>metrics/2026-04.csv</code> 的關鍵指標、上次月會 <code>meetings/2026-03-review.md</code> 的 action
+						item。
+						套 <code>templates/team-monthly.pptx</code> 的版型,每個段落都要交叉引用對應原始檔案,
+						討論過程整理成 <code>meetings/2026-04-prep.md</code> 留檔。」
+					</div>
+					<div class="case-flow">
+						<div class="step"><strong>1.</strong> 同時讀四個來源資料夾,抓重點</div>
+						<div class="step"><strong>2.</strong> 跟你對話:這幾個訪談洞察適合上月會嗎?</div>
+						<div class="step"><strong>3.</strong> 對照上月 action item,標記完成 / 延期 / 新議題</div>
+						<div class="step"><strong>4.</strong> 套 <code>team-monthly.pptx</code> 模板,灌入內容</div>
+						<div class="step"><strong>5.</strong> 全程的取捨理由寫進 <code>2026-04-prep.md</code></div>
+						<div class="step"><strong>6.</strong> 下次月會直接讀這份,接得上脈絡</div>
+					</div>
+					<div class="case-compare">
+						<div class="side bad">
+							<div class="side-ttl">對話框卡在哪</div>
+							<ul>
+								<li>四個來源逐份貼進去,token 還沒整理完就爆掉</li>
+								<li>它<strong>看不到上次月會在討論什麼</strong>,沒辦法接續追蹤</li>
+								<li>產不出 .pptx,只能給你一份 markdown,你自己再開 PowerPoint 排</li>
+								<li>這次決定「不放某張圖」的理由,下次月會它<strong>完全不知道</strong></li>
+							</ul>
+						</div>
+						<div class="side good">
+							<div class="side-ttl">Claude Code 怎麼解</div>
+							<ul>
+								<li>四個資料夾它都看得到,<strong>不用貼,只要說「讀」</strong></li>
+								<li>讀上次 <code>meetings/</code> 下所有紀錄 → 自動接續追蹤</li>
+								<li>用 python-pptx 套模板直接出檔,排版風格一致</li>
+								<li>取捨理由 / 沒選的素材都記在 <code>prep.md</code>,<strong>下次它自己會讀</strong></li>
+							</ul>
+						</div>
+					</div>
+					<div class="capabilities">
+						<span class="cap">① 跨資料夾整合</span>
+						<span class="cap">② 跟過往會議接軌</span>
+						<span class="cap">③ 直接出 pptx 檔</span>
+						<span class="cap">④ 討論過程留檔</span>
+					</div>
+				</div>
+
+				<div class="warn-card" style="background:#f6f2ea;border-left-color:#a89773;margin:-8px 0 0;">
+					<div class="ttl" style="color:#6b5030;">💡 關鍵差異:它是「住在你資料夾裡」的助理</div>
+					<p style="color:#5a4a2a;">
+						對話框版的 AI 跟新進的實習生很像——每天上工你都得花 20 分鐘把背景講一遍。
+						Claude Code 不一樣,它<strong>住在你專案的資料夾裡</strong>,你之前所有的研究、會議、競品分析、簡報模板,
+						它打開資料夾就看得到。所以你只要說「做月會簡報」,它就會自己去翻該翻的檔案,還會主動問你「上個月說要追的那件事這次要不要再提?」——
+						那種感覺才比較接近<strong>真的有一個熟悉專案的同事在幫你</strong>。
+					</p>
+				</div>
+
 			</div>
 
 			<div class="warn-card" style="background:#f6f2ea;border-left-color:#a89773;margin-top:20px;">
@@ -917,7 +1080,7 @@
 
 
 			<p>
-				注意這三個案例的共同點:<strong>每一步單獨來看都不難</strong>——你自己整理逐字稿、自己拼簡報、自己對照 Figma 規範——
+				注意這五個案例的共同點:<strong>每一步單獨來看都不難</strong>——你自己整理逐字稿、自己拆 PRD、自己拼簡報、自己對照 Figma 規範——
 				真正累的是<strong>「來回切換」</strong>跟<strong>「中途過程沒地方放」</strong>。
 				Claude Code 的價值不在於任何一步做得特別神,而是<strong>把那些來回切換的摩擦拿掉</strong>,
 				並且<strong>把過程都留在資料夾裡可以再用</strong>,讓你專注在描述目標與做最後判斷。
@@ -936,6 +1099,7 @@
 					gap: 14px;
 					margin: 20px 0 8px;
 				}
+
 				.barrier-card {
 					background: #eef5ea;
 					border: 1px solid #c9ddc0;
@@ -945,6 +1109,7 @@
 					flex-direction: column;
 					gap: 6px;
 				}
+
 				.barrier-card .b-tag {
 					font-family: 'Georgia', serif;
 					font-style: italic;
@@ -952,16 +1117,19 @@
 					color: #4a7a5a;
 					letter-spacing: 0.06em;
 				}
+
 				.barrier-card .b-ttl {
 					font-size: 14px;
 					font-weight: 700;
 					color: #2d4a36;
 				}
+
 				.barrier-card .b-desc {
 					font-size: 12.5px;
 					color: #3a5a44;
 					line-height: 1.6;
 				}
+
 				.barrier-card code {
 					background: #fff;
 					color: #4a7a5a;
@@ -1022,6 +1190,7 @@
 					border: 1.5px solid #7a9b82;
 					border-radius: 14px;
 				}
+
 				.growth-block .g-tag {
 					font-family: 'Georgia', serif;
 					font-style: italic;
@@ -1029,58 +1198,75 @@
 					color: #4a7a5a;
 					letter-spacing: 0.1em;
 				}
+
 				.growth-block .g-ttl {
 					font-size: 19px;
 					font-weight: 700;
 					color: #2d4a36;
 					margin: 4px 0 10px;
 				}
+
 				.growth-block .g-lead {
 					font-size: 14px;
 					color: #2d4a36;
 					line-height: 1.75;
 					margin-bottom: 16px;
 				}
-				.growth-block .g-lead strong { color: #1a3522; }
+
+				.growth-block .g-lead strong {
+					color: #1a3522;
+				}
+
 				.growth-stages {
 					display: grid;
 					grid-template-columns: repeat(4, 1fr);
 					gap: 10px;
 					margin: 16px 0 10px;
 				}
+
 				.growth-stage {
-					background: rgba(255,255,255,0.7);
+					background: rgba(255, 255, 255, 0.7);
 					border-radius: 10px;
 					padding: 12px 14px;
 					position: relative;
 				}
+
 				.growth-stage .gs-num {
 					font-family: 'Georgia', serif;
 					font-style: italic;
 					font-size: 11px;
 					color: #4a7a5a;
 				}
+
 				.growth-stage .gs-ttl {
 					font-size: 13px;
 					font-weight: 700;
 					color: #2d4a36;
 					margin: 2px 0 4px;
 				}
+
 				.growth-stage .gs-desc {
 					font-size: 11.5px;
 					color: #3a5a44;
 					line-height: 1.55;
 				}
+
 				.growth-block .g-foot {
 					font-size: 13px;
 					color: #2d4a36;
 					line-height: 1.7;
 					padding-top: 14px;
-					border-top: 1px dashed rgba(122,155,130,0.5);
+					border-top: 1px dashed rgba(122, 155, 130, 0.5);
 				}
-				.growth-block .g-foot strong { color: #1a3522; }
+
+				.growth-block .g-foot strong {
+					color: #1a3522;
+				}
+
 				@media (max-width: 760px) {
-					.growth-stages { grid-template-columns: repeat(2, 1fr); }
+					.growth-stages {
+						grid-template-columns: repeat(2, 1fr);
+					}
 				}
 			</style>
 
@@ -1123,15 +1309,6 @@
 				</p>
 			</div>
 
-			<div class="warn-card" style="background:#eef5ea;border-left-color:#6b9b7c;">
-				<div class="ttl" style="color:#2d4a36;">💡 一句話建議</div>
-				<p style="color:#2d4a36;">
-					如果你已經是 Claude 訂閱戶,<strong>桌面版下載安裝不會多花一毛錢、也不會動你的檔案</strong>。
-					今天有任何一份你正在處理的 docx / pptx / md,把它丟進去試一次「請 Claude 幫我整理」,
-					大概十分鐘你就會感覺到「這跟對話框是兩件事」——進階概念等需求自己浮現再學就好。
-				</p>
-			</div>
-
 			<div class="quote-block">
 				<span class="para-mark">¶</span>
 				從對話框換到 Claude Code,最大的轉變不是 AI 變聰明了,而是<em>它從「給你建議」變成「替你執行」</em>——
@@ -1148,8 +1325,8 @@
 
 			<p>
 				Claude Code 有<strong>兩個入口</strong>,門檻差很多。多數設計 / 研究 / PM 角色從<strong>桌面版</strong>開始就好——
-				下載安裝就能用,什麼開發工具都不用裝。
-				只有當你想跑 dev server、串外部 API、或寫比較進階的 Skill 時,才會碰到 CLI 版那條路。
+				只要先裝好 Git(它是 Claude Code 的版本安全網,沒有它跑不起來),桌面版下載安裝就能用。
+				只有當你想跑 dev server、串外部 API、或寫比較進階的 Skill 時,才會碰到需要 Node.js 的 CLI 版那條路。
 			</p>
 
 			<style>
@@ -1159,6 +1336,7 @@
 					gap: 16px;
 					margin: 20px 0;
 				}
+
 				.entry-card {
 					border-radius: 12px;
 					padding: 20px 22px;
@@ -1166,33 +1344,48 @@
 					flex-direction: column;
 					gap: 8px;
 				}
+
 				.entry-card.desktop {
 					background: #eef5ea;
 					border: 1.5px solid #7a9b82;
 				}
+
 				.entry-card.cli {
 					background: #fef4e8;
 					border: 1.5px solid #c9a878;
 				}
+
 				.entry-card .e-tag {
 					font-family: 'Georgia', serif;
 					font-style: italic;
 					font-size: 12px;
 					letter-spacing: 0.08em;
 				}
-				.entry-card.desktop .e-tag { color: #4a7a5a; }
-				.entry-card.cli .e-tag { color: #8a6a2a; }
+
+				.entry-card.desktop .e-tag {
+					color: #4a7a5a;
+				}
+
+				.entry-card.cli .e-tag {
+					color: #8a6a2a;
+				}
+
 				.entry-card .e-ttl {
 					font-size: 17px;
 					font-weight: 700;
 					color: #3a2f1f;
 				}
+
 				.entry-card .e-line {
 					font-size: 13px;
 					color: #5a4a2a;
 					line-height: 1.6;
 				}
-				.entry-card .e-line strong { color: #3a2f1f; }
+
+				.entry-card .e-line strong {
+					color: #3a2f1f;
+				}
+
 				.entry-card ul {
 					margin: 6px 0 0;
 					padding-left: 16px;
@@ -1200,9 +1393,15 @@
 					color: #5a4a2a;
 					line-height: 1.6;
 				}
-				.entry-card ul li { margin-bottom: 3px; }
+
+				.entry-card ul li {
+					margin-bottom: 3px;
+				}
+
 				@media (max-width: 720px) {
-					.entry-pair { grid-template-columns: 1fr; }
+					.entry-pair {
+						grid-template-columns: 1fr;
+					}
 				}
 			</style>
 
@@ -1212,11 +1411,11 @@
 					<div class="e-ttl">桌面版(Claude Desktop App)</div>
 					<div class="e-line">
 						到官網下載 <code>.dmg</code> / <code>.exe</code>,雙擊安裝就完成。
-						<strong>不用裝 Node.js、不用裝 Git、不用懂指令</strong>。
+						<strong>不用懂指令、不用裝 Node.js</strong>,只要先裝 Git 當版本安全網。
 					</div>
 					<ul>
-						<li><strong>需要的:</strong>Claude 訂閱(Pro / Max / Team)</li>
-						<li><strong>不需要的:</strong>任何開發工具</li>
+						<li><strong>需要的:</strong>Claude 訂閱(Pro / Max / Team)+ Git(或 GitHub Desktop)</li>
+						<li><strong>不需要的:</strong>Node.js、Python、CLI 指令</li>
 						<li>能做的:讀寫檔案、跑內建 Skill、處理 docx/xlsx/pptx/md</li>
 						<li>適合:訪談整理、簡報製作、PRD 反推、文件批次編輯</li>
 					</ul>
@@ -1248,11 +1447,26 @@
 			</ul>
 
 			<div class="warn-card" style="background:#eef5ea;border-left-color:#6b9b7c;">
-				<div class="ttl" style="color:#2d4a36;">💡 給設計部門的建議路徑</div>
+				<div class="ttl" style="color:#2d4a36;">💡 給設計部門的建議路徑(呼應「會自然長大」)</div>
 				<p style="color:#2d4a36;">
-					<strong>第一週:</strong>只裝桌面版,把現在手上的訪談 / 簡報 / PRD 各丟一份進去跑跑看。<br>
-					<strong>第二週:</strong>覺得很順之後,裝 Git(或 GitHub Desktop)讓檔案有版本歷史。<br>
-					<strong>第三週起:</strong>有特定需求(Figma MCP、自製 Skill)時,再考慮裝 Node.js + CLI 版。
+					<strong>起點(裝這兩個就能開始):</strong>桌面版 + Git。
+					Git 是 Claude Code 跑起來的前提(它要靠 Git 做版本安全網),所以這兩個一起裝、不用分週。
+					裝完先把手上的訪談 / 簡報 / 規範各丟一份進去跑跑看。<br>
+					<strong>用順之後:</strong>如果碰到「我想連 Figma」「我想自己做一個 Skill」「我想跑 dev server」這類進階需求,
+					再裝 Node.js + CLI 版。<br>
+					<strong>原則一樣:Node.js / MCP / 自製 Skill 這些都是「上一步用順之後自然冒出的需求」,不是先學完才能用</strong>。
+				</p>
+			</div>
+
+			<div class="warn-card" style="background:#fef4e8;border-left-color:#c46a3a;">
+				<div class="ttl">⚠ 不要跟 Cowork 搞混</div>
+				<p>
+					你可能聽過 Anthropic 的 <strong>Cowork</strong>——它是 Claude Desktop App 內<strong>另一個 tab</strong>
+					(跟本篇講的 Code mode 並列),定位是「給不寫程式的知識工作者用的 GUI 工作模式」。聽起來很像本篇場景,但有兩個關鍵限制:
+					<strong>不支援本地 MCP、不支援本地 Skill</strong>——
+					也就是本文 Case 1 / 2 / 3 / 4 的核心做法在 Cowork 都跑不起來。
+					本篇所有 case 走的都是 <strong>Claude Code</strong>(桌面 App 內的 Code mode 或 CLI 版),不是 Cowork。
+					詳細對比、何時該用 Cowork,看文末<a href="#appendix-cowork">附錄</a>。
 				</p>
 			</div>
 
@@ -1278,19 +1492,21 @@
 						<div class="dot g"></div>
 						<div class="name">Claude Code — newslin-design.github.io</div>
 					</div>
-					<div class="body"><span class="dim">▎ 工作區</span>  <span class="accent">newslin-design.github.io (main)</span>
-<span class="dim">▎ 模型</span>    Claude Opus 4.7   <span class="dim">·  權限模式: Plan</span>
+					<div class="body"><span class="dim">▎ 工作區</span> <span class="accent">newslin-design.github.io
+							(main)</span>
+						<span class="dim">▎ 模型</span> Claude Opus 4.7 <span class="dim">· 權限模式: Plan</span>
 
-<span class="prompt">›</span> <span class="user">幫我新增一篇 blog,主題是 Claude Code UI 教學</span>
+						<span class="prompt">›</span> <span class="user">幫我新增一篇 blog,主題是 Claude Code UI 教學</span>
 
-<span class="ai">● 開始分析需求...</span>
-<span class="dim">  ↳ 讀取 Blog/linear-iteration-vs-divergent-convergent.html (參考寫法)</span>
-<span class="dim">  ↳ 讀取 index.html (找到列表插入點)</span>
-<span class="dim">  ↳ 計畫:</span>
-<span class="dim">     1. 建立 Blog/claude-code-ui-tutorial.html</span>
-<span class="dim">     2. 在 index.html 加入卡片</span>
+						<span class="ai">● 開始分析需求...</span>
+						<span class="dim"> ↳ 讀取 Blog/linear-iteration-vs-divergent-convergent.html (參考寫法)</span>
+						<span class="dim"> ↳ 讀取 index.html (找到列表插入點)</span>
+						<span class="dim"> ↳ 計畫:</span>
+						<span class="dim"> 1. 建立 Blog/claude-code-ui-tutorial.html</span>
+						<span class="dim"> 2. 在 index.html 加入卡片</span>
 
-<span class="accent">[ Approve ]   [ Edit Plan ]   [ Cancel ]</span></div>
+						<span class="accent">[ Approve ] [ Edit Plan ] [ Cancel ]</span>
+					</div>
 				</div>
 				<p class="caption">UI 版會把 CLI 的純文字流程包成可點擊的卡片與按鈕,Plan 模式特別友善</p>
 			</div>
@@ -1303,82 +1519,261 @@
 
 			<div class="illustration">
 				<h4>桌面版 UI 區塊示意</h4>
-				<div style="width:100%;max-width:720px;background:#0e0e0e;border-radius:12px;overflow:hidden;box-shadow:0 12px 28px rgba(0,0,0,0.28);display:grid;grid-template-columns:210px 1fr;min-height:480px;font-family:system-ui,-apple-system,sans-serif;font-size:12px;color:#d4d4d4;">
+				<div
+					style="width:100%;max-width:720px;background:#0e0e0e;border-radius:12px;overflow:hidden;box-shadow:0 12px 28px rgba(0,0,0,0.28);display:grid;grid-template-columns:210px 1fr;min-height:480px;font-family:system-ui,-apple-system,sans-serif;font-size:12px;color:#d4d4d4;">
 					<!-- 左側欄 -->
-					<div style="background:#0a0a0a;border-right:1px solid #222;padding:10px 0;display:flex;flex-direction:column;gap:1px;">
+					<div
+						style="background:#0a0a0a;border-right:1px solid #222;padding:10px 0;display:flex;flex-direction:column;gap:1px;">
 						<!-- 頂部分頁 icons -->
-						<div style="display:flex;gap:2px;padding:0 10px 10px 10px;border-bottom:1px solid #1a1a1a;margin-bottom:8px;">
-							<div style="width:26px;height:26px;display:flex;align-items:center;justify-content:center;color:#666;font-size:13px;">💬</div>
-							<div style="width:26px;height:26px;display:flex;align-items:center;justify-content:center;color:#666;font-size:12px;">≣</div>
-							<div style="padding:4px 10px;background:#222;border-radius:6px;color:#e8e8e8;font-size:11px;display:flex;align-items:center;gap:5px;">&lt;/&gt; Code</div>
+						<div
+							style="display:flex;gap:2px;padding:0 10px 10px 10px;border-bottom:1px solid #1a1a1a;margin-bottom:8px;">
+							<div
+								style="width:26px;height:26px;display:flex;align-items:center;justify-content:center;color:#666;font-size:13px;">
+								💬</div>
+							<div
+								style="width:26px;height:26px;display:flex;align-items:center;justify-content:center;color:#666;font-size:12px;">
+								≣</div>
+							<div
+								style="padding:4px 10px;background:#222;border-radius:6px;color:#e8e8e8;font-size:11px;display:flex;align-items:center;gap:5px;">
+								&lt;/&gt; Code</div>
 						</div>
 						<!-- 主導覽 -->
-						<div style="padding:6px 14px;color:#aaa;display:flex;align-items:center;gap:8px;font-size:12px;"><span style="color:#777;">＋</span> New session</div>
-						<div style="padding:6px 14px;color:#aaa;display:flex;align-items:center;gap:8px;font-size:12px;"><span style="color:#777;">⚡</span> Routines</div>
-						<div style="padding:6px 14px;color:#aaa;display:flex;align-items:center;gap:8px;font-size:12px;"><span style="color:#777;">🎒</span> Customize</div>
-						<div style="padding:6px 14px;color:#aaa;display:flex;align-items:center;gap:8px;font-size:12px;"><span style="color:#777;">⌄</span> More</div>
+						<div
+							style="padding:6px 14px;color:#aaa;display:flex;align-items:center;gap:8px;font-size:12px;">
+							<span style="color:#777;">＋</span> New session
+						</div>
+						<div
+							style="padding:6px 14px;color:#aaa;display:flex;align-items:center;gap:8px;font-size:12px;">
+							<span style="color:#777;">⚡</span> Routines
+						</div>
+						<div
+							style="padding:6px 14px;color:#aaa;display:flex;align-items:center;gap:8px;font-size:12px;">
+							<span style="color:#777;">🎒</span> Customize
+						</div>
+						<div
+							style="padding:6px 14px;color:#aaa;display:flex;align-items:center;gap:8px;font-size:12px;">
+							<span style="color:#777;">⌄</span> More
+						</div>
 						<!-- Pinned -->
-						<div style="padding:14px 14px 4px 14px;font-size:10px;letter-spacing:0.08em;color:#555;">Pinned</div>
-						<div style="padding:4px 14px;color:#555;display:flex;align-items:center;gap:8px;font-size:11px;"><span>📌</span> Drag to pin</div>
+						<div style="padding:14px 14px 4px 14px;font-size:10px;letter-spacing:0.08em;color:#555;">Pinned
+						</div>
+						<div
+							style="padding:4px 14px;color:#555;display:flex;align-items:center;gap:8px;font-size:11px;">
+							<span>📌</span> Drag to pin
+						</div>
 						<!-- builder -->
-						<div style="padding:14px 14px 4px 14px;font-size:10px;letter-spacing:0.08em;color:#555;">builder</div>
-						<div style="padding:3px 14px;color:#999;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">○ Add keyboard shortcut hints to rotate</div>
-						<div style="padding:3px 14px;color:#999;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">○ Create portfolio documentation for So</div>
-						<div style="padding:3px 14px;color:#999;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">○ Add multilingual product list export to</div>
-						<div style="padding:3px 14px;color:#999;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">○ Add Excel export for product list</div>
+						<div style="padding:14px 14px 4px 14px;font-size:10px;letter-spacing:0.08em;color:#555;">builder
+						</div>
+						<div
+							style="padding:3px 14px;color:#999;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+							○ Add keyboard shortcut hints to rotate</div>
+						<div
+							style="padding:3px 14px;color:#999;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+							○ Create portfolio documentation for So</div>
+						<div
+							style="padding:3px 14px;color:#999;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+							○ Add multilingual product list export to</div>
+						<div
+							style="padding:3px 14px;color:#999;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+							○ Add Excel export for product list</div>
 						<div style="padding:3px 14px;color:#999;font-size:11px;">○ User Detail</div>
 						<div style="padding:3px 14px;color:#999;font-size:11px;">○ git flow</div>
 						<!-- 專案 -->
-						<div style="padding:14px 14px 4px 14px;font-size:10px;letter-spacing:0.08em;color:#555;">newslin-design.github.io</div>
-						<div style="padding:3px 14px;color:#999;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">○ Hide portfolio index and update passw</div>
-						<div style="padding:3px 14px;color:#999;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">○ Update SVG to match reference image</div>
+						<div style="padding:14px 14px 4px 14px;font-size:10px;letter-spacing:0.08em;color:#555;">
+							newslin-design.github.io</div>
+						<div
+							style="padding:3px 14px;color:#999;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+							○ Hide portfolio index and update passw</div>
+						<div
+							style="padding:3px 14px;color:#999;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+							○ Update SVG to match reference image</div>
 					</div>
 					<!-- 主要區域 -->
-					<div style="background:#0e0e0e;padding:30px 30px 14px 30px;display:flex;flex-direction:column;gap:14px;">
+					<div
+						style="background:#0e0e0e;padding:30px 30px 14px 30px;display:flex;flex-direction:column;gap:14px;">
 						<!-- 首頁歡迎標題 -->
-						<div style="font-size:17px;color:#e8e8e8;font-weight:500;display:flex;align-items:center;gap:8px;"><span style="color:#d98658;">✴</span> What's up next, UX ATEN 2?</div>
+						<div
+							style="font-size:17px;color:#e8e8e8;font-weight:500;display:flex;align-items:center;gap:8px;">
+							<span style="color:#d98658;">✴</span> What's up next, UX ATEN 2?
+						</div>
 						<!-- 統計卡外框 -->
 						<div style="background:#161616;border-radius:10px;padding:16px;">
 							<!-- 分頁 + 篩選 -->
 							<div style="display:flex;gap:10px;align-items:center;margin-bottom:12px;">
-								<span style="padding:4px 10px;background:#262626;border-radius:5px;color:#e0e0e0;font-size:11px;">Overview</span>
+								<span
+									style="padding:4px 10px;background:#262626;border-radius:5px;color:#e0e0e0;font-size:11px;">Overview</span>
 								<span style="color:#666;font-size:11px;padding:4px 10px;">Models</span>
 								<div style="margin-left:auto;display:flex;gap:4px;">
-									<span style="color:#ddd;font-size:11px;padding:3px 9px;background:#262626;border-radius:4px;">All</span>
+									<span
+										style="color:#ddd;font-size:11px;padding:3px 9px;background:#262626;border-radius:4px;">All</span>
 									<span style="color:#666;font-size:11px;padding:3px 9px;">30d</span>
 									<span style="color:#666;font-size:11px;padding:3px 9px;">7d</span>
 								</div>
 							</div>
 							<!-- 統計格 4x2 -->
 							<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;">
-								<div style="background:#1e1e1e;border-radius:6px;padding:8px 10px;"><div style="color:#666;font-size:10px;">Sessions</div><div style="color:#e8e8e8;font-size:14px;font-weight:700;margin-top:1px;">147</div></div>
-								<div style="background:#1e1e1e;border-radius:6px;padding:8px 10px;"><div style="color:#666;font-size:10px;">Messages</div><div style="color:#e8e8e8;font-size:14px;font-weight:700;margin-top:1px;">18,625</div></div>
-								<div style="background:#1e1e1e;border-radius:6px;padding:8px 10px;"><div style="color:#666;font-size:10px;">Total tokens</div><div style="color:#e8e8e8;font-size:14px;font-weight:700;margin-top:1px;">7.9M</div></div>
-								<div style="background:#1e1e1e;border-radius:6px;padding:8px 10px;"><div style="color:#666;font-size:10px;">Active days</div><div style="color:#e8e8e8;font-size:14px;font-weight:700;margin-top:1px;">21</div></div>
-								<div style="background:#1e1e1e;border-radius:6px;padding:8px 10px;"><div style="color:#666;font-size:10px;">Current streak</div><div style="color:#e8e8e8;font-size:14px;font-weight:700;margin-top:1px;">5d</div></div>
-								<div style="background:#1e1e1e;border-radius:6px;padding:8px 10px;"><div style="color:#666;font-size:10px;">Longest streak</div><div style="color:#e8e8e8;font-size:14px;font-weight:700;margin-top:1px;">6d</div></div>
-								<div style="background:#1e1e1e;border-radius:6px;padding:8px 10px;"><div style="color:#666;font-size:10px;">Peak hour</div><div style="color:#e8e8e8;font-size:14px;font-weight:700;margin-top:1px;">9 AM</div></div>
-								<div style="background:#1e1e1e;border-radius:6px;padding:8px 10px;"><div style="color:#666;font-size:10px;">Favorite model</div><div style="color:#e8e8e8;font-size:13px;font-weight:700;margin-top:1px;">Sonnet 4.6</div></div>
+								<div style="background:#1e1e1e;border-radius:6px;padding:8px 10px;">
+									<div style="color:#666;font-size:10px;">Sessions</div>
+									<div style="color:#e8e8e8;font-size:14px;font-weight:700;margin-top:1px;">147</div>
+								</div>
+								<div style="background:#1e1e1e;border-radius:6px;padding:8px 10px;">
+									<div style="color:#666;font-size:10px;">Messages</div>
+									<div style="color:#e8e8e8;font-size:14px;font-weight:700;margin-top:1px;">18,625
+									</div>
+								</div>
+								<div style="background:#1e1e1e;border-radius:6px;padding:8px 10px;">
+									<div style="color:#666;font-size:10px;">Total tokens</div>
+									<div style="color:#e8e8e8;font-size:14px;font-weight:700;margin-top:1px;">7.9M</div>
+								</div>
+								<div style="background:#1e1e1e;border-radius:6px;padding:8px 10px;">
+									<div style="color:#666;font-size:10px;">Active days</div>
+									<div style="color:#e8e8e8;font-size:14px;font-weight:700;margin-top:1px;">21</div>
+								</div>
+								<div style="background:#1e1e1e;border-radius:6px;padding:8px 10px;">
+									<div style="color:#666;font-size:10px;">Current streak</div>
+									<div style="color:#e8e8e8;font-size:14px;font-weight:700;margin-top:1px;">5d</div>
+								</div>
+								<div style="background:#1e1e1e;border-radius:6px;padding:8px 10px;">
+									<div style="color:#666;font-size:10px;">Longest streak</div>
+									<div style="color:#e8e8e8;font-size:14px;font-weight:700;margin-top:1px;">6d</div>
+								</div>
+								<div style="background:#1e1e1e;border-radius:6px;padding:8px 10px;">
+									<div style="color:#666;font-size:10px;">Peak hour</div>
+									<div style="color:#e8e8e8;font-size:14px;font-weight:700;margin-top:1px;">9 AM</div>
+								</div>
+								<div style="background:#1e1e1e;border-radius:6px;padding:8px 10px;">
+									<div style="color:#666;font-size:10px;">Favorite model</div>
+									<div style="color:#e8e8e8;font-size:13px;font-weight:700;margin-top:1px;">Sonnet 4.6
+									</div>
+								</div>
 							</div>
 							<!-- 活動熱區 -->
 							<div style="margin-top:12px;display:grid;grid-template-columns:repeat(20,1fr);gap:2px;">
 								<!-- 用 JS 模擬不了,直接手寫一堆 div。用迴圈邏輯:大多是 #222,右下角一小塊藍色。 -->
-								<!-- Row 1 --><div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div><div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div><div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div><div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div><div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div><div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div><div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div><div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div><div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div><div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div><div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div><div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div><div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div><div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div><div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div><div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div><div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div><div style="aspect-ratio:1;background:#2d5aa0;border-radius:2px;"></div><div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div><div style="aspect-ratio:1;background:#2d5aa0;border-radius:2px;"></div>
-								<!-- Row 2 --><div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div><div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div><div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div><div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div><div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div><div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div><div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div><div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div><div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div><div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div><div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div><div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div><div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div><div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div><div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div><div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div><div style="aspect-ratio:1;background:#3b7dd8;border-radius:2px;"></div><div style="aspect-ratio:1;background:#4a8def;border-radius:2px;"></div><div style="aspect-ratio:1;background:#2d5aa0;border-radius:2px;"></div><div style="aspect-ratio:1;background:#4a8def;border-radius:2px;"></div>
-								<!-- Row 3 --><div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div><div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div><div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div><div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div><div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div><div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div><div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div><div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div><div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div><div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div><div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div><div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div><div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div><div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div><div style="aspect-ratio:1;background:#3b7dd8;border-radius:2px;"></div><div style="aspect-ratio:1;background:#4a8def;border-radius:2px;"></div><div style="aspect-ratio:1;background:#3b7dd8;border-radius:2px;"></div><div style="aspect-ratio:1;background:#3b7dd8;border-radius:2px;"></div><div style="aspect-ratio:1;background:#4a8def;border-radius:2px;"></div><div style="aspect-ratio:1;background:#3b7dd8;border-radius:2px;"></div>
-								<!-- Row 4 --><div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div><div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div><div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div><div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div><div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div><div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div><div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div><div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div><div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div><div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div><div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div><div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div><div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div><div style="aspect-ratio:1;background:#3b7dd8;border-radius:2px;"></div><div style="aspect-ratio:1;background:#3b7dd8;border-radius:2px;"></div><div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div><div style="aspect-ratio:1;background:#3b7dd8;border-radius:2px;"></div><div style="aspect-ratio:1;background:#3b7dd8;border-radius:2px;"></div><div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div><div style="aspect-ratio:1;background:#3b7dd8;border-radius:2px;"></div>
-								<!-- Row 5 --><div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div><div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div><div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div><div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div><div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div><div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div><div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div><div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div><div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div><div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div><div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div><div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div><div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div><div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div><div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div><div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div><div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div><div style="aspect-ratio:1;background:#3b7dd8;border-radius:2px;"></div><div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div><div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div>
+								<!-- Row 1 -->
+								<div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div>
+								<div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div>
+								<div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div>
+								<div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div>
+								<div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div>
+								<div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div>
+								<div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div>
+								<div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div>
+								<div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div>
+								<div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div>
+								<div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div>
+								<div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div>
+								<div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div>
+								<div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div>
+								<div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div>
+								<div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div>
+								<div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div>
+								<div style="aspect-ratio:1;background:#2d5aa0;border-radius:2px;"></div>
+								<div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div>
+								<div style="aspect-ratio:1;background:#2d5aa0;border-radius:2px;"></div>
+								<!-- Row 2 -->
+								<div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div>
+								<div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div>
+								<div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div>
+								<div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div>
+								<div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div>
+								<div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div>
+								<div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div>
+								<div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div>
+								<div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div>
+								<div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div>
+								<div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div>
+								<div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div>
+								<div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div>
+								<div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div>
+								<div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div>
+								<div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div>
+								<div style="aspect-ratio:1;background:#3b7dd8;border-radius:2px;"></div>
+								<div style="aspect-ratio:1;background:#4a8def;border-radius:2px;"></div>
+								<div style="aspect-ratio:1;background:#2d5aa0;border-radius:2px;"></div>
+								<div style="aspect-ratio:1;background:#4a8def;border-radius:2px;"></div>
+								<!-- Row 3 -->
+								<div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div>
+								<div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div>
+								<div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div>
+								<div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div>
+								<div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div>
+								<div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div>
+								<div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div>
+								<div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div>
+								<div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div>
+								<div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div>
+								<div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div>
+								<div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div>
+								<div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div>
+								<div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div>
+								<div style="aspect-ratio:1;background:#3b7dd8;border-radius:2px;"></div>
+								<div style="aspect-ratio:1;background:#4a8def;border-radius:2px;"></div>
+								<div style="aspect-ratio:1;background:#3b7dd8;border-radius:2px;"></div>
+								<div style="aspect-ratio:1;background:#3b7dd8;border-radius:2px;"></div>
+								<div style="aspect-ratio:1;background:#4a8def;border-radius:2px;"></div>
+								<div style="aspect-ratio:1;background:#3b7dd8;border-radius:2px;"></div>
+								<!-- Row 4 -->
+								<div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div>
+								<div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div>
+								<div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div>
+								<div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div>
+								<div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div>
+								<div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div>
+								<div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div>
+								<div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div>
+								<div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div>
+								<div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div>
+								<div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div>
+								<div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div>
+								<div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div>
+								<div style="aspect-ratio:1;background:#3b7dd8;border-radius:2px;"></div>
+								<div style="aspect-ratio:1;background:#3b7dd8;border-radius:2px;"></div>
+								<div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div>
+								<div style="aspect-ratio:1;background:#3b7dd8;border-radius:2px;"></div>
+								<div style="aspect-ratio:1;background:#3b7dd8;border-radius:2px;"></div>
+								<div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div>
+								<div style="aspect-ratio:1;background:#3b7dd8;border-radius:2px;"></div>
+								<!-- Row 5 -->
+								<div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div>
+								<div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div>
+								<div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div>
+								<div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div>
+								<div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div>
+								<div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div>
+								<div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div>
+								<div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div>
+								<div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div>
+								<div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div>
+								<div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div>
+								<div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div>
+								<div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div>
+								<div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div>
+								<div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div>
+								<div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div>
+								<div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div>
+								<div style="aspect-ratio:1;background:#3b7dd8;border-radius:2px;"></div>
+								<div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div>
+								<div style="aspect-ratio:1;background:#1c1c1c;border-radius:2px;"></div>
 							</div>
-							<div style="margin-top:10px;color:#666;font-size:10px;">You've used ~63× more tokens than The Hobbit.</div>
+							<div style="margin-top:10px;color:#666;font-size:10px;">You've used ~63× more tokens than
+								The Hobbit.</div>
 						</div>
 						<!-- 上方工作區 tabs -->
 						<div style="margin-top:auto;display:flex;align-items:center;gap:6px;">
-							<span style="background:#1e1e1e;border-radius:5px;padding:4px 9px;color:#bbb;font-size:11px;display:inline-flex;align-items:center;gap:5px;">🖥 Local</span>
-							<span style="background:#1e1e1e;border-radius:5px;padding:4px 9px;color:#bbb;font-size:11px;display:inline-flex;align-items:center;gap:5px;">📁 newslin-design.github.io</span>
-							<span style="background:#1e1e1e;border-radius:5px;padding:4px 9px;color:#bbb;font-size:11px;display:inline-flex;align-items:center;gap:5px;">⎇ main | worktree</span>
+							<span
+								style="background:#1e1e1e;border-radius:5px;padding:4px 9px;color:#bbb;font-size:11px;display:inline-flex;align-items:center;gap:5px;">🖥
+								Local</span>
+							<span
+								style="background:#1e1e1e;border-radius:5px;padding:4px 9px;color:#bbb;font-size:11px;display:inline-flex;align-items:center;gap:5px;">📁
+								newslin-design.github.io</span>
+							<span
+								style="background:#1e1e1e;border-radius:5px;padding:4px 9px;color:#bbb;font-size:11px;display:inline-flex;align-items:center;gap:5px;">⎇
+								main | worktree</span>
 						</div>
 						<!-- 輸入框 -->
-						<div style="background:#1a1a1a;border:1px solid #2a2a2a;border-radius:8px;padding:10px 12px;display:flex;align-items:center;color:#666;font-size:12px;">
+						<div
+							style="background:#1a1a1a;border:1px solid #2a2a2a;border-radius:8px;padding:10px 12px;display:flex;align-items:center;color:#666;font-size:12px;">
 							Describe a task or ask a question
 							<span style="margin-left:auto;color:#555;">⏎</span>
 						</div>
@@ -1405,37 +1800,56 @@
 						<div style="font-size:12px;color:#7a6f58;letter-spacing:0.05em;">模型 + Thinking Effort</div>
 						<div style="position:relative;padding-bottom:44px;">
 							<!-- 選單面板 -->
-							<div style="background:#1e1e1e;border:1px solid #333;border-radius:10px;padding:8px;width:240px;box-shadow:0 14px 30px rgba(0,0,0,0.4);font-family:system-ui,sans-serif;color:#ddd;font-size:13px;">
+							<div
+								style="background:#1e1e1e;border:1px solid #333;border-radius:10px;padding:8px;width:240px;box-shadow:0 14px 30px rgba(0,0,0,0.4);font-family:system-ui,sans-serif;color:#ddd;font-size:13px;">
 								<div style="display:flex;align-items:center;padding:6px 10px 4px 10px;">
 									<span style="color:#777;font-size:11px;">Models</span>
 									<span style="margin-left:auto;display:flex;gap:3px;">
-										<span style="background:#2a2a2a;border-radius:3px;padding:1px 5px;color:#999;font-size:10px;">⇧</span>
-										<span style="background:#2a2a2a;border-radius:3px;padding:1px 5px;color:#999;font-size:10px;">Ctrl</span>
-										<span style="background:#2a2a2a;border-radius:3px;padding:1px 5px;color:#999;font-size:10px;">I</span>
+										<span
+											style="background:#2a2a2a;border-radius:3px;padding:1px 5px;color:#999;font-size:10px;">⇧</span>
+										<span
+											style="background:#2a2a2a;border-radius:3px;padding:1px 5px;color:#999;font-size:10px;">Ctrl</span>
+										<span
+											style="background:#2a2a2a;border-radius:3px;padding:1px 5px;color:#999;font-size:10px;">I</span>
 									</span>
 								</div>
-								<div style="padding:6px 10px;display:flex;align-items:center;color:#fff;font-weight:600;">Opus 4.7<span style="margin-left:auto;display:flex;align-items:center;gap:10px;"><span style="color:#7a9b82;">✓</span><span style="color:#666;font-size:11px;">1</span></span></div>
-								<div style="padding:6px 10px;display:flex;align-items:center;color:#bbb;">Sonnet 4.6<span style="margin-left:auto;color:#666;font-size:11px;">2</span></div>
-								<div style="padding:6px 10px;display:flex;align-items:center;color:#bbb;">Haiku 4.5<span style="margin-left:auto;color:#666;font-size:11px;">3</span></div>
+								<div
+									style="padding:6px 10px;display:flex;align-items:center;color:#fff;font-weight:600;">
+									Opus 4.7<span
+										style="margin-left:auto;display:flex;align-items:center;gap:10px;"><span
+											style="color:#7a9b82;">✓</span><span
+											style="color:#666;font-size:11px;">1</span></span></div>
+								<div style="padding:6px 10px;display:flex;align-items:center;color:#bbb;">Sonnet
+									4.6<span style="margin-left:auto;color:#666;font-size:11px;">2</span></div>
+								<div style="padding:6px 10px;display:flex;align-items:center;color:#bbb;">Haiku 4.5<span
+										style="margin-left:auto;color:#666;font-size:11px;">3</span></div>
 								<div style="height:1px;background:#2a2a2a;margin:6px 6px;"></div>
 								<div style="display:flex;align-items:center;padding:4px 10px;">
 									<span style="color:#777;font-size:11px;">Effort</span>
 									<span style="margin-left:auto;display:flex;gap:3px;">
-										<span style="background:#2a2a2a;border-radius:3px;padding:1px 5px;color:#999;font-size:10px;">⇧</span>
-										<span style="background:#2a2a2a;border-radius:3px;padding:1px 5px;color:#999;font-size:10px;">Ctrl</span>
-										<span style="background:#2a2a2a;border-radius:3px;padding:1px 5px;color:#999;font-size:10px;">E</span>
+										<span
+											style="background:#2a2a2a;border-radius:3px;padding:1px 5px;color:#999;font-size:10px;">⇧</span>
+										<span
+											style="background:#2a2a2a;border-radius:3px;padding:1px 5px;color:#999;font-size:10px;">Ctrl</span>
+										<span
+											style="background:#2a2a2a;border-radius:3px;padding:1px 5px;color:#999;font-size:10px;">E</span>
 									</span>
 								</div>
 								<div style="padding:6px 10px;color:#bbb;">Low</div>
-								<div style="padding:6px 10px;display:flex;align-items:center;color:#fff;font-weight:600;">Medium<span style="margin-left:auto;color:#7a9b82;">✓</span></div>
+								<div
+									style="padding:6px 10px;display:flex;align-items:center;color:#fff;font-weight:600;">
+									Medium<span style="margin-left:auto;color:#7a9b82;">✓</span></div>
 								<div style="padding:6px 10px;color:#bbb;">High</div>
 								<div style="padding:6px 10px;color:#bbb;">Extra high</div>
 								<div style="padding:6px 10px;color:#bbb;">Max</div>
 							</div>
 							<!-- 觸發 pill -->
-							<div style="position:absolute;left:50%;transform:translateX(-50%);bottom:0;background:#2a2a2a;border:1px solid #3a3a3a;border-radius:6px;padding:5px 12px;color:#eee;font-size:12px;font-family:system-ui,sans-serif;">Opus 4.7 · Medium</div>
+							<div
+								style="position:absolute;left:50%;transform:translateX(-50%);bottom:0;background:#2a2a2a;border:1px solid #3a3a3a;border-radius:6px;padding:5px 12px;color:#eee;font-size:12px;font-family:system-ui,sans-serif;">
+								Opus 4.7 · Medium</div>
 						</div>
-						<div style="font-size:12px;color:#7a6f58;font-style:italic;text-align:center;max-width:240px;">點右下 pill 叫出;選模型與思考強度</div>
+						<div style="font-size:12px;color:#7a6f58;font-style:italic;text-align:center;max-width:240px;">
+							點右下 pill 叫出;選模型與思考強度</div>
 					</div>
 
 					<!-- Mode 下拉 -->
@@ -1443,28 +1857,45 @@
 						<div style="font-size:12px;color:#7a6f58;letter-spacing:0.05em;">權限 Mode</div>
 						<div style="position:relative;padding-bottom:44px;">
 							<!-- 選單面板 -->
-							<div style="background:#1e1e1e;border:1px solid #333;border-radius:10px;padding:8px;width:240px;box-shadow:0 14px 30px rgba(0,0,0,0.4);font-family:system-ui,sans-serif;color:#ddd;font-size:13px;">
+							<div
+								style="background:#1e1e1e;border:1px solid #333;border-radius:10px;padding:8px;width:240px;box-shadow:0 14px 30px rgba(0,0,0,0.4);font-family:system-ui,sans-serif;color:#ddd;font-size:13px;">
 								<div style="display:flex;align-items:center;padding:6px 10px 4px 10px;">
 									<span style="color:#777;font-size:11px;">Mode</span>
 									<span style="margin-left:auto;display:flex;gap:3px;">
-										<span style="background:#2a2a2a;border-radius:3px;padding:1px 5px;color:#999;font-size:10px;">⇧</span>
-										<span style="background:#2a2a2a;border-radius:3px;padding:1px 5px;color:#999;font-size:10px;">Ctrl</span>
-										<span style="background:#2a2a2a;border-radius:3px;padding:1px 5px;color:#999;font-size:10px;">M</span>
+										<span
+											style="background:#2a2a2a;border-radius:3px;padding:1px 5px;color:#999;font-size:10px;">⇧</span>
+										<span
+											style="background:#2a2a2a;border-radius:3px;padding:1px 5px;color:#999;font-size:10px;">Ctrl</span>
+										<span
+											style="background:#2a2a2a;border-radius:3px;padding:1px 5px;color:#999;font-size:10px;">M</span>
 									</span>
 								</div>
-								<div style="padding:7px 10px;display:flex;align-items:center;color:#bbb;">Ask permissions<span style="margin-left:auto;color:#666;font-size:11px;">1</span></div>
-								<div style="padding:7px 10px;display:flex;align-items:center;color:#fff;font-weight:600;">Accept edits<span style="margin-left:auto;display:flex;align-items:center;gap:10px;"><span style="color:#7a9b82;">✓</span><span style="color:#666;font-size:11px;">2</span></span></div>
-								<div style="padding:7px 10px;display:flex;align-items:center;color:#bbb;">Plan mode<span style="margin-left:auto;color:#666;font-size:11px;">3</span></div>
-								<div style="padding:7px 10px;display:flex;align-items:center;color:#c46a3a;">Bypass permissions<span style="margin-left:auto;color:#666;font-size:11px;">4</span></div>
+								<div style="padding:7px 10px;display:flex;align-items:center;color:#bbb;">Ask
+									permissions<span style="margin-left:auto;color:#666;font-size:11px;">1</span></div>
+								<div
+									style="padding:7px 10px;display:flex;align-items:center;color:#fff;font-weight:600;">
+									Accept edits<span
+										style="margin-left:auto;display:flex;align-items:center;gap:10px;"><span
+											style="color:#7a9b82;">✓</span><span
+											style="color:#666;font-size:11px;">2</span></span></div>
+								<div style="padding:7px 10px;display:flex;align-items:center;color:#bbb;">Plan mode<span
+										style="margin-left:auto;color:#666;font-size:11px;">3</span></div>
+								<div style="padding:7px 10px;display:flex;align-items:center;color:#c46a3a;">Bypass
+									permissions<span style="margin-left:auto;color:#666;font-size:11px;">4</span></div>
 							</div>
 							<!-- 觸發 pill -->
-							<div style="position:absolute;left:50%;transform:translateX(-50%);bottom:0;background:#2a2a2a;border:1px solid #3a3a3a;border-radius:6px;padding:5px 12px;color:#eee;font-size:12px;font-family:system-ui,sans-serif;display:flex;align-items:center;gap:8px;">Accept edits<span style="color:#666;font-size:10px;">⌄</span></div>
+							<div
+								style="position:absolute;left:50%;transform:translateX(-50%);bottom:0;background:#2a2a2a;border:1px solid #3a3a3a;border-radius:6px;padding:5px 12px;color:#eee;font-size:12px;font-family:system-ui,sans-serif;display:flex;align-items:center;gap:8px;">
+								Accept edits<span style="color:#666;font-size:10px;">⌄</span></div>
 						</div>
-						<div style="font-size:12px;color:#7a6f58;font-style:italic;text-align:center;max-width:240px;">點左下 pill 叫出;決定 Claude 的動手自由度</div>
+						<div style="font-size:12px;color:#7a6f58;font-style:italic;text-align:center;max-width:240px;">
+							點左下 pill 叫出;決定 Claude 的動手自由度</div>
 					</div>
 
 				</div>
-				<p class="caption">兩個下拉都可以用 <code style="background:#f4ece0;color:#c46a3a;padding:1px 5px;border-radius:3px;font-family:Consolas,monospace;">Shift + Ctrl + 首字母</code> 快速叫出(M = Mode、I = Model、E = Effort),熟了之後手不用離開鍵盤</p>
+				<p class="caption">兩個下拉都可以用 <code
+						style="background:#f4ece0;color:#c46a3a;padding:1px 5px;border-radius:3px;font-family:Consolas,monospace;">Shift + Ctrl + 首字母</code>
+					快速叫出(M = Mode、I = Model、E = Effort),熟了之後手不用離開鍵盤</p>
 			</div>
 
 			<div style="width:100%;max-width:720px;margin:0 auto;">
@@ -1500,17 +1931,22 @@
 						<tr>
 							<td><strong>上方工作區列</strong></td>
 							<td>輸入框上方</td>
-							<td>顯示 <strong>Local/Remote</strong>、<strong>專案資料夾</strong>、<strong>Git 分支</strong>、<strong>Worktree</strong> 狀態。點擊可以切換工作目錄或開新的 worktree。</td>
+							<td>顯示 <strong>Local/Remote</strong>、<strong>專案資料夾</strong>、<strong>Git
+									分支</strong>、<strong>Worktree</strong> 狀態。點擊可以切換工作目錄或開新的 worktree。</td>
 						</tr>
 						<tr>
 							<td><strong>Mode 指示器</strong></td>
 							<td>輸入框左下(快捷鍵 <code>Shift+Tab</code> 或 <code>Ctrl+M</code>)</td>
-							<td>目前的<strong>權限模式</strong>,四檔可切換:<strong>Ask permissions</strong>(每個動作都問)、<strong>Accept edits</strong>(自動套用檔案編輯)、<strong>Plan mode</strong>(只規劃不動手)、<strong>Bypass permissions</strong>(全自動,慎用)。</td>
+							<td>目前的<strong>權限模式</strong>,四檔可切換:<strong>Ask permissions</strong>(每個動作都問)、<strong>Accept
+									edits</strong>(自動套用檔案編輯)、<strong>Plan mode</strong>(只規劃不動手)、<strong>Bypass
+									permissions</strong>(全自動,慎用)。</td>
 						</tr>
 						<tr>
 							<td><strong>模型 · Effort</strong></td>
 							<td>輸入框右下(<code>Ctrl+I</code> / <code>Ctrl+E</code>)</td>
-							<td>例如 <code>Sonnet 4.6 · Medium</code>——前者是<strong>模型</strong>(Opus 4.7 / Sonnet 4.6 / Haiku 4.5),後者是<strong>思考強度</strong>(Low / Medium / High / Extra high / Max)。越高越會先想再動手,Token 消耗也越多。</td>
+							<td>例如 <code>Sonnet 4.6 · Medium</code>——前者是<strong>模型</strong>(Opus 4.7 / Sonnet 4.6 /
+								Haiku 4.5),後者是<strong>思考強度</strong>(Low / Medium / High / Extra high /
+								Max)。越高越會先想再動手,Token 消耗也越多。</td>
 						</tr>
 					</tbody>
 				</table>
@@ -1555,22 +1991,23 @@
 					</div>
 					<div class="body"><span class="accent"># newslin-design.github.io</span>
 
-<span class="ai">## Project Overview</span>
-個人作品集 + Blog 靜態網站,使用純 HTML/CSS/JS,
-透過 GitHub Pages 部署。
+						<span class="ai">## Project Overview</span>
+						個人作品集 + Blog 靜態網站,使用純 HTML/CSS/JS,
+						透過 GitHub Pages 部署。
 
-<span class="ai">## Structure</span>
-- portfolio/    主作品集頁面與共用樣式 / JS
-- Blog/         所有 blog 文章,共用 portfolio 的樣式
-- image/, music/  靜態資源
+						<span class="ai">## Structure</span>
+						- portfolio/ 主作品集頁面與共用樣式 / JS
+						- Blog/ 所有 blog 文章,共用 portfolio 的樣式
+						- image/, music/ 靜態資源
 
-<span class="ai">## Conventions</span>
-- 文章命名:kebab-case.html
-- 圖片放 Blog/image/ 下對應主題資料夾
-- Header / Footer 由 portfolio/js/app.js 注入
+						<span class="ai">## Conventions</span>
+						- 文章命名:kebab-case.html
+						- 圖片放 Blog/image/ 下對應主題資料夾
+						- Header / Footer 由 portfolio/js/app.js 注入
 
-<span class="ai">## Commands</span>
-- 預覽:用 VS Code Live Server 開 index.html</div>
+						<span class="ai">## Commands</span>
+						- 預覽:用 VS Code Live Server 開 index.html
+					</div>
 				</div>
 				<p class="caption">這份檔案可以再手動補強——例如加上「我習慣的語氣」「不要做 X」</p>
 			</div>
@@ -1653,6 +2090,7 @@
 					gap: 14px;
 					margin: 24px 0;
 				}
+
 				.brain-card {
 					border-radius: 12px;
 					padding: 18px 20px;
@@ -1661,66 +2099,93 @@
 					flex-direction: column;
 					gap: 8px;
 				}
+
 				.brain-card.semantic {
 					background: #fef4e8;
 					border-color: #c9a878;
 				}
+
 				.brain-card.episodic {
 					background: #f0eaf5;
 					border-color: #9d83b8;
 				}
+
 				.brain-card.procedural {
 					background: #eef5ea;
 					border-color: #7a9b82;
 				}
+
 				.brain-card .b-icon {
 					font-size: 24px;
 					line-height: 1;
 				}
+
 				.brain-card .b-name {
 					font-family: 'Georgia', serif;
 					font-style: italic;
 					font-size: 12px;
 					letter-spacing: 0.05em;
 				}
-				.brain-card.semantic .b-name { color: #8a6a2a; }
-				.brain-card.episodic .b-name { color: #5a4275; }
-				.brain-card.procedural .b-name { color: #4a7a5a; }
+
+				.brain-card.semantic .b-name {
+					color: #8a6a2a;
+				}
+
+				.brain-card.episodic .b-name {
+					color: #5a4275;
+				}
+
+				.brain-card.procedural .b-name {
+					color: #4a7a5a;
+				}
+
 				.brain-card .b-ttl {
 					font-size: 16px;
 					font-weight: 700;
 					color: #3a2f1f;
 				}
+
 				.brain-card .b-ana {
 					font-size: 13px;
 					color: #5a4a2a;
 					line-height: 1.55;
 				}
-				.brain-card .b-ana strong { color: #3a2f1f; }
+
+				.brain-card .b-ana strong {
+					color: #3a2f1f;
+				}
+
 				.brain-card .b-ex {
 					margin-top: 8px;
 					padding-top: 10px;
-					border-top: 1px dashed rgba(0,0,0,0.1);
+					border-top: 1px dashed rgba(0, 0, 0, 0.1);
 					font-size: 12px;
 					color: #5a4a2a;
 					line-height: 1.55;
 				}
+
 				@media (max-width: 760px) {
-					.brain-grid { grid-template-columns: 1fr; }
+					.brain-grid {
+						grid-template-columns: 1fr;
+					}
 				}
+
 				.brain-table {
 					width: 100%;
 					border-collapse: collapse;
 					margin: 24px 0 8px;
 					font-size: 13.5px;
 				}
-				.brain-table th, .brain-table td {
+
+				.brain-table th,
+				.brain-table td {
 					text-align: left;
 					padding: 11px 14px;
 					border-bottom: 1px solid #ece4d2;
 					vertical-align: top;
 					line-height: 1.55;
 				}
+
 				.brain-table th {
 					background: #f6f2ea;
 					color: #6b5030;
@@ -1728,7 +2193,12 @@
 					font-size: 12px;
 					letter-spacing: 0.05em;
 				}
-				.brain-table td.col-name { font-weight: 700; color: #3a2f1f; }
+
+				.brain-table td.col-name {
+					font-weight: 700;
+					color: #3a2f1f;
+				}
+
 				.brain-table code {
 					background: #f4ece0;
 					color: #c46a3a;
@@ -1848,6 +2318,18 @@
 				</p>
 			</div>
 
+			<div class="warn-card" style="background:#eef5ea;border-left-color:#6b9b7c;">
+				<div class="ttl" style="color:#2d4a36;">🌱 別倒過來:不是先設好,是用了之後自然分化</div>
+				<p style="color:#2d4a36;">
+					看到這三個概念,直覺反應通常是「我要先把這三個都設好才能開始」——
+					其實正好相反。<strong>這三者是你用了之後、需求自己浮現時才寫的</strong>:
+					「每次都要重講背景」→ 該寫 CLAUDE.md;
+					「我每次都提醒它語氣」→ 該設 Memory;
+					「這個流程我做第三次了」→ 該包成 Skill。<br>
+					一開始什麼都不設,直接開始用——三者會自己<strong>分化出來</strong>。
+				</p>
+			</div>
+
 			<hr>
 
 			<div class="section-label" id="a06">
@@ -1869,15 +2351,17 @@
 					gap: 16px;
 					margin: 20px 0;
 				}
+
 				.tip-card {
 					background: #fff;
 					border: 1px solid #e6ddcc;
-					border-radius: 10px;
+					border-radius: 4px;
 					padding: 18px 20px;
 					display: flex;
 					flex-direction: column;
 					gap: 8px;
 				}
+
 				.tip-card .tip-tag {
 					font-family: 'Georgia', serif;
 					font-style: italic;
@@ -1885,16 +2369,19 @@
 					color: #a89773;
 					letter-spacing: 0.08em;
 				}
+
 				.tip-card .tip-ttl {
 					font-size: 15px;
 					font-weight: 700;
 					color: #3a2f1f;
 				}
+
 				.tip-card .tip-desc {
 					font-size: 13px;
 					color: #5a4a2a;
 					line-height: 1.6;
 				}
+
 				.tip-card code {
 					background: #f4ece0;
 					color: #c46a3a;
@@ -1903,6 +2390,7 @@
 					font-family: 'Consolas', monospace;
 					font-size: 12px;
 				}
+
 				.token-meter {
 					display: flex;
 					align-items: center;
@@ -1911,6 +2399,7 @@
 					font-size: 11px;
 					color: #7a6f58;
 				}
+
 				.token-meter .bar {
 					flex: 1;
 					height: 6px;
@@ -1918,13 +2407,26 @@
 					border-radius: 3px;
 					overflow: hidden;
 				}
+
 				.token-meter .bar .fill {
 					height: 100%;
 					border-radius: 3px;
 				}
-				.token-meter .bar .fill.low { background: #6b9b7c; width: 22%; }
-				.token-meter .bar .fill.mid { background: #c9a878; width: 55%; }
-				.token-meter .bar .fill.high { background: #c46a3a; width: 92%; }
+
+				.token-meter .bar .fill.low {
+					background: #6b9b7c;
+					width: 22%;
+				}
+
+				.token-meter .bar .fill.mid {
+					background: #c9a878;
+					width: 55%;
+				}
+
+				.token-meter .bar .fill.high {
+					background: #c46a3a;
+					width: 92%;
+				}
 			</style>
 
 			<h3>① 用 @tag 精準引用檔案</h3>
@@ -1944,7 +2446,11 @@
 						<div class="tip-desc">
 							Claude 要先搜尋、讀多份檔案才猜得出來是哪個。常見:先 <code>glob **/*.html</code> → 讀 3 份 → 才開始做事。
 						</div>
-						<div class="token-meter"><span>~3,500 tok</span><div class="bar"><div class="fill high"></div></div></div>
+						<div class="token-meter"><span>~3,500 tok</span>
+							<div class="bar">
+								<div class="fill high"></div>
+							</div>
+						</div>
 					</div>
 					<div class="tip-card" style="border-left: 4px solid #6b9b7c;">
 						<span class="tip-tag">@ TAG</span>
@@ -1952,7 +2458,11 @@
 						<div class="tip-desc">
 							直接帶路徑,Claude 只讀這一份就可以開工。Token 少、結果也更準,不會誤讀到無關檔案。
 						</div>
-						<div class="token-meter"><span>~800 tok</span><div class="bar"><div class="fill low"></div></div></div>
+						<div class="token-meter"><span>~800 tok</span>
+							<div class="bar">
+								<div class="fill low"></div>
+							</div>
+						</div>
 					</div>
 				</div>
 				<p class="caption">@ 引用不是語法糖,是直接<strong>省下 Claude 搜尋階段的 Token</strong></p>
@@ -2005,17 +2515,23 @@
 				<div style="display:flex;flex-direction:column;gap:8px;width:100%;max-width:560px;font-size:13px;">
 					<div style="display:flex;align-items:center;gap:10px;">
 						<span style="width:120px;color:#5a4a2a;">🏆 單主題馬拉松</span>
-						<div style="flex:1;height:14px;background:#f0e8d8;border-radius:7px;overflow:hidden;"><div style="width:20%;height:100%;background:#6b9b7c;"></div></div>
+						<div style="flex:1;height:14px;background:#f0e8d8;border-radius:7px;overflow:hidden;">
+							<div style="width:20%;height:100%;background:#6b9b7c;"></div>
+						</div>
 						<span style="color:#4a7a5a;font-weight:600;">最省</span>
 					</div>
 					<div style="display:flex;align-items:center;gap:10px;">
 						<span style="width:120px;color:#5a4a2a;">一題一 session</span>
-						<div style="flex:1;height:14px;background:#f0e8d8;border-radius:7px;overflow:hidden;"><div style="width:65%;height:100%;background:#c9a878;"></div></div>
+						<div style="flex:1;height:14px;background:#f0e8d8;border-radius:7px;overflow:hidden;">
+							<div style="width:65%;height:100%;background:#c9a878;"></div>
+						</div>
 						<span style="color:#8a6a2a;">中</span>
 					</div>
 					<div style="display:flex;align-items:center;gap:10px;">
 						<span style="width:120px;color:#5a4a2a;">雜題混打 + 不壓縮</span>
-						<div style="flex:1;height:14px;background:#f0e8d8;border-radius:7px;overflow:hidden;"><div style="width:95%;height:100%;background:#c46a3a;"></div></div>
+						<div style="flex:1;height:14px;background:#f0e8d8;border-radius:7px;overflow:hidden;">
+							<div style="width:95%;height:100%;background:#c46a3a;"></div>
+						</div>
 						<span style="color:#8a3f1a;font-weight:600;">最貴</span>
 					</div>
 				</div>
@@ -2104,9 +2620,19 @@
 
 			<p>
 				Skill 是 Claude Code 一個非常好用的概念——
-				把你<strong>常做的固定流程</strong>(例如「QA 流程」「跑 lighthouse 然後產報告」「依範本生封面圖」)寫成一個 Skill,
+				把你<strong>常做的固定流程</strong>(例如「研究綜合」「整理會議 action items」「依範本生簡報」)寫成一個 Skill,
 				下次只要打 <code>/某個-skill</code>,它就會照著預先寫好的指令完整跑一遍。
 			</p>
+
+			<div class="warn-card" style="background:#eef5ea;border-left-color:#6b9b7c;margin-top:14px;">
+				<div class="ttl" style="color:#2d4a36;">🌱 Skill 通常不是「寫」出來的,是「累積」出來的</div>
+				<p style="color:#2d4a36;">
+					接下來會看到一些 Skill 的例子,你可能會想:「這要我從零想一個出來,壓力很大耶。」
+					其實正常的順序是反過來的——<strong>你跟 Claude 把同一件事走過 2、3 次,流程自己就成形了</strong>。
+					第三次你會說「上次那種抽法很好,跟上次一樣」——那就是寫 Skill 的時機,只是把那個「跟上次一樣」的步驟落成 <code>.md</code>。
+					所以下面這些 Skill,看的時候不是「我要趕快學會寫」,而是「<strong>等我手上的某個流程跑到第三次,回來看怎麼包</strong>」。
+				</p>
+			</div>
 
 			<h3>全局 Skill vs 專案 Skill</h3>
 			<p>
@@ -2175,21 +2701,22 @@
 					<div class="name">.claude/commands/qa-log.md</div>
 				</div>
 				<div class="body"><span class="dim">---</span>
-<span class="accent">name:</span> qa-log
-<span class="accent">description:</span> 將本次程式碼修改整理成 QA 測試項目,寫入
-  docs/qa/CHANGELOG.md。程式碼修改完成後,主動詢問使用者
-  「要更新 QA log 嗎?」,確認後才執行。
-<span class="dim">---</span>
+					<span class="accent">name:</span> qa-log
+					<span class="accent">description:</span> 將本次程式碼修改整理成 QA 測試項目,寫入
+					docs/qa/CHANGELOG.md。程式碼修改完成後,主動詢問使用者
+					「要更新 QA log 嗎?」,確認後才執行。
+					<span class="dim">---</span>
 
-<span class="ai"># 行為規則</span>
-1. 手動觸發(<span class="accent">/qa-log</span>):直接執行,不需詢問
-2. 程式碼修改完成後:主動問,等待確認
-3. 寫入 <span class="accent">docs/qa/CHANGELOG.md</span>,新項目插在最上方
+					<span class="ai"># 行為規則</span>
+					1. 手動觸發(<span class="accent">/qa-log</span>):直接執行,不需詢問
+					2. 程式碼修改完成後:主動問,等待確認
+					3. 寫入 <span class="accent">docs/qa/CHANGELOG.md</span>,新項目插在最上方
 
-<span class="ai"># 測試項目原則</span>
-<span class="user">- 每個修改至少 3 條測試項目</span>
-<span class="user">- 涵蓋:正常流程 / 邊界條件 / 錯誤情境</span>
-<span class="user">- 用使用者視角描述,不要寫程式碼細節</span></div>
+					<span class="ai"># 測試項目原則</span>
+					<span class="user">- 每個修改至少 3 條測試項目</span>
+					<span class="user">- 涵蓋:正常流程 / 邊界條件 / 錯誤情境</span>
+					<span class="user">- 用使用者視角描述,不要寫程式碼細節</span>
+				</div>
 			</div>
 
 			<p>Claude 改完檔案後就會主動問:</p>
@@ -2201,26 +2728,27 @@
 					<div class="name">對話範例</div>
 				</div>
 				<div class="body"><span class="ai">● 已完成修改:</span>
-<span class="dim">  ↳ src/component/PDFExportModal.jsx</span>
-<span class="dim">     新增格式檢查、2MB 原始檔大小限制、Canvas 縮圖邏輯</span>
+					<span class="dim"> ↳ src/component/PDFExportModal.jsx</span>
+					<span class="dim"> 新增格式檢查、2MB 原始檔大小限制、Canvas 縮圖邏輯</span>
 
-<span class="ai">要更新 QA log 嗎?</span>
+					<span class="ai">要更新 QA log 嗎?</span>
 
-<span class="prompt">›</span> <span class="user">要</span>
+					<span class="prompt">›</span> <span class="user">要</span>
 
-<span class="ai">● 寫入 docs/qa/CHANGELOG.md:</span>
+					<span class="ai">● 寫入 docs/qa/CHANGELOG.md:</span>
 
-  <span class="accent">## [2026-04-24] Logo 上傳大小限制 + Canvas 縮圖</span>
+					<span class="accent">## [2026-04-24] Logo 上傳大小限制 + Canvas 縮圖</span>
 
-  <span class="user">**修改檔案**</span>
-  - PDFExportModal.jsx — 格式檢查 / 2MB 限制 / 縮圖
+					<span class="user">**修改檔案**</span>
+					- PDFExportModal.jsx — 格式檢查 / 2MB 限制 / 縮圖
 
-  <span class="user">**測試項目**</span>
-  <span class="dim">[ ]</span> 上傳 PNG < 2MB → 正常顯示縮圖 preview
-  <span class="dim">[ ]</span> 上傳任意圖片 > 2MB → 顯示錯誤訊息
-  <span class="dim">[ ]</span> 上傳不支援格式(GIF) → 顯示格式錯誤
-  <span class="dim">[ ]</span> 儲存方案後重開 → logo 正確還原
-  <span class="dim">[ ]</span> 刪除 logo → 恢復預設,重載確認清除</div>
+					<span class="user">**測試項目**</span>
+					<span class="dim">[ ]</span> 上傳 PNG < 2MB → 正常顯示縮圖 preview <span class="dim">[ ]</span> 上傳任意圖片 > 2MB
+						→ 顯示錯誤訊息
+						<span class="dim">[ ]</span> 上傳不支援格式(GIF) → 顯示格式錯誤
+						<span class="dim">[ ]</span> 儲存方案後重開 → logo 正確還原
+						<span class="dim">[ ]</span> 刪除 logo → 恢復預設,重載確認清除
+				</div>
 			</div>
 
 			<h4 style="margin-top:28px;">範例二:<code>/notes</code> — 記下「還沒決定的事」</h4>
@@ -2237,18 +2765,19 @@
 				</div>
 				<div class="body"><span class="accent">## [2026-04-24] ProjectInfo 展開與複製 UI</span>
 
-<span class="user">**待討論**</span>
-<span class="dim">⚠️</span> [待定] 複製按鈕的 scope — 目前只複製
-   Project Name,是否應一併複製其他欄位?
-<span class="dim">⚠️</span> [待定] 是否需要唯讀模式(非 owner 時不可編輯)?
+					<span class="user">**待討論**</span>
+					<span class="dim">⚠️</span> [待定] 複製按鈕的 scope — 目前只複製
+					Project Name,是否應一併複製其他欄位?
+					<span class="dim">⚠️</span> [待定] 是否需要唯讀模式(非 owner 時不可編輯)?
 
-<span class="user">**重要注意事項**</span>
-<span class="dim">🔔</span> projectInfo 在列表 API 與單筆 API 格式不一致
-   (列表缺 description),呼叫前需確認
-<span class="dim">🔔</span> 展開狀態只存 local state,重新掛載會收合
+					<span class="user">**重要注意事項**</span>
+					<span class="dim">🔔</span> projectInfo 在列表 API 與單筆 API 格式不一致
+					(列表缺 description),呼叫前需確認
+					<span class="dim">🔔</span> 展開狀態只存 local state,重新掛載會收合
 
-<span class="user">**關聯修改**</span>
-- ProjectInfo.jsx — 欄位對應需與 API 格式同步</div>
+					<span class="user">**關聯修改**</span>
+					- ProjectInfo.jsx — 欄位對應需與 API 格式同步
+				</div>
 			</div>
 
 			<h4 style="margin-top:28px;">範例三:<code>/qa-consolidate</code> — 按版本合併成測試報告</h4>
@@ -2266,25 +2795,27 @@
 				</div>
 				<div class="body"><span class="prompt">›</span> <span class="user">/qa-consolidate</span>
 
-<span class="ai">● 要整合哪個時間範圍?</span>
-<span class="dim">  請輸入日期範圍(例:2026-04-01 ~ 2026-04-17)</span>
-<span class="dim">  或版本名稱(例:v1.2)</span>
+					<span class="ai">● 要整合哪個時間範圍?</span>
+					<span class="dim"> 請輸入日期範圍(例:2026-04-01 ~ 2026-04-17)</span>
+					<span class="dim"> 或版本名稱(例:v1.2)</span>
 
-<span class="prompt">›</span> <span class="user">v1.2</span>
+					<span class="prompt">›</span> <span class="user">v1.2</span>
 
-<span class="ai">● 讀取 docs/qa/CHANGELOG.md...</span>
-<span class="dim">  ↳ 找到 12 筆修改,橫跨 4 個功能群</span>
-<span class="dim">  ↳ 合併 PDF Export Modal 的 3 次修改 → 1 個區塊</span>
-<span class="dim">  ↳ 合併 ja / ko / zh locales → 「i18n 翻譯」一區塊</span>
-<span class="dim">  ↳ 產出 docs/qa/reports/v1.2.md</span>
+					<span class="ai">● 讀取 docs/qa/CHANGELOG.md...</span>
+					<span class="dim"> ↳ 找到 12 筆修改,橫跨 4 個功能群</span>
+					<span class="dim"> ↳ 合併 PDF Export Modal 的 3 次修改 → 1 個區塊</span>
+					<span class="dim"> ↳ 合併 ja / ko / zh locales → 「i18n 翻譯」一區塊</span>
+					<span class="dim"> ↳ 產出 docs/qa/reports/v1.2.md</span>
 
-<span class="ai">● 完成。要 commit 嗎?</span></div>
+					<span class="ai">● 完成。要 commit 嗎?</span>
+				</div>
 			</div>
 
 			<h4 style="margin-top:28px;">把 commit 也交給 Skill</h4>
 			<p>
 				有了 QA log 與 notes 之後,commit message 其實就是<strong>這兩份檔案的摘要</strong>。
-				你可以再寫一個 <code>/commit</code> skill,讓 Claude 讀當前 staged diff + 最新一筆 CHANGELOG,自動產出符合 Conventional Commits 格式的 message:
+				你可以再寫一個 <code>/commit</code> skill,讓 Claude 讀當前 staged diff + 最新一筆 CHANGELOG,自動產出符合 Conventional Commits
+				格式的 message:
 			</p>
 			<div class="mock-window" style="margin:12px 0;">
 				<div class="titlebar">
@@ -2294,20 +2825,21 @@
 					<div class="name">.claude/commands/commit.md(簡化版)</div>
 				</div>
 				<div class="body"><span class="dim">---</span>
-<span class="accent">name:</span> commit
-<span class="accent">description:</span> 讀 staged diff 與最新 QA log,產生 Conventional
-  Commits 格式 message,讓使用者確認後執行 git commit。
-<span class="dim">---</span>
+					<span class="accent">name:</span> commit
+					<span class="accent">description:</span> 讀 staged diff 與最新 QA log,產生 Conventional
+					Commits 格式 message,讓使用者確認後執行 git commit。
+					<span class="dim">---</span>
 
-<span class="ai"># 流程</span>
-1. 執行 <span class="accent">git diff --staged</span> 看改了什麼
-2. 讀 <span class="accent">docs/qa/CHANGELOG.md</span> 最上方一筆,抓功能描述
-3. 推斷 type:feat / fix / refactor / docs / style / chore
-4. 產出:
-   <span class="user">{type}({scope}): {50 字內主旨}</span>
+					<span class="ai"># 流程</span>
+					1. 執行 <span class="accent">git diff --staged</span> 看改了什麼
+					2. 讀 <span class="accent">docs/qa/CHANGELOG.md</span> 最上方一筆,抓功能描述
+					3. 推斷 type:feat / fix / refactor / docs / style / chore
+					4. 產出:
+					<span class="user">{type}({scope}): {50 字內主旨}</span>
 
-   <span class="dim">{body — 說明動機與影響,72 字換行}</span>
-5. 顯示給使用者確認,通過後執行 <span class="accent">git commit -m</span></div>
+					<span class="dim">{body — 說明動機與影響,72 字換行}</span>
+					5. 顯示給使用者確認,通過後執行 <span class="accent">git commit -m</span>
+				</div>
 			</div>
 
 			<p>
@@ -2325,7 +2857,8 @@
 				社群有人把它包成 Skill,讓 Claude 在對話中直接生圖。安裝步驟大致是:
 			</p>
 			<ol>
-				<li>到 <a href="https://aistudio.google.com/" target="_blank" rel="noopener">Google AI Studio</a> 申請 API Key。</li>
+				<li>到 <a href="https://aistudio.google.com/" target="_blank" rel="noopener">Google AI Studio</a> 申請 API
+					Key。</li>
 				<li>把 Skill 檔案放到 <code>~/.claude/skills/nano-banana/</code>(全局)或專案內。</li>
 				<li>在 <code>.env</code> 或 Claude Code 設定中加入 <code>GEMINI_API_KEY</code>。</li>
 				<li>重新打開 UI,輸入 <code>/skills</code> 確認它出現在清單。</li>
@@ -2356,8 +2889,10 @@
 				<div class="tree-wrap">
 					<svg class="tree-svg" viewBox="0 0 580 260" xmlns="http://www.w3.org/2000/svg">
 						<!-- 主目錄 -->
-						<rect x="220" y="20" width="140" height="50" rx="8" fill="#a8b5a0" stroke="#3a3a2f" stroke-width="1.2" />
-						<text x="290" y="42" text-anchor="middle" font-family="Georgia, serif" font-size="14" font-weight="bold" fill="#2a2a1f">主專案</text>
+						<rect x="220" y="20" width="140" height="50" rx="8" fill="#a8b5a0" stroke="#3a3a2f"
+							stroke-width="1.2" />
+						<text x="290" y="42" text-anchor="middle" font-family="Georgia, serif" font-size="14"
+							font-weight="bold" fill="#2a2a1f">主專案</text>
 						<text x="290" y="58" text-anchor="middle" font-size="11" fill="#2a2a1f">main / 你日常工作的地方</text>
 
 						<!-- 分支線 -->
@@ -2366,26 +2901,37 @@
 						<line x1="290" y1="70" x2="480" y2="140" stroke="#3a3a2f" stroke-width="1.5" />
 
 						<!-- 分身 1 -->
-						<rect x="30" y="140" width="140" height="50" rx="8" fill="#ede0c8" stroke="#3a2f1f" stroke-width="1" />
-						<text x="100" y="162" text-anchor="middle" font-family="Georgia, serif" font-size="13" font-weight="bold" fill="#3a2f1f">Worktree A</text>
-						<text x="100" y="178" text-anchor="middle" font-size="10" fill="#6b5030">feat/blog-tutorial</text>
+						<rect x="30" y="140" width="140" height="50" rx="8" fill="#ede0c8" stroke="#3a2f1f"
+							stroke-width="1" />
+						<text x="100" y="162" text-anchor="middle" font-family="Georgia, serif" font-size="13"
+							font-weight="bold" fill="#3a2f1f">Worktree A</text>
+						<text x="100" y="178" text-anchor="middle" font-size="10"
+							fill="#6b5030">feat/blog-tutorial</text>
 
 						<!-- 分身 2 -->
-						<rect x="220" y="140" width="140" height="50" rx="8" fill="#ede0c8" stroke="#3a2f1f" stroke-width="1" />
-						<text x="290" y="162" text-anchor="middle" font-family="Georgia, serif" font-size="13" font-weight="bold" fill="#3a2f1f">Worktree B</text>
+						<rect x="220" y="140" width="140" height="50" rx="8" fill="#ede0c8" stroke="#3a2f1f"
+							stroke-width="1" />
+						<text x="290" y="162" text-anchor="middle" font-family="Georgia, serif" font-size="13"
+							font-weight="bold" fill="#3a2f1f">Worktree B</text>
 						<text x="290" y="178" text-anchor="middle" font-size="10" fill="#6b5030">fix/header-nav</text>
 
 						<!-- 分身 3 -->
-						<rect x="410" y="140" width="140" height="50" rx="8" fill="#ede0c8" stroke="#3a2f1f" stroke-width="1" />
-						<text x="480" y="162" text-anchor="middle" font-family="Georgia, serif" font-size="13" font-weight="bold" fill="#3a2f1f">Worktree C</text>
+						<rect x="410" y="140" width="140" height="50" rx="8" fill="#ede0c8" stroke="#3a2f1f"
+							stroke-width="1" />
+						<text x="480" y="162" text-anchor="middle" font-family="Georgia, serif" font-size="13"
+							font-weight="bold" fill="#3a2f1f">Worktree C</text>
 						<text x="480" y="178" text-anchor="middle" font-size="10" fill="#6b5030">refactor/css</text>
 
 						<!-- Claude 標示 -->
-						<text x="100" y="215" text-anchor="middle" font-size="11" fill="#c46a3a" font-weight="bold">🤖 Claude #1</text>
-						<text x="290" y="215" text-anchor="middle" font-size="11" fill="#c46a3a" font-weight="bold">🤖 Claude #2</text>
-						<text x="480" y="215" text-anchor="middle" font-size="11" fill="#c46a3a" font-weight="bold">🤖 Claude #3</text>
+						<text x="100" y="215" text-anchor="middle" font-size="11" fill="#c46a3a" font-weight="bold">🤖
+							Claude #1</text>
+						<text x="290" y="215" text-anchor="middle" font-size="11" fill="#c46a3a" font-weight="bold">🤖
+							Claude #2</text>
+						<text x="480" y="215" text-anchor="middle" font-size="11" fill="#c46a3a" font-weight="bold">🤖
+							Claude #3</text>
 
-						<text x="290" y="245" text-anchor="middle" font-size="11" fill="#7a6f58" font-style="italic">三個分身在獨立資料夾,不會互相覆蓋</text>
+						<text x="290" y="245" text-anchor="middle" font-size="11" fill="#7a6f58"
+							font-style="italic">三個分身在獨立資料夾,不會互相覆蓋</text>
 					</svg>
 				</div>
 				<p class="caption">用 Worktree 並行多個任務,比起反覆 git checkout 安全也更不容易亂</p>
@@ -2419,7 +2965,8 @@
 
 			<div class="warn-card">
 				<div class="ttl">② 任何破壞性操作都應該手動確認</div>
-				<p><code>rm</code>、<code>git reset --hard</code>、<code>force push</code>、刪除分支、改 CI 設定——這幾類應該永遠保留人為決定權。</p>
+				<p><code>rm</code>、<code>git reset --hard</code>、<code>force push</code>、刪除分支、改 CI 設定——這幾類應該永遠保留人為決定權。
+				</p>
 			</div>
 
 			<div class="warn-card">
@@ -2454,13 +3001,16 @@
 					margin: 20px 0;
 					font-size: 13.5px;
 				}
-				.cms-table th, .cms-table td {
+
+				.cms-table th,
+				.cms-table td {
 					text-align: left;
 					padding: 10px 14px;
 					border-bottom: 1px solid #ece4d2;
 					vertical-align: top;
 					line-height: 1.55;
 				}
+
 				.cms-table th {
 					background: #f6f2ea;
 					color: #6b5030;
@@ -2468,38 +3018,48 @@
 					font-size: 12px;
 					letter-spacing: 0.05em;
 				}
-				.cms-table td.op { color: #7a6f58; }
+
+				.cms-table td.op {
+					color: #7a6f58;
+				}
+
 				.cms-table td.said {
 					background: #faf6ee;
 					color: #3a2f1f;
 					font-style: italic;
 					border-left: 3px solid #c9a878;
 				}
+
 				.cms-table td.said::before {
 					content: "「";
 					color: #c9a878;
 				}
+
 				.cms-table td.said::after {
 					content: "」";
 					color: #c9a878;
 				}
+
 				.cms-pros {
 					display: grid;
 					grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
 					gap: 12px;
 					margin: 20px 0;
 				}
+
 				.cms-pro {
 					background: #f6f2ea;
 					border-radius: 10px;
 					padding: 14px 16px;
 				}
+
 				.cms-pro .cms-pro-ttl {
 					font-size: 13px;
 					font-weight: 700;
 					color: #3a2f1f;
 					margin-bottom: 4px;
 				}
+
 				.cms-pro .cms-pro-desc {
 					font-size: 12px;
 					color: #7a6f58;
@@ -2517,12 +3077,14 @@
 				<div class="step"><strong>1.</strong> 讀 <code>blog/</code> 下過往 3 篇文章學語氣</div>
 				<div class="step"><strong>2.</strong> 產出 <code>blog/{slug}.html</code>,套用樣板</div>
 				<div class="step"><strong>3.</strong> 更新 <code>index.html</code> 文章列表卡片</div>
-				<div class="step"><strong>4.</strong> <code>git commit</code> + <code>git push</code> → GitHub Pages 自動部署</div>
+				<div class="step"><strong>4.</strong> <code>git commit</code> + <code>git push</code> → GitHub Pages
+					自動部署</div>
 			</div>
 			<p>
 				走順之後會忽然意識到——好像不再需要 WordPress、Ghost、Notion Public、Medium 這類部落格後台了。
 				靜態 HTML + Git + Claude Code,剛好<strong>組成一套沒有管理介面、但什麼都能做的 CMS</strong>。
-				你的<strong>對話框就是後台</strong>、<strong>Git 就是資料庫</strong>、<strong>Claude Code 就是那個會幫你改版面、發文章、調 tag 的實習生</strong>。
+				你的<strong>對話框就是後台</strong>、<strong>Git 就是資料庫</strong>、<strong>Claude Code 就是那個會幫你改版面、發文章、調 tag
+					的實習生</strong>。
 			</p>
 
 			<div class="illustration" style="padding:22px 24px;">
@@ -2579,7 +3141,8 @@
 						<tr>
 							<td class="op"><strong>發布 / 部署</strong></td>
 							<td class="said">OK,幫我 commit 然後發出去</td>
-							<td><code>git add</code> + <code>commit</code>(訊息自動寫好)+ <code>push</code> → GitHub Pages 部署</td>
+							<td><code>git add</code> + <code>commit</code>(訊息自動寫好)+ <code>push</code> → GitHub Pages 部署
+							</td>
 						</tr>
 						<tr>
 							<td class="op"><strong>版本管理 / 還原</strong></td>
@@ -2638,14 +3201,141 @@
 			</p>
 
 			<p>
-				這篇是入門教學,把環境跟 UI 跑通之後,接下來真正有趣的是——
-				怎麼設計自己的 Skill、怎麼寫好 CLAUDE.md、怎麼讓 Memory 替你累積品味。
-				那些就留到後面幾篇再展開吧。
+				這篇看起來分了 10 章、講了一堆概念,但<strong>不是要你今天看完、明天全部設好</strong>——
+				比較像一份地圖:今天你只需要走「裝桌面版、丟一份檔案進去」這條最短的路;
+				走順了,自然會碰到「想記住一個流程」「想跨專案共用一個規範」「想讓它記住我的偏好」這些岔路口,
+				再翻回來看對應的章節就好。<strong>能力是從用的過程長出來的,不是先讀完才上場</strong>——這也是為什麼這篇從頭到尾都在重複這句話。
+			</p>
+
+			<p>
+				所以你的下一步,其實只有一件事:<strong>找一份手上正在做的檔案,丟進去試一次</strong>。
+				剩下的章節,等該長出來的時候,它會自己叫你回來看。
 			</p>
 
 			<p style="text-align: right; color: #8a7e68; margin-top: 48px; font-style: italic;">
 				—— 寫在剛把這個專案完整接給 Claude Code 之後
 			</p>
+
+			<hr class="lg">
+
+			<div class="section-label" id="appendix-cowork">
+				<div class="roman">A.</div>
+				<div class="tag">APPENDIX · Cowork vs Claude Code</div>
+			</div>
+			<h2>附錄:Cowork 跟 Claude Code 差在哪(2026-04 現況)</h2>
+
+			<p>
+				Anthropic 在 2026 年初把 Claude Desktop App 拓展成多 tab 結構——
+				<strong>Chat / Code / Cowork</strong> 三種模式並列。三者都用同一套 Claude 模型,差別在「介面定位」與「能調用的能力範圍」。
+				前面 a02 提到的小卡是濃縮版,這裡攤開細節。
+			</p>
+
+			<style>
+				.cowork-table {
+					width: 100%;
+					border-collapse: collapse;
+					margin: 18px 0 8px;
+					font-size: 13.5px;
+				}
+				.cowork-table th, .cowork-table td {
+					text-align: left;
+					padding: 12px 14px;
+					border-bottom: 1px solid #ece4d2;
+					vertical-align: top;
+					line-height: 1.65;
+				}
+				.cowork-table th {
+					background: #f6f2ea;
+					color: #6b5030;
+					font-weight: 600;
+					font-size: 12px;
+					letter-spacing: 0.05em;
+				}
+				.cowork-table td.mode {
+					font-weight: 700;
+					color: #3a2f1f;
+				}
+				.cowork-table td.code-row {
+					background: #faf6ee;
+				}
+				.cowork-table .yes { color: #4a7a5a; }
+				.cowork-table .no { color: #b35a2a; }
+			</style>
+
+			<table class="cowork-table">
+				<thead>
+					<tr>
+						<th style="width:14%;">模式</th>
+						<th style="width:30%;">定位</th>
+						<th>能調用什麼 / 不能調用什麼</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td class="mode">Chat</td>
+						<td>純對話框</td>
+						<td>
+							<span class="no">✗</span> 無檔案讀寫、無指令執行——跟以前 ChatGPT 式的對話框一樣。
+						</td>
+					</tr>
+					<tr class="code-row">
+						<td class="mode">Code<br><em style="font-size:11px;color:#8a7656;">(本篇主角)</em></td>
+						<td>給開發者 / 設計師深度操作本機檔案、整合外部工具</td>
+						<td>
+							<span class="yes">✓</span> 本地檔案讀寫 / <strong>本地 MCP(Figma 等)</strong> / <strong>本地 Skill</strong> / Worktree / 跨專案資產<br>
+							<span class="no">✗</span> 沒有圖形化任務協調 UI(主要走對話 + 指令)
+						</td>
+					</tr>
+					<tr>
+						<td class="mode">Cowork</td>
+						<td>給不寫程式的知識工作者用的 GUI 工作模式</td>
+						<td>
+							<span class="yes">✓</span> 圖形化多步任務協調、內建 13 個 Skill(PPT / DOCX / PDF / XLSX 等)、遠端 MCP、Google Workspace 整合<br>
+							<span class="no">✗</span> <strong>不支援本地 MCP</strong>(MCP 必須是公開 URL)<br>
+							<span class="no">✗</span> <strong>不支援本地 Skill</strong>(只能用內建 13 個或遠端)<br>
+							<span class="no">✗</span> 無雲端排程(要保持 App 開著)<br>
+							<span class="no">✗</span> 缺 Microsoft 365 整合(目前只 Google Workspace)
+						</td>
+					</tr>
+				</tbody>
+			</table>
+
+			<h3>什麼時候用 Cowork 反而比較順手</h3>
+			<ul>
+				<li><strong>純 GUI 互動為主、不想碰 .md 跟命令列</strong>——例如資深主管想自己跟 AI 跑一個小分析,不會想學 Skill 概念</li>
+				<li><strong>內容大多在 Google Workspace</strong>——Cowork 對 Google Docs / Sheets / Slides 整合較完整</li>
+				<li><strong>用內建 Skill 就夠</strong>——官方那 13 個內建 Skill(投影片、文件、試算表、PDF 等)已能涵蓋大多數一般文書工作</li>
+				<li><strong>不需要連 Figma、不需要寫部門自己的 Skill</strong></li>
+			</ul>
+
+			<h3>什麼時候必須用 Code(也就是本篇全部 case)</h3>
+			<ul>
+				<li>要連 <strong>Figma MCP</strong>(Case 3)</li>
+				<li>要寫 <strong>部門自己的 Skill</strong>(Case 1 的 <code>/research-synthesize</code>、Case 2 的 <code>/competitor</code>、Case 4 的 <code>/design-check</code>)</li>
+				<li>要在 <strong>git worktree、PR、跨專案資產</strong>之間流動</li>
+				<li>要跟工程師<strong>共用同一份 repo 的 Claude 設定</strong></li>
+			</ul>
+
+			<h3>建議的搭配方式</h3>
+			<p>
+				兩者其實<strong>不是替代關係,是分工</strong>。可以這樣想:
+			</p>
+			<ul>
+				<li><strong>Code(本篇主角)</strong>:你的「設計助理」——跟你一起做研究綜合、拆 PRD、做設計走查、整合資料,需要動到 Figma 與部門 Skill 的場景</li>
+				<li><strong>Cowork</strong>:你的「文書助理」——當任務只是「把這幾份 docx 整理成一份 pptx」「把這份 PDF 換個格式」這種純文書處理,不需要本地 MCP / Skill,GUI 互動更輕鬆</li>
+				<li><strong>Chat</strong>:臨時想問個問題、不需要碰任何檔案時,還是它最快</li>
+			</ul>
+
+			<div class="warn-card" style="background:#f6f2ea;border-left-color:#a89773;">
+				<div class="ttl" style="color:#6b5030;">📝 作者註(2026-04)</div>
+				<p style="color:#5a4a2a;">
+					以上資訊整理於 <strong>2026 年 4 月</strong>,主要根據官方文件 + 第三方教學整合而成——
+					<strong>我目前還沒有實際把 Cowork 接到部門日常工作流跑過</strong>。
+					等之後實測完(預計把幾個常見場景都跑一輪)會單獨再寫一篇文章對比。
+					如果你看到這篇時 Cowork 已經支援本地 MCP 或本地 Skill,以官方文件為準——
+					Anthropic 對這條產品線的迭代速度蠻快的,半年後規格可能就不一樣了。
+				</p>
+			</div>
 		</div>
 	</div>
 
