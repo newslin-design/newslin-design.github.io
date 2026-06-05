@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, maximum-scale=1.5">
+	<title>大模型的 Prompt Caching：各家機制差在哪,什麼時候你會踩到它</title>
+	<script>workName = "blog_prompt_caching"</script>
+	<script>var basePath = "../portfolio/"; var pageBasePath = "../portfolio/";</script>
+	<link rel="stylesheet" href="../portfolio/style/reset.css">
+	<link rel="stylesheet" href="../portfolio/style/style_layout.css">
+	<link rel="stylesheet" href="../portfolio/style/style.css">
+	<link rel="stylesheet" href="../portfolio/style/article.css">
+	<link rel="stylesheet" href="style/style_blog.css">
+	<link rel="icon" type="image/png" href="../portfolio/web_icon.png" />
+	<style>
+		.section-label {
+			display: flex;
+			align-items: baseline;
+			gap: 12px;
+			margin-top: 48px;
+			margin-bottom: 8px;
+			border-top: 1px solid #e6ddcc;
+			padding-top: 32px;
+		}
+
+		.section-label .roman {
+			font-family: 'Georgia', serif;
+			font-style: italic;
+			font-size: 2rem;
+			color: #a89773;
+		}
+
+		.section-label .tag {
+			font-size: 12px;
+			letter-spacing: 0.2em;
+			color: #a89773;
+			text-transform: uppercase;
+		}
+
+		.quote-block {
+			margin: 40px 0;
+			padding: 28px 26px;
+			border: 1px solid #d9cfb9;
+			border-radius: 8px;
+			background: #faf6ee;
+			font-size: 1.08rem;
+			color: #3a2f1f;
+			line-height: 1.8;
+		}
+
+		.quote-block .para-mark {
+			font-family: 'Georgia', serif;
+			font-style: italic;
+			font-size: 2rem;
+			color: #c46a3a;
+			display: block;
+			margin-bottom: 8px;
+		}
+
+		.quote-block em {
+			color: #c46a3a;
+			font-style: italic;
+			font-weight: bold;
+		}
+
+		.tldr-box {
+			margin: 32px 0 40px;
+			padding: 22px 24px;
+			background: #f6f2ea;
+			border-left: 4px solid #c46a3a;
+			border-radius: 4px;
+			font-size: 0.95rem;
+			line-height: 1.7;
+			color: #5a4f3f;
+		}
+
+		.tldr-box strong {
+			color: #3a2f1f;
+		}
+
+		/* 開場情境帳單 */
+		.scenario-box {
+			margin: 24px 0;
+			background: #fff;
+			border: 1px solid #e6ddcc;
+			border-radius: 10px;
+			overflow: hidden;
+		}
+
+		.scenario-row {
+			display: grid;
+			grid-template-columns: 110px 1fr;
+			gap: 18px;
+			align-items: center;
+			padding: 14px 20px;
+			border-bottom: 1px dashed #ece4d2;
+		}
+
+		.scenario-row:last-child {
+			border-bottom: none;
+		}
+
+		.scenario-row.summary {
+			background: #faf6ee;
+			border-top: 1px solid #d9cfb9;
+		}
+
+		.scenario-num {
+			font-family: 'Georgia', serif;
+			font-size: 1.6rem;
+			font-weight: bold;
+			color: #a89773;
+			text-align: right;
+			line-height: 1.1;
+		}
+
+		.scenario-num small {
+			display: block;
+			font-family: sans-serif;
+			font-size: 11px;
+			font-weight: normal;
+			color: #a89773;
+			letter-spacing: 0.1em;
+			margin-top: 4px;
+		}
+
+		.scenario-row.summary .scenario-num {
+			color: #c46a3a;
+		}
+
+		.scenario-text {
+			font-size: 14px;
+			color: #3a2f1f;
+			line-height: 1.6;
+		}
+
+		.scenario-text strong {
+			color: #c46a3a;
+		}
+
+		.outro {
+			font-size: 0.9rem;
+			color: #8a7e68;
+			font-style: italic;
+			margin-top: 20px;
+		}
+
+		/* code block */
+		.code-block {
+			margin: 24px 0;
+			background: #1e1e1e;
+			color: #d4d4d4;
+			border-radius: 8px;
+			overflow: hidden;
+			box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+			font-family: 'Consolas', 'Menlo', 'Monaco', monospace;
+			font-size: 13px;
+			line-height: 1.65;
+		}
+
+		.code-block .code-titlebar {
+			display: flex;
+			align-items: center;
+			gap: 8px;
+			background: #2d2d2d;
+			padding: 8px 14px;
+			font-size: 12px;
+			color: #b8b8b8;
+			letter-spacing: 0.05em;
+		}
+
+		.code-block .code-titlebar .lang {
+			font-family: 'Georgia', serif;
+			font-style: italic;
+			color: #8aa3c4;
+		}
+
+		.code-block pre {
+			margin: 0;
+			padding: 18px 20px;
+			overflow-x: auto;
+			white-space: pre;
+			font-family: inherit;
+		}
+
+		.code-block .c-comment { color: #6a9955; }
+		.code-block .c-key { color: #569cd6; }
+		.code-block .c-str { color: #ce9178; }
+		.code-block .c-hl { color: #d7ba7d; font-weight: bold; }
+		.code-block .c-arrow { color: #c586c0; }
+
+		/* ascii / text diagram */
+		.ascii-diagram {
+			margin: 24px 0;
+			padding: 20px 24px;
+			background: #f6f2ea;
+			border: 1px solid #e6ddcc;
+			border-radius: 8px;
+			font-family: 'Consolas', 'Menlo', monospace;
+			font-size: 13px;
+			line-height: 1.7;
+			color: #3a2f1f;
+			white-space: pre;
+			overflow-x: auto;
+		}
+
+		/* comparison table */
+		.cache-table-wrap {
+			margin: 28px 0;
+			overflow-x: auto;
+		}
+
+		table.cache-table {
+			width: 100%;
+			border-collapse: collapse;
+			background: #fff;
+			border: 1px solid #e6ddcc;
+			border-radius: 8px;
+			overflow: hidden;
+			font-size: 14px;
+		}
+
+		table.cache-table th,
+		table.cache-table td {
+			padding: 12px 14px;
+			text-align: left;
+			border-bottom: 1px solid #ece4d2;
+			vertical-align: top;
+			line-height: 1.6;
+		}
+
+		table.cache-table thead th {
+			background: #f6f2ea;
+			color: #3a2f1f;
+			font-weight: bold;
+			font-size: 13px;
+			letter-spacing: 0.02em;
+			border-bottom: 2px solid #d9cfb9;
+		}
+
+		table.cache-table tbody tr:last-child td {
+			border-bottom: none;
+		}
+
+		table.cache-table tbody tr:hover {
+			background: #faf6ee;
+		}
+
+		table.cache-table strong {
+			color: #c46a3a;
+		}
+
+		table.compare-mini {
+			width: 100%;
+			max-width: 640px;
+			margin: 24px auto;
+			border-collapse: collapse;
+			background: #fff;
+			border: 1px solid #e6ddcc;
+			border-radius: 8px;
+			overflow: hidden;
+			font-size: 14px;
+		}
+
+		table.compare-mini th,
+		table.compare-mini td {
+			padding: 14px 16px;
+			border-bottom: 1px solid #ece4d2;
+			line-height: 1.6;
+		}
+
+		table.compare-mini thead th {
+			background: #f6f2ea;
+			font-size: 13px;
+		}
+
+		table.compare-mini tbody tr:last-child td {
+			border-bottom: none;
+		}
+
+		/* prefix-suffix illustration */
+		.prefix-stack {
+			margin: 32px auto;
+			max-width: 640px;
+			border: 1px solid #d9cfb9;
+			border-radius: 12px;
+			overflow: hidden;
+			box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+		}
+
+		.prefix-row {
+			display: grid;
+			grid-template-columns: 1fr auto;
+			align-items: center;
+			gap: 18px;
+			padding: 20px 22px;
+			border-bottom: 1px solid #ece4d2;
+		}
+
+		.prefix-row:last-child {
+			border-bottom: none;
+		}
+
+		.prefix-row.static {
+			background: #f1ede2;
+		}
+
+		.prefix-row.partial {
+			background: #faf6ee;
+		}
+
+		.prefix-row.dynamic {
+			background: #fff;
+		}
+
+		.prefix-label {
+			font-size: 14px;
+			color: #3a2f1f;
+			line-height: 1.6;
+		}
+
+		.prefix-label .order {
+			display: inline-block;
+			font-family: 'Georgia', serif;
+			font-style: italic;
+			color: #a89773;
+			margin-right: 8px;
+			font-weight: bold;
+		}
+
+		.prefix-tag {
+			font-size: 11px;
+			letter-spacing: 0.1em;
+			color: #fff;
+			padding: 4px 10px;
+			border-radius: 12px;
+			white-space: nowrap;
+		}
+
+		.prefix-tag.cacheable {
+			background: #6b9b7c;
+		}
+
+		.prefix-tag.maybe {
+			background: #c9a55a;
+		}
+
+		.prefix-tag.full {
+			background: #c46a3a;
+		}
+
+		/* checklist */
+		ul.checklist {
+			list-style: none;
+			padding: 0;
+			margin: 24px 0;
+		}
+
+		ul.checklist li {
+			position: relative;
+			padding: 10px 0 10px 32px;
+			border-bottom: 1px dashed #e6ddcc;
+			line-height: 1.7;
+		}
+
+		ul.checklist li:last-child {
+			border-bottom: none;
+		}
+
+		ul.checklist li::before {
+			content: "";
+			position: absolute;
+			left: 4px;
+			top: 14px;
+			width: 16px;
+			height: 16px;
+			border: 1.5px solid #a89773;
+			border-radius: 3px;
+			background: #fff;
+		}
+
+		.article p code,
+		.article li code,
+		.article td code {
+			background: #f1ede2;
+			padding: 2px 6px;
+			border-radius: 3px;
+			font-family: 'Consolas', 'Menlo', monospace;
+			font-size: 0.9em;
+			color: #8a4a2a;
+			border: 1px solid #e6ddcc;
+		}
+
+		.vendor-block {
+			margin: 36px 0;
+			padding: 24px 26px;
+			background: #fff;
+			border: 1px solid #e6ddcc;
+			border-radius: 10px;
+		}
+
+		.vendor-block h3 {
+			margin-top: 0;
+			color: #3a2f1f;
+		}
+
+		.vendor-block ul {
+			margin: 12px 0 0;
+			padding-left: 22px;
+		}
+
+		.vendor-block ul li {
+			padding: 4px 0;
+			line-height: 1.7;
+		}
+	</style>
+</head>
+
+<body>
+	<header></header>
+	<div class="container mt-xl">
+		<h1>大模型的 Prompt Caching:各家機制差在哪,什麼時候你會踩到它</h1>
+		<div class="blog-article-tags" style="display: flex; gap: 8px; margin-top: 12px; margin-bottom: 24px;">
+			<span
+				style="padding: 4px 12px; background: #f0f0f0; border-radius: 4px; font-size: 14px; color: #555; border: 1px solid #e0e0e0;">AI</span>
+			<span
+				style="padding: 4px 12px; background: #f0f0f0; border-radius: 4px; font-size: 14px; color: #555; border: 1px solid #e0e0e0;">工程筆記</span>
+			<span
+				style="padding: 4px 12px; background: #f0f0f0; border-radius: 4px; font-size: 14px; color: #555; border: 1px solid #e0e0e0;">成本優化</span>
+		</div>
+		<div class="row blog_header ">
+			<div class="col">
+				<p class="date">2026 / 06 / 02</p>
+			</div>
+			<div class="col">
+				<div class="iconbox">
+					<a href="#comments"><img src="image/icon/comment-next-outline.svg" alt=""></a>
+					<img src="image/icon/output.svg" alt="">
+					<div class="divider"></div>
+					<img src="image/icon/extra-life.svg" alt="">
+					<img src="image/icon/twitter.svg" alt="">
+					<img src="image/icon/facebook.svg" alt="">
+				</div>
+			</div>
+		</div>
+		<div class="article">
+
+			<div class="tldr-box">
+				<strong>TL;DR ——</strong> 各家 prompt caching 雖然介面不同,但骨子裡都在做同一件事:<strong>快取 prompt 的「開頭那一段」(prefix)</strong>。
+				所以實戰上唯一一條跨廠商通用的原則是:<em>固定的放前面、會變的放後面</em>。剩下的就是各家在「書籤怎麼設、留多久、折多少」上的差異。
+				文末附一張命中率自查清單。
+			</div>
+
+			<hr class="lg">
+
+			<div class="section-label">
+				<div class="roman">i.</div>
+				<div class="tag">從一張帳單說起 · A Small Story</div>
+			</div>
+			<h2>先別管什麼是 caching——你可能正在付這種冤枉錢</h2>
+
+			<p>
+				想像一個情境。你週末隨手做了個小工具:幫團隊把英文 PR description 翻成中文,順便照公司規範改寫一下用詞。
+				前面寫了一段 system prompt——規則、術語表、幾個 few-shot 範例,加起來大概 5,000 字。
+				每次有新的 PR 進來,就把 diff 丟進去,它吐一段中文出來,挺好用的,團隊都接著用了起來。
+			</p>
+
+			<p>
+				一個月後你打開 API 帳單,比預期貴了快 <strong>8 倍</strong>。
+				你心想:每次 diff 也才幾百字,翻出來的中文也才兩三百字,怎麼會這麼貴?
+			</p>
+
+			<p>你打開 log,把幾次呼叫的 token 數一字排開:</p>
+
+			<div class="scenario-box">
+				<div class="scenario-row">
+					<div class="scenario-num">5,000<small>TOKENS</small></div>
+					<div class="scenario-text">每次都送的 system prompt——規則 + 術語表 + few-shot 範例</div>
+				</div>
+				<div class="scenario-row">
+					<div class="scenario-num">500<small>TOKENS</small></div>
+					<div class="scenario-text">這次 PR 的 diff(每次不一樣)</div>
+				</div>
+				<div class="scenario-row">
+					<div class="scenario-num">200<small>TOKENS</small></div>
+					<div class="scenario-text">模型回的中文翻譯</div>
+				</div>
+				<div class="scenario-row summary">
+					<div class="scenario-num">27 : 1</div>
+					<div class="scenario-text">
+						input 是 output 的 <strong>27 倍</strong>——你付的錢 <strong>99% 不在「生成中文翻譯」</strong>,
+						而在「反覆把那 5,000 字規則,從頭再讀一遍」。
+					</div>
+				</div>
+			</div>
+
+			<p>
+				然後你會意識到一件很弔詭的事:那 5,000 字規則,<strong>第 1 次跟第 200 次,完全一模一樣</strong>。
+				可是模型每一次都得從頭把它讀一遍、再消化一遍、再向你收一遍錢。
+				就算你連續 30 秒內呼叫 10 次,它也是老老實實讀 10 遍。
+			</p>
+
+			<p>
+				這就是 prompt caching 想要解決的事。它的概念其實很單純,白話講就是一句話:
+			</p>
+
+			<div class="quote-block">
+				<span class="para-mark">¶</span>
+				「<em>這段開頭我剛剛才讀過,你不要再讓我重讀一次了,我給你打個大折扣就好</em>。」
+			</div>
+
+			<p>
+				用對了,剛剛那張 8 倍的帳單,可能直接被砍掉一個 0;
+				用錯了(這才是常見情況),你以為有開、實際上一直在付全價,而且<strong>帳單上看不出來</strong>。
+				下面這篇要講的,就是這三件事:各家 caching 大概怎麼運作、用錯都怎麼用錯、以及怎麼確認自己有沒有真的省到。
+			</p>
+
+			<p class="outro">
+				※ 後面會穿插一些更具體的反例,如果你正在寫 RAG、客服機器人、Agent、翻譯工具這類「每次都要塞一大塊固定脈絡」的應用,
+				那條 27:1 八成不是個誇飾——是你帳單的真實長相。
+			</p>
+
+			<hr class="lg">
+
+			<div class="section-label">
+				<div class="roman">ii.</div>
+				<div class="tag">原理 · The Core Idea</div>
+			</div>
+			<h2>一句話原理:所有人都在快取「前綴」</h2>
+
+			<p>不管哪一家,prompt caching 的核心都是同一件事:</p>
+
+			<div class="quote-block">
+				<span class="para-mark">¶</span>
+				快取的是 prompt 的「開頭那一段」(prefix)。系統記得「這個開頭我剛處理過」,於是重複的部分用很低的價格給你;
+				但比對是從第一個 token 開始、要逐字相同,<em>一旦讀到跟上次不一樣的地方,從那裡之後就全部當成新的、收全價</em>。
+			</div>
+
+			<p>
+				用一個比喻:模型像一個按字數收費的讀稿員。Caching 是他手上的書籤——「這段開頭我幾分鐘前才讀過,沿用就好,只收你零頭」。
+				但書籤只在「開頭一字不差」時有效;你在前面改一個字,他就得從那個字開始重讀。
+			</p>
+			<p>
+				這條原理是<strong>跨廠商通用</strong>的。記住它,下面各家的差異就只是「書籤怎麼設、留多久、折多少」。
+			</p>
+
+			<hr class="lg">
+
+			<div class="section-label">
+				<div class="roman">iii.</div>
+				<div class="tag">廠商比較 · Vendor Differences</div>
+			</div>
+			<h2>各家機制比較</h2>
+
+			<div class="vendor-block">
+				<h3>OpenAI — 自動前綴快取(Automatic Prompt Caching)</h3>
+				<ul>
+					<li><strong>要不要設定</strong>:不用。prompt 長度超過約 <strong>1024 tokens</strong> 就自動啟用,零程式碼。</li>
+					<li><strong>怎麼命中</strong>:比對你 messages 的<strong>最長共同前綴</strong>,與近期(同一組織)的請求相同就命中。</li>
+					<li><strong>折扣</strong>:命中的 input tokens 享折扣(量級上約「半價或更低」,依模型)。</li>
+					<li><strong>存活時間</strong>:通常數分鐘的閒置後失效(離峰可能更久)。需要在這個窗口內有重複請求才划算。</li>
+					<li><strong>怎麼看命中</strong>:回傳的 <code>usage.prompt_tokens_details.cached_tokens</code>。</li>
+					<li><strong>特性</strong>:你<strong>無法</strong>指定要快取哪一段——系統一律從開頭抓。所以「把固定的東西放開頭」是你唯一的施力點。</li>
+				</ul>
+			</div>
+
+			<div class="vendor-block">
+				<h3>Anthropic(Claude) — 手動快取斷點(cache_control)</h3>
+				<ul>
+					<li><strong>要不要設定</strong>:<strong>要</strong>。你在 content block 上標記 <code>cache_control: { type: "ephemeral" }</code>,
+						明確告訴它「快取到這裡為止」(最多 4 個斷點)。</li>
+					<li><strong>怎麼命中</strong>:被標記的前綴會被快取;下次請求只要那段一字不差就讀快取。</li>
+					<li><strong>折扣</strong>:<strong>寫</strong>快取那次會貴一點(約 1.25× input),<strong>讀</strong>快取很便宜(約 0.1× input,即省 ~90%)。
+						所以重複用得夠多才回本。</li>
+					<li><strong>存活時間</strong>:預設 5 分鐘(每次命中會續命);另有 1 小時的延長選項(價格不同)。</li>
+					<li><strong>怎麼看命中</strong>:<code>usage.cache_creation_input_tokens</code>(寫)與
+						<code>cache_read_input_tokens</code>(讀)。</li>
+					<li><strong>特性</strong>:你<strong>完全掌控</strong>快取邊界——對「一大段固定 system prompt」特別好用,這也是長中文系統提示詞最該善用的點。</li>
+				</ul>
+
+				<div class="code-block">
+					<div class="code-titlebar">
+						<span>Claude · 在固定的大段後面設一個快取斷點</span>
+						<span class="lang" style="margin-left:auto;">javascript</span>
+					</div>
+<pre><span class="c-key">const</span> res = <span class="c-key">await</span> anthropic.messages.create({
+  model: <span class="c-str">"claude-..."</span>,
+  system: [
+    {
+      type: <span class="c-str">"text"</span>,
+      text: BIG_STATIC_INSTRUCTIONS,        <span class="c-comment">// 規則 + 知識庫,每次都一樣</span>
+      <span class="c-hl">cache_control: { type: <span class="c-str">"ephemeral"</span> }</span>, <span class="c-comment">// ← 書籤夾在這</span>
+    },
+  ],
+  messages: [{ role: <span class="c-str">"user"</span>, content: thisTurnInput }], <span class="c-comment">// 變動的放這</span>
+});</pre>
+				</div>
+			</div>
+
+			<div class="vendor-block">
+				<h3>Google Gemini — 隱式 + 顯式兩種</h3>
+				<ul>
+					<li><strong>隱式快取(implicit)</strong>:較新的模型自動做,命中近期相同前綴就給折扣,零設定。概念同 OpenAI。</li>
+					<li><strong>顯式快取(explicit / CachedContent)</strong>:你<strong>主動建立一個快取物件</strong>、自己設 <strong>TTL</strong>
+						(預設約 1 小時,可調),之後請求引用它。input 走折扣價,但要<strong>額外付「儲存費」</strong>(按時數計)。</li>
+					<li><strong>適用</strong>:固定脈絡很大、又會在你設的 TTL 內重複用很多次(例如整本手冊、長 few-shot),顯式快取的可控 TTL 很有價值。</li>
+					<li><strong>門檻</strong>:有最低 token 數要求(依模型,數量級約 1–2K 起;早期版本更高)。</li>
+				</ul>
+			</div>
+
+			<div class="vendor-block">
+				<h3>DeepSeek(與其他) — 自動硬碟前綴快取</h3>
+				<ul>
+					<li><strong>DeepSeek</strong>:自動的硬碟前綴快取,命中的 input tokens 折扣很大(量級約 1 折)。零設定,同樣吃「前綴相同」。</li>
+					<li><strong>其他</strong>(xAI Grok 等)多半也走「自動前綴快取 + 命中折扣」的同一套路。</li>
+				</ul>
+			</div>
+
+			<h3>一張表收束</h3>
+
+			<div class="cache-table-wrap">
+				<table class="cache-table">
+					<thead>
+						<tr>
+							<th>廠商</th>
+							<th>機制</th>
+							<th>自動/手動</th>
+							<th>你能控制快取範圍嗎</th>
+							<th>折扣方向</th>
+							<th>TTL</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>OpenAI</td>
+							<td>前綴快取</td>
+							<td>自動</td>
+							<td>否(一律從開頭)</td>
+							<td>讀命中打折</td>
+							<td>數分鐘級</td>
+						</tr>
+						<tr>
+							<td>Anthropic Claude</td>
+							<td><code>cache_control</code> 斷點</td>
+							<td>手動</td>
+							<td><strong>是</strong>(最多 4 點)</td>
+							<td>寫 +25%、讀 ~9 折</td>
+							<td>5 分鐘(可選 1 小時)</td>
+						</tr>
+						<tr>
+							<td>Google Gemini</td>
+							<td>隱式 + 顯式</td>
+							<td>兩種</td>
+							<td>顯式可控 + 自訂 TTL</td>
+							<td>讀打折(顯式另收儲存費)</td>
+							<td>自動短 / 顯式自訂</td>
+						</tr>
+						<tr>
+							<td>DeepSeek 等</td>
+							<td>前綴快取</td>
+							<td>自動</td>
+							<td>否</td>
+							<td>讀命中大幅打折</td>
+							<td>自動</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+
+			<div class="quote-block">
+				<span class="para-mark">¶</span>
+				共同點比差異更重要:<em>全部都快取「前綴」</em>。所以下一節的工程原則,不挑廠商。
+			</div>
+
+			<hr class="lg">
+
+			<div class="section-label">
+				<div class="roman">iv.</div>
+				<div class="tag">踩坑 · Where You'll Get Burned</div>
+			</div>
+			<h2>什麼時候你會踩到「快取沒命中」</h2>
+
+			<p>這才是實戰最有用的部分。以下每一種,都會讓你「以為有 caching、其實在付全價」。</p>
+
+			<h3>1. 把「會變的東西」放在 prompt 前面(最常見)</h3>
+			<p>典型反例:system prompt 是用<strong>這次請求的資料</strong>動態組出來的——</p>
+
+			<div class="ascii-diagram">system = 「一大段規則」＋「這次的某個動態片段」＋「另一大段規則」
+                                  ↑
+                這裡每次都不一樣 → 後面那段規則的書籤全斷</div>
+
+			<p>只要這個動態片段卡在前段,<strong>它後面的所有內容(哪怕完全一樣)每次都重讀全價</strong>。能快取的只剩它前面那一小截。</p>
+			<p><strong>怎麼修</strong>:把動態片段搬到最後面(通常是搬進 user message),讓前面的大段規則維持每次一字不差。資訊模型都看得到,只是換位置:</p>
+
+			<div class="code-block">
+				<div class="code-titlebar">
+					<span>修法 · 把動態片段搬到最後</span>
+					<span class="lang" style="margin-left:auto;">pseudo</span>
+				</div>
+<pre><span class="c-comment">// 之前(書籤在第 2 段就斷)</span>
+system = 規則A + <span class="c-hl">[這次的動態片段]</span> + 規則B
+user   = 對話
+
+<span class="c-comment">// 之後(規則整段固定 → 書籤夾得住)</span>
+system = 規則A + 規則B
+user   = <span class="c-hl">[這次的動態片段]</span> + 對話</pre>
+			</div>
+
+			<h3>2. 呼叫頻率比 TTL 還稀疏</h3>
+			<p>
+				快取有壽命(OpenAI 數分鐘、Claude 預設 5 分鐘…)。如果某條路徑很少被呼叫、或兩次呼叫間隔超過 TTL,<strong>每次來書籤都過期了 → 命中率 0%</strong>。
+				低流量功能常是這個原因,不是 prompt 寫壞。對策:要嘛提高該前綴的重用頻率,要嘛用可設長 TTL 的顯式快取,要嘛接受它就是不值得快取。
+			</p>
+
+			<h3>3. 序列化不穩定,悄悄破壞「一字不差」</h3>
+			<ul>
+				<li><code>JSON.stringify</code> 物件時 <strong>key 順序</strong>不固定 → 前綴位元組不同 → 快取失效。</li>
+				<li>prompt 裡塞了<strong>時間戳、隨機 ID、亂序的 few-shot</strong>。</li>
+				<li>多語系或 locale 造成數字 / 日期格式飄動。</li>
+			</ul>
+			<p>這類最陰險,因為「看起來一樣」但位元組不同。對策:固定序列化順序、別把易變值放進可快取段。</p>
+
+			<h3>4. 把「每使用者 / 每 session 的資料」放在共用指令前面</h3>
+			<p>例如「使用者個資 + 通用客服守則」這種順序,個資每人不同 → 把通用守則的快取也一起拖下水。對策:通用守則放前面(共用、可快取),個資放後面。</p>
+
+			<h3>5. 跨 key / 跨組織不共用</h3>
+			<p>快取通常是<strong>組織 / 專案範圍</strong>,不會跨不同 API key 或不同客戶共享。多租戶系統別期待 A 客戶暖好的快取 B 客戶能吃到。</p>
+
+			<h3>6. 換模型或版本 = 快取全部失效</h3>
+			<p>模型版本一變,舊快取作廢。大量切模型測試期間命中率會難看,屬正常。</p>
+
+			<hr class="lg">
+
+			<div class="section-label">
+				<div class="roman">v.</div>
+				<div class="tag">怎麼做對 · The Right Layout</div>
+			</div>
+			<h2>怎麼做對:靜態前綴 → 變動後綴</h2>
+
+			<p>把所有原則濃縮成一個排版紀律:</p>
+
+			<div class="prefix-stack">
+				<div class="prefix-row static">
+					<div class="prefix-label">
+						<span class="order">①</span><strong>固定的大段</strong>:規則 + 知識庫<br>
+						<span style="font-size:13px;color:#7a6f58;">每次一字不差 → 可快取,放最前面</span>
+					</div>
+					<div class="prefix-tag cacheable">CACHEABLE</div>
+				</div>
+				<div class="prefix-row partial">
+					<div class="prefix-label">
+						<span class="order">②</span><strong>按需載入的片段</strong>:只給這次相關的<br>
+						<span style="font-size:13px;color:#7a6f58;">進階(見下節),仍盡量穩定</span>
+					</div>
+					<div class="prefix-tag maybe">PARTIAL</div>
+				</div>
+				<div class="prefix-row dynamic">
+					<div class="prefix-label">
+						<span class="order">③</span><strong>這次才有的變動</strong>:使用者輸入、參數<br>
+						<span style="font-size:13px;color:#7a6f58;">全部擠到最後</span>
+					</div>
+					<div class="prefix-tag full">FULL PRICE</div>
+				</div>
+			</div>
+
+			<ul>
+				<li><strong>OpenAI / Gemini 隱式 / DeepSeek</strong>:你不用呼叫什麼 API,只要照上面排,把 ① 放開頭、③ 放結尾,自動快取就會吃到 ①。</li>
+				<li><strong>Claude</strong>:在 ① 的結尾設一個 <code>cache_control</code> 斷點。</li>
+				<li><strong>Gemini 顯式</strong>:把 ① 做成 <code>CachedContent</code>、設好 TTL,再引用。</li>
+			</ul>
+
+			<hr class="lg">
+
+			<div class="section-label">
+				<div class="roman">vi.</div>
+				<div class="tag">量測 · Measure First</div>
+			</div>
+			<h2>怎麼量:先看 <code>cached_tokens</code> 再決定</h2>
+
+			<p>不要靠感覺說「token 太多」。每家都有欄位告訴你「這次有多少 input 是從快取來的」:</p>
+			<ul>
+				<li><strong>OpenAI</strong>:<code>usage.prompt_tokens_details.cached_tokens</code></li>
+				<li><strong>Claude</strong>:<code>usage.cache_read_input_tokens</code> / <code>cache_creation_input_tokens</code></li>
+				<li><strong>Gemini</strong>:回應的 usage metadata 內的 cached content token 數</li>
+			</ul>
+			<p>
+				把它除以總 input,就是<strong>命中率</strong>。做法:把每次呼叫的 <code>route / model / cached / total</code>
+				寫進 log,跨筆加總成一張「依路徑 × 模型」的表。
+				你會立刻看到哪些路徑命中 70%+(健康)、哪些是 0–30%(漏錢點),然後對著低的那幾條套第五節的排版紀律。
+				改完隔天再看同一張表——命中率有沒有跳上去,就是完整的量測閉環。
+			</p>
+
+			<hr class="lg">
+
+			<div class="section-label">
+				<div class="roman">vii.</div>
+				<div class="tag">進階 · Caching vs Progressive Disclosure</div>
+			</div>
+			<h2>進階張力:快取 vs 漸進式揭露(別搞混)</h2>
+
+			<p>
+				很多人會想到另一招省 token:<strong>只載入這次相關的那一小塊知識</strong>
+				(像 Claude Code 的 skill「平常只放簡短描述,被觸發才載入完整內容」那種漸進式揭露)。
+				這招很好,但要分清楚——<strong>它和 caching 不是同一招,省的是不同的錢</strong>:
+			</p>
+
+			<table class="compare-mini">
+				<thead>
+					<tr>
+						<th></th>
+						<th>省什麼</th>
+						<th>怎麼省</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td><strong>按需切片</strong><br><span style="font-size:12px;color:#8a7e68;">(漸進式揭露)</span></td>
+						<td>每次送進去的<strong>量</strong></td>
+						<td>8 塊只載 1 塊</td>
+					</tr>
+					<tr>
+						<td><strong>Caching</strong></td>
+						<td><strong>重複讀</strong>同一段的錢</td>
+						<td>固定前綴被書籤夾住</td>
+					</tr>
+				</tbody>
+			</table>
+
+			<div class="quote-block">
+				<span class="para-mark">¶</span>
+				<strong>最容易踩的坑</strong>:以為「我切片了所以省了」。但切片每次都不一樣 → 前綴一直變 → <em>那塊切片根本不會被快取</em>。
+				切片省了「量」,沒省到「重複」。
+			</div>
+
+			<p>
+				正解是<strong>兩層疊好、順序對</strong>:固定的大段殼(規則 + 一份精簡索引)放最前面(可快取又永遠在),
+				按需展開的細節片段放中間,這次的變動資料放最後。這樣你同時拿到兩種省。
+				<strong>判斷某條路徑該偏切片還是偏全靜態快取,沒有全域答案</strong>——高重複的偏「全靜態 + 靠快取」,
+				稀疏又巨大的偏「切片」,而第六節那張命中率表會告訴你它屬哪種。
+			</p>
+
+			<hr class="lg">
+
+			<div class="section-label">
+				<div class="roman">viii.</div>
+				<div class="tag">檢查清單 · Checklist</div>
+			</div>
+			<h2>可重用檢查清單</h2>
+
+			<ul class="checklist">
+				<li>我的 input 對 output 是不是嚴重失衡(input 主導)?是 → caching 值得做。</li>
+				<li>固定的大段(規則 / 知識庫)有沒有放在 prompt 最前面、每次一字不差?</li>
+				<li>這次才有的變動資料,有沒有全部擠到最後面(user message)?</li>
+				<li>序列化(JSON key 順序、時間戳、few-shot 順序)穩不穩定?</li>
+				<li>用 Claude?固定段尾有沒有設 <code>cache_control</code> 斷點?</li>
+				<li>固定脈絡很大又重複很多?考慮 Gemini 顯式快取 + 自訂 TTL。</li>
+				<li>有沒有在 log 記 <code>cached_tokens</code>、能不能畫出「路徑 × 模型」的命中率表?</li>
+				<li>低命中率路徑:是「動態內容卡前面」(可修)還是「呼叫太稀疏」(TTL 救不了)?</li>
+			</ul>
+
+			<div class="quote-block">
+				<span class="para-mark">¶</span>
+				記住那條不挑廠商的原則就好:<em>固定的放前面、會變的放後面</em>。
+				其餘都是各家在「書籤怎麼設、留多久、折多少」上的差異而已。
+			</div>
+
+			<p style="text-align: right; color: #8a7e68; margin-top: 48px; font-style: italic;">
+				—— 寫作時間基準:2026 / 06。各家門檻、折扣、TTL 會隨版本調整,以你閱讀當下的官方文件為準。
+			</p>
+		</div>
+	</div>
+
+
+	<!-- Giscus Comments -->
+	<div id="comments" class="container mt-xl"
+		style="padding-bottom: 60px; padding-top: 40px; border-top: 1px solid #eee;">
+		<script src="https://giscus.app/client.js" data-repo="newslin-design/newslin-design.github.io"
+			data-repo-id="R_kgDOOXA3ww" data-category="Announcements" data-category-id="DIC_kwDOOXA3w84C5AiY"
+			data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0"
+			data-input-position="top" data-theme="light" data-lang="zh-TW" crossorigin="anonymous" async>
+			</script>
+	</div>
+	<footer>
+	</footer>
+
+</body>
+<script src="../portfolio/js/app.js"></script>
+
+</html>
