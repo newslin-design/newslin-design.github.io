@@ -12,6 +12,8 @@ from moviepy.editor import VideoFileClip, concatenate_videoclips, AudioFileClip
 import pygame #試聽聲音用
 import pandas as pd
 
+from templates import load_templates  # 模板已抽到 template.json
+
 
 def playSound(url, vol = 0.5):
     pygame.mixer.init()
@@ -410,8 +412,13 @@ loopTimes = False
 
 
 
-# Template
-voiceTemplates = {
+# Template ----------------------------------------------------
+# 載入 template.json (voiceTemplates / fadeAccu / textTemplate)
+# 註:ease 函式由 templates.py 從字串還原為 callable,fadeAccu 列會帶 'f' key
+voiceTemplates, fadeAccu, textTemplate = load_templates()
+
+# 以下原本寫死的字典已搬到 template.json,保留註解作為歷史:
+_LEGACY_voiceTemplates = {
     'ch-ch':{
         "startS":3,
         "voices"     :["ch-F","ch-M"],
@@ -435,7 +442,7 @@ voiceTemplates = {
     }
 
 
-fadeAccu = {  # 圖層累加時間時間軸
+_LEGACY_fadeAccu = {  # 圖層累加時間時間軸 (已搬到 template.json,保留作參考)
     'ch-single':[
              { 't':[0.6, 1.3, 8.4, 9.0 ], 'f': easeOut},
              { 't':[1.0, 1.6, 8.0, 8.50 ], 'f': easeOut},
@@ -458,7 +465,7 @@ fadeAccu = {  # 圖層累加時間時間軸
              ],
 }
 
-textTemplate = {
+_LEGACY_textTemplate = {  # 已搬到 template.json,保留作參考
     'ch-single':[
         {   'name': "中文  ", 'type':"text",
             'isDynamic': True, 'col':'ch',
