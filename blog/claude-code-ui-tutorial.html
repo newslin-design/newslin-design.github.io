@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-TW">
 
 <head>
@@ -6,13 +6,13 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, maximum-scale=1.5">
 	<title>Claude Code UI 入門教學:從對話框到能改檔案的 AI 助手</title>
 	<script>workName = "blog_claude_code_ui"</script>
-	<script>var basePath = "../portfolio/"; var pageBasePath = "../portfolio/";</script>
-	<link rel="stylesheet" href="../portfolio/style/reset.css">
-	<link rel="stylesheet" href="../portfolio/style/style_layout.css">
-	<link rel="stylesheet" href="../portfolio/style/style.css">
-	<link rel="stylesheet" href="../portfolio/style/article.css">
+	<script>var basePath = "../works/"; var pageBasePath = "../works/";</script>
+	<link rel="stylesheet" href="../works/style/reset.css">
+	<link rel="stylesheet" href="../works/style/style_layout.css">
+	<link rel="stylesheet" href="../works/style/style.css">
+	<link rel="stylesheet" href="../works/style/article.css">
 	<link rel="stylesheet" href="style/style_blog.css">
-	<link rel="icon" type="image/png" href="../portfolio/web_icon.png" />
+	<link rel="icon" type="image/png" href="../works/web_icon.png" />
 	<style>
 		/* ========== 共用 ========== */
 		.section-label {
@@ -1996,14 +1996,14 @@
 						透過 GitHub Pages 部署。
 
 						<span class="ai">## Structure</span>
-						- portfolio/ 主作品集頁面與共用樣式 / JS
+						- works/ 主作品集頁面與共用樣式 / JS
 						- Blog/ 所有 blog 文章,共用 portfolio 的樣式
 						- image/, music/ 靜態資源
 
 						<span class="ai">## Conventions</span>
 						- 文章命名:kebab-case.html
 						- 圖片放 Blog/image/ 下對應主題資料夾
-						- Header / Footer 由 portfolio/js/app.js 注入
+						- Header / Footer 由 works/js/app.js 注入
 
 						<span class="ai">## Commands</span>
 						- 預覽:用 VS Code Live Server 開 index.html
@@ -2431,7 +2431,7 @@
 
 			<h3>① 用 @tag 精準引用檔案</h3>
 			<p>
-				在輸入框打 <code>@</code>,會跳出<strong>檔案/資料夾自動補全</strong>。直接 <code>@portfolio/index.html</code>
+				在輸入框打 <code>@</code>,會跳出<strong>檔案/資料夾自動補全</strong>。直接 <code>@works/index.html</code>
 				比用自然語言說「那個首頁 HTML」好非常多——
 				前者是<strong>指定讀哪份</strong>,後者 Claude 可能得先跑一輪 glob/grep 才能找到,
 				那一輪就是白花的 Token。
@@ -3353,6 +3353,6 @@
 	</footer>
 
 </body>
-<script src="../portfolio/js/app.js"></script>
+<script src="../works/js/app.js"></script>
 
 </html>
