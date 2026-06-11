@@ -4,6 +4,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, maximum-scale=1.5">
+	<meta name="robots" content="noindex, nofollow">
 	<title>ATEN Solution Builder - 作品集</title>
 	<script>workName = "a_builder"; lang = "zh"; basePath = "../";</script>
 	<link rel="stylesheet" href="../style/reset.css">
@@ -36,24 +37,37 @@
 		<div class="row mb-lg">
 			<div class="col-6 col-sm-12 pr-md">
 				<p>2023 - 現在</p>
-				<h3>透過數位工具驅動企業轉型：<br>從單純銷售產品走向提供完整解決方案</h3>
+				<h3>讓系統整合商（SI）在畫布上完成 Pro AV 提案：<br>從規格書與 Excel，到視覺化連線圖與一鍵交付</h3>
 				<p>
-					本案例研究將解構 ATEN Solution Builder——一個催化 ATEN 從<strong>「產品導向」</strong>銷售模式，
-					戰略性轉型為<strong>「解決方案導向」</strong>的關鍵專案。
+					Solution Builder 是一個 B2B 視覺化提案工具：SI 在畫布上拖放設備、建立連線，
+					系統即時驗證訊號相容性、計算物料清單（BOM），最後一鍵輸出可直接交付客戶的文件。
+					它同時是公司從<strong>「產品銷售」</strong>走向<strong>「解決方案銷售」</strong>轉型策略的落地載體。
 					<br><br>
-					作為主導的產品設計師與使用者體驗工程師 (UX Engineer)，我將詳述我們如何將一個複雜的商業挑戰，
-					轉化為無縫的數位體驗，最終驅動可衡量的營收增長與營運效率。
+					我在專案中負責產品定義、UX/UI 設計、前端開發與數據分析架構——
+					從接收研究洞察、定義解法、親自實作、到用數據驗證的完整閉環。
 				</p>
 
 				<h6 class="mb-xxs">我的角色</h6>
-				<p>UX/UI 設計、前端開發 (React)、數據分析架構</p>
+				<p>產品定義、UX/UI 設計、前端開發 (React)、數據分析架構<br>
+					<span class="gray">使用者訪談由研究員負責，我接收洞察並收斂為解法</span></p>
 
 				<h6 class="mb-xxs">專案屬性</h6>
-				<p>B2B 業務工具 · 企業數位轉型 · 複雜系統視覺化</p>
+				<p>B2B SaaS · 視覺化編輯器 · 企業數位轉型</p>
 			</div>
 			<div class="col-6 col-sm-12">
-				<img class="w-100" alt="Solution Builder 應用程式主畫面截圖，展示視覺化拓撲編輯器與連接裝置">
+				<img class="w-100" src="../../builder/images/01_main_editor.png"
+					alt="Solution Builder 主編輯器：左側設備庫、中間視覺化畫布、右側屬性面板">
 			</div>
+		</div>
+
+		<!-- 系列說明 -->
+		<div class="article">
+			<p class="highlight">
+				<strong>本系列共三篇：</strong>本篇聚焦 Solution Builder 產品本身（策略、設計、前端工程與數據驗證）。
+				另外兩篇是支撐這個產品的獨立技術專案：
+				〈<a href="a_builder_llm.html">用 LLM 結構化產品資料</a>〉與
+				〈<a href="a_builder_agent.html">AI Agent：約束 LLM 的不確定性</a>〉。
+			</p>
 		</div>
 
 		<!-- 專案導覽 -->
@@ -67,16 +81,20 @@
 					<span class="step">02</span>
 					<span class="label">挑戰與策略</span>
 				</a>
-				<a href="#features" class="nav-item">
+				<a href="#framework" class="nav-item">
 					<span class="step">03</span>
+					<span class="label">框架設計</span>
+				</a>
+				<a href="#features" class="nav-item">
+					<span class="step">04</span>
 					<span class="label">產品功能</span>
 				</a>
 				<a href="#technical" class="nav-item">
-					<span class="step">04</span>
+					<span class="step">05</span>
 					<span class="label">技術實踐</span>
 				</a>
 				<a href="#impact" class="nav-item">
-					<span class="step">05</span>
+					<span class="step">06</span>
 					<span class="label">成果驗證</span>
 				</a>
 			</div>
@@ -87,278 +105,315 @@
 			<!-- 核心貢獻 -->
 			<div class="session" id="overview">核心貢獻</div>
 			<p class="highlight">
-				<strong>從 0 到 1 打造工具：</strong>設計並開發視覺化連線圖模擬器，
-				取代傳統繁瑣的 Excel/Visio 規劃流程。<br><br>
-				<strong>商業模式轉型：</strong>協助公司從單一產品銷售 (Product-Oriented)
-				轉型為場景解決方案提供者 (Solution-Oriented)。<br><br>
-				<strong>數據閉環：</strong>建立從前端行為數據 (GA4) 到商業智慧 (PowerBI)
-				的分析架構，驗證設計成效。
-			</p>
-			<p>
-				本專案不僅是一個工具的開發，更是推動企業戰略轉型的關鍵引擎。
-				接下來，我們將深入探討其背後的商業挑戰與策略。
+				<strong>承接策略、落地為可執行規格：</strong>將公司新策略「從單一產品銷售走向案場銷售」的方向，
+				結合使用者研究，將大方向轉譯為具體可行的產品規格與功能定義。<br><br>
+				<strong>從 0 到 1 打造完整軟體服務：</strong>從規格制定、系統架構、UX/UI 設計到前端功能實作，
+				後期並建立與 AI 協作的新開發流程。<br><br>
+				<strong>建立數據追蹤流程：</strong>從前端 GA4 到 BigQuery 到 PowerBI，
+				讓使用者行為直接回饋行銷 Bundle 策略，並串接回 CRM 系統（Salesforce）銜接業務環節。
 			</p>
 
 			<!-- 背景挑戰與策略 -->
 			<div class="session" id="challenge">背景挑戰與策略</div>
-			<h2>剖析商業痛點與使用者需求</h2>
-			<p>
-				任何成功的產品都始於對商業環境與目標受眾的深刻理解。
-				本章節將解構 ATEN 所面臨的核心挑戰，並闡述我們為此制定的，以使用者為中心的設計策略。
-			</p>
+			<h2>從商業挑戰到設計命題</h2>
 
-			<h3>商業轉型的十字路口</h3>
-			<p>在專案啟動之初，公司正處於關鍵的轉型期，面臨兩大商業挑戰：</p>
-
-			<h4>1. 市場脫節</h4>
+			<h3>商業背景</h3>
 			<p>
-				過去高度依賴經銷商進行單一產品銷售的模式，導致公司難以掌握終端客戶的真實需求與行為數據。
-				這種隔閡不僅壓縮了產品毛利，也限制了客戶忠誠度的培養。
-			</p>
-
-			<h4>2. 提案門檻高</h4>
-			<p>
-				專業影音 (Pro AV) 系統的架構極其複雜，新進業務人員或系統整合商 (SI)
-				需要經歷漫長的學習曲線才能獨立完成一份專業提案，直接導致了銷售週期的延長與效率的低落。
-			</p>
-			<img alt="ATEN 兩大核心商業挑戰圖示：經銷商依賴模式造成的市場脫節，以及系統整合商面臨的高提案門檻">
-
-			<h3>UX 的戰略定位</h3>
-			<p>
-				面對上述挑戰，UX 的角色不再僅限於介面優化，而是成為<strong>驅動營收增長的戰略核心</strong>。
-				我們的關鍵命題是：
+				ATEN 是全球 Pro AV / KVM 廠商，產品線橫跨數千個 SKU。傳統 SI 提案流程是：
+				了解案場需求 → 初步系統設計 → 翻查規格書與 Excel → 製作工程連線圖 → 驗證設備相容性，
+				各階段反覆迭代。對新手 SI 這是漫長的學習曲線，對資深 SI 則是大量重複勞動。
 				<br><br>
-				<em>「如何降低 SI 的提案門檻，並提升提案成功率？」</em>
-				<br><br>
-				<strong>Solution Builder</strong> 便是我們給出的答案——一個旨在將複雜系統規劃流程
-				標準化、視覺化與自動化的數位工具。它不僅解決了效率問題，更成為公司直接觸及終端使用者、
-				推動解決方案銷售模式的戰略支點。
+				同時，過去高度依賴經銷商的銷售模式，讓公司難以掌握終端客戶的真實需求。
+				公司策略因此聚焦兩件事：<strong>直接掌握市場洞察</strong>，以及<strong>賦能合作夥伴、降低提案門檻</strong>。
 			</p>
-			<img alt="策略定位圖：Solution Builder 如何成為 UX、商業轉型與客戶觸及的戰略支點">
 
-			<h3>目標受眾與分層設計策略</h3>
+			<h3>UX 的戰略命題</h3>
 			<p>
-				為了確保產品能精準滿足不同使用者的需求，我們定義了三類核心目標族群，
-				並為其量身打造了分層的設計策略：
+				<em>「如何降低 SI 的提案門檻，同時提升提案成功率與可追蹤性？」</em>
+				<br><br>
+				Solution Builder 是這個命題的答案。設計上我把研究員的洞察重構為
+				<strong>三種使用者的不同需求曲線</strong>——使用者不是三群人，而是一段光譜：
+				同一個 SI 的第一年與第五年，需要的是不同層級的工具。
+				因此不做三套 UI，而是做<strong>一套可切換層級的工具</strong>。
 			</p>
 
 			<div class="row mt-md mb-lg" style="width:100%">
 				<div class="col-4 col-sm-12 plr-sm mb-md">
-					<h4>菜鳥 / 陌生 SI</h4>
-					<h6 class="gray">痛點</h6>
-					<p>不熟悉產品線，不知道如何搭配產品，提案缺乏信心。</p>
-					<h6 class="gray">策略：引導式場景模板</h6>
+					<h4>菜鳥 SI</h4>
+					<h6 class="gray">痛點本質</h6>
+					<p>缺少領域知識的起點。一張空白畫布對新手是負擔，不是自由。</p>
+					<h6 class="gray">策略：先給模板，再給畫布</h6>
 					<p>
-						設計了精靈般的引導式體驗，將產品的複雜性抽象化。使用者只需回答關於應用場景的簡單問題，
-						系統便會生成一份有效的方案草圖，讓新手<strong>有一個有意義的起點</strong>，而非面對空白畫布從零摸索。
+						從場景模板開始，系統生成方案草圖，讓新手從「修改現成方案」學起。
+						採模組化模板而非少量固定場景，兼顧覆蓋率與彈性。
 					</p>
 				</div>
 				<div class="col-4 col-sm-12 plr-sm mb-md">
-					<h4>老手 / 高價值 SI</h4>
-					<h6 class="gray">痛點</h6>
-					<p>追求極致效率，需要快速處理複雜架構與驗證相容性。</p>
-					<h6 class="gray">策略：高自由度畫布與即時驗證</h6>
+					<h4>老手 SI</h4>
+					<h6 class="gray">痛點本質</h6>
+					<p>瓶頸不在知識、在驗證效率——大量時間花在翻規格書確認相容性。</p>
+					<h6 class="gray">策略：即時回饋 × 錯誤即商機</h6>
 					<p>
-						提供無限制的拖放式畫布，並嵌入<strong>相容性引擎</strong>，能對連線提供即時反饋，
-						讓專家能快速建構原型並為複雜的客製化架構排除風險。
+						自由畫布 + 拉線當下即時校驗相容性。不相容時不只警示，
+						同時建議可解決問題的轉換器產品——錯誤從負面體驗翻轉為發現新產品。
 					</p>
 				</div>
 				<div class="col-4 col-sm-12 plr-sm mb-md">
-					<h4>子公司 / 內部業務</h4>
-					<h6 class="gray">痛點</h6>
-					<p>需快速回應中小型案件，並減少內部教育訓練的成本。</p>
-					<h6 class="gray">策略：自動化提案生成</h6>
+					<h4>內部業務</h4>
+					<h6 class="gray">痛點本質</h6>
+					<p>工具只是「畫圖」，動作沒有串接到業務漏斗，需手動搬運到 CRM。</p>
+					<h6 class="gray">策略：動作即商業訊號</h6>
 					<p>
-						系統能自動化最後一哩路，生成包含<strong>物料清單 (BOM)</strong> 與系統架構圖的完整文件，
-						讓銷售團隊從繁瑣的文書工作中解放出來。
+						一鍵匯出 BOM 與連線圖文件，「直接諮詢」自動把方案打包成
+						Salesforce Opportunity——每個使用者動作都可被追蹤、分析、轉化。
 					</p>
 				</div>
 			</div>
-			<img alt="三個 Persona 卡片總覽：菜鳥 SI、老手 SI、內部業務，對應引導式模板、彈性畫布、自動化提案策略">
 
+			<!-- 框架設計 -->
+			<div class="session" id="framework">框架設計</div>
+			<h2>寫第一行 code 之前，先把系統分成三層</h2>
+			<p>
+				專案啟動時就能預期會有多種衍生情境：場景精靈、自由畫布、AI 找產品、AI 生成連線圖、
+				iPad 簡報版、對外 API……如果每個情境都獨立實作，小團隊撐不住。
+				因此在動工前先把系統切成三層，讓新情境靠<strong>組裝</strong>既有能力落地，而非重做。
+			</p>
+
+			<div style="width:100%;max-width:1000px;margin:32px auto;font-size:14px;line-height:1.7">
+				<div style="border:1px solid #ccc;border-radius:8px;padding:16px 20px;background:#fafafa">
+					<strong>應用層（Application）</strong>—— 依「使用者 × 情境」組裝下層能力<br>
+					<span class="gray">場景精靈 · 自由畫布 · AI 找產品 · AI 生成連線圖 · BOM / PDF 匯出 · Salesforce 串接</span>
+				</div>
+				<div style="text-align:center;color:#999;padding:4px">▲ 消費：節點 / 連線 / 互動 API</div>
+				<div style="border:1px solid #ccc;border-radius:8px;padding:16px 20px;background:#fafafa">
+					<strong>核心引擎層（Core Engine）</strong>—— 懂 AV 的圖表能力，但不預設使用情境<br>
+					<span class="gray">React Flow 深度客製 · Handle 動態生成 · 相容性檢測 · 17 個自訂 Hook · 純前端匯出管線</span>
+				</div>
+				<div style="text-align:center;color:#999;padding:4px">▲ 消費：標準化 Product Schema</div>
+				<div style="border:1px solid #ccc;border-radius:8px;padding:16px 20px;background:#fafafa">
+					<strong>資料層（Data）</strong>—— 讓上層無視資料混亂<br>
+					<span class="gray">productDatabase.json 單一事實來源 · LLM 結構化 Pipeline（另篇詳述）· 產品管理後台</span>
+				</div>
+			</div>
+
+			<p>
+				核心原則：<strong>下層不知道上層是誰，上層只透過標準介面消費下層。</strong>
+				每個跨層介面（Schema、Hook API、JSON 格式）都是一次同時涉及設計、工程與商業的決策——
+				例如設計 Schema 時就考慮 Handle 的渲染邏輯，設計 Hook 時就考慮精靈與畫布的共用需求。
+			</p>
+
+			<h3>分層帶來的槓桿</h3>
+			<div class="line_area">
+				<h6>AI 生成情境連線圖（已上線）</h6>
+				<p>資料層 Schema 直接餵 LLM、引擎已有「吃 JSON 產生圖」的能力，應用層只需新增 Prompt 與選擇 UI，其餘能力直接複用。</p>
+			</div>
+			<div class="line_area">
+				<h6>Sales DEMO Kit（iPad 簡報版）</h6>
+				<p>關閉編輯 Hook、保留 Render 與 Zoom——新寫的只有 iPad 手勢層與簡報 UI。</p>
+			</div>
+			<div class="line_area">
+				<h6>對外開放 API（Roadmap）</h6>
+				<p>應用層與引擎層的通訊本來就定義為 JSON，Schema 已是穩定合約，幾乎可直接對外開放。</p>
+			</div>
 
 			<!-- 產品功能與設計細節 -->
 			<div class="session" id="features">產品功能與設計細節</div>
-			<h2>核心功能深度解析</h2>
-			<p>這些功能經過精心設計，旨在徹底顛覆傳統、耗時的類比工作流程，重塑為直觀、智慧的數位化體驗。</p>
+			<h2>核心功能與設計決策</h2>
 
-			<h2 class="box mb-0 mt-lg">功能一：視覺化拓撲編輯器</h2>
-			<h2 class="hightlight">應用程式的核心</h2>
-			<p>一個功能強大的視覺化畫布，讓使用者能像在白板上作畫一樣輕鬆地建構系統架構。</p>
-
-			<h3>技術基礎</h3>
-			<p>採用 <strong>React</strong> 框架，並基於 <strong>@xyflow/react</strong> 函式庫深度客製化開發。</p>
-
-			<h3>直觀操作</h3>
-			<p>使用者可透過簡單的拖放操作，從右側的設備庫中將產品圖示放置到畫布上，快速佈局。</p>
-			<img alt="拖放介面截圖：從右側設備庫面板將裝置圖示拖曳至視覺化畫布">
-
-			<h3>豐富的編輯工具</h3>
+			<h2 class="box mb-0 mt-lg">功能一：視覺化連線圖編輯器</h2>
+			<h2 class="hightlight">產品的核心畫布</h2>
 			<p>
-				<strong>設備圖示：</strong>提供四種不同尺寸 (Full Detail, L, S, T)，可根據圖表複雜度自由切換。
-				<br><br>
-				<strong>設備標籤：</strong>獨特的彩色邊框系統，將設備標記為核心（橘色）、主要（藍色）、
-				輔助（綠色）、待解問題（紅色）等不同重要性級別。
-				<br><br>
-				<strong>輔助圖形：</strong>內建多種註解工具與背景圖形，幫助使用者製作出專業且具備高可讀性的系統圖。
+				三欄佈局：左側設備庫（搜尋 + 分類 + 拖曳）、中間 React Flow 畫布、右側屬性面板。
+				頂部工具列只放 Undo / Redo / Save / Export 四顆，高階功能收進右鍵選單；
+				訊號色碼 Legend 常駐右下角，新手不需記憶規則就能讀圖。
 			</p>
-			<img alt="四種設備圖示尺寸比較，以及彩色邊框標籤系統：核心（橘色）、主要（藍色）、輔助（綠色）、待解（紅色）">
+			<img class="natural" src="../../builder/images/01_main_editor_example.png"
+				alt="實際方案範例：混用 Frame 分區、Group 乘算與七色訊號連線的完整系統圖">
 
-			<h3>智慧連線</h3>
+			<h3>自訂節點與動態埠口</h3>
 			<p>
-				使用者只需在設備的連接埠之間拖曳即可建立連線。系統會依訊號類型自動為線條上色
-				（影像：藍色、音訊：粉色、網路：淺藍色等，沿用 ATEN 既有的訊號色彩規範），讓圖面一眼可讀。
+				React Flow 預設節點無法承載 Pro AV 的語意——一台 Matrix Switcher 可能有 30+ 個 I/O。
+				每個節點的連接埠 (Handle) 由 productDatabase.json 的 Schema <strong>動態生成</strong>，
+				攜帶訊號類型、頻寬、解析度等屬性，供連線時的相容性檢測使用。
+				埠口依 Video / Audio / USB / Control / Network 分組顯示，找「HDMI 輸出」時只需看 Video 組。
 			</p>
-			<img alt="智慧連線特寫：依訊號類型自動配色的連接線（影像藍、音訊粉、網路淺藍），具自動路徑規劃">
+			<img class="natural" src="../../builder/images/02_node_deviceNodeWithPort_KVMExample.png"
+				alt="KVM 設備節點：依 Schema 動態生成的分組埠口">
+			<p>
+				使用者也可建立 <strong>Custom Device</strong> 把第三方設備畫進方案——這些型號會被後台記錄，
+				成為研發了解市場缺口的素材（見成果驗證）。另提供 3D 透視風格節點，用於對客戶的簡報情境。
+			</p>
 
-			<h2 class="box mb-0 mt-lg">功能二：彈性的專案創建流程</h2>
-			<h2 class="hightlight">雙路徑設計，適合所有技術水平</h2>
+			<h3>訊號色碼與連線</h3>
+			<p>
+				連線依訊號類型自動套用七色色碼（沿用公司既有的訊號色彩規範，本專案的工作是把它落實到
+				Handle、連線、BOM 與 Legend）。提供 Bezier / Step / Straight 三種邊樣式對應不同拓撲；
+				同色連線交叉時自動渲染半圓跳線符號，複雜拓撲不打結。
+			</p>
+			<img class="natural" src="../../builder/images/01_main_editor_flowType.png"
+				alt="三種連線樣式：Bezier 散射拓撲、Step 矩陣拓撲、Straight 直連">
+
+			<h3>複雜度分層：自願下探，而非強制暴露</h3>
+			<p>
+				設備規格資訊量龐大，設計上採延遲揭露：預設只見設備圖示 (L0)，hover 出現 Handle (L1)，
+				點擊「顯示埠」展開完整埠口 (L2)，開 Modal 看完整規格 (L3)，需要時才到原廠規格書 (L4)。
+				Port Visibility 的顆粒度精細到「視訊埠開、音訊埠關」，老手可以只看與當下任務相關的訊號。
+			</p>
+			<img class="natural" src="../../builder/images/04_portVisibility_KVM.png"
+				alt="Port Visibility 控制：逐訊號類型決定埠口顯示與否">
+
+			<h3>Frame 與 Group ×N：組織大型方案</h3>
+			<p>
+				當方案從「一間會議室」放大到「十二間教室 + 機房 + 控制中心」，單純堆節點會讓畫面失控。
+				<strong>Frame</strong> 借用 Figma 的心智模型做空間分區；<strong>Group ×N</strong>
+				讓 SI 只設計一份典型房間，系統處理數量乘算——外層 ×4 會議室、內層 ×2 喇叭，
+				BOM 自動算出 8 顆。設計責任與數量責任分離。
+			</p>
+			<img class="natural" src="../../builder/images/04_group_nested.png"
+				alt="巢狀 Group ×N：一份設計表達 N 套設備，BOM 自動乘算">
+
+			<h2 class="box mb-0 mt-lg">功能二：模板系統</h2>
+			<h2 class="hightlight">前台精靈引導 + 後台自助上稿</h2>
 
 			<h3>從模板開始</h3>
 			<p>
-				提供類似精靈 (Wizard) 的引導式體驗。使用者可選擇預設的應用場景如「會議室」或「教室」，
-				系統便會自動生成預先配置好的連線圖，使用者只需微調即可完成。
+				新手選擇應用場景（會議室、教室…），系統生成已包含推薦設備與預設連線的草圖，再微調即可。
+				精靈不是一次性教學，而是<strong>常駐的起點</strong>——模板生成後所有元素可編輯、可另存為自訂模板，
+				老手也會用它快速起稿；針對資深專家則永遠保留「從空白開始」。
 			</p>
+
+			<h3>讓 2,000+ 模板長得出來的後台</h3>
 			<p>
-					模板庫已累積 2,000+ 組模組化模板，內容由產品企劃透過後台持續上稿維護；
-					我負責的是讓上稿變容易的工具與資料結構，確保模板能隨產品線更新，而不需每次找工程改 code。
-				</p>
-				<img alt="模板引導式專案創建流程，展示場景選擇（會議室、教室）與 RoomConditionSelector 元件">
+				模板庫已累積 2,000+ 組模組化模板，這個量體不是設計師一人能撐起的——
+				內容由產品企劃透過後台持續上稿維護，<strong>我負責的是讓上稿變容易的資料結構與編輯工具</strong>，
+				讓非工程背景的企劃也能維護房間、場景與連線設定，不需每次找工程改 code。
+				模板的圖編輯沿用主編輯器同一套元件，企劃在後台做的內容，前台 SI 看到的就是同一套節點與連線。
+			</p>
+			<img class="natural" src="../../builder/images/03_templateEditor_diaEidtor.png"
+				alt="模板編輯器後台：沿用主編輯器元件的模板圖編輯介面">
 
-			<h3>從零開始</h3>
-			<p>針對資深專家，提供完全空白的畫布，不受任何限制地設計高度客製化的解決方案。</p>
-			<img alt="雙路徑比較：模板模式（左）自動生成配置圖 vs. 空白模式（右）供專家自由設計">
+			<h2 class="box mb-0 mt-lg">功能三：一鍵交付</h2>
+			<h2 class="hightlight">把提案最後一哩路自動化</h2>
 
-			<h2 class="box mb-0 mt-lg">功能三：自動化文件產出</h2>
-			<h2 class="hightlight">將提案流程的最後一哩路完全自動化</h2>
+			<h3>BOM 即時計算</h3>
+			<p>
+				產品清單隨畫布即時更新：增減節點、調整 Group ×N 都立刻反映，
+				自動依品牌與類別分組、過濾隱藏節點。統計行直接給業務做粗估報價。
+			</p>
+			<img class="natural" src="../../builder/images/04_bom_panel.png"
+				alt="BOM 面板：隨畫布即時更新的產品清單，含群組乘算與分類統計">
 
-			<h3>BOM 表生成</h3>
-			<p>「Export BOM」功能可一鍵將畫布上所有產品及其數量匯出為標準的 Excel 物料清單。</p>
-
-			<h3>系統架構圖匯出</h3>
-			<p>「Export Diagram」功能可將當前畫布內容生成為一份專業的 PDF 文件，可直接用於正式提案。</p>
-
-			<h3>智慧 BOM 計算</h3>
-			<p>BOM 表的計算會精確地考慮到「群組」節點內的設備數量（含倍數），並自動過濾被標記為「隱藏」的節點。</p>
-			<img alt="自動化文件產出範例：Excel BOM 物料清單（左）與專業格式 PDF 系統架構圖（右）">
-
+			<h3>Excel 報價單與 PDF 系統圖</h3>
+			<p>
+				一鍵輸出套用公司官方樣板的 Excel 報價單（含客戶資訊與報價欄位），
+				以及含封面、專案資訊、訊號 Legend 與浮水印的 PDF 系統連線圖——
+				可直接交付客戶，不需再加工。匯出採<strong>純前端管線</strong>（html-to-image + jsPDF），無後端依賴。
+			</p>
+			<img class="natural" src="../../builder/images/04_export_pdf_output.png"
+				alt="PDF 匯出結果：保留 Frame 分區、訊號色碼與 Group 標記的完整方案文件">
 
 			<!-- 技術實踐與工程貢獻 -->
 			<div class="session" id="technical">技術實踐與工程貢獻</div>
 			<h2>跨越設計與開發的邊界</h2>
 			<p>
-				作為一名 UX 工程師，我的貢獻不僅在於勾勒設計藍圖，更在於親手將其化為現實。
-				本章節將詳細介紹我在專案中承擔的關鍵工程任務。
+				這個專案的工程量原本需要多位前端工程師協作。能以極小團隊交付，
+				靠的是前述的三層架構，加上把 AI 帶進日常開發流程——架構與 UX 決策在同一個腦中對齊，
+				省去設計與工程之間的交接耗損。
 			</p>
 
-			<h2 class="box mb-0 mt-lg">工程一：前端架構與元件化開發</h2>
-			<h2 class="hightlight">建構模組化、可擴展的系統</h2>
-
-			<h3>技術選型</h3>
-			<p><strong>React</strong> 核心框架 + <strong>Ant Design</strong> UI 元件庫 + <strong>@xyflow/react</strong> 視覺化圖表編輯。</p>
-
-			<h3>自訂節點元件</h3>
+			<h2 class="box mb-0 mt-lg">前端架構</h2>
+			<h2 class="hightlight">React 18 + @xyflow/react 深度客製化</h2>
 			<p>
-				為畫布上的核心元素創建了高度客製化的 React 元件（DeviceNode、GroupNode），
-				將畫布上的節點從靜態圖示轉變為智慧的、自我包含的代理。
+				React 18 + Vite + React Router，UI 採 Ant Design 搭配 Tailwind 細部覆寫。
+				狀態管理不用 Redux，而是 <strong>17 個依職責分離的自訂 Hook</strong>
+				（歷史記錄、群組、對齊吸附、Handle 管理…），每個 Hook 暴露明確 API。
+				應用層可以只組裝其中一部分——例如公開瀏覽頁只載入 Render 與 Zoom，不載入編輯相關 Hook。
 			</p>
 
-			<h3>性能優化</h3>
+			<h3>React Flow 客製化亮點</h3>
 			<p>
-				面對數千個設備的產品庫，透過批次請求的<strong>懶加載策略</strong>，
-				確保應用在數秒內即可互動，同時完整的設備庫在背景中無縫加載。
+				<strong>動態 Handle 生成：</strong>埠口不寫死，從 productDatabase.json 動態渲染，
+				才能支援專家拉出的各種邊界案例（4K 接 1080p、HDMI 跨 HDBaseT）。
+				<br><br>
+				<strong>相容性檢測引擎：</strong>拉線當下讀取兩端埠口屬性即時校驗，
+				不相容時標示警示並建議轉換器產品。檢測邏輯只寫一次、在引擎層，所有應用情境共用。
+				<br><br>
+				<strong>邊緣交叉偵測：</strong>計算同色邊的交叉點、在上層邊渲染跳線符號的演算法。
 			</p>
-			<img alt="React 元件架構圖：DeviceNode 與 GroupNode 自訂元件，以及畫布、設備庫與懶加載系統間的資料流">
 
-			<h2 class="box mb-0 mt-lg">工程二：AI 驅動的產品資料統一化</h2>
-			<h2 class="hightlight">用 LLM 解決遺留數據瓶頸</h2>
-
-			<h3>問題定義</h3>
-			<p>數十年來的舊有產品規格僅存在於非結構化、不一致的 HTML 表格中，無法被現代應用程式使用。</p>
-
-			<h3>解決方案</h3>
+			<h3>性能與工程細節</h3>
 			<p>
-				開發 <strong>Node.js 腳本</strong>自動化數據清洗與結構化，
-				利用 <strong>OpenAI API (GPT-4o)</strong> 將雜亂的產品規格表轉換為乾淨、統一的 JSON 格式。
+				<strong>產品庫懶加載：</strong>面對數千 SKU，以批次請求分段載入，應用數秒內可互動，完整設備庫在背景補齊。
+				<br><br>
+				<strong>原子化 BOM 下載：</strong>未儲存的畫布也能直接下載 BOM——後端即時建立臨時專案、計算、匯出、刪除，
+				不在工作區留下孤兒專案。
+				<br><br>
+				<strong>模板批次處理：</strong>自動生成模板所有選項的排列組合並逐一執行驗證動作，
+				讓 2,000+ 模板的維護成本可控。
 			</p>
 
-			<h3>精密提示工程</h3>
+			<h3>後台：產品管理器</h3>
 			<p>
-				設計了詳盡的 Prompt，包含嚴格規則用以處理各種複雜情況：
-				解析數量詞 ("2 x HDMI")、準確分類連接埠類型、正確識別訊號延伸器等特殊設備。
+				數千 SKU 的規格用結構化表單維護（而非自由文字），欄位分組直接對應
+				productDatabase.json 的 Schema——設計與資料結構同時成型。搭配交叉篩選與批次更新，
+				產品資料的維護從「工程交付」變成「業務自助」。
 			</p>
-			<img alt="產品數據前後對比：左側雜亂的 HTML 表格，經由 Node.js + GPT-4o 管線，轉換為右側乾淨的 JSON 格式">
+			<img class="natural" src="../../builder/images/05_ProductManager01.png"
+				alt="產品管理器後台：數千 SKU 的結構化規格維護介面">
 
-			<h2 class="box mb-0 mt-lg">工程三：複雜功能的實現巧思</h2>
-			<h2 class="hightlight">工程亮點</h2>
-
-			<h3>原子化 BOM 下載</h3>
-			<p>
-				使用者點擊下載時，系統在後端即時創建臨時專案，計算 BOM 並匯出 Excel，然後立即刪除臨時專案。
-				提供直接下載的即時滿足感，同時避免在工作區中產生孤立的臨時專案。
+			<p class="highlight">
+				<strong>延伸閱讀（獨立成篇）：</strong>資料層的關鍵是把散落在 PDF / HTML、格式不一的數千筆產品規格，
+				用 GPT-4o + Prompt Engineering 結構化為標準 JSON——詳見〈<a href="a_builder_llm.html">用 LLM 結構化產品資料</a>〉；
+				應用層的 AI Agent 如何把不確定性放對位置——詳見〈<a href="a_builder_agent.html">AI Agent：約束 LLM 的不確定性</a>〉。
 			</p>
-
-			<h3>批次自動化處理</h3>
-			<p>
-				handleBatchProcess 函式能自動生成模板所有選項的排列組合，並對每一種組合執行一系列自動化動作，
-				為內部團隊大規模管理和維護模板提供了極大的便利。
-			</p>
-			<img alt="原子化 BOM 下載流程圖：使用者點擊下載→建立臨時專案→計算 BOM→匯出 Excel→自動刪除臨時專案">
-
 
 			<!-- 成果驗證與商業影響 -->
 			<div class="session" id="impact">成果驗證與商業影響</div>
-			<h2>數據驅動的價值衡量</h2>
+			<h2>從內部工具到對外服務，再到數據閉環</h2>
+
+			<h3>商業擴展</h3>
 			<p>
-				我們建立了一條可量化的直接連結，將使用者參與度和核心商業成果（如潛在客戶生成和銷售轉換）聯繫起來。
+				Solution Builder 從內部工具發展為公司對外發布的正式 SaaS 服務，
+				被全球子公司採用為教育訓練與業務推廣的統一工具。
+				免登入瀏覽模板降低陌生 SI 的進入門檻；完成方案後的「直接諮詢」
+				會自動把方案 JSON、BOM 與畫布截圖打包成 Salesforce Opportunity，業務接手時已有完整脈絡。
 			</p>
 
-			<h3>定義成功指標</h3>
-
-			<h4>效率提升</h4>
-			<p>將原本需要翻規格書、人工計算線材、整理 BOM 的提案流程<strong>大幅縮短</strong>，把資深 SI 的時間從重複勞動移回真正需要專業判斷的環節。</p>
-
-			<h4>行銷與銷售漏斗</h4>
+			<h3>數據架構：設計階段就定義 Event Schema</h3>
 			<p>
-				<strong>獲客：</strong>工具本身成為強大的潛在客戶磁鐵，吸引大量新的系統整合商註冊使用。
-				<br><br>
-				<strong>留存：</strong>追蹤高價值 SI 用戶的平台參與度和回訪率，衡量產品黏著度。
-				<br><br>
-				<strong>營收轉換：</strong>系統能將模擬器中的草稿圖直接轉化為 Salesforce 中的銷售商機。
+				埋點不是事後補的。設計交付物從 Wireframe、Interaction Spec 擴張為三件——加上
+				<strong>Event Spec</strong>，每個互動元素在 Figma 上就標註對應事件。
+				事件採語意化命名並分層（商業事件 / 互動事件 / Debug），且必帶 context：
+				例如 device_added 會記錄產品從哪裡加入（搜尋 / 模板 / AI 推薦），
+				才能回答「AI 建議的產品真的被採用了嗎？」這種具體問題。
 			</p>
-			<img alt="成功指標儀表板：效率提升（提案流程大幅縮短）與行銷漏斗各階段：獲客、留存、營收轉換">
+			<p>
+				資料流：前端 GTM 事件 → <strong>GA4</strong> → <strong>BigQuery</strong>（跨 Session 分析、Join CRM 資料）→
+				<strong>PowerBI</strong>，分成行銷、研發、UX 三個 Dashboard，對應三群決策者。
+			</p>
 
-			<h3>建立數據反饋閉環</h3>
-
-			<h4>數據架構</h4>
-			<p>前端 <strong>GA4</strong> 追蹤 → <strong>BigQuery</strong> 儲存分析 → <strong>PowerBI</strong> 整合 CRM 銷售數據。</p>
-			<img alt="數據架構管線圖：GA4 前端追蹤→BigQuery 儲存分析→PowerBI 整合 CRM 數據形成商業洞察儀表板">
-
-			<h4>洞察與行動</h4>
+			<h3>兩個實際的閉環案例</h3>
 
 			<div class="line_area">
-				<h6>市場需求洞察</h6>
-				<p>分析大量連線圖數據後，發現市場上最受歡迎的產品組合，直接促使行銷部門推出針對性的<strong>「產品組合包」</strong>銷售活動。</p>
+				<h6>熱門產品組合 → Bundle 行銷</h6>
+				<p>從 BigQuery 找出同一份方案中最常一起出現的產品對，行銷部據此推出捆綁銷售方案，並把該組合納入 SI 教育訓練的標準推薦配置。</p>
 			</div>
 
 			<div class="line_area">
-				<h6>產品研發指引</h6>
-				<p>發現使用者頻繁使用第三方解決方案來彌補功能空缺，將這些「缺口訊號」反饋給研發團隊，作為<strong>新品立項評估</strong>的具體依據。</p>
+				<h6>第三方裝置缺口 → 研發評估</h6>
+				<p>追蹤 Custom Device 事件，發現某些類型的第三方設備被頻繁加入——且這些使用者的方案已包含多台自家產品，缺的不是客戶、是產品。這份「缺口訊號」回饋研發，作為新品立項評估的依據。使用者行為本身成為持續的市場研究。</p>
 			</div>
-			<img alt="兩個數據驅動的行動案例：產品組合包行銷活動，以及由使用數據催生的新產品開發">
 
+			<p class="gray">精確營收與內部數據受 NDA 限制，本文僅揭露可公開內容。</p>
 
 			<!-- 總結 -->
 			<div class="session">專案總結</div>
-			<h2>不只是工具——更是商業轉型的催化劑</h2>
+			<h2>設計、工程與數據在同一人身上對齊</h2>
 			<p>
-				ATEN Solution Builder 不僅僅是一個軟體工具，它更是一個推動商業模式轉型的核心載體。
-				這個專案充分展示了一名 UX 工程師如何融合<strong>商業策略思維</strong>、
-				<strong>穩健的前端開發技術</strong>以及<strong>數據驅動的洞察力</strong>，
-				將一個複雜、傳統的硬體銷售流程，轉化為流暢、高效的數位化體驗。
-				<br><br>
-				最終，Solution Builder 為 ATEN 與客戶的互動方式建立了新的典範，
-				證明了設計與工程的深度融合不僅能解決使用者痛點，更能從根本上重塑公司的市場策略，創造持久的商業影響力。
+				Solution Builder 展示的是一種工作方式：設計 Schema 時考慮前端如何消費、
+				設計互動時同步定義埋點、設計功能時對應商業漏斗的位置。
+				當 UX 掌握底層資料與架構，就能從「支援單位」走入「產品決策」——
+				這個專案裡的三層架構、相容性檢測與數據閉環，都是這種跨域整合下的產物。
 			</p>
 
 		</div>

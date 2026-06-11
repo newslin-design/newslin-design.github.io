@@ -13,6 +13,17 @@
     max-width: 1000px;
 }
 
+/* 文章內文連結：可辨識的藍色與底線（不影響流程導覽與圖示按鈕） */
+.article a:not(.nav-item):not(.icon-btn) {
+    color: var(--sec-color);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+.article a:not(.nav-item):not(.icon-btn):hover {
+    color: #43849c;
+}
+
 .article h2,
 .article h3 {
     max-width: 1000px;
@@ -22,6 +33,14 @@
     width: 100%;
     margin: 32px auto 64px auto;
     max-width: 1000px;
+}
+
+/* 依圖片原始尺寸顯示，僅在超過版面寬度或過高時等比縮小 */
+.article img.natural {
+    width: auto;
+    height: auto;
+    max-width: min(100%, 1000px);
+    max-height: 650px;
 }
 
 .article img.left {

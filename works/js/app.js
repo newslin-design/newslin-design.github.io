@@ -46,11 +46,7 @@ const portfolioData = {
 			{
 				id: "a_builder",
 				hasLocalPage: true,
-				title: {
-					en: "Visual Solution Simulator <br> <span>Solution Builder</span>",
-					zh: "視覺化解決方案模擬器 <br> <span>Solution Builder</span>",
-					ja: "ビジュアルソリューションシミュレーター <br> <span>Solution Builder</span>"
-				},
+				title: "Solution Builder",
 				desc: {
 					en: "A digital tool driving ATEN's transformation from product-oriented to solution-oriented sales, featuring visual topology editing, automated proposals, and data-driven insights.",
 					zh: "推動 ATEN 從產品導向轉型為解決方案導向的數位工具，具備視覺化拓撲編輯、自動化提案與數據驅動洞察。",
@@ -481,11 +477,12 @@ try {
 				} else if (img[i].alt == "gif") {
 					imgType = ".gif"
 				}
-				if (img[i].alt != "no") {
+				// alt="no" 或已寫明 src 的圖片不參與自動編號
+				if (img[i].alt == "no" || img[i].getAttribute("src")) {
+					j++
+				} else {
 					let num = i - j
 					img[i].src = imgBasePath + workName + num + imgType
-				} else {
-					j++
 				}
 			}
 

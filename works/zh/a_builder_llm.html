@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, maximum-scale=1.5">
+	<meta name="robots" content="noindex, nofollow">
+	<title>用 LLM 結構化產品資料 - 作品集</title>
+	<script>workName = "a_builder_llm"; lang = "zh"; basePath = "../";</script>
+	<link rel="stylesheet" href="../style/reset.css">
+	<link rel="stylesheet" href="../style/style_layout.css">
+	<link rel="stylesheet" href="../style/style.css">
+	<link rel="stylesheet" href="../style/article.css">
+	<link rel="icon" type="image/png" href="../web_icon.png" />
+
+	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-114514958-1"></script>
+	<script>
+			(function (w, d, s, l, i) {
+				w[l] = w[l] || []; w[l].push({
+					'gtm.start': new Date().getTime(), event: 'gtm.js'
+				}); var f = d.getElementsByTagName(s)[0],
+					j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+						'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+			})(window, document, 'script', 'dataLayer', 'GTM-PMLJXPC');
+	</script>
+</head>
+
+<body>
+	<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PMLJXPC" height="0" width="0"
+			style="display:none;visibility:hidden"></iframe></noscript>
+
+	<header></header>
+	<div id="sidebar"></div>
+
+	<div class="container mt-xl">
+		<h1>用 LLM 結構化產品資料</h1>
+		<div class="row mb-lg">
+			<div class="col-6 col-sm-12 pr-md">
+				<p>2025 - 2026</p>
+				<h3>數千筆規格散落在格式不一的 HTML 與 PDF 裡，<br>怎麼變成前端能直接消費的資料庫？</h3>
+				<p>
+					這是 Solution Builder 資料層的核心工程：把數千個 SKU、橫跨多個世代的遺留規格文件，
+					用 <strong>GPT-4o + Prompt 規則 + 三道品質防線</strong>結構化為統一的
+					productDatabase.json——驅動前端的埠口渲染、相容性檢測與產品搜尋。
+					<br><br>
+					傳統上這是後端團隊的 Data Wrangling 難題；LLM 把它翻轉成
+					<strong>Prompt Engineering 問題</strong>，讓 UX 小隊能獨立完成資料工程。
+					初版是一次性的批次腳本，後來<strong>升格為 Agent 式的互動工具</strong>——
+					確定性優先、LLM 補洞、機制驗證、人在迴圈。
+				</p>
+
+				<h6 class="mb-xxs">我的角色</h6>
+				<p>Schema 設計、Prompt Engineering、Node.js Pipeline、品質防線設計<br>
+					<span class="gray">Schema 從前端消費性倒推，因為設計它的人同時在寫消費它的前端</span></p>
+
+				<h6 class="mb-xxs">專案屬性</h6>
+				<p>資料工程 · LLM Pipeline · Prompt Engineering</p>
+			</div>
+			<div class="col-6 col-sm-12">
+				<img class="w-100" src="../../builder/images/05_ProductManager_editor.png"
+					alt="產品管理後台的結構化規格編輯器：Pipeline 輸出的最終維護介面">
+			</div>
+		</div>
+
+		<!-- 系列說明 -->
+		<div class="article">
+			<p class="highlight">
+				<strong>本系列共三篇：</strong>本篇是第二篇，聚焦資料層的 LLM 結構化 Pipeline。
+				產品本身見〈<a href="a_builder.html">Solution Builder</a>〉；
+				消費這份資料的 AI 產品顧問見〈<a href="a_builder_agent.html">AI Agent：約束 LLM 的不確定性</a>〉。
+			</p>
+		</div>
+
+		<!-- 專案導覽 -->
+		<div class="article">
+			<div class="project-nav">
+				<a href="#problem" class="nav-item">
+					<span class="step">01</span>
+					<span class="label">問題規模</span>
+				</a>
+				<a href="#schema" class="nav-item">
+					<span class="step">02</span>
+					<span class="label">目標 Schema</span>
+				</a>
+				<a href="#pipeline" class="nav-item">
+					<span class="step">03</span>
+					<span class="label">Pipeline</span>
+				</a>
+				<a href="#prompt" class="nav-item">
+					<span class="step">04</span>
+					<span class="label">Prompt 設計</span>
+				</a>
+				<a href="#quality" class="nav-item">
+					<span class="step">05</span>
+					<span class="label">品質防線</span>
+				</a>
+				<a href="#tool" class="nav-item">
+					<span class="step">06</span>
+					<span class="label">工具升格</span>
+				</a>
+				<a href="#impact" class="nav-item">
+					<span class="step">07</span>
+					<span class="label">成果轉化</span>
+				</a>
+			</div>
+		</div>
+
+		<div class="article">
+
+			<!-- 問題規模 -->
+			<div class="session" id="problem">問題規模</div>
+			<h2>同一個 HDMI 埠，有四種以上的寫法</h2>
+			<p>
+				產品規格存在於兩類遺留系統：不同世代資訊架構各異的<strong>產品頁 HTML</strong>，
+				以及掃描版、Word 轉存、手工編排混雜的<strong>規格書 PDF</strong>。
+				同樣是「兩個 HDMI 輸入埠」，實際資料長這樣：
+			</p>
+			<pre style="font-family:Consolas,Menlo,monospace;font-size:13px;background:#f7f7f7;border:1px solid #e0e0e0;border-radius:8px;padding:16px 20px;overflow-x:auto;max-width:1000px;width:100%;line-height:1.8;margin:16px 0">產品 A：「2 x HDMI Type A Female」
+產品 B：「HDMI Input x 2」
+產品 C：「HDMI (female) ×2，支援 4K@60Hz HDR」
+產品 D：「HDMI 輸入埠：2 個（Type A，母座，含 HDCP 2.2）」</pre>
+			<p>
+				要把數千 SKU × 數十個欄位 × 多世代的資料結構化，傳統做法需要專門的
+				Data Engineer 團隊、為每個世代手工維護解析規則表，再逐筆人工檢查——
+				這個量級的工程資源，遠超出 UX 團隊可調動的範圍。
+				<br><br>
+				<strong>關鍵機會：</strong>LLM 能「讀懂」人類寫的規格描述並依指示輸出結構化 JSON。
+				這把問題從「寫得出 Parser 嗎」變成「規則定義得夠精確嗎」——後者是設計師擅長的事。
+			</p>
+
+			<!-- 目標 Schema -->
+			<div class="session" id="schema">目標 Schema</div>
+			<h2>從前端消費性倒推，而非從資料完整性出發</h2>
+			<p>
+				Schema 設計的每個決定都對應一個前端需求：
+			</p>
+			<pre style="font-family:Consolas,Menlo,monospace;font-size:13px;background:#f7f7f7;border:1px solid #e0e0e0;border-radius:8px;padding:16px 20px;overflow-x:auto;max-width:1000px;width:100%;line-height:1.6;margin:16px 0">{
+  "modelName": "VM5404H",
+  "deviceType": "Matrix",
+  "features": ["seamless switch", "scaler", "EDID", "video-wall"],
+  "video": {
+    "input": [
+      {
+        "ioName": "HDMI In 1",
+        "interface": "HDMI",
+        "connector": "Type A Female",
+        "maxBandwidth": "18",
+        "resolution": [{ "pixel": [3840, 2160], "fps": "60" }],
+        "hdcp": "2.2"
+      }
+    ],
+    "output": [ ... ]
+  },
+  "audio": { ... }, "network": { ... }, "usb": { ... }, "control": { ... }
+}</pre>
+			<div class="line_area">
+				<h6>video.input[] 與 video.output[] 分開</h6>
+				<p>畫布上的 Handle 可以直接依方向渲染，不需要前端再判斷。</p>
+			</div>
+			<div class="line_area">
+				<h6>interface 是嚴格枚舉值</h6>
+				<p>相容性檢測只需做字串比對；性別與顏色等描述拆到 connector 欄位。</p>
+			</div>
+			<div class="line_area">
+				<h6>maxBandwidth 數字化</h6>
+				<p>頻寬不足的警示需要做大小比較，「18Gbps」這種字串做不到。</p>
+			</div>
+			<p>
+				這份 Schema 同時被三處消費：Diagram Engine 的 <strong>Handle 動態生成</strong>、
+				屬性面板的 <strong>I/O 分組顯示</strong>、以及 Wizard 模板的<strong>自動配對</strong>。
+				一份 Schema、三處消費——這是它穩定的原因，也是它必須先被設計好的原因。
+			</p>
+			<img class="natural" src="../../builder/images/05_ProductManager_editor_video.png"
+				alt="後台規格編輯器的視訊欄位群組：表單結構直接對應 Schema 的 video.input[] 分組">
+
+			<!-- Pipeline -->
+			<div class="session" id="pipeline">Pipeline 架構</div>
+			<h2>三階段：LLM 結構化 → 規則驗證 → 人工抽檢</h2>
+
+			<div style="width:100%;max-width:1000px;margin:32px auto;font-size:14px;line-height:1.7">
+				<div style="border:1px solid #ccc;border-radius:8px;padding:14px 20px;background:#fafafa">
+					<strong>遺留資料</strong>　<span class="gray">產品頁 HTML（scraping）· 規格書 PDF（文字抽取）</span>
+				</div>
+				<div style="text-align:center;color:#999;padding:4px">▼</div>
+				<div style="border:1px solid #ccc;border-radius:8px;padding:14px 20px;background:#fff8f0">
+					<strong>🧠 第一階段：GPT-4o 結構化</strong><br>
+					<span class="gray">System Prompt = Schema 定義 + 規則集 + Few-Shot 範例 → 輸出初版 JSON</span>
+				</div>
+				<div style="text-align:center;color:#999;padding:4px">▼</div>
+				<div style="border:1px solid #ccc;border-radius:8px;padding:14px 20px;background:#f0f6ff">
+					<strong>🔒 第二階段：規則驗證（Node.js）</strong><br>
+					<span class="gray">JSON Schema 校驗（ajv）· 業務規則檢查 · 失敗案例回饋 → Prompt 迭代</span>
+				</div>
+				<div style="text-align:center;color:#999;padding:4px">▼</div>
+				<div style="border:1px solid #ccc;border-radius:8px;padding:14px 20px;background:#f0f6ff">
+					<strong>👁 第三階段：人工抽檢</strong><br>
+					<span class="gray">隨機抽 5%，UX 與產品企劃共同比對；錯誤案例回收為新的 Few-Shot 範例</span>
+				</div>
+				<div style="text-align:center;color:#999;padding:4px">▼</div>
+				<div style="border:1px solid #ccc;border-radius:8px;padding:14px 20px;background:#fafafa">
+					<strong>productDatabase.json</strong>　<span class="gray">前端直接消費的單一事實來源</span>
+				</div>
+			</div>
+			<p>
+				這條 Pipeline 的概念三階段始終不變；改變的是它的形態——
+				初版以批次腳本實作，後來重構為常駐的互動工具（見<a href="#tool">工具升格</a>）。
+			</p>
+
+			<!-- Prompt 設計 -->
+			<div class="session" id="prompt">Prompt 設計</div>
+			<h2>把領域知識寫成可執行的規則</h2>
+			<p>
+				Prompt 的核心不是「請幫我整理規格」，而是一組精確的轉換規則。
+				每條規則都來自一個「不這樣做，前端功能就會壞」的具體原因。
+			</p>
+
+			<h3>規則一：乘數展開（最常見的陷阱）</h3>
+			<p>
+				「2 x HDMI」直覺的輸出是 <code style="font-family:Consolas,Menlo,monospace;background:#f0f0f0;padding:1px 6px;border-radius:4px">{ "interface": "HDMI", "count": 2 }</code>——
+				但前端需要的是<strong>兩個獨立的 port 物件</strong>，因為每個埠都是獨立的
+				Handle：獨立 ID、獨立位置、獨立連線狀態。規則明定「展開為 N 個物件並自動編號，
+				絕不輸出 count 欄位」。
+			</p>
+
+			<h3>規則二：介面清洗</h3>
+			<p>
+				interface 欄位只允許枚舉值（HDMI / DisplayPort / DVI / SDI / USB-C…），
+				性別拆到 connector、HDCP 與 EDID 等協議拆到對應欄位——
+				各世代的自由文字在這一步收斂成可比對的結構。
+			</p>
+
+			<h3>規則三：Extender 的 T/R 方向判定</h3>
+			<p>
+				延伸器成對出現：型號後綴 <strong>-T</strong>（Transmitter）的 Unit-to-Unit 埠是
+				video.output，後綴 <strong>-R</strong>（Receiver）則是 video.input。
+				這條領域知識若沒寫進 Prompt，LLM 會把兩端都標成 input——
+				Handle 方向全錯、相容性檢測直接失效。
+			</p>
+
+			<h3>規則四：共享屬性繼承</h3>
+			<p>
+				規格書常把共通規格寫在前言（「本產品所有 HDMI 埠支援 18Gbps、HDR」），
+				規則要求識別這類敘述並把屬性複製到<strong>每一個</strong>相關 port 物件，
+				而不是只掛在第一個。
+			</p>
+
+			<h3>Few-Shot 範例 &gt; 純規則文字</h3>
+			<p>
+				Prompt 內含 3–5 個高品質的完整輸入輸出範例，分別覆蓋基準案（單純 Matrix）、
+				方向判定（Extender T/R）、多介面清洗（KVM）、共享屬性密集的產品。
+				實測中，範例對輸出品質的影響大於同等篇幅的規則文字——
+				而且<strong>人工抽檢抓到的錯誤案例，會直接回收成新範例</strong>，形成迭代循環。
+			</p>
+
+			<!-- 品質防線 -->
+			<div class="session" id="quality">品質防線</div>
+			<h2>LLM 的輸出不能直接信，要用機制驗</h2>
+
+			<div class="row mt-md mb-lg" style="width:100%">
+				<div class="col-4 col-sm-12 plr-sm mb-md">
+					<h4>第一道：Schema 校驗</h4>
+					<p>ajv 對每筆輸出做 JSON Schema 校驗——必填欄位缺失、枚舉值不合法、
+						數值格式錯誤，一律退回重跑。</p>
+				</div>
+				<div class="col-4 col-sm-12 plr-sm mb-md">
+					<h4>第二道：業務規則</h4>
+					<p>領域邏輯的斷言式檢查：Extender -T 必須有 video.output、
+						乘數必須已展開等。Schema 對了但語意錯的案例在這裡被攔下。</p>
+				</div>
+				<div class="col-4 col-sm-12 plr-sm mb-md">
+					<h4>第三道：人工抽檢</h4>
+					<p>隨機抽 5% 由 UX 與產品企劃比對原始規格書。
+						錯誤回收為新 Few-Shot 範例，Prompt 以版本化管理迭代。</p>
+				</div>
+			</div>
+
+			<h3>迭代成效</h3>
+			<p>經過三輪 Prompt 迭代，各類錯誤率的變化：</p>
+			<div class="line_area">
+				<h6>乘數展開錯誤：22% → 低於 1%</h6>
+				<p>規則一明確化 + 對應 Few-Shot 範例。</p>
+			</div>
+			<div class="line_area">
+				<h6>介面清洗錯誤：15% → 低於 2%</h6>
+				<p>枚舉值白名單 + 欄位拆分規則。</p>
+			</div>
+			<div class="line_area">
+				<h6>Extender 方向錯誤：40% → 低於 3%</h6>
+				<p>領域知識寫成規則三後降幅最大——這正是「規則要由懂前端消費的人來寫」的證據。</p>
+			</div>
+			<p class="gray">錯誤率為內部抽檢實測，僅供量級參考。</p>
+
+			<h3>工程考量</h3>
+			<p>
+				<strong>成本：</strong>結構化主流程用 GPT-4o，簡單清洗用 GPT-4o-mini；
+				批次處理避免單次上下文過長；規則版本號 + 輸入雜湊做快取，避免重跑。
+				<br><br>
+				<strong>可重現性：</strong>Prompt 以 git 版本化，每筆產品記錄由哪個版本生成；
+				失敗案例保留原始輸入與 LLM 回應，供後續迭代分析。
+			</p>
+
+			<!-- 工具升格 -->
+			<div class="session" id="tool">工具升格</div>
+			<h2>從批次腳本，升格為 Agent 工具</h2>
+			<p>
+				初版 Pipeline 是跑一次的 Node.js 腳本。但產品線持續更新、Prompt 規則持續迭代，
+				「跑一次」的形態撐不住日常營運，因此重構為常駐的互動工具：
+				Express 服務 + React 工作檯（ProductTool），把「抽取 → 結構化 → 驗證 → 入庫」
+				變成可天天操作、可批次執行的流程。
+			</p>
+
+			<h3>人在迴圈：LLM 的輸出先 review、再入庫</h3>
+			<div style="width:100%;max-width:1000px;margin:32px auto;font-size:14px;line-height:1.7">
+				<div style="border:1px solid #ccc;border-radius:8px;padding:14px 20px;background:#fafafa">
+					<strong>選產品</strong>　<span class="gray">產品清單快取 · 依子分類篩選 · 依分類自動猜產品類型</span>
+				</div>
+				<div style="text-align:center;color:#999;padding:4px">▼</div>
+				<div style="border:1px solid #ccc;border-radius:8px;padding:14px 20px;background:#f0f6ff">
+					<strong>🔒 Preview</strong>——確定性解析官網規格表，<strong>不跑 GPT</strong>，先確認原料品質
+				</div>
+				<div style="text-align:center;color:#999;padding:4px">▼</div>
+				<div style="border:1px solid #ccc;border-radius:8px;padding:14px 20px;background:#fff8f0">
+					<strong>🧠 Process</strong>——跑完整 GPT Pipeline，<strong>不直接存檔</strong>，回傳結果供比對
+				</div>
+				<div style="text-align:center;color:#999;padding:4px">▼</div>
+				<div style="border:1px solid #ccc;border-radius:8px;padding:14px 20px;background:#f0f6ff">
+					<strong>👁 Review</strong>——原始規格與結構化結果左右對照，用前台同一套產品詳情元件預覽
+				</div>
+				<div style="text-align:center;color:#999;padding:4px">▼</div>
+				<div style="border:1px solid #ccc;border-radius:8px;padding:14px 20px;background:#fafafa">
+					<strong>Save</strong>　<span class="gray">通過 review 才入庫；批次模式逐筆跑、進度可中停、結構一致者可批次存</span>
+				</div>
+			</div>
+
+			<h3>Skill 組合式 Prompt 架構</h3>
+			<p>
+				Prompt 不再是一大段文字，而是<strong>可組合的 Skill</strong>：
+				type skill（KVM / ProAV）決定 Schema 與系統角色，modifier skill（如 VE 延伸器）疊加規則，
+				PromptBuilder 把它們組合成「抽取 → 轉換 → 驗證」三階段的 System Prompt（含 Few-Shot 與常見錯誤清單）。
+				skillRegistry 是唯一事實來源——<strong>新增一種產品類型 = 新增一個 Skill class、註冊表加一筆</strong>，
+				工作檯的類型下拉與 Skill 勾選自動跟上，不改 UI code。
+			</p>
+
+			<h3>確定性優先，LLM 只補洞</h3>
+			<div class="line_area">
+				<h6>規格表先過確定性解析</h6>
+				<p>specTableParser 把規格表 HTML 解析成乾淨結構——GPT 收到的是乾淨文字，不是原始 HTML，從源頭減少幻覺空間。</p>
+			</div>
+			<div class="line_area">
+				<h6>featureTag 先由純函式產生</h6>
+				<p>官網既有的 Product Filter 參數直接寫入；產品 Features 文字比對 catalog 別名
+					（單詞邊界比對、泛用詞排除清單、長別名優先），每個 tag 都帶來源標記。
+					<strong>GPT 只負責補缺口</strong>，最後再過 validate 驗證。</p>
+			</div>
+			<div class="line_area">
+				<h6>確定性邏輯都是純函式、附單元測試</h6>
+				<p>解析器、tag 比對、埠數計算皆可獨立測試、可重現——與〈AI Agent〉篇「確定性邏輯一律純函式」是同一條原則。</p>
+			</div>
+
+			<h3>與 AI Agent 共用語彙</h3>
+			<p>
+				featureTag 的比對來源，就是〈<a href="a_builder_agent.html">AI Agent</a>〉的 Feature Catalog——
+				資料層在結構化產品的同時，直接生產 Agent 標籤搜尋所需的產品語彙。
+				<strong>一份 catalog、兩端消費</strong>：工具端用它產 tag，Agent 端用它理解需求。
+			</p>
+
+			<!-- 成果轉化 -->
+			<div class="session" id="impact">成果轉化</div>
+			<h2>從「工程團隊上架」變成「產品企劃自助上架」</h2>
+			<p>
+				Pipeline 串進 Product Manager 後台之後，新品上架流程變成：
+				產品企劃貼入規格文字 → 觸發單產品結構化 → Schema 校驗通過自動上架、
+				失敗則通知企劃補齊。<strong>產品資料維護不再排隊等工程資源</strong>——
+				這是資料層對商業流程最直接的改變。
+			</p>
+			<img class="natural" src="../../builder/images/05_ProductManager_batch.png"
+				alt="產品管理後台的批次更新介面：數千 SKU 的維護操作">
+
+			<h3>為什麼這是跨域題</h3>
+			<p>
+				<strong>Schema 從前端倒推</strong>——因為設計 Schema 的人同時在寫消費它的
+				Handle 渲染邏輯，知道埠口需要獨立物件而不是 count。
+				<br><br>
+				<strong>Prompt 規則從 UX 倒推</strong>——因為知道乘數不展開、方向不判定，
+				相容性檢測這個核心體驗就不成立。
+				<br><br>
+				<strong>用 LLM 取代 Regex</strong>——接受「90% 自動 + 三道防線」勝過
+				「追求 100% 規則覆蓋」：Regex 方案要為每個世代維護解析規則，
+				錯誤率與維護成本都遠高於 Prompt 迭代。
+			</p>
+
+			<h3>可複用的方法論</h3>
+			<p>這套做法適用於任何「遺留資料結構化」場景：</p>
+			<div class="line_area">
+				<h6>先設計目標 Schema，從消費端倒推</h6>
+				<p>資料是給程式用的，不是給人看的——先確定誰消費、怎麼消費。</p>
+			</div>
+			<div class="line_area">
+				<h6>規則 + Few-Shot 並行，錯誤案例回收為範例</h6>
+				<p>迭代三輪以上；每輪用抽檢結果驅動，而非憑感覺改 Prompt。</p>
+			</div>
+			<div class="line_area">
+				<h6>三道防線：Schema 校驗、業務規則、人工抽檢</h6>
+				<p>LLM 的輸出永遠過機制再進資料庫，幻覺靠驗證擋、不靠叮嚀擋。</p>
+			</div>
+
+			<!-- 總結 -->
+			<div class="session">專案總結</div>
+			<h2>把後端難題翻轉成設計師能解的題</h2>
+			<p>
+				這個 Pipeline 是整個 Solution Builder 的地基：沒有它，
+				動態 Handle、相容性檢測、AI 產品搜尋都不成立。
+				它展示的能力不是「會寫 Prompt」，而是<strong>把領域知識、前端消費需求與品質機制
+				設計成一條可迭代的資料生產線</strong>——用 AI 解決一個原本屬於後端團隊的工程問題。
+			</p>
+
+		</div>
+	</div>
+
+	<footer></footer>
+	<script src="../js/app.js"></script>
+
+	<!--
+	⚠️ 草稿狀態備忘（發佈前處理）：
+	1. 尚未在 js/app.js 的 portfolioData 註冊入口卡（依 PROGRESS.md 決策：三頁都完成後再補 index 入口）。
+	   未註冊前本頁無 sidebar 與上下篇導覽，直接以網址存取預覽。
+	2. 待補視覺：
+	   - 資料 Before/After 對比圖（雜亂 HTML 表 → 結構化 JSON）← PROGRESS 列為本頁核心視覺
+	   - Pipeline 流程圖目前為行內 HTML 版，可換正式視覺版
+	3. 錯誤率數字（22%→<1% / 15%→<2% / 40%→<3%、抽檢 5%）來自內部實測文件，對外發佈前確認可揭露。
+	4. 內容源：builder repo 的 docs/portfolio/07_data_structuring.md（兩邊修改請同步）。
+	5. 「工具升格」一節對應實作：docs/product-api/（server.js / prompts/PromptBuilder.js / prompts/skillRegistry.js /
+	   lib/specTableParser.js / lib/featureTagMapper.js）+ src/page/ProductTool.jsx（dev-only）。
+	   待補截圖：ProductTool 工作檯（Preview / Process / 左右對照 review / 批次模式）。
+	-->
+</body>
+
+</html>

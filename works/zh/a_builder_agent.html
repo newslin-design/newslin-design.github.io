@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, maximum-scale=1.5">
+	<meta name="robots" content="noindex, nofollow">
+	<title>AI Agent：約束 LLM 的不確定性 - 作品集</title>
+	<script>workName = "a_builder_agent"; lang = "zh"; basePath = "../";</script>
+	<link rel="stylesheet" href="../style/reset.css">
+	<link rel="stylesheet" href="../style/style_layout.css">
+	<link rel="stylesheet" href="../style/style.css">
+	<link rel="stylesheet" href="../style/article.css">
+	<link rel="icon" type="image/png" href="../web_icon.png" />
+
+	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-114514958-1"></script>
+	<script>
+			(function (w, d, s, l, i) {
+				w[l] = w[l] || []; w[l].push({
+					'gtm.start': new Date().getTime(), event: 'gtm.js'
+				}); var f = d.getElementsByTagName(s)[0],
+					j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+						'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+			})(window, document, 'script', 'dataLayer', 'GTM-PMLJXPC');
+	</script>
+</head>
+
+<body>
+	<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PMLJXPC" height="0" width="0"
+			style="display:none;visibility:hidden"></iframe></noscript>
+
+	<header></header>
+	<div id="sidebar"></div>
+
+	<div class="container mt-xl">
+		<h1>AI Agent：把 LLM 的不確定性放對位置</h1>
+		<div class="row mb-lg">
+			<div class="col-6 col-sm-12 pr-md">
+				<p>2026 - 現在</p>
+				<h3>當推薦結果必須是真實、現役、規格正確的產品時，<br>LLM 的不確定性該被約束在哪裡？</h3>
+				<p>
+					這是 Solution Builder 的 AI 產品顧問模組：使用者用自然語言描述需求
+					（「會議室要投影」「機房 17 台伺服器要集中管理」），系統從約 2,000 個真實 ATEN SKU
+					中推薦正確的產品。本篇記錄它的<strong>三代架構演進</strong>——
+					三代的答案分別是「全部鎖死」「鎖決策、放翻譯」「鎖事實、放判斷」，
+					每一代都是上一代教訓的直接回應。
+				</p>
+
+				<h6 class="mb-xxs">我的角色</h6>
+				<p>對話體驗設計、產品語彙（Catalog）設計、Pipeline 架構與前後端實作、Prompt 工程<br>
+					<span class="gray">同一個人在同一張圖上，畫出對話的每個約束與它對應的工程機制</span></p>
+
+				<h6 class="mb-xxs">專案屬性</h6>
+				<p>B2B AI 助手 · LLM 工程 · 開發中（dev-only，未隨正式版發布）</p>
+			</div>
+			<div class="col-6 col-sm-12">
+				<img class="w-100" src="../../builder/images/07_aiAgent01.png"
+					alt="第一代 AI Agent 對話介面：抽屜式對話搭配三種意圖入口">
+			</div>
+		</div>
+
+		<!-- 系列說明 -->
+		<div class="article">
+			<p class="highlight">
+				<strong>本系列共三篇：</strong>本篇是第三篇，聚焦 AI Agent 的架構演進。
+				產品本身見〈<a href="a_builder.html">Solution Builder</a>〉；
+				支撐 AI 搜尋的產品資料如何被結構化，見〈<a href="a_builder_llm.html">用 LLM 結構化產品資料</a>〉。
+			</p>
+		</div>
+
+		<!-- 專案導覽 -->
+		<div class="article">
+			<div class="project-nav">
+				<a href="#problem" class="nav-item">
+					<span class="step">01</span>
+					<span class="label">核心問題</span>
+				</a>
+				<a href="#overview" class="nav-item">
+					<span class="step">02</span>
+					<span class="label">三代總覽</span>
+				</a>
+				<a href="#gen1" class="nav-item">
+					<span class="step">03</span>
+					<span class="label">第一代：全鎖死</span>
+				</a>
+				<a href="#gen2" class="nav-item">
+					<span class="step">04</span>
+					<span class="label">第二代：鎖決策</span>
+				</a>
+				<a href="#gen3" class="nav-item">
+					<span class="step">05</span>
+					<span class="label">第三代：鎖事實</span>
+				</a>
+				<a href="#principles" class="nav-item">
+					<span class="step">06</span>
+					<span class="label">設計原則</span>
+				</a>
+			</div>
+		</div>
+
+		<div class="article">
+
+			<!-- 核心問題 -->
+			<div class="session" id="problem">核心問題</div>
+			<h2>為什麼不能直接接一個 Chatbot</h2>
+			<p>
+				直接把產品資料塞給 LLM，會遇到兩個致命問題：
+			</p>
+			<div class="row mt-md mb-lg" style="width:100%">
+				<div class="col-6 col-sm-12 plr-sm mb-md">
+					<h4>幻覺 SKU</h4>
+					<p>LLM 會推薦「聽起來很合理但不存在」的型號，或已停產的產品。
+						對 B2B 銷售工具，推薦一個假型號等於信任歸零。</p>
+				</div>
+				<div class="col-6 col-sm-12 plr-sm mb-md">
+					<h4>不可重現</h4>
+					<p>同一個問題每次答案不同。SI（系統整合商）無法把「這次剛好答對」
+						當作工作流程的一部分。</p>
+				</div>
+			</div>
+			<p>
+				但反過來「把 LLM 完全關進規則裡」也不行——這正是第一代的教訓。
+			</p>
+			<p class="highlight">
+				<strong>核心命題：不確定性不是要歸零，而是要放對位置。</strong>
+				三代架構就是三次「畫邊界」的嘗試。
+			</p>
+
+			<!-- 三代總覽 -->
+			<div class="session" id="overview">三代總覽</div>
+			<h2>三次畫邊界的嘗試</h2>
+
+			<div class="row mt-md mb-lg" style="width:100%">
+				<div class="col-4 col-sm-12 plr-sm mb-md">
+					<h4>第一代：固定填空</h4>
+					<h6 class="gray">LLM 的角色：填表員</h6>
+					<p>固定意圖管線，欄位、追問、流程全部寫死，LLM 只把使用者的話塞進固定欄位。</p>
+					<h6 class="gray">下場</h6>
+					<p>安全但僵硬——又貴又慢，答得比通用大模型還差。現凍結為對照組。</p>
+				</div>
+				<div class="col-4 col-sm-12 plr-sm mb-md">
+					<h4>第二代：標籤累積</h4>
+					<h6 class="gray">LLM 的角色：翻譯官＋文案</h6>
+					<p>LLM 只做「自然語言 ↔ 結構化標籤」的翻譯；下一步問什麼、何時輸出，由純函式決策引擎決定。</p>
+					<h6 class="gray">成果</h6>
+					<p>窄查詢高效（一輪最多 2 次 LLM 呼叫），是目前的主力。但整案設計的組合窮舉不完。</p>
+				</div>
+				<div class="col-4 col-sm-12 plr-sm mb-md">
+					<h4>第三代：兩道閘</h4>
+					<h6 class="gray">LLM 的角色：推理主體</h6>
+					<p>讓模型像資深 SI 整體推理，但從一道「事實閘」進場、從一道「驗證閘」離場。</p>
+					<h6 class="gray">成果</h6>
+					<p>多設備整案設計：主架構判斷正確、實測零幻覺、成本降一個量級。</p>
+				</div>
+			</div>
+			<p class="gray">
+				三套系統在程式庫內並存（dev-only、正式版建置完全排除），刻意保留作為 A/B 對照。
+			</p>
+
+			<!-- 第一代 -->
+			<div class="session" id="gen1">第一代：全鎖死</div>
+			<h2>把 LLM 全部鎖死的教訓</h2>
+			<p>
+				第一代把對話拆成固定管線：意圖路由 → 兩階段翻譯（先鎖設備類型、再依 Schema 補必填欄位）→
+				追問品質決策 → 純 JS 搜尋 → 分析總結。LLM 在每一段只做「填空」，
+				欄位、追問上限、流程順序全部寫死。
+			</p>
+			<img class="natural" src="../../builder/images/07_aiAgent01.png"
+				alt="第一代對話介面：三種固定意圖入口，避免使用者面對空白輸入框的選擇焦慮">
+			<img class="natural" src="../../builder/images/07_aiAgent02.png"
+				alt="第一代推薦結果：每張產品卡可直接加入畫布">
+
+			<h3>為什麼失敗（內部實測）</h3>
+			<div class="line_area">
+				<h6>慢</h6>
+				<p>一輪問答 4–5 次 LLM 呼叫，最慢一步約 10 秒。</p>
+			</div>
+			<div class="line_area">
+				<h6>貴</h6>
+				<p>每輪消耗約 58K token——每次都把整本產品知識庫重複塞給模型。</p>
+			</div>
+			<div class="line_area">
+				<h6>不夠聰明</h6>
+				<p>同一個宴會廳需求，直接問通用大模型反而給出更完整的方案與拓樸。
+					我們花大成本維護的管線，輸給了被它「保護」的那個模型。</p>
+			</div>
+			<div class="line_area">
+				<h6>維護重</h6>
+				<p>每加一個場景要維護一堆「預先烤好的組合」，且容易過時——
+					連自家測試範例的進出埠數都算錯。</p>
+			</div>
+
+			<p class="highlight">
+				<strong>教訓：</strong>把確定性套在「<strong>判斷</strong>」上，等於把大模型的推理能力關掉，
+				然後花更多成本驅動一套僵化的機器。問題不是「要不要約束」，是<strong>約束錯了對象</strong>。
+			</p>
+
+			<!-- 第二代 -->
+			<div class="session" id="gen2">第二代：鎖決策</div>
+			<h2>決策不交給 LLM</h2>
+			<p>
+				第二代的邊界畫法：<strong>LLM 只做語言工作，所有決策由純函式做。</strong>
+			</p>
+
+			<h3>分工：翻譯官能「說」，決策引擎才能「做」</h3>
+			<div style="width:100%;max-width:1000px;margin:32px auto;font-size:14px;line-height:1.7">
+				<div style="border:1px solid #ccc;border-radius:8px;padding:14px 20px;background:#fafafa">
+					<strong>使用者一句話</strong>　<span class="gray">「教室要把老師畫面分給 8 台螢幕」</span>
+				</div>
+				<div style="text-align:center;color:#999;padding:4px">▼</div>
+				<div style="border:1px solid #ccc;border-radius:8px;padding:14px 20px;background:#fff8f0">
+					<strong>🧠 LLM 翻譯官</strong>——自然語言 → 結構化標籤（只能用 Catalog 內的詞彙）
+				</div>
+				<div style="text-align:center;color:#999;padding:4px">▼</div>
+				<div style="border:1px solid #ccc;border-radius:8px;padding:14px 20px;background:#f0f6ff">
+					<strong>🔒 決策引擎（純函式）</strong>——看標籤累積量與候選池大小，決定下一步：
+					追問哪個參數？還是輸出結果？
+				</div>
+				<div style="text-align:center;color:#999;padding:4px">▼</div>
+				<div style="border:1px solid #ccc;border-radius:8px;padding:14px 20px;background:#fff8f0">
+					<strong>🧠 LLM 提問官</strong>——只負責把決策引擎指定的問題「寫成好讀的話」
+				</div>
+				<div style="text-align:center;color:#999;padding:4px">▼</div>
+				<div style="border:1px solid #ccc;border-radius:8px;padding:14px 20px;background:#f0f6ff">
+					<strong>🔒 六階段漏斗搜尋（純函式）</strong>——從真實產品庫篩出候選
+				</div>
+			</div>
+			<p>
+				LLM 永遠不決定流程走向——它翻譯需求、撰寫追問文案，僅此而已。
+			</p>
+
+			<h3>Catalog 是唯一事實源</h3>
+			<p>
+				所有產品功能語彙（主功能、副功能、參數、距離帶、歧義詞）定義在一份結構化的
+				Feature Catalog。新增一個功能 = 改一筆 JSON，翻譯、決策、搜尋、追問自動跟上，
+				<strong>不改任何程式碼、不改 Prompt</strong>。
+			</p>
+
+			<!-- TODO 截圖：/agent-tag-chat-sim 對話 + 任務看板 + debug 漏斗面板 -->
+
+			<h3>防幻覺是「機制」，不是「叮嚀」</h3>
+			<div class="line_area">
+				<h6>選項只能來自真實值</h6>
+				<p>追問的快速選項必須從「候選池實際存在的規格值」中挑——
+					LLM 不能推薦一個池子裡根本沒有的值。</p>
+			</div>
+			<div class="line_area">
+				<h6>幻覺值偵測</h6>
+				<p>即使 LLM 推了不存在的值，純函式層會抓出來，轉成「放寬條件」的建議。</p>
+			</div>
+			<div class="line_area">
+				<h6>衝突解決不經過 LLM</h6>
+				<p>歷史教訓：讓 LLM 自己編「兩個功能衝突時的選項」會幻覺。
+					改成直接從 Catalog 的場景例句抽選，LLM 完全不參與。</p>
+			</div>
+
+			<h3>成本工程：一輪最多 2 次 LLM 呼叫</h3>
+			<p>
+				在 LLM 前面加三道前置路由，能不打模型就不打：
+				<strong>Fast Lane</strong>（純函式關鍵字命中「PM 已內化的場景 → 產品組合」，0 次 LLM 直接出清單）、
+				<strong>輕量分類器</strong>（首輪判斷是否離題、命中哪個場景，讓 Prompt 只載入需要的部分）、
+				<strong>Scenario Planner</strong>（場景命中、追問題池縮減、任務模板推導全部由純函式預先算好，
+				LLM 只做自然語言抽取和寫文案）。
+			</p>
+
+			<h3>侷限：組合是無限的</h3>
+			<p>
+				窄查詢（「4 埠 4K 的 KVM 切換器」）這套做得很好。但「整案設計」
+				（宴會廳：電視牆＋投影機＋攝影機＋來賓筆電＋中控）需要的是<strong>組合推理</strong>——
+				預先烤好每一種任務組合的做法，維護量爆炸而且永遠烤不完。這直接導向第三代。
+			</p>
+
+			<!-- 第三代 -->
+			<div class="session" id="gen3">第三代：鎖事實</div>
+			<h2>把推理還給模型，用兩道閘夾住</h2>
+
+			<h3>核心原則：決定論的邊界要畫對</h3>
+			<p class="highlight">
+				把「確定性」套在<strong>事實</strong>上——產品是否存在、規格、「Apple TV 一定要 HDCP」這類硬性蘊含。<br>
+				把「判斷」交給<strong>大模型</strong>——集中式還是分散式、先問什麼、怎麼描述方案。<br><br>
+				要的不是「零變異」，是「<strong>有界變異</strong>」：事實鎖死，判斷放開。
+				隨機只留在「怎麼問、怎麼拼、怎麼寫」——那本來就該交給模型。
+			</p>
+
+			<h3>流程：一道事實閘進場，一道驗證閘離場</h3>
+			<div style="width:100%;max-width:1000px;margin:32px auto;font-size:14px;line-height:1.7">
+				<div style="border:1px solid #ccc;border-radius:8px;padding:14px 20px;background:#fafafa">
+					<strong>使用者</strong>　<span class="gray">「宴會廳，3x4 電視牆、2 台 4K 投影機、Apple TV、來賓筆電」</span>
+				</div>
+				<div style="text-align:center;color:#999;padding:4px">▼</div>
+				<div style="border:1px solid #ccc;border-radius:8px;padding:14px 20px;background:#f0f6ff">
+					<strong>🔒 事實閘</strong>——硬性規則先鎖死<br>
+					<span class="gray">偵測 Apple TV → 強制 HDCP；偵測電視牆 → 強制拼接牆能力</span>
+				</div>
+				<div style="text-align:center;color:#999;padding:4px">▼</div>
+				<div style="border:1px solid #ccc;border-radius:8px;padding:14px 20px;background:#fff8f0">
+					<strong>🧠 Agent 推理迴圈</strong>（function-calling，工具上限 8 步）<br>
+					<span class="gray">搜尋真實產品庫（只能從結果裡選型）· 關鍵資訊沒答先追問（情境式、像資深 SI）·
+						提交方案（架構＋品項＋數量＋超出範圍聲明）</span>
+				</div>
+				<div style="text-align:center;color:#999;padding:4px">▼</div>
+				<div style="border:1px solid #ccc;border-radius:8px;padding:14px 20px;background:#f0f6ff">
+					<strong>🔒 驗證閘</strong>——每個型號必須存在於真實搜尋結果<br>
+					<span class="gray">不在 = 幻覺，自動退回重選</span>
+				</div>
+				<div style="text-align:center;color:#999;padding:4px">▼</div>
+				<div style="border:1px solid #ccc;border-radius:8px;padding:14px 20px;background:#fafafa">
+					<strong>一張驗證過的產品清單</strong>　<span class="gray">下游全部消費它：比較表 · 畫布拉圖 · BOM · 配件</span>
+				</div>
+			</div>
+
+			<h3>維護的不是流程，是三種「知識積木」</h3>
+			<div class="row mt-md mb-lg" style="width:100%">
+				<div class="col-4 col-sm-12 plr-sm mb-md">
+					<h4>硬性規則</h4>
+					<p>X 一定 → Y，確定性觸發。<br>
+						<span class="gray">Apple TV / PS5 / 藍光 → HDCP 2.2；跨樓層 → 走 IP</span></p>
+				</div>
+				<div class="col-4 col-sm-12 plr-sm mb-md">
+					<h4>場景劇本</h4>
+					<p>該問什麼、排除什麼、主架構準則、需要哪些產品角色。<br>
+						<span class="gray">宴會廳：問規模與分布；排除 KVM；輸出 &gt;9 或跨區 → 分散式</span></p>
+				</div>
+				<div class="col-4 col-sm-12 plr-sm mb-md">
+					<h4>真實產品搜尋</h4>
+					<p>與第二代共用同一支純函式搜尋，成為模型的工具——模型只能從搜尋結果選型。</p>
+				</div>
+			</div>
+			<p>
+				第二代預先烤好的 14 套任務模板與 4 層設定合併，在這條路線<strong>整組刪除</strong>——
+				養有限的積木，無限的組合交給模型現場拼。
+			</p>
+
+			<!-- TODO 截圖：/agent-architect 方案卡 + 追問選項 chips + 「AI 搜尋步驟」debug -->
+
+			<h3>實測結果（三場景 headless 驗證）</h3>
+			<div class="line_area">
+				<h6>驗證閘不是理論——它真的擋下了幻覺</h6>
+				<p>會議室場景第一輪，模型推薦了兩個不存在的型號，被驗證閘實測攔下；
+					修正後幻覺消失，三案全部以真實 SKU 收場。</p>
+			</div>
+			<div class="line_area">
+				<h6>誠實留白</h6>
+				<p>搜不到就不編，改成問問題或誠實聲明「超出範圍」——
+					行為像資深 SI，而不是硬要給答案的 Chatbot。</p>
+			</div>
+			<div class="line_area">
+				<h6>成本降一個量級</h6>
+				<p>每案 3.7–4.9K token，對比第一代每輪約 58K，約省 6–15 倍（內部實測，同等級模型）。</p>
+			</div>
+
+			<h3>額外紅利：多語言</h3>
+			<p>
+				第一代要支援 N 種語言，每句追問要翻 N 份維護；第三代的追問與方案敘述由模型用
+				使用者的語言即時生成，需要逐字精確的部分（法律免責、BOM 表頭）仍鎖既有翻譯。
+				<strong>架構選對，讓多語言從成本變成內建能力。</strong>
+			</p>
+
+			<!-- 設計原則 -->
+			<div class="session" id="principles">設計原則</div>
+			<h2>跨三代不變的四條原則</h2>
+			<div class="line_area">
+				<h6>唯一交付物是「一張驗證過的產品清單」</h6>
+				<p>比較表、畫布拉圖、BOM 匯出、配件推薦全部消費這張清單。
+					把 AI 的工作收斂成一件事，下游才接得穩。</p>
+			</div>
+			<div class="line_area">
+				<h6>知識放資料，不放 Prompt 散文</h6>
+				<p>Catalog、劇本、硬規則都是結構化資料，可被翻譯、決策、搜尋三方共用；
+					寫進 Prompt 的知識只有模型「記得」時才存在。</p>
+			</div>
+			<div class="line_area">
+				<h6>確定性邏輯一律純函式</h6>
+				<p>決策引擎、搜尋漏斗、題池縮減、拓樸推導都是無副作用的純函式——
+					可單元測試、可重現、可在前端與 Node 之間移植。</p>
+			</div>
+			<div class="line_area">
+				<h6>幻覺用機制擋，不是用叮嚀擋</h6>
+				<p>「請不要編造型號」是叮嚀；「每個型號必須存在於真實搜尋結果，否則退回重選」是機制。
+					三代裡所有有效的防幻覺手段，最後都長成機制。</p>
+			</div>
+
+			<h3>這為什麼是 UX 設計師的題目</h3>
+			<p>
+				純 ML 工程容易把目標訂成「模型答對」，忽略<strong>追問體驗</strong>——
+				但 B2B 場景裡「問得像資深 SI」本身就是信任來源；
+				純 UX 知道對話該長怎樣，卻沒有「把判斷和事實分層」的工程手段，只能靠 Prompt 措辭硬調。
+				這個模組裡，追問選項的設計、Catalog 的語彙設計、決策引擎的純函式邊界、Prompt 的角色卸載，
+				是<strong>同一個人在同一張圖上畫出來的</strong>——對話體驗的每個約束，直接對應一個工程機制。
+			</p>
+
+			<h3>現況與下一步</h3>
+			<p>
+				三套系統均為 dev-only，未隨正式版發布；第一代凍結為 A/B 對照組，第二代是窄查詢主力，
+				第三代完成核心驗證與前後端串接（多輪追問、BOM 複製、推理步驟可視化）。
+				目前的天花板是<strong>產品標籤覆蓋率</strong>（約三成場景已覆蓋），不是架構——
+				下一步是補齊缺口產品家族的標籤，再用真實案例做盲測 A/B。
+			</p>
+			<p class="gray">文中 token 與時間數字為內部開發實測，僅供量級參考。</p>
+
+			<!-- 總結 -->
+			<div class="session">專案總結</div>
+			<h2>約束放對位置，模型才能發揮</h2>
+			<p>
+				這個模組最大的收穫不是任何單一技術，而是一條邊界原則：
+				<strong>事實鎖死、判斷放開</strong>。第一代把判斷也鎖死，得到一台昂貴的僵化機器；
+				第三代只鎖事實，模型的推理能力回來了，幻覺卻被兩道確定性閘擋在門外。
+				對所有要把 LLM 放進嚴肅產品的團隊，「不確定性放在哪」都是第一個要回答的設計題。
+			</p>
+
+		</div>
+	</div>
+
+	<footer></footer>
+	<script src="../js/app.js"></script>
+
+	<!--
+	⚠️ 草稿狀態備忘（發佈前處理）：
+	1. 尚未在 js/app.js 的 portfolioData 註冊入口卡（依 PROGRESS.md 決策：三頁都完成後再補 index 入口）。
+	   未註冊前本頁無 sidebar 與上下篇導覽，直接以網址存取預覽。
+	2. 缺圖（兩處 TODO 註解）：
+	   - 第二代：/agent-tag-chat-sim 對話 + 任務看板 + debug 漏斗面板
+	   - 第三代：/agent-architect 方案卡 + 追問選項 chips + AI 搜尋步驟 debug
+	   截圖後放 repo 根 builder/images/，src 用 ../../builder/images/xxx.png。
+	3. 數字（58K / 3.7-4.9K token、4-5 call、10 秒、6-15 倍、約 2,000 SKU）來自內部實測文件，
+	   對外發佈前確認可揭露；「通用大模型答得更完整」的對比敘述已不點名特定產品。
+	4. 內容源：builder repo 的 docs/portfolio/08_ai_agent.md（兩邊修改請同步）。
+	-->
+</body>
+
+</html>
