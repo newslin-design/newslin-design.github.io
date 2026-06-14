@@ -15,14 +15,19 @@
 
 	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-114514958-1"></script>
 	<script>
-			(function (w, d, s, l, i) {
-				w[l] = w[l] || []; w[l].push({
-					'gtm.start': new Date().getTime(), event: 'gtm.js'
-				}); var f = d.getElementsByTagName(s)[0],
-					j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
-						'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
-			})(window, document, 'script', 'dataLayer', 'GTM-PMLJXPC');
+		(function (w, d, s, l, i) {
+			w[l] = w[l] || []; w[l].push({
+				'gtm.start': new Date().getTime(), event: 'gtm.js'
+			}); var f = d.getElementsByTagName(s)[0],
+				j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+					'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+		})(window, document, 'script', 'dataLayer', 'GTM-PMLJXPC');
 	</script>
+	<style>
+		.article img.natural {
+			max-height: none;
+		}
+	</style>
 </head>
 
 <body>
@@ -33,7 +38,8 @@
 	<div id="sidebar"></div>
 
 	<div class="container mt-xl">
-		<h1>AI Agent：把 LLM 的不確定性放對位置</h1>
+		<h1>AI 產品顧問 Agent<br><span class="gray" style="font-size:19px;font-weight:400;letter-spacing:0">把 LLM
+				的不確定性放對位置</span></h1>
 		<div class="row mb-lg">
 			<div class="col-6 col-sm-12 pr-md">
 				<p>2026 - 現在</p>
@@ -41,21 +47,20 @@
 				<p>
 					這是 Solution Builder 的 AI 產品顧問模組：使用者用自然語言描述需求
 					（「會議室要投影」「機房 17 台伺服器要集中管理」），系統從約 2,000 個真實 ATEN SKU
-					中推薦正確的產品。本篇記錄它的<strong>三代架構演進</strong>——
-					三代的答案分別是「全部鎖死」「鎖決策、放翻譯」「鎖事實、放判斷」，
-					每一代都是上一代教訓的直接回應。
+					中推薦正確的產品。它經歷三代架構，答案從「全部鎖死」到「鎖決策、放翻譯」再到
+					「鎖事實、放判斷」——每一代都是上一代教訓的直接回應。
 				</p>
 
 				<h6 class="mb-xxs">我的角色</h6>
 				<p>對話體驗設計、產品語彙（Catalog）設計、Pipeline 架構與前後端實作、Prompt 工程<br>
-					<span class="gray">同一個人在同一張圖上，畫出對話的每個約束與它對應的工程機制</span></p>
+					<span class="gray">一個 UX 設計師把「對話體驗」和「讓它可靠的工程機制」當成同一件事設計——每個對話約束都對應一個機制，同一個人在同一張圖上畫出來</span>
+				</p>
 
 				<h6 class="mb-xxs">專案屬性</h6>
-				<p>B2B AI 助手 · LLM 工程 · 開發中（dev-only，未隨正式版發布）</p>
+				<p>B2B AI Agent · LLM harness 設計 · 對話體驗 UX · 前後端實作</p>
 			</div>
 			<div class="col-6 col-sm-12">
-				<img class="w-100" src="../../builder/images/07_aiAgent01.png"
-					alt="第一代 AI Agent 對話介面：抽屜式對話搭配三種意圖入口">
+				<img class="w-100" src="../../builder/images/07_aiAgent01.png" alt="第一代 AI Agent 對話介面：抽屜式對話搭配三種意圖入口">
 			</div>
 		</div>
 
@@ -66,6 +71,125 @@
 				產品本身見〈<a href="a_builder.html">Solution Builder</a>〉；
 				支撐 AI 搜尋的產品資料如何被結構化，見〈<a href="a_builder_llm.html">用 LLM 結構化產品資料</a>〉。
 			</p>
+		</div>
+
+		<!-- 成品先看 -->
+		<div class="article">
+			<div class="session">實際使用範例</div>
+			<h2>一句場景，換一張可落地的產品清單</h2>
+			<p>
+				系統整合商（SI）每接一個案子，要從約 2,000 個 ATEN 型號裡，湊出一套相容、現役、規格正確的方案——
+				翻規格書、查 Excel、確認進出埠對得上，整段很花時間，也容易湊錯。
+				直接問通用 chatbot 更危險：它會編出聽起來合理但不存在的型號，或推薦已停產的產品。
+				這個模組要的是同一件事用講的就能完成，而且每個型號都保證真實。
+			</p>
+			<p>
+				你描述一個場景，它回你一張方案——<strong>主架構怎麼接、要哪些角色的產品、各幾台、為什麼選它</strong>；
+				資訊不足時它會像資深 SI 反問，而不是硬給答案。整張清單可以一鍵複製貼進 Excel，
+				或直接接到後面的比較表、畫布拉圖、BOM。
+			</p>
+			<p class="gray" style="max-width:1000px;font-size:13px;margin-top:0">
+				可以根據使用者需求產出產品清單，每個型號都過驗證閘確認真實存在。
+			</p>
+			<!-- 輸入 → 輸出 示意 -->
+			<div style="width:100%;max-width:1000px;margin:24px auto;font-size:13px;line-height:1.6">
+				<div style="text-align:right;margin-bottom:8px">
+					<div
+						style=" font-size: 16px; display:inline-block;text-align:left;max-width:88%;background:#06385e;border:1px solid #cfe6fb;border-radius:8px;padding:10px 14px;color: #fff;">
+						我想要打造宴會廳，有3*4電視牆、兩台 4K 投影機、還有兩支PTZ， 廳內有apple TV播放器、來賓也可以帶筆電投影，請推薦我適合的產品
+					</div>
+				</div>
+				<div style="text-align:left ;display:none">
+					<div
+						style="display:inline-block;text-align:left;max-width:96%;background:#fafafa;border:1px solid #f0f0f0;border-radius:8px;padding:12px 16px">
+						<div class="gray" style="font-size:12px;margin-bottom:8px">AI 架構師</div>
+						<div style="margin-bottom:10px;line-height:2.2">
+							<span
+								style="background:#e6f4ff;color:#1677b3;border-radius:4px;padding:3px 8px;margin-right:6px">場景：主管會議室</span>
+							<span
+								style="background:#f0eafb;color:#722ed1;border-radius:4px;padding:3px 8px;margin-right:6px">規則：Apple
+								TV → HDCP</span>
+							<span
+								style="background:#e8f6ed;color:#389e5c;border-radius:4px;padding:3px 8px;margin-right:6px">✓
+								型號全驗證通過</span>
+							<span style="background:#f2f2f2;color:#666;border-radius:4px;padding:3px 8px">≈ 4K
+								tokens</span>
+						</div>
+						<div style="margin-bottom:10px"><strong>主架構：</strong>3 訊源、2 台 4K 顯示、無跨區 → 集中式 Seamless
+							切換；來賓無線投影獨立一路，可納入一鍵情境。</div>
+						<table style="width:100%;border-collapse:collapse;font-size:12.5px">
+							<thead>
+								<tr style="text-align:left;color:#888">
+									<th style="padding:5px 8px;border-bottom:1px solid #eee;font-weight:500">角色</th>
+									<th style="padding:5px 8px;border-bottom:1px solid #eee;font-weight:500">型號</th>
+									<th style="padding:5px 8px;border-bottom:1px solid #eee;font-weight:500">數量</th>
+									<th style="padding:5px 8px;border-bottom:1px solid #eee;font-weight:500">理由</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td style="padding:5px 8px;border-bottom:1px solid #f4f4f4">Seamless 切換主機</td>
+									<td style="padding:5px 8px;border-bottom:1px solid #f4f4f4"><span
+											style="color:#389e5c">✓ 已驗證</span></td>
+									<td style="padding:5px 8px;border-bottom:1px solid #f4f4f4">1</td>
+									<td style="padding:5px 8px;border-bottom:1px solid #f4f4f4">3 進 2 出、需即時無縫切換</td>
+								</tr>
+								<tr>
+									<td style="padding:5px 8px;border-bottom:1px solid #f4f4f4">無線投影接收</td>
+									<td style="padding:5px 8px;border-bottom:1px solid #f4f4f4"><span
+											style="color:#389e5c">✓ 已驗證</span></td>
+									<td style="padding:5px 8px;border-bottom:1px solid #f4f4f4">1</td>
+									<td style="padding:5px 8px;border-bottom:1px solid #f4f4f4">來賓無線投影，免實體接線</td>
+								</tr>
+								<tr>
+									<td style="padding:5px 8px">中控 / 情境</td>
+									<td style="padding:5px 8px"><span style="color:#389e5c">✓ 已驗證</span></td>
+									<td style="padding:5px 8px">1</td>
+									<td style="padding:5px 8px">一鍵情境切換、整合各訊源</td>
+								</tr>
+							</tbody>
+						</table>
+						<div class="gray" style="margin-top:10px">範圍外 / 需另採：顯示器、會議視訊軟體授權</div>
+						<div style="margin-top:10px"><span
+								style="border:1px solid #d9d9d9;border-radius:4px;padding:4px 12px;color:#444">複製清單（貼到
+								Excel）</span></div>
+					</div>
+				</div>
+			</div>
+
+
+			<!-- 結果截圖 placeholder -->
+			<img class="natural" src="../../builder/images/07_aiAgent02.png"
+				alt="第三代 /agent-architect 實際輸出：方案卡含場景與規則標籤、型號全驗證通過徽章、主架構說明、產品清單表（角色／型號／數量／理由）、範圍外聲明，以及「複製清單（貼到 Excel）」按鈕">
+
+
+
+			<!-- 使用流程 -->
+			<h3>使用流程：資訊夠就出方案，不夠才反問</h3>
+			<div
+				style="width:100%;max-width:1000px;margin:16px auto;display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-size:13px">
+				<span style="background:#fff8f0;border:1px solid #f0ddc4;border-radius:6px;padding:8px 12px">①
+					用講的描述場景</span>
+				<span class="gray">→</span>
+				<span style="background:#f0f6ff;border:1px solid #cfe0ee;border-radius:6px;padding:8px 12px">② 資訊不足，AI
+					反問（附選項 chips）</span>
+				<span class="gray">→</span>
+				<span style="background:#fff8f0;border:1px solid #f0ddc4;border-radius:6px;padding:8px 12px">③ 點選 /
+					補答，多輪收斂</span>
+				<span class="gray">→</span>
+				<span style="background:#f0f6ff;border:1px solid #cfe0ee;border-radius:6px;padding:8px 12px">④
+					產出方案卡</span>
+				<span class="gray">→</span>
+				<span style="background:#e8f6ed;border:1px solid #c7e6d3;border-radius:6px;padding:8px 12px">⑤ 一鍵複製
+					BOM／接下游</span>
+			</div>
+			<p class="gray" style="max-width:1000px;font-size:13px;margin-top:0">
+				反問與補答都在同一個對話裡完成——選項以 chips 呈現，點一下就補進需求，不必重打。
+			</p>
+
+			<!-- 使用流程截圖 placeholder -->
+			<img class="natural" src="../../builder/images/07_aiAgent03.png" style="    max-width: min(100%, 1200px);"
+				alt="多輪追問流程實際畫面：AI 因資訊不足提出追問，附可點選的選項 chips；使用者點選後對話繼續收斂，右側「AI 搜尋步驟」debug 同步顯示每次工具呼叫">
 		</div>
 
 		<!-- 專案導覽 -->
@@ -102,7 +226,7 @@
 
 			<!-- 核心問題 -->
 			<div class="session" id="problem">核心問題</div>
-			<h2>為什麼不能直接接一個 Chatbot</h2>
+			<h2>為什麼需要這個 agent，不直接接一個 ChatGPT（成熟 AI 公司的 Chatbot）</h2>
 			<p>
 				直接把產品資料塞給 LLM，會遇到兩個致命問題：
 			</p>
@@ -123,12 +247,63 @@
 			</p>
 			<p class="highlight">
 				<strong>核心命題：不確定性不是要歸零，而是要放對位置。</strong>
-				三代架構就是三次「畫邊界」的嘗試。
+				三代架構就是三次「畫邊界」的嘗試——換工程的講法，是三次為 LLM 設計 harness（約束、接地、驗證的鷹架）。
 			</p>
 
 			<!-- 三代總覽 -->
 			<div class="session" id="overview">三代總覽</div>
 			<h2>三次畫邊界的嘗試</h2>
+
+			<!-- 約束邊界演進圖 -->
+			<div style="width:100%;max-width:1000px;margin:28px auto 8px auto;font-size:13px;line-height:1.5">
+				<div style="display:flex;align-items:center;margin-bottom:12px">
+					<div style="width:104px;flex-shrink:0;padding-right:12px"><strong>第一代</strong><br><span
+							class="gray">填表員</span></div>
+					<div
+						style="flex:1;display:flex;height:40px;border-radius:6px;overflow:hidden;border:1px solid #e2e2e2">
+						<div
+							style="flex:88;background:#cfe0ee;display:flex;align-items:center;justify-content:center;color:#2c4a5a">
+							🔒 判斷 · 翻譯 · 流程　全部鎖死</div>
+						<div
+							style="flex:12;background:#f7e3cb;display:flex;align-items:center;justify-content:center;color:#7a5230">
+							填空</div>
+					</div>
+				</div>
+				<div style="display:flex;align-items:center;margin-bottom:12px">
+					<div style="width:104px;flex-shrink:0;padding-right:12px"><strong>第二代</strong><br><span
+							class="gray">翻譯官</span></div>
+					<div
+						style="flex:1;display:flex;height:40px;border-radius:6px;overflow:hidden;border:1px solid #e2e2e2">
+						<div
+							style="flex:58;background:#cfe0ee;display:flex;align-items:center;justify-content:center;color:#2c4a5a">
+							🔒 決策 · 流程</div>
+						<div
+							style="flex:42;background:#f7e3cb;display:flex;align-items:center;justify-content:center;color:#7a5230">
+							🧠 翻譯 · 文案</div>
+					</div>
+				</div>
+				<div style="display:flex;align-items:center">
+					<div style="width:104px;flex-shrink:0;padding-right:12px"><strong>第三代</strong><br><span
+							class="gray">推理主體</span></div>
+					<div
+						style="flex:1;display:flex;height:40px;border-radius:6px;overflow:hidden;border:1px solid #e2e2e2">
+						<div
+							style="flex:24;background:#cfe0ee;display:flex;align-items:center;justify-content:center;color:#2c4a5a">
+							🔒 事實</div>
+						<div
+							style="flex:76;background:#f7e3cb;display:flex;align-items:center;justify-content:center;color:#7a5230">
+							🧠 判斷 · 翻譯 · 描述</div>
+					</div>
+				</div>
+				<div class="gray" style="display:flex;margin-top:10px;font-size:12px">
+					<div style="width:104px;flex-shrink:0"></div>
+					<div style="flex:1;display:flex;justify-content:space-between"><span>🔒 確定性鎖死</span><span>🧠 交給
+							LLM</span></div>
+				</div>
+			</div>
+			<p class="gray" style="max-width:1000px;font-size:13px;margin-top:0">
+				三代都在重畫同一條邊界——鎖死的範圍從「判斷」一路退到只剩「事實」，模型能自由發揮的空間反向放大。
+			</p>
 
 			<div class="row mt-md mb-lg" style="width:100%">
 				<div class="col-4 col-sm-12 plr-sm mb-md">
@@ -154,7 +329,7 @@
 				</div>
 			</div>
 			<p class="gray">
-				三套系統在程式庫內並存（dev-only、正式版建置完全排除），刻意保留作為 A/B 對照。
+				三套系統在程式庫內並存，刻意保留作為 A/B 對照。
 			</p>
 
 			<!-- 第一代 -->
@@ -165,34 +340,28 @@
 				追問品質決策 → 純 JS 搜尋 → 分析總結。LLM 在每一段只做「填空」，
 				欄位、追問上限、流程順序全部寫死。
 			</p>
-			<img class="natural" src="../../builder/images/07_aiAgent01.png"
-				alt="第一代對話介面：三種固定意圖入口，避免使用者面對空白輸入框的選擇焦慮">
-			<img class="natural" src="../../builder/images/07_aiAgent02.png"
-				alt="第一代推薦結果：每張產品卡可直接加入畫布">
+			<img class="natural" src="../../builder/images/07_aiAgent04.png" alt="第一代對話介面：三種固定意圖入口，避免使用者面對空白輸入框的選擇焦慮">
+			<img class="natural" src="../../builder/images/07_aiAgent05.png" alt="第一代推薦結果：每張產品卡可直接加入畫布">
 
-			<h3>為什麼失敗（內部實測）</h3>
+			<h3>為什麼不夠用</h3>
 			<div class="line_area">
-				<h6>慢</h6>
-				<p>一輪問答 4–5 次 LLM 呼叫，最慢一步約 10 秒。</p>
+				<h6>死板，像在填固定表單</h6>
+				<p>三種固定意圖入口、欄位與追問全部寫死——使用者像在填表單，不像跟專家對談；
+					找現成解決方案模板時尤其明顯。</p>
 			</div>
 			<div class="line_area">
-				<h6>貴</h6>
-				<p>每輪消耗約 58K token——每次都把整本產品知識庫重複塞給模型。</p>
+				<h6>整案與單品是兩條分開的路</h6>
+				<p>「找單一產品」和「找解決方案（房型模板）」各走各的，
+					沒辦法在一次對話裡自由湊出一張多樣產品的清單。</p>
 			</div>
 			<div class="line_area">
-				<h6>不夠聰明</h6>
-				<p>同一個宴會廳需求，直接問通用大模型反而給出更完整的方案與拓樸。
-					我們花大成本維護的管線，輸給了被它「保護」的那個模型。</p>
-			</div>
-			<div class="line_area">
-				<h6>維護重</h6>
-				<p>每加一個場景要維護一堆「預先烤好的組合」，且容易過時——
-					連自家測試範例的進出埠數都算錯。</p>
+				<h6>流程寫死</h6>
+				<p>每加一個新場景，就要動整條流程。</p>
 			</div>
 
 			<p class="highlight">
-				<strong>教訓：</strong>把確定性套在「<strong>判斷</strong>」上，等於把大模型的推理能力關掉，
-				然後花更多成本驅動一套僵化的機器。問題不是「要不要約束」，是<strong>約束錯了對象</strong>。
+				<strong>教訓：</strong>把確定性套在「<strong>流程與判斷</strong>」上，使用者就被綁進固定表單——
+				安全，但既不像專家對談，也湊不出一張自由的產品清單。問題不是「要不要約束」，是<strong>約束錯了對象</strong>。
 			</p>
 
 			<!-- 第二代 -->
@@ -203,42 +372,154 @@
 			</p>
 
 			<h3>分工：翻譯官能「說」，決策引擎才能「做」</h3>
-			<div style="width:100%;max-width:1000px;margin:32px auto;font-size:14px;line-height:1.7">
-				<div style="border:1px solid #ccc;border-radius:8px;padding:14px 20px;background:#fafafa">
-					<strong>使用者一句話</strong>　<span class="gray">「教室要把老師畫面分給 8 台螢幕」</span>
+			<div
+				style="width:100%;max-width:1000px;margin:28px auto;font-size:14px;line-height:1.6;border-top:1px solid #e2e2e2">
+				<div style="display:flex;gap:14px;padding:11px 0;border-bottom:1px solid #f0f0f0;">
+					<div style="width:74px;flex-shrink:0"><span
+							style="display:inline-block;font-size:11px;color:#888;padding:2px 0">輸入</span></div>
+					<div style="flex:1"><strong>使用者一句話</strong>　<span class="gray">「教室要把老師畫面分給 8 台螢幕」</span></div>
 				</div>
-				<div style="text-align:center;color:#999;padding:4px">▼</div>
-				<div style="border:1px solid #ccc;border-radius:8px;padding:14px 20px;background:#fff8f0">
-					<strong>🧠 LLM 翻譯官</strong>——自然語言 → 結構化標籤（只能用 Catalog 內的詞彙）
+				<div style="display:flex;gap:14px;padding:11px 0;border-bottom:1px solid #f0f0f0;">
+					<div style="width:74px;flex-shrink:0"><span
+							style="display:inline-block;font-size:11px;background:#f6e9d6;color:#90602a;padding:2px 7px;border-radius:3px">LLM</span>
+					</div>
+					<div style="flex:1"><strong>翻譯官</strong>　自然語言 → 結構化標籤（只能用 Catalog 內的詞彙）</div>
 				</div>
-				<div style="text-align:center;color:#999;padding:4px">▼</div>
-				<div style="border:1px solid #ccc;border-radius:8px;padding:14px 20px;background:#f0f6ff">
-					<strong>🔒 決策引擎（純函式）</strong>——看標籤累積量與候選池大小，決定下一步：
-					追問哪個參數？還是輸出結果？
+				<div style="display:flex;gap:14px;padding:11px 0;border-bottom:1px solid #f0f0f0;">
+					<div style="width:74px;flex-shrink:0"><span
+							style="display:inline-block;font-size:11px;background:#e3edf5;color:#2c6184;padding:2px 7px;border-radius:3px">純函式</span>
+					</div>
+					<div style="flex:1"><strong>決策引擎</strong>　看標籤累積與候選池大小，決定：再追問，還是輸出？</div>
 				</div>
-				<div style="text-align:center;color:#999;padding:4px">▼</div>
-				<div style="border:1px solid #ccc;border-radius:8px;padding:14px 20px;background:#fff8f0">
-					<strong>🧠 LLM 提問官</strong>——只負責把決策引擎指定的問題「寫成好讀的話」
+				<div style="display:flex;gap:14px;padding:11px 0;border-bottom:1px solid #f0f0f0;">
+					<div style="width:74px;flex-shrink:0"><span
+							style="display:inline-block;font-size:11px;background:#f6e9d6;color:#90602a;padding:2px 7px;border-radius:3px">LLM</span>
+					</div>
+					<div style="flex:1"><span class="gray" style="font-size:12px">分支
+							A・資訊不足</span><br><strong>提問官</strong>　把決策指定的問題寫成追問句、附選項；補答後回到「翻譯官」重跑</div>
 				</div>
-				<div style="text-align:center;color:#999;padding:4px">▼</div>
-				<div style="border:1px solid #ccc;border-radius:8px;padding:14px 20px;background:#f0f6ff">
-					<strong>🔒 六階段漏斗搜尋（純函式）</strong>——從真實產品庫篩出候選
+				<div style="display:flex;gap:14px;padding:11px 0;border-bottom:1px solid #f0f0f0;">
+					<div style="width:74px;flex-shrink:0"><span
+							style="display:inline-block;font-size:11px;background:#e3edf5;color:#2c6184;padding:2px 7px;border-radius:3px">純函式</span>
+					</div>
+					<div style="flex:1"><span class="gray" style="font-size:12px">分支
+							B・條件足夠</span><br><strong>六階段漏斗搜尋</strong>　排除 → 主功能交集 → 參數 → 副功能 → ioInterface → top
+						候選<br><span class="gray" style="font-size:13px">資料源：產品 API（約 2,000 筆真實
+							ATEN，<code>/rest/product</code>，快取 30 分鐘）</span></div>
+				</div>
+				<div style="display:flex;gap:14px;padding:11px 0;border-bottom:1px solid #f0f0f0;">
+					<div style="width:74px;flex-shrink:0"><span
+							style="display:inline-block;font-size:11px;background:#f6e9d6;color:#90602a;padding:2px 7px;border-radius:3px">LLM</span>
+					</div>
+					<div style="flex:1"><strong>分析師</strong>　把候選寫成產品比較表 + 推薦理由（一輪的第 2 個、也是最後一個 LLM call）</div>
+				</div>
+				<div style="display:flex;gap:14px;padding:11px 0;">
+					<div style="width:74px;flex-shrink:0"><span
+							style="display:inline-block;font-size:11px;background:#e8f0e9;color:#3f7553;padding:2px 7px;border-radius:3px">產出</span>
+					</div>
+					<div style="flex:1"><strong>產品比較表 + 分析</strong>　<span class="gray">使用者看到的結果</span></div>
 				</div>
 			</div>
+			<p class="gray" style="max-width:1000px;font-size:13px;margin-top:4px">左欄即分工：橘＝LLM 的語言工作，藍＝純函式的決策與事實。</p>
 			<p>
-				LLM 永遠不決定流程走向——它翻譯需求、撰寫追問文案，僅此而已。
+				這條主迴圈就是<strong>翻譯師 →（決策）→ 搜尋（吃產品 API）→ 分析師</strong>：兩端都是 LLM 的語言工作，中間的決策與篩選全是純函式。
+				LLM 永遠不決定流程走向——翻譯需求、撰寫追問、把候選寫成分析，僅此而已；決策、何時輸出、篩哪些產品，都由純函式定。
 			</p>
 
-			<h3>Catalog 是唯一事實源</h3>
+			<h3>📚 所有專業知識，統一存放在「一份檔案」裡</h3>
 			<p>
-				所有產品功能語彙（主功能、副功能、參數、距離帶、歧義詞）定義在一份結構化的
-				Feature Catalog。新增一個功能 = 改一筆 JSON，翻譯、決策、搜尋、追問自動跟上，
-				<strong>不改任何程式碼、不改 Prompt</strong>。
+				不論餵給哪一代 AI、哪個功能，要載入的專業知識都集中在<strong>同一份結構化檔案（JSON）</strong>：
+				產品的主功能／附功能定義（什麼是矩陣、什麼是 HDCP，參數與別名）、案場資訊（各場景該問什麼、排除什麼）、
+				產業 know-how（硬性常識、架構準則、追問句）。
+			</p>
+			<p>
+				新增一個功能 = 改一筆 JSON，翻譯、決策、搜尋、追問自動跟上，<strong>不改程式碼、不改 Prompt</strong>——
+				改一次、到處生效，不會出現兩邊知識對不上。而且這份檔案<strong>不必工程師維護</strong>：
+				附視覺化編輯器，PM、SI、產品線不會寫程式也能自己填、自己改。
 			</p>
 
-			<!-- TODO 截圖：/agent-tag-chat-sim 對話 + 任務看板 + debug 漏斗面板 -->
+			<!-- 一份檔案：實際範例 -->
+			<div style="max-width:1000px;margin:18px auto;font-size:13px">
+				<div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px">
+					<span
+						style="background:#f4f4f4;border:1px solid #e2e2e2;border-radius:4px;padding:6px 12px"><code>Featurecatalog.json</code>　<span
+							class="gray">知識主檔（單一事實來源）</span></span>
+					<span
+						style="background:#f4f4f4;border:1px solid #e2e2e2;border-radius:4px;padding:6px 12px"><code>feature-catalog-editor.html</code>　<span
+							class="gray">給專業人士的視覺化編輯器</span></span>
+				</div>
+				<div style="border:1px solid #e2e2e2;border-radius:6px;overflow:hidden">
+					<div style="background:#fafafa;border-bottom:1px solid #eee;padding:9px 16px;font-weight:600">
+						主檔節錄｜主功能：矩陣（多對多）</div>
+					<div style="padding:2px 16px">
+						<div style="display:flex;gap:14px;padding:11px 0;border-bottom:1px solid #f4f4f4">
+							<div style="width:128px;flex-shrink:0;color:#888">這是什麼</div>
+							<div style="flex:1">多個訊號源路由到多個顯示輸出，任一輸入可指派到任一輸出</div>
+						</div>
+						<div style="display:flex;gap:14px;padding:11px 0;border-bottom:1px solid #f4f4f4">
+							<div style="width:128px;flex-shrink:0;color:#888">客戶可能怎麼說</div>
+							<div style="flex:1"><span
+									style="display:inline-block;background:#eef3f6;color:#345;border-radius:3px;padding:2px 9px;margin:0 5px 5px 0;font-size:12.5px">多對多</span><span
+									style="display:inline-block;background:#eef3f6;color:#345;border-radius:3px;padding:2px 9px;margin:0 5px 5px 0;font-size:12.5px">矩陣</span><span
+									style="display:inline-block;background:#eef3f6;color:#345;border-radius:3px;padding:2px 9px;margin:0 5px 5px 0;font-size:12.5px">matrix</span><span
+									style="display:inline-block;background:#eef3f6;color:#345;border-radius:3px;padding:2px 9px;margin:0 5px 5px 0;font-size:12.5px">影音矩陣</span><span
+									style="display:inline-block;background:#eef3f6;color:#345;border-radius:3px;padding:2px 9px;margin:0 5px 5px 0;font-size:12.5px">N
+									台電腦接 M 個螢幕</span><span
+									style="display:inline-block;background:#eef3f6;color:#345;border-radius:3px;padding:2px 9px;margin:0 5px 5px 0;font-size:12.5px">…</span>
+							</div>
+						</div>
+						<div style="display:flex;gap:14px;padding:11px 0">
+							<div style="width:128px;flex-shrink:0;color:#888">要追問的參數</div>
+							<div style="flex:1">輸入埠數、輸出埠數（典型值 2 / 4 / 8 / 16 / 32…）<br><span class="gray">AI
+									追問句：「有幾個訊號源？」「要送到幾個螢幕？」</span></div>
+						</div>
+					</div>
+				</div>
 
-			<h3>防幻覺是「機制」，不是「叮嚀」</h3>
+				<div style="border:1px solid #e2e2e2;border-radius:6px;overflow:hidden;margin-top:14px">
+					<div style="background:#fafafa;border-bottom:1px solid #eee;padding:9px 16px;font-weight:600">
+						主檔節錄｜場景：會議室 / 簡報室</div>
+					<div style="padding:2px 16px">
+						<div style="display:flex;gap:14px;padding:11px 0;border-bottom:1px solid #f4f4f4">
+							<div style="width:128px;flex-shrink:0;color:#888">這是什麼</div>
+							<div style="flex:1">辦公空間的多訊源切換＋顯示，常需無線投影、視訊會議整合、一鍵情境切換</div>
+						</div>
+						<div style="display:flex;gap:14px;padding:11px 0;border-bottom:1px solid #f4f4f4">
+							<div style="width:128px;flex-shrink:0;color:#888">怎麼認出（別名）</div>
+							<div style="flex:1"><span
+									style="display:inline-block;background:#eef3f6;color:#345;border-radius:3px;padding:2px 9px;margin:0 5px 5px 0;font-size:12.5px">會議室</span><span
+									style="display:inline-block;background:#eef3f6;color:#345;border-radius:3px;padding:2px 9px;margin:0 5px 5px 0;font-size:12.5px">簡報室</span><span
+									style="display:inline-block;background:#eef3f6;color:#345;border-radius:3px;padding:2px 9px;margin:0 5px 5px 0;font-size:12.5px">boardroom</span><span
+									style="display:inline-block;background:#eef3f6;color:#345;border-radius:3px;padding:2px 9px;margin:0 5px 5px 0;font-size:12.5px">視訊會議室</span><span
+									style="display:inline-block;background:#eef3f6;color:#345;border-radius:3px;padding:2px 9px;margin:0 5px 5px 0;font-size:12.5px">主管會議室</span><span
+									style="display:inline-block;background:#eef3f6;color:#345;border-radius:3px;padding:2px 9px;margin:0 5px 5px 0;font-size:12.5px">…</span>
+							</div>
+						</div>
+						<div style="display:flex;gap:14px;padding:11px 0">
+							<div style="width:128px;flex-shrink:0;color:#888">這個場景該問什麼</div>
+							<div style="flex:1"><span
+									style="display:inline-block;border-radius:3px;padding:2px 9px;margin:0 5px 5px 0;font-size:12.5px;background:#fdecec;color:#b0413e;font-weight:600">幾進幾出
+									· 必問</span><span
+									style="display:inline-block;border-radius:3px;padding:2px 9px;margin:0 5px 5px 0;font-size:12.5px;background:#fdecec;color:#b0413e;font-weight:600">環控需求
+									· 必問</span><span
+									style="display:inline-block;border-radius:3px;padding:2px 9px;margin:0 5px 5px 0;font-size:12.5px;background:#fbf2dd;color:#8a6d1f;font-weight:600">控制介面
+									· 可問</span><span
+									style="display:inline-block;border-radius:3px;padding:2px 9px;margin:0 5px 5px 0;font-size:12.5px;background:#f2f2f2;color:#9aa1ad">距離
+									· 通常免問</span></div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<p class="gray" style="max-width:1000px;font-size:13px;margin-top:8px">
+				專業人士填的就是這些欄位——別名、追問參數、追問句。AI 從這份檔案讀、人也從同一份檔案改：
+				讓人和 AI 在同一份知識上協作，是這套系統真正的工作方式。
+			</p>
+
+			<img class="natural" src="../../builder/images/07_aiAgent06.png"
+				alt="第二代 /agent-tag-chat-sim 介面：左側對話逐輪累積結構化標籤、任務看板顯示已收集與待追問的參數，右側 debug 漏斗面板呈現候選池如何隨每次追問收斂">
+			<!-- TODO 截圖（dev-only）：/agent-tag-chat-sim 對話 + 任務看板 + debug 漏斗面板，放 builder/images/07_aiAgent03.png -->
+
+			<h3>防幻覺：做成機制，不寫進 Prompt 叮嚀</h3>
 			<div class="line_area">
 				<h6>選項只能來自真實值</h6>
 				<p>追問的快速選項必須從「候選池實際存在的規格值」中挑——
@@ -255,57 +536,196 @@
 			</div>
 
 			<h3>成本工程：一輪最多 2 次 LLM 呼叫</h3>
-			<p>
-				在 LLM 前面加三道前置路由，能不打模型就不打：
-				<strong>Fast Lane</strong>（純函式關鍵字命中「PM 已內化的場景 → 產品組合」，0 次 LLM 直接出清單）、
-				<strong>輕量分類器</strong>（首輪判斷是否離題、命中哪個場景，讓 Prompt 只載入需要的部分）、
-				<strong>Scenario Planner</strong>（場景命中、追問題池縮減、任務模板推導全部由純函式預先算好，
-				LLM 只做自然語言抽取和寫文案）。
-			</p>
+			<p>在 LLM 前面加三道前置路由，能不打模型就不打：</p>
+			<div class="line_area">
+				<h6>Fast Lane</h6>
+				<p>純函式關鍵字命中「PM 已內化的場景 → 產品組合」，0 次 LLM 直接出清單。</p>
+			</div>
+			<div class="line_area">
+				<h6>輕量分類器</h6>
+				<p>首輪判斷是否離題、命中哪個場景，讓 Prompt 只載入需要的部分。</p>
+			</div>
+			<div class="line_area">
+				<h6>Scenario Planner</h6>
+				<p>場景命中、追問題池縮減、任務模板推導全部由純函式預先算好，LLM 只做自然語言抽取和寫文案。</p>
+			</div>
 
-			<h3>侷限：組合是無限的</h3>
-			<p>
-				窄查詢（「4 埠 4K 的 KVM 切換器」）這套做得很好。但「整案設計」
-				（宴會廳：電視牆＋投影機＋攝影機＋來賓筆電＋中控）需要的是<strong>組合推理</strong>——
-				預先烤好每一種任務組合的做法，維護量爆炸而且永遠烤不完。這直接導向第三代。
-			</p>
+			<h3>侷限：為什麼還要第三代</h3>
+			<div class="line_area">
+				<h6>整案設計的組合窮舉不完</h6>
+				<p>窄查詢（「4 埠 4K 的 KVM
+					切換器」）這套做得很好；但整案設計（宴會廳：電視牆＋投影機＋攝影機＋來賓筆電＋中控）需要<strong>組合推理</strong>——事先把每一種任務組合都寫死成模板，維護量爆炸而且永遠寫不完。
+				</p>
+			</div>
+			<div class="line_area">
+				<h6>每輪仍重塞知識庫，貴</h6>
+				<p>就算把呼叫次數壓到一輪 2 次，每一次仍把整本產品知識庫塞給模型——成本大宗耗在重複輸入，隨對話輪數累積。</p>
+			</div>
+			<div class="line_area">
+				<h6>寫死的組合模板會悄悄過時</h6>
+				<p>連自家測試範例都出錯：宴會廳的內建範例寫成「12 進 8 出」，真實需求其實是「4 進 14 出」。</p>
+			</div>
+			<p>這三點直接導向第三代。</p>
 
 			<!-- 第三代 -->
 			<div class="session" id="gen3">第三代：鎖事實</div>
 			<h2>把推理還給模型，用兩道閘夾住</h2>
+			<p>
+				第三代是一個標準的 <strong>agent harness</strong>：function-calling 的推理迴圈（工具上限 8 步）負責判斷，
+				進場一道事實閘、出場一道驗證閘負責接地——模型自由推理，事實面被夾死。
+			</p>
 
 			<h3>核心原則：決定論的邊界要畫對</h3>
+			<div class="row mt-md" style="width:100%;max-width:1000px;margin-left:auto;margin-right:auto">
+				<div class="col-6 col-sm-12 plr-sm mb-md">
+					<div style="border:1px solid #cfe0ee;border-radius:6px;overflow:hidden;height:100%">
+						<div style="background:#f0f6ff;color:#2c6184;padding:10px 16px;font-weight:700">🔒 鎖死的：事實</div>
+						<ul style="list-style:disc;padding:12px 18px 14px 34px;font-size:13.5px;margin:0">
+							<li style="margin:6px 0">產品是否真實存在、是否現役</li>
+							<li style="margin:6px 0">規格與數量（幾進幾出、解析度）</li>
+							<li style="margin:6px 0">硬性蘊含：接 Apple TV 就一定要 HDCP，否則黑屏</li>
+							<li style="margin:6px 0">清單裡的每一個型號</li>
+						</ul>
+					</div>
+				</div>
+				<div class="col-6 col-sm-12 plr-sm mb-md">
+					<div style="border:1px solid #f0ddc4;border-radius:6px;overflow:hidden;height:100%">
+						<div style="background:#fff8f0;color:#90602a;padding:10px 16px;font-weight:700">🧠 放開的：判斷</div>
+						<ul style="list-style:disc;padding:12px 18px 14px 34px;font-size:13.5px;margin:0">
+							<li style="margin:6px 0">整體架構走集中式還是分散式</li>
+							<li style="margin:6px 0">先追問什麼、怎麼問才像資深 SI</li>
+							<li style="margin:6px 0">方案怎麼描述、用什麼語言說明</li>
+							<li style="margin:6px 0">多個合理選項之間怎麼取捨</li>
+						</ul>
+					</div>
+				</div>
+			</div>
 			<p class="highlight">
-				把「確定性」套在<strong>事實</strong>上——產品是否存在、規格、「Apple TV 一定要 HDCP」這類硬性蘊含。<br>
-				把「判斷」交給<strong>大模型</strong>——集中式還是分散式、先問什麼、怎麼描述方案。<br><br>
-				要的不是「零變異」，是「<strong>有界變異</strong>」：事實鎖死，判斷放開。
+				要的不是「零變異」，是「<strong>有界變異</strong>」：<strong>事實鎖死，判斷放開</strong>。
 				隨機只留在「怎麼問、怎麼拼、怎麼寫」——那本來就該交給模型。
 			</p>
 
 			<h3>流程：一道事實閘進場，一道驗證閘離場</h3>
-			<div style="width:100%;max-width:1000px;margin:32px auto;font-size:14px;line-height:1.7">
-				<div style="border:1px solid #ccc;border-radius:8px;padding:14px 20px;background:#fafafa">
-					<strong>使用者</strong>　<span class="gray">「宴會廳，3x4 電視牆、2 台 4K 投影機、Apple TV、來賓筆電」</span>
+			<div style="margin:24px 0">
+				<div
+					style="display:flex;gap:16px;align-items:flex-start;background:#fff;border:1px solid #e8e6e1;border-radius:12px;padding:16px 20px;max-width:1000px;margin-left:auto;margin-right:auto">
+					<div
+						style="flex-shrink:0;font-size:11.5px;font-weight:800;letter-spacing:1px;padding:4px 11px;border-radius:99px;margin-top:2px;min-width:48px;text-align:center;background:#f1f3f5;color:#5a6170;border:1px solid #e2e8f0">
+						輸入</div>
+					<div>
+						<div style="font-size:15.5px;font-weight:700">使用者一句話描述需求</div>
+						<div style="font-size:14px;color:#5a6170;margin-top:3px"></div>
+						<div style="font-size:13px;color:#9aa1ad;margin-top:6px"><code
+								style="background:#fafaf8;border:1px solid #e8e6e1;border-radius:5px;padding:1px 7px;font-size:12.5px">「宴會廳，3×4 電視牆、2 台 4K 投影機、Apple TV、來賓筆電」</code>
+						</div>
+					</div>
 				</div>
-				<div style="text-align:center;color:#999;padding:4px">▼</div>
-				<div style="border:1px solid #ccc;border-radius:8px;padding:14px 20px;background:#f0f6ff">
-					<strong>🔒 事實閘</strong>——硬性規則先鎖死<br>
-					<span class="gray">偵測 Apple TV → 強制 HDCP；偵測電視牆 → 強制拼接牆能力</span>
+				<div
+					style="text-align:center;color:#9aa1ad;font-size:18px;line-height:1.5;padding:2px 0;max-width:1000px;margin:0 auto">
+					↓</div>
+				<div
+					style="display:flex;gap:16px;align-items:flex-start;background:#fff;border:1px solid #e8e6e1;border-radius:12px;padding:16px 20px;max-width:1000px;margin-left:auto;margin-right:auto">
+					<div
+						style="flex-shrink:0;font-size:11.5px;font-weight:800;letter-spacing:1px;padding:4px 11px;border-radius:99px;margin-top:2px;min-width:48px;text-align:center;background:#eef4fb;color:#2c6184;border:1px solid #cfe0ee">
+						🔒 鎖</div>
+					<div>
+						<div style="font-size:15.5px;font-weight:700">① 事實閘：硬性規則先鎖死</div>
+						<div style="font-size:14px;color:#5a6170;margin-top:3px">不靠 AI「記得」，規則直接觸發、100% 命中、零成本。</div>
+						<div style="font-size:13px;color:#9aa1ad;margin-top:6px">偵測 <code
+								style="background:#fafaf8;border:1px solid #e8e6e1;border-radius:5px;padding:1px 7px;font-size:12.5px">Apple TV</code>
+							→ 強制 HDCP；偵測 <code
+								style="background:#fafaf8;border:1px solid #e8e6e1;border-radius:5px;padding:1px 7px;font-size:12.5px">電視牆</code>
+							→ 強制拼接牆能力</div>
+					</div>
 				</div>
-				<div style="text-align:center;color:#999;padding:4px">▼</div>
-				<div style="border:1px solid #ccc;border-radius:8px;padding:14px 20px;background:#fff8f0">
-					<strong>🧠 Agent 推理迴圈</strong>（function-calling，工具上限 8 步）<br>
-					<span class="gray">搜尋真實產品庫（只能從結果裡選型）· 關鍵資訊沒答先追問（情境式、像資深 SI）·
-						提交方案（架構＋品項＋數量＋超出範圍聲明）</span>
+				<div
+					style="text-align:center;color:#9aa1ad;font-size:18px;line-height:1.5;padding:2px 0;max-width:1000px;margin:0 auto">
+					↓</div>
+				<div
+					style="display:flex;gap:16px;align-items:flex-start;background:#fff;border:1px solid #e8e6e1;border-radius:12px;padding:16px 20px;max-width:1000px;margin-left:auto;margin-right:auto">
+					<div
+						style="flex-shrink:0;font-size:11.5px;font-weight:800;letter-spacing:1px;padding:4px 11px;border-radius:99px;margin-top:2px;min-width:48px;text-align:center;background:#fdf3e7;color:#90602a;border:1px solid #f0ddc4">
+						🧠 腦</div>
+					<div>
+						<div style="font-size:15.5px;font-weight:700">② 認場景、載入場景劇本</div>
+						<div style="font-size:14px;color:#5a6170;margin-top:3px">
+							認出宴會廳／會議室／機房，載入該場景的劇本：該問什麼、排除什麼、架構準則、需要哪些產品角色。</div>
+					</div>
 				</div>
-				<div style="text-align:center;color:#999;padding:4px">▼</div>
-				<div style="border:1px solid #ccc;border-radius:8px;padding:14px 20px;background:#f0f6ff">
-					<strong>🔒 驗證閘</strong>——每個型號必須存在於真實搜尋結果<br>
-					<span class="gray">不在 = 幻覺，自動退回重選</span>
+				<div
+					style="text-align:center;color:#9aa1ad;font-size:18px;line-height:1.5;padding:2px 0;max-width:1000px;margin:0 auto">
+					↓</div>
+				<div
+					style="display:flex;gap:16px;align-items:flex-start;background:#fff;border:1px solid #e8e6e1;border-radius:12px;padding:16px 20px;max-width:1000px;margin-left:auto;margin-right:auto">
+					<div
+						style="flex-shrink:0;font-size:11.5px;font-weight:800;letter-spacing:1px;padding:4px 11px;border-radius:99px;margin-top:2px;min-width:48px;text-align:center;background:#fdf3e7;color:#90602a;border:1px solid #f0ddc4">
+						🧠 腦</div>
+					<div>
+						<div style="font-size:15.5px;font-weight:700">③ 專業追問（可多輪）</div>
+						<div style="font-size:14px;color:#5a6170;margin-top:3px">缺關鍵資訊就追問，每題附選項可直接點，不准自行假設預設值。</div>
+						<div style="font-size:13px;color:#9aa1ad;margin-top:6px">「電視牆和投影機要播同一個畫面，還是各自播？」——情境式提問，像資深 SI
+						</div>
+					</div>
 				</div>
-				<div style="text-align:center;color:#999;padding:4px">▼</div>
-				<div style="border:1px solid #ccc;border-radius:8px;padding:14px 20px;background:#fafafa">
-					<strong>一張驗證過的產品清單</strong>　<span class="gray">下游全部消費它：比較表 · 畫布拉圖 · BOM · 配件</span>
+				<div
+					style="text-align:center;color:#9aa1ad;font-size:18px;line-height:1.5;padding:2px 0;max-width:1000px;margin:0 auto">
+					↓</div>
+				<div
+					style="display:flex;gap:16px;align-items:flex-start;background:#fff;border:1px solid #e8e6e1;border-radius:12px;padding:16px 20px;max-width:1000px;margin-left:auto;margin-right:auto">
+					<div
+						style="flex-shrink:0;font-size:11.5px;font-weight:800;letter-spacing:1px;padding:4px 11px;border-radius:99px;margin-top:2px;min-width:48px;text-align:center;background:#fdf3e7;color:#90602a;border:1px solid #f0ddc4">
+						🧠 腦</div>
+					<div>
+						<div style="font-size:15.5px;font-weight:700">④ 查真實產品庫、選品、定量</div>
+						<div style="font-size:14px;color:#5a6170;margin-top:3px">
+							拿條件去真實產品庫搜尋，<strong>只能從搜尋結果裡選</strong>，再對照角色清單算數量（function-calling 推理迴圈，工具上限 8 步）。</div>
+						<div style="font-size:13px;color:#9aa1ad;margin-top:6px">4 訊源 → 4 台發送端；12 面牆 ＋ 2 投影 → 14 台接收端
+						</div>
+					</div>
+				</div>
+				<div
+					style="text-align:center;color:#9aa1ad;font-size:18px;line-height:1.5;padding:2px 0;max-width:1000px;margin:0 auto">
+					↓</div>
+				<div
+					style="display:flex;gap:16px;align-items:flex-start;background:#fff;border:1px solid #e8e6e1;border-radius:12px;padding:16px 20px;max-width:1000px;margin-left:auto;margin-right:auto">
+					<div
+						style="flex-shrink:0;font-size:11.5px;font-weight:800;letter-spacing:1px;padding:4px 11px;border-radius:99px;margin-top:2px;min-width:48px;text-align:center;background:#eef4fb;color:#2c6184;border:1px solid #cfe0ee">
+						🔒 鎖</div>
+					<div>
+						<div style="font-size:15.5px;font-weight:700">⑤ 驗證閘：出場前逐一驗證</div>
+						<div style="font-size:14px;color:#5a6170;margin-top:3px">
+							清單上每個型號必須出現在剛剛的真實搜尋結果裡，否則整份退回重選。虛構型號、停產品一律出不了場。</div>
+					</div>
+				</div>
+				<div
+					style="text-align:center;color:#9aa1ad;font-size:18px;line-height:1.5;padding:2px 0;max-width:1000px;margin:0 auto">
+					↓</div>
+				<div
+					style="display:flex;gap:16px;align-items:flex-start;background:#fff;border:1px solid #e8e6e1;border-radius:12px;padding:16px 20px;max-width:1000px;margin-left:auto;margin-right:auto">
+					<div
+						style="flex-shrink:0;font-size:11.5px;font-weight:800;letter-spacing:1px;padding:4px 11px;border-radius:99px;margin-top:2px;min-width:48px;text-align:center;background:#f1f3f5;color:#5a6170;border:1px solid #e2e8f0">
+						產出</div>
+					<div>
+						<div style="font-size:15.5px;font-weight:700">一張驗證過的產品清單</div>
+						<div style="font-size:14px;color:#5a6170;margin-top:3px">唯一交付物。下游全部消費它：比較表、畫布拉圖、BOM、配件。</div>
+					</div>
+				</div>
+			</div>
+
+			<h3>機制保證的三個行為</h3>
+			<p class="gray" style="margin-top:0">這三件事是設計保證、不是測試結果——只要型號對不上真實搜尋，純函式就不放行。</p>
+			<div class="row mt-md mb-lg" style="width:100%">
+				<div class="col-4 col-sm-12 plr-sm mb-md">
+					<h4>擋虛構</h4>
+					<p>清單出場前，每個型號逐一比對真實搜尋結果；對不上的整份退回重選——虛構型號、停產品出不了場。</p>
+				</div>
+				<div class="col-4 col-sm-12 plr-sm mb-md">
+					<h4>誠實留白</h4>
+					<p>某個角色找不到合適的真實產品時，不准硬湊——規則上只能改成追問，或標註「超出目前範圍」。</p>
+				</div>
+				<div class="col-4 col-sm-12 plr-sm mb-md">
+					<h4>有理由的判斷</h4>
+					<p>集中式 vs 分散式這類整體判斷交給 AI，但必須附上判斷理由與觸發了哪條規則——可檢視、可審。</p>
 				</div>
 			</div>
 
@@ -314,12 +734,14 @@
 				<div class="col-4 col-sm-12 plr-sm mb-md">
 					<h4>硬性規則</h4>
 					<p>X 一定 → Y，確定性觸發。<br>
-						<span class="gray">Apple TV / PS5 / 藍光 → HDCP 2.2；跨樓層 → 走 IP</span></p>
+						<span class="gray">Apple TV / PS5 / 藍光 → HDCP 2.2；跨樓層 → 走 IP</span>
+					</p>
 				</div>
 				<div class="col-4 col-sm-12 plr-sm mb-md">
 					<h4>場景劇本</h4>
 					<p>該問什麼、排除什麼、主架構準則、需要哪些產品角色。<br>
-						<span class="gray">宴會廳：問規模與分布；排除 KVM；輸出 &gt;9 或跨區 → 分散式</span></p>
+						<span class="gray">宴會廳：問規模與分布；排除 KVM；輸出 &gt;9 或跨區 → 分散式</span>
+					</p>
 				</div>
 				<div class="col-4 col-sm-12 plr-sm mb-md">
 					<h4>真實產品搜尋</h4>
@@ -327,11 +749,13 @@
 				</div>
 			</div>
 			<p>
-				第二代預先烤好的 14 套任務模板與 4 層設定合併，在這條路線<strong>整組刪除</strong>——
+				第二代事先寫死的 14 套任務模板與 4 層設定合併，在這條路線<strong>整組刪除</strong>——
 				養有限的積木，無限的組合交給模型現場拼。
 			</p>
 
-			<!-- TODO 截圖：/agent-architect 方案卡 + 追問選項 chips + 「AI 搜尋步驟」debug -->
+			<img class="natural" src="../../builder/images/07_aiAgent07.png"
+				alt="第三代 /agent-architect 介面：方案卡呈現主架構、品項、數量與「超出範圍」聲明；下方為追問選項 chips；右側『AI 搜尋步驟』debug 顯示 function-calling 的每次工具呼叫，以及驗證閘攔下不存在型號、自動退回重選的過程">
+			<!-- TODO 截圖（dev-only）：/agent-architect 方案卡 + 追問選項 chips + 「AI 搜尋步驟」debug，放 builder/images/07_aiAgent04.png -->
 
 			<h3>實測結果（三場景 headless 驗證）</h3>
 			<div class="line_area">
@@ -346,8 +770,35 @@
 			</div>
 			<div class="line_area">
 				<h6>成本降一個量級</h6>
-				<p>每案 3.7–4.9K token，對比第一代每輪約 58K，約省 6–15 倍（內部實測，同等級模型）。</p>
+				<p>每案 3.7–4.9K token，對比第二代每輪約 58K，約省 6–15 倍（內部實測，同等級模型）。
+					還有第二層空間沒動：第三代知識集中成一份、提示前綴固定，天生對輸入快取友善——
+					每案用量變小，重複的開頭再打一次折。</p>
 			</div>
+
+			<!-- 成本對比 -->
+			<div style="width:100%;max-width:1000px;margin:8px auto 16px auto;font-size:13px">
+				<div style="display:flex;align-items:center;margin-bottom:10px">
+					<div style="width:150px;flex-shrink:0">第二代 <span class="gray">每輪</span></div>
+					<div style="flex:1;background:#f2f2f2;border-radius:4px;height:30px;overflow:hidden">
+						<div
+							style="width:100%;height:100%;background:#cfe0ee;display:flex;align-items:center;padding-left:12px;color:#2c4a5a;font-weight:600">
+							≈ 58K token</div>
+					</div>
+				</div>
+				<div style="display:flex;align-items:center">
+					<div style="width:150px;flex-shrink:0">第三代 <span class="gray">每案</span></div>
+					<div
+						style="flex:1;background:#f2f2f2;border-radius:4px;height:30px;overflow:hidden;position:relative">
+						<div style="width:8%;height:100%;background:#cfe0ee;border-radius:4px"></div>
+						<div
+							style="position:absolute;top:0;left:calc(8% + 12px);height:100%;display:flex;align-items:center;color:#2c4a5a;font-weight:600">
+							3.7–4.9K token</div>
+					</div>
+				</div>
+			</div>
+			<p class="gray" style="max-width:1000px;font-size:13px;margin-top:2px">
+				差距來自做法不同：第二代每輪把整本產品知識庫重塞給模型，第三代讓模型用工具去查、只回傳命中的候選。
+			</p>
 
 			<h3>額外紅利：多語言</h3>
 			<p>
@@ -375,37 +826,159 @@
 					可單元測試、可重現、可在前端與 Node 之間移植。</p>
 			</div>
 			<div class="line_area">
-				<h6>幻覺用機制擋，不是用叮嚀擋</h6>
-				<p>「請不要編造型號」是叮嚀；「每個型號必須存在於真實搜尋結果，否則退回重選」是機制。
-					三代裡所有有效的防幻覺手段，最後都長成機制。</p>
+				<h6>幻覺用機制擋，不是用 LLM prompt 的叮嚀擋</h6>
+				<p>三代裡所有有效的防幻覺手段，最後都長成機制——從第二代的幻覺值偵測，到第三代「不在搜尋結果就退回重選」的驗證閘，沒有一個靠 Prompt 措辭。</p>
 			</div>
+
+			<h3>為什麼不乾脆叫使用者自己用通用模型</h3>
+			<p>
+				第一代的教訓裡藏著一個更尖銳的問題：如果通用大模型答得更完整，這個模組存在的理由是什麼？
+				答案不在「我們的判斷比通用模型準」——判斷本來就不必百分之百準。要百分之百的是另外兩件事。
+			</p>
+			<div class="row mt-md mb-md" style="width:100%">
+				<div class="col-6 col-sm-12 plr-sm mb-md">
+					<div style="border:1px solid #e2e2e2;border-radius:6px;overflow:hidden;height:100%">
+						<div style="background:#fafafa;border-bottom:1px solid #eee;padding:10px 16px;font-weight:700">
+							100% 正確的產品內容</div>
+						<div style="padding:12px 16px;font-size:13.5px;line-height:1.6">
+							<div style="margin-bottom:8px"><span style="color:#b0413e;font-weight:600">通用
+									ChatGPT</span>：憑印象編型號、推薦停產品。</div>
+							<div><span style="color:#3f7553;font-weight:600">這個 agent</span>：每個型號都過驗證閘——真實、現役、規格正確；對 B2B
+								銷售，這條不能打折。</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-6 col-sm-12 plr-sm mb-md">
+					<div style="border:1px solid #e2e2e2;border-radius:6px;overflow:hidden;height:100%">
+						<div style="background:#fafafa;border-bottom:1px solid #eee;padding:10px 16px;font-weight:700">
+							專用的應用服務（UI）</div>
+						<div style="padding:12px 16px;font-size:13.5px;line-height:1.6">
+							<div style="margin-bottom:8px"><span style="color:#b0413e;font-weight:600">通用
+									ChatGPT</span>：只能給文字。</div>
+							<div><span style="color:#3f7553;font-weight:600">這個 agent</span>：清單直接接整條服務——比較表、Builder
+								畫圖、BOM、配件，從建議到落地不換工具。</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<p class="highlight">
+				<strong>護城河是兩件通用模型給不了的事——產品內容百分之百正確，加上把清單接到落地的專用應用服務。</strong>
+				這也是為什麼三代都把唯一交付物收斂成一張驗證過的清單：它同時是工程約束，也是產品的立足點。
+			</p>
 
 			<h3>這為什麼是 UX 設計師的題目</h3>
 			<p>
 				純 ML 工程容易把目標訂成「模型答對」，忽略<strong>追問體驗</strong>——
 				但 B2B 場景裡「問得像資深 SI」本身就是信任來源；
-				純 UX 知道對話該長怎樣，卻沒有「把判斷和事實分層」的工程手段，只能靠 Prompt 措辭硬調。
+				純 UX 知道對話該長怎樣，卻沒有設計 harness 的工程手段——不會「把判斷和事實分層」，只能靠 Prompt 措辭硬調。
 				這個模組裡，追問選項的設計、Catalog 的語彙設計、決策引擎的純函式邊界、Prompt 的角色卸載，
 				是<strong>同一個人在同一張圖上畫出來的</strong>——對話體驗的每個約束，直接對應一個工程機制。
+				harness 設計到哪，對話體驗就設計到哪，反之亦然。
 			</p>
 
-			<h3>現況與下一步</h3>
+			<h3>現況</h3>
 			<p>
-				三套系統均為 dev-only，未隨正式版發布；第一代凍結為 A/B 對照組，第二代是窄查詢主力，
+				第一代凍結為 A/B 對照組，第二代是目前 DEMO 與窄查詢主力，
 				第三代完成核心驗證與前後端串接（多輪追問、BOM 複製、推理步驟可視化）。
 				目前的天花板是<strong>產品標籤覆蓋率</strong>（約三成場景已覆蓋），不是架構——
 				下一步是補齊缺口產品家族的標籤，再用真實案例做盲測 A/B。
 			</p>
 			<p class="gray">文中 token 與時間數字為內部開發實測，僅供量級參考。</p>
 
+			<!-- 後續 -->
+			<div class="session">後續</div>
+			<h2>拿到清單之後，使用者的旅程才開始</h2>
+			<p>
+				AI 的唯一交付物是「一張驗證過的產品清單」。但對使用者，拿到清單才是開始——
+				後面這些<strong>不交給 AI</strong>：它們是確定性的服務流程，由產品資料直接驅動、不會出錯，也是接下來要設計的部分。
+			</p>
+
+			<h3>完整體驗動線</h3>
+			<div
+				style="width:100%;max-width:1000px;margin:16px auto;display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-size:13px">
+				<span
+					style="background:#f0f6ff;border:1px solid #cfe0ee;border-radius:6px;padding:8px 12px">Planner<span
+						class="gray"> · 對話收斂需求</span></span>
+				<span class="gray">→</span>
+				<span style="background:#e8f6ed;border:1px solid #c7e6d3;border-radius:6px;padding:8px 12px">產品清單<span
+						class="gray"> · 驗證過的方案</span></span>
+				<span class="gray">→</span>
+				<span style="background:#fff8f0;border:1px solid #f0ddc4;border-radius:6px;padding:8px 12px">產品<span
+						class="gray"> · 單品細看 / 替換</span></span>
+				<span class="gray">→</span>
+				<span style="background:#fff8f0;border:1px solid #f0ddc4;border-radius:6px;padding:8px 12px">配件<span
+						class="gray"> · 線材 / 子卡 / 加購</span></span>
+			</div>
+			<p class="gray" style="max-width:1000px;font-size:13px;margin-top:0">
+				對話框負責前段（收斂需求、產出清單）最有價值；後段的細看、替換、配件挑選，交給既有的瀏覽介面體驗更好——這正是設計團隊可以著力的地方。
+			</p>
+
+			<h3>清單之後的流程框架（非 AI・待設計）</h3>
+			<div class="row mt-md mb-lg" style="width:100%">
+				<div class="col-4 col-sm-12 plr-sm mb-md">
+					<div style="background:#fff;border:1px solid #e8e6e1;border-radius:12px;padding:20px;height:100%">
+						<div style="font-size:26px;margin-bottom:10px">🔌</div>
+						<div style="font-size:16px;font-weight:800;margin-bottom:6px">推薦配件</div>
+						<p style="font-size:13.5px;color:#5a6170;margin:0">清單定案後，依產品資料自動帶出對應的線材、子卡、加購選項——規則對照，不必 AI 猜。
+						</p>
+					</div>
+				</div>
+				<div class="col-4 col-sm-12 plr-sm mb-md">
+					<div style="background:#fff;border:1px solid #e8e6e1;border-radius:12px;padding:20px;height:100%">
+						<div style="font-size:26px;margin-bottom:10px">🛡️</div>
+						<div style="font-size:16px;font-weight:800;margin-bottom:6px">自動帶入關鍵資訊</div>
+						<p style="font-size:13.5px;color:#5a6170;margin:0">保固、認證等購買決策需要的資訊，直接從產品庫帶入清單——快，而且保證正確。</p>
+					</div>
+				</div>
+				<div class="col-4 col-sm-12 plr-sm mb-md">
+					<div style="background:#fff;border:1px solid #e8e6e1;border-radius:12px;padding:20px;height:100%">
+						<div style="font-size:26px;margin-bottom:10px">🏗️</div>
+						<div style="font-size:16px;font-weight:800;margin-bottom:6px">轉進 Builder 深度服務</div>
+						<p style="font-size:13.5px;color:#5a6170;margin:0">從對話無縫轉入 Builder，接續畫圖、編輯、報價等更深度的服務。</p>
+					</div>
+				</div>
+			</div>
+
+			<h3>專用應用服務：兩條路線</h3>
+			<div class="row mt-md mb-lg" style="width:100%">
+				<div class="col-6 col-sm-12 plr-sm mb-md">
+					<h4>① 對話框直接提供服務</h4>
+					<p class="gray">在對話中就拿到「看得到、帶得走」的產出</p>
+					<div class="line_area">
+						<h6>AI 直接畫出連線圖</h6>
+						<p>Builder 開放編輯能力給 AI，直接把方案畫成 render 好的連線圖。</p>
+					</div>
+					<div class="line_area">
+						<h6>對話中直接產出 BOM 報表</h6>
+						<p>串接 Builder 的 BOM 生成，當場產出 PDF 與 Excel。</p>
+					</div>
+					<div class="line_area">
+						<h6>串接 Salesforce</h6>
+						<p>方案與需求資料流進 CRM，業務可直接跟進。</p>
+					</div>
+				</div>
+				<div class="col-6 col-sm-12 plr-sm mb-md">
+					<h4>② 引流進 Builder</h4>
+					<p class="gray">把對話成果變成進 Builder 的理由</p>
+					<div class="line_area">
+						<h6>產品清單一鍵帶進 Builder 編輯</h6>
+						<p>把 AI 產出的清單直接丟進 Builder，立即體驗編輯，或畫完想法直接諮詢。</p>
+					</div>
+					<div class="line_area">
+						<h6>依清單帶出 Builder 小工具</h6>
+						<p>依清單提供產品／子卡／Audio 選擇器、VK 計算器。Audio、VK 這類邏輯性選擇，<strong>用工具比用 AI 更合適</strong>。</p>
+					</div>
+				</div>
+			</div>
+
 			<!-- 總結 -->
 			<div class="session">專案總結</div>
 			<h2>約束放對位置，模型才能發揮</h2>
 			<p>
-				這個模組最大的收穫不是任何單一技術，而是一條邊界原則：
-				<strong>事實鎖死、判斷放開</strong>。第一代把判斷也鎖死，得到一台昂貴的僵化機器；
-				第三代只鎖事實，模型的推理能力回來了，幻覺卻被兩道確定性閘擋在門外。
-				對所有要把 LLM 放進嚴肅產品的團隊，「不確定性放在哪」都是第一個要回答的設計題。
+				這個模組最大的收穫是一條邊界原則：<strong>事實鎖死、判斷放開</strong>。
+				第一代把流程也鎖死，換來一台死板的填表機器；第三代只鎖事實，推理能力回來了，幻覺仍被兩道閘擋在門外。
+				對所有要把 LLM 放進嚴肅產品的團隊，「不確定性放在哪」都是第一個要回答的設計題——
+				而能把它當成「<strong>對話體驗與 harness 的同一道題</strong>」來解的，正是 UX 設計師可以站上的位置。
 			</p>
 
 		</div>
@@ -418,12 +991,15 @@
 	⚠️ 草稿狀態備忘（發佈前處理）：
 	1. 尚未在 js/app.js 的 portfolioData 註冊入口卡（依 PROGRESS.md 決策：三頁都完成後再補 index 入口）。
 	   未註冊前本頁無 sidebar 與上下篇導覽，直接以網址存取預覽。
-	2. 缺圖（兩處 TODO 註解）：
-	   - 第二代：/agent-tag-chat-sim 對話 + 任務看板 + debug 漏斗面板
-	   - 第三代：/agent-architect 方案卡 + 追問選項 chips + AI 搜尋步驟 debug
-	   截圖後放 repo 根 builder/images/，src 用 ../../builder/images/xxx.png。
-	3. 數字（58K / 3.7-4.9K token、4-5 call、10 秒、6-15 倍、約 2,000 SKU）來自內部實測文件，
-	   對外發佈前確認可揭露；「通用大模型答得更完整」的對比敘述已不點名特定產品。
+	2. 缺圖（四處 img placeholder，src 已填好檔名，截圖後放 repo 根 builder/images/）：
+	   - 07_aiAgent05.png 成品：/agent-architect 實際方案卡（結果）
+	   - 07_aiAgent06.png 使用流程：多輪追問 + 選項 chips + 搜尋步驟 debug
+	   - 07_aiAgent03.png 第二代：/agent-tag-chat-sim 對話 + 任務看板 + debug 漏斗面板
+	   - 07_aiAgent04.png 第三代：/agent-architect 方案卡 + 追問選項 chips + AI 搜尋步驟 debug
+	   （另：約束邊界圖、成本對比圖、成品輸入→輸出示意、使用流程條皆為純 HTML/CSS，不需出圖）
+	3. 數字（58K / 3.7-4.9K token、4-5 call、10 秒、6-15 倍、約 2,000 SKU、宴會廳範例 12進8出→4進14出）
+	   來自內部實測／提案文件，對外發佈前確認可揭露；「通用大模型答得更完整」的對比敘述已不點名特定產品。
+	   輸入快取為架構推估的優化空間（尚未實測），措辭已用「空間／預估」語氣，非實測數字。
 	4. 內容源：builder repo 的 docs/portfolio/08_ai_agent.md（兩邊修改請同步）。
 	-->
 </body>

@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, maximum-scale=1.5">
+    <meta name="robots" content="noindex, nofollow">
+    <title>AI 製品コンサルタント Agent：LLM の不確実性を制御する — ポートフォリオ</title>
+    <script>workName = "a_builder_agent"; lang = "ja"; basePath = "../";</script>
+    <link rel="stylesheet" href="../style/reset.css">
+    <link rel="stylesheet" href="../style/style_layout.css">
+    <link rel="stylesheet" href="../style/style.css">
+    <link rel="stylesheet" href="../style/article.css">
+    <link rel="icon" type="image/png" href="../web_icon.png" />
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-114514958-1"></script>
+    <script>
+        (function (w, d, s, l, i) {
+            w[l] = w[l] || []; w[l].push({
+                'gtm.start': new Date().getTime(), event: 'gtm.js'
+            }); var f = d.getElementsByTagName(s)[0],
+                j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+                    'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', 'GTM-PMLJXPC');
+    </script>
+</head>
+
+<body>
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PMLJXPC" height="0" width="0"
+            style="display:none;visibility:hidden"></iframe></noscript>
+
+    <header></header>
+    <div id="sidebar"></div>
+
+    <div class="container mt-xl">
+        <h1>AI 製品コンサルタント Agent<br><span class="gray" style="font-size:19px;font-weight:400;letter-spacing:0">LLM
+                の不確実性を正しい場所に置く</span></h1>
+        <div class="row mb-lg">
+            <div class="col-6 col-sm-12 pr-md">
+                <p>2026 - 現在</p>
+                <h3>推薦する製品が「実在し・現行品で・仕様も正しい」ことを必須とするとき、<br>LLM の不確実性はどこで制御すべきか？</h3>
+                <p>
+                    これは Solution Builder の AI 製品コンサルタント・モジュールです。ユーザーが自然言語でニーズを述べると
+                    （「会議室に投影したい」「サーバー室の 17 台を集中管理したい」など）、システムは約 2,000 件の実在する ATEN SKU から
+                    正しい製品を推薦します。アーキテクチャは三世代を経ており、答えは「すべてロック」から「判断をロックし翻訳を解放」、さらに
+                    「事実をロックし判断を解放」へと進みました——各世代は前世代の教訓への直接の応答です。
+                </p>
+
+                <h6 class="mb-xxs">担当</h6>
+                <p>対話体験設計、製品語彙（Catalog）設計、パイプライン設計とフロント／バックエンド実装、プロンプトエンジニアリング<br>
+                    <span class="gray">一人の UX
+                        デザイナーが「対話体験」と「それを信頼できるものにする工学的な仕組み」を一つの設計対象として扱う——対話上の制約はそれぞれ一つの仕組みに対応し、同じ人が同じ図の上で描き出す</span>
+                </p>
+
+                <h6 class="mb-xxs">プロジェクト種別</h6>
+                <p>B2B AI Agent · LLM ハーネス設計 · 対話 UX · フルスタック実装</p>
+            </div>
+            <div class="col-6 col-sm-12">
+                <img class="w-100" src="../../builder/images/07_aiAgent01.png"
+                    alt="第一世代 AI Agent の対話 UI：ドロワー型の対話と 3 つの意図入口">
+            </div>
+        </div>
+
+        <!-- series note -->
+        <div class="article">
+            <p class="highlight">
+                <strong>全 3 部構成のシリーズ。</strong>本稿は第 3 部で、AI Agent のアーキテクチャの変遷に焦点を当てます。
+                製品そのものは〈<a href="a_builder.html">Solution Builder</a>〉を参照；
+                AI 検索を支える製品データの構造化については〈<a href="a_builder_llm.html">LLM で製品データを構造化する</a>〉を参照。
+            </p>
+        </div>
+
+        <!-- the result first -->
+        <div class="article">
+            <div class="session">実際の使用例</div>
+            <h2>一言のシーン説明から、すぐ使える製品リストへ</h2>
+            <p>
+                システムインテグレーター（SI）は案件ごとに、約 2,000 の ATEN 型番から、互換性があり・現行品で・仕様も正しい構成を組み上げねばなりません——
+                仕様書をめくり、Excel を調べ、入出力ポートが合うか確認する。手間がかかり、間違えやすい作業です。
+                汎用チャットボットに直接尋ねるのはもっと危険です。もっともらしいが実在しない型番を作り出したり、生産終了品を勧めたりします。
+                このモジュールが目指すのは、同じ作業を「話すだけ」で完了させること。しかも全型番が実在することを保証します。
+            </p>
+            <p>
+                シーンを述べると、構成を返します——<strong>主アーキテクチャの接続、必要な製品ロール、各台数、選定理由</strong>；
+                情報が足りなければ、答えを無理に出さず、ベテラン SI のように聞き返します。リストはワンクリックで Excel に貼り付けられ、
+                そのまま下流の比較表・キャンバス配線図・BOM へ流せます。
+            </p>
+
+            <!-- input -> output mock -->
+            <div style="width:100%;max-width:1000px;margin:24px auto;font-size:13px;line-height:1.6">
+                <div style="text-align:right;margin-bottom:12px">
+                    <div
+                        style="display:inline-block;text-align:left;max-width:88%;background:#e6f4ff;border:1px solid #cfe6fb;border-radius:8px;padding:10px 14px">
+                        <div class="gray" style="font-size:12px;margin-bottom:2px">あなた</div>
+                        役員会議室、3 つのソース（ノート PC、Apple TV、ビデオ会議機）を 2 台の 4K ディスプレイへ切替。来客はワイヤレス投影、ワンタッチのシーン切替が必要。
+                    </div>
+                </div>
+                <div style="text-align:left">
+                    <div
+                        style="display:inline-block;text-align:left;max-width:96%;background:#fafafa;border:1px solid #f0f0f0;border-radius:8px;padding:12px 16px">
+                        <div class="gray" style="font-size:12px;margin-bottom:8px">AI アーキテクト</div>
+                        <div style="margin-bottom:10px;line-height:2.2">
+                            <span
+                                style="background:#e6f4ff;color:#1677b3;border-radius:4px;padding:3px 8px;margin-right:6px">シーン：役員会議室</span>
+                            <span
+                                style="background:#f0eafb;color:#722ed1;border-radius:4px;padding:3px 8px;margin-right:6px">ルール：Apple
+                                TV → HDCP</span>
+                            <span
+                                style="background:#e8f6ed;color:#389e5c;border-radius:4px;padding:3px 8px;margin-right:6px">✓
+                                全型番が検証通過</span>
+                            <span style="background:#f2f2f2;color:#666;border-radius:4px;padding:3px 8px">≈ 4K
+                                tokens</span>
+                        </div>
+                        <div style="margin-bottom:10px"><strong>主アーキテクチャ：</strong>3 ソース・2 台の 4K ディスプレイ・ゾーン跨ぎなし →
+                            集中型シームレス切替；来客のワイヤレス投影は独立経路、ワンタッチのシーンに組込み可。</div>
+                        <table style="width:100%;border-collapse:collapse;font-size:12.5px">
+                            <thead>
+                                <tr style="text-align:left;color:#888">
+                                    <th style="padding:5px 8px;border-bottom:1px solid #eee;font-weight:500">ロール</th>
+                                    <th style="padding:5px 8px;border-bottom:1px solid #eee;font-weight:500">型番</th>
+                                    <th style="padding:5px 8px;border-bottom:1px solid #eee;font-weight:500">数量</th>
+                                    <th style="padding:5px 8px;border-bottom:1px solid #eee;font-weight:500">理由</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style="padding:5px 8px;border-bottom:1px solid #f4f4f4">シームレス切替機</td>
+                                    <td style="padding:5px 8px;border-bottom:1px solid #f4f4f4"><span
+                                            style="color:#389e5c">✓ 検証済み</span></td>
+                                    <td style="padding:5px 8px;border-bottom:1px solid #f4f4f4">1</td>
+                                    <td style="padding:5px 8px;border-bottom:1px solid #f4f4f4">3 入力 2
+                                        出力、リアルタイムのシームレス切替が必要</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding:5px 8px;border-bottom:1px solid #f4f4f4">ワイヤレス投影レシーバー</td>
+                                    <td style="padding:5px 8px;border-bottom:1px solid #f4f4f4"><span
+                                            style="color:#389e5c">✓ 検証済み</span></td>
+                                    <td style="padding:5px 8px;border-bottom:1px solid #f4f4f4">1</td>
+                                    <td style="padding:5px 8px;border-bottom:1px solid #f4f4f4">来客のワイヤレス投影、配線不要</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding:5px 8px">中央制御 / シーン</td>
+                                    <td style="padding:5px 8px"><span style="color:#389e5c">✓ 検証済み</span></td>
+                                    <td style="padding:5px 8px">1</td>
+                                    <td style="padding:5px 8px">ワンタッチのシーン切替、各ソースを統合</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="gray" style="margin-top:10px">範囲外 / 別途調達：ディスプレイ、会議ソフトのライセンス</div>
+                        <div style="margin-top:10px"><span
+                                style="border:1px solid #d9d9d9;border-radius:4px;padding:4px 12px;color:#444">リストをコピー（Excel
+                                に貼付）</span></div>
+                    </div>
+                </div>
+            </div>
+            <p class="gray" style="max-width:1000px;font-size:13px;margin-top:0">
+                ユーザーのニーズから製品リストを生成し、各型番は検証ゲートを通して実在を確認します。（型番欄は構造の例示。実画面は下のスクリーンショット参照）
+            </p>
+
+            <!-- result screenshot placeholder -->
+            <img class="natural" src="../../builder/images/07_aiAgent05.png"
+                alt="第三世代 /agent-architect の実出力：シーン／ルールのタグ、全型番検証通過のバッジ、主アーキテクチャ説明、製品リスト表（ロール／型番／数量／理由）、範囲外の宣言、および「リストをコピー」ボタンを含む構成カード">
+
+            <!-- usage flow -->
+            <h3>フロー：情報が十分なら構成を出し、足りなければ聞き返す</h3>
+            <div
+                style="width:100%;max-width:1000px;margin:16px auto;display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-size:13px">
+                <span style="background:#fff8f0;border:1px solid #f0ddc4;border-radius:6px;padding:8px 12px">①
+                    口頭でシーンを述べる</span>
+                <span class="gray">→</span>
+                <span style="background:#f0f6ff;border:1px solid #cfe0ee;border-radius:6px;padding:8px 12px">② 情報不足なら AI
+                    が聞き返す（選択肢チップ付き）</span>
+                <span class="gray">→</span>
+                <span style="background:#fff8f0;border:1px solid #f0ddc4;border-radius:6px;padding:8px 12px">③
+                    タップ／回答し、複数ターンで収束</span>
+                <span class="gray">→</span>
+                <span style="background:#f0f6ff;border:1px solid #cfe0ee;border-radius:6px;padding:8px 12px">④
+                    構成カードを生成</span>
+                <span class="gray">→</span>
+                <span style="background:#e8f6ed;border:1px solid #c7e6d3;border-radius:6px;padding:8px 12px">⑤ ワンクリックで
+                    BOM をコピー／下流へ連携</span>
+            </div>
+            <p class="gray" style="max-width:1000px;font-size:13px;margin-top:0">
+                聞き返しも回答も同じ対話の中で完結します——選択肢はチップで提示され、タップするだけで要件に追加、打ち直し不要です。
+            </p>
+
+            <!-- usage-flow screenshot placeholder -->
+            <img class="natural" src="../../builder/images/07_aiAgent06.png"
+                alt="複数ターンの聞き返しフローの実画面：情報不足のとき AI がタップ可能な選択肢チップ付きで聞き返し、ユーザーのタップで対話が収束していく。右側の「AI 検索ステップ」debug が各ツール呼び出しを同時に表示">
+        </div>
+
+        <!-- project nav -->
+        <div class="article">
+            <div class="project-nav">
+                <a href="#problem" class="nav-item">
+                    <span class="step">01</span>
+                    <span class="label">核心の課題</span>
+                </a>
+                <a href="#overview" class="nav-item">
+                    <span class="step">02</span>
+                    <span class="label">三世代の概観</span>
+                </a>
+                <a href="#gen1" class="nav-item">
+                    <span class="step">03</span>
+                    <span class="label">第一世代：全ロック</span>
+                </a>
+                <a href="#gen2" class="nav-item">
+                    <span class="step">04</span>
+                    <span class="label">第二世代：判断をロック</span>
+                </a>
+                <a href="#gen3" class="nav-item">
+                    <span class="step">05</span>
+                    <span class="label">第三世代：事実をロック</span>
+                </a>
+                <a href="#principles" class="nav-item">
+                    <span class="step">06</span>
+                    <span class="label">設計原則</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="article">
+
+            <!-- core problem -->
+            <div class="session" id="problem">核心の課題</div>
+            <h2>なぜ ChatGPT（成熟した AI 企業のチャットボット）をそのまま繋がず、この agent が必要なのか</h2>
+            <p>
+                製品データをそのまま LLM に渡すと、致命的な問題が 2 つ起きます：
+            </p>
+            <div class="row mt-md mb-lg" style="width:100%">
+                <div class="col-6 col-sm-12 plr-sm mb-md">
+                    <h4>ハルシネーション SKU</h4>
+                    <p>LLM は「もっともらしいが実在しない」型番や、すでに生産終了した製品を勧めます。
+                        B2B の営業ツールでは、偽の型番を 1 つ勧めた時点で信頼はゼロになります。</p>
+                </div>
+                <div class="col-6 col-sm-12 plr-sm mb-md">
+                    <h4>再現できない</h4>
+                    <p>同じ質問でも毎回答えが変わります。SI（システムインテグレーター）は「今回はたまたま当たった」を業務フローに組み込めません。</p>
+                </div>
+            </div>
+            <p>
+                かといって逆に「LLM をルールに完全に閉じ込める」のも駄目でした——それこそ第一世代の教訓です。
+            </p>
+            <p class="highlight">
+                <strong>核心命題：不確実性はゼロにするのではなく、正しい場所に置く。</strong>
+                三世代は「境界を引く」3 度の試みです——工学の言い方をすれば、LLM のためのハーネス（制約・グラウンディング・検証の足場）を 3 度設計したということです。
+            </p>
+
+            <!-- three generations -->
+            <div class="session" id="overview">三世代の概観</div>
+            <h2>境界を引く 3 度の試み</h2>
+
+            <!-- constraint-boundary evolution -->
+            <div style="width:100%;max-width:1000px;margin:28px auto 8px auto;font-size:13px;line-height:1.5">
+                <div style="display:flex;align-items:center;margin-bottom:12px">
+                    <div style="width:104px;flex-shrink:0;padding-right:12px"><strong>第一世代</strong><br><span
+                            class="gray">フォーム入力係</span></div>
+                    <div
+                        style="flex:1;display:flex;height:40px;border-radius:6px;overflow:hidden;border:1px solid #e2e2e2">
+                        <div
+                            style="flex:88;background:#cfe0ee;display:flex;align-items:center;justify-content:center;color:#2c4a5a">
+                            🔒 判断 · 翻訳 · フロー　すべてロック</div>
+                        <div
+                            style="flex:12;background:#f7e3cb;display:flex;align-items:center;justify-content:center;color:#7a5230">
+                            穴埋め</div>
+                    </div>
+                </div>
+                <div style="display:flex;align-items:center;margin-bottom:12px">
+                    <div style="width:104px;flex-shrink:0;padding-right:12px"><strong>第二世代</strong><br><span
+                            class="gray">翻訳役</span></div>
+                    <div
+                        style="flex:1;display:flex;height:40px;border-radius:6px;overflow:hidden;border:1px solid #e2e2e2">
+                        <div
+                            style="flex:58;background:#cfe0ee;display:flex;align-items:center;justify-content:center;color:#2c4a5a">
+                            🔒 判断 · フロー</div>
+                        <div
+                            style="flex:42;background:#f7e3cb;display:flex;align-items:center;justify-content:center;color:#7a5230">
+                            🧠 翻訳 · 文章</div>
+                    </div>
+                </div>
+                <div style="display:flex;align-items:center">
+                    <div style="width:104px;flex-shrink:0;padding-right:12px"><strong>第三世代</strong><br><span
+                            class="gray">推論の主体</span></div>
+                    <div
+                        style="flex:1;display:flex;height:40px;border-radius:6px;overflow:hidden;border:1px solid #e2e2e2">
+                        <div
+                            style="flex:24;background:#cfe0ee;display:flex;align-items:center;justify-content:center;color:#2c4a5a">
+                            🔒 事実</div>
+                        <div
+                            style="flex:76;background:#f7e3cb;display:flex;align-items:center;justify-content:center;color:#7a5230">
+                            🧠 判断 · 翻訳 · 記述</div>
+                    </div>
+                </div>
+                <div class="gray" style="display:flex;margin-top:10px;font-size:12px">
+                    <div style="width:104px;flex-shrink:0"></div>
+                    <div style="flex:1;display:flex;justify-content:space-between"><span>🔒 ロック（決定論）</span><span>🧠 LLM
+                            に委ねる</span></div>
+                </div>
+            </div>
+            <p class="gray" style="max-width:1000px;font-size:13px;margin-top:0">
+                三世代とも同じ一本の境界を引き直しています——ロックする範囲は「判断」から「事実」だけへと後退し、モデルが自由に動ける余地は逆に広がります。
+            </p>
+
+            <div class="row mt-md mb-lg" style="width:100%">
+                <div class="col-4 col-sm-12 plr-sm mb-md">
+                    <h4>第一世代：固定の穴埋め</h4>
+                    <h6 class="gray">LLM の役割：フォーム入力係</h6>
+                    <p>固定の意図パイプライン。フィールド・聞き返し・フローはすべてハードコードされ、LLM はユーザーの言葉を固定フィールドに詰めるだけ。</p>
+                    <h6 class="gray">結果</h6>
+                    <p>安全だが硬直的——高コスト・低速で、汎用大規模モデルより劣る回答。現在は対照群として凍結。</p>
+                </div>
+                <div class="col-4 col-sm-12 plr-sm mb-md">
+                    <h4>第二世代：タグの蓄積</h4>
+                    <h6 class="gray">LLM の役割：翻訳役＋ライター</h6>
+                    <p>LLM は「自然言語 ↔ 構造化タグ」の翻訳のみ。次に何を聞くか・いつ出力するかは純粋関数の決定エンジンが決めます。</p>
+                    <h6 class="gray">成果</h6>
+                    <p>狭いクエリでは高効率（1 ターン最大 2 回の LLM 呼出）で、現在の主力。ただし案件全体の設計は組合せを列挙しきれません。</p>
+                </div>
+                <div class="col-4 col-sm-12 plr-sm mb-md">
+                    <h4>第三世代：2 つのゲート</h4>
+                    <h6 class="gray">LLM の役割：推論の主体</h6>
+                    <p>モデルにベテラン SI のように全体を推論させつつ、「ファクトゲート」から入場し「検証ゲート」から退場させます。</p>
+                    <h6 class="gray">成果</h6>
+                    <p>複数機器の案件全体設計：主アーキテクチャの判断は正確、実測でハルシネーションゼロ、コストは一桁低減。</p>
+                </div>
+            </div>
+            <p class="gray">
+                3 つのシステムはコードベース内に併存させ、A/B 比較のため意図的に残しています。
+            </p>
+
+            <!-- generation 1 -->
+            <div class="session" id="gen1">第一世代：全ロック</div>
+            <h2>LLM を完全にロックした教訓</h2>
+            <p>
+                第一世代は対話を固定パイプラインに分解しました：意図ルーティング → 2 段階翻訳（まず機器タイプをロックし、次に Schema に沿って必須項目を埋める）→
+                聞き返し品質の判定 → 純 JS 検索 → 分析と要約。各段で LLM は「穴埋め」だけを行い、
+                フィールド・聞き返し上限・手順はすべてハードコードでした。
+            </p>
+            <img class="natural" src="../../builder/images/07_aiAgent01.png"
+                alt="第一世代の対話 UI：3 つの固定の意図入口。空の入力欄を前にした選択の負担を避ける">
+            <img class="natural" src="../../builder/images/07_aiAgent02.png" alt="第一世代の推薦結果：各製品カードはそのままキャンバスに追加できる">
+
+            <h3>なぜ不十分だったか</h3>
+            <div class="line_area">
+                <h6>硬直的で、固定フォームを埋めるよう</h6>
+                <p>3 つの固定の意図入口、フィールドと聞き返しはすべてハードコード——ユーザーは専門家と話すというより、フォームを埋めている感覚です。既製のソリューションテンプレートを探すときに特に顕著でした。</p>
+            </div>
+            <div class="line_area">
+                <h6>案件全体と単品が別々の経路</h6>
+                <p>「単品を探す」と「ソリューション（部屋タイプのテンプレート）を探す」が別経路で、1 回の対話で多様な製品を自由に組み上げたリストが作れませんでした。</p>
+            </div>
+            <div class="line_area">
+                <h6>フローがハードコード</h6>
+                <p>新しいシーンを 1 つ足すたびに、フロー全体に手を入れる必要がありました。</p>
+            </div>
+
+            <p class="highlight">
+                <strong>教訓：</strong>決定論を「<strong>フローと判断</strong>」にかけると、ユーザーは固定フォームに縛られます——
+                安全だが、専門家との対話にもならず、自由に組んだ製品リストも作れません。問題は「制約するか否か」ではなく、<strong>制約する対象を間違えた</strong>ことです。
+            </p>
+
+            <!-- generation 2 -->
+            <div class="session" id="gen2">第二世代：判断をロック</div>
+            <h2>判断は LLM に渡さない</h2>
+            <p>
+                第二世代の境界の引き方：<strong>LLM は言語の仕事だけを行い、すべての判断は純粋関数が行う。</strong>
+            </p>
+
+            <h3>役割分担：翻訳役は「話す」、判断は決定エンジンだけが「動かす」</h3>
+            <div
+                style="width:100%;max-width:1000px;margin:28px auto;font-size:14px;line-height:1.6;border-top:1px solid #e2e2e2">
+                <div style="display:flex;gap:14px;padding:11px 0;border-bottom:1px solid #f0f0f0;">
+                    <div style="width:74px;flex-shrink:0"><span
+                            style="display:inline-block;font-size:11px;color:#888;padding:2px 0">輸入</span></div>
+                    <div style="flex:1"><strong>ユーザーの一言</strong>　<span class="gray">「教室で先生の画面を 8 台のモニターに分配したい」</span>
+                    </div>
+                </div>
+                <div style="display:flex;gap:14px;padding:11px 0;border-bottom:1px solid #f0f0f0;">
+                    <div style="width:74px;flex-shrink:0"><span
+                            style="display:inline-block;font-size:11px;background:#f6e9d6;color:#90602a;padding:2px 7px;border-radius:3px">LLM</span>
+                    </div>
+                    <div style="flex:1"><strong>翻訳役</strong>　自然言語 → 構造化タグ（Catalog 内の語彙のみ使用可）</div>
+                </div>
+                <div style="display:flex;gap:14px;padding:11px 0;border-bottom:1px solid #f0f0f0;">
+                    <div style="width:74px;flex-shrink:0"><span
+                            style="display:inline-block;font-size:11px;background:#e3edf5;color:#2c6184;padding:2px 7px;border-radius:3px">純粋関数</span>
+                    </div>
+                    <div style="flex:1"><strong>決定エンジン</strong>　タグの蓄積と候補プールの大きさを見て判断：さらに聞き返すか、出力するか？</div>
+                </div>
+                <div style="display:flex;gap:14px;padding:11px 0;border-bottom:1px solid #f0f0f0;">
+                    <div style="width:74px;flex-shrink:0"><span
+                            style="display:inline-block;font-size:11px;background:#f6e9d6;color:#90602a;padding:2px 7px;border-radius:3px">LLM</span>
+                    </div>
+                    <div style="flex:1"><span class="gray" style="font-size:12px">分岐
+                            A・情報不足</span><br><strong>質問役</strong>　エンジンが指定した問いを、選択肢付きの聞き返し文にする；回答後は「翻訳役」に戻って再実行</div>
+                </div>
+                <div style="display:flex;gap:14px;padding:11px 0;border-bottom:1px solid #f0f0f0;">
+                    <div style="width:74px;flex-shrink:0"><span
+                            style="display:inline-block;font-size:11px;background:#e3edf5;color:#2c6184;padding:2px 7px;border-radius:3px">純粋関数</span>
+                    </div>
+                    <div style="flex:1"><span class="gray" style="font-size:12px">分岐 B・条件充足</span><br><strong>6
+                            段階のファネル検索</strong>　除外 → 主機能の積集合 → パラメータ → 副機能 → ioInterface → 上位候補<br><span class="gray"
+                            style="font-size:13px">データ源：製品 API（約 2,000 件の実 ATEN、<code>/rest/product</code>、30
+                            分キャッシュ）</span></div>
+                </div>
+                <div style="display:flex;gap:14px;padding:11px 0;border-bottom:1px solid #f0f0f0;">
+                    <div style="width:74px;flex-shrink:0"><span
+                            style="display:inline-block;font-size:11px;background:#f6e9d6;color:#90602a;padding:2px 7px;border-radius:3px">LLM</span>
+                    </div>
+                    <div style="flex:1"><strong>アナリスト</strong>　候補を製品比較表＋推薦理由にまとめる（そのターン 2 回目、かつ最後の LLM 呼出）</div>
+                </div>
+                <div style="display:flex;gap:14px;padding:11px 0;">
+                    <div style="width:74px;flex-shrink:0"><span
+                            style="display:inline-block;font-size:11px;background:#e8f0e9;color:#3f7553;padding:2px 7px;border-radius:3px">出力</span>
+                    </div>
+                    <div style="flex:1"><strong>製品比較表＋分析</strong>　<span class="gray">ユーザーが目にする結果</span></div>
+                </div>
+            </div>
+            <p class="gray" style="max-width:1000px;font-size:13px;margin-top:4px">左の列が役割分担：オレンジ＝LLM
+                の言語の仕事、青＝純粋関数による判断と事実。</p>
+            <p>
+                このメインループは<strong>翻訳役 →（判断）→ 検索（製品 API を叩く）→ アナリスト</strong>。両端は LLM の言語の仕事で、中間の判断と絞り込みはすべて純粋関数です。
+                LLM はフローの方向を決して決めません——要件を翻訳し、聞き返しを書き、候補を分析にまとめるだけ。何を判断し・いつ出力し・どの製品を絞るかは、すべて純粋関数が決めます。
+            </p>
+
+            <h3>📚 すべての専門知識を「1 つのファイル」に集約する</h3>
+            <p>
+                どの世代の AI でも、どの機能でも、読み込む専門知識はすべて<strong>同一の構造化ファイル（JSON）</strong>に集約します：
+                製品の主機能／副機能の定義（マトリクスとは何か、HDCP とは何か、パラメータと別名）、現場情報（各シーンで何を聞き・何を除外するか）、
+                業界の know-how（確定的な常識、アーキテクチャ指針、聞き返し文）。
+            </p>
+            <p>
+                機能を 1 つ追加 = JSON を 1 件編集するだけ。翻訳・判断・検索・聞き返しが自動で追従し、<strong>コードもプロンプトも変えません</strong>——
+                一度直せばどこでも反映され、知識が二重管理でズレることもありません。しかもこのファイルは<strong>エンジニアの保守が不要</strong>：
+                ビジュアルエディタが付属し、PM・SI・製品担当がコードを書かずに自分で記入・編集できます。
+            </p>
+
+            <!-- one file: real example -->
+            <div style="max-width:1000px;margin:18px auto;font-size:13px">
+                <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px">
+                    <span
+                        style="background:#f4f4f4;border:1px solid #e2e2e2;border-radius:4px;padding:6px 12px"><code>Featurecatalog.json</code>　<span
+                            class="gray">知識マスターファイル（信頼できる唯一の出所）</span></span>
+                    <span
+                        style="background:#f4f4f4;border:1px solid #e2e2e2;border-radius:4px;padding:6px 12px"><code>feature-catalog-editor.html</code>　<span
+                            class="gray">専門家向けのビジュアルエディタ</span></span>
+                </div>
+                <div style="border:1px solid #e2e2e2;border-radius:6px;overflow:hidden">
+                    <div style="background:#fafafa;border-bottom:1px solid #eee;padding:9px 16px;font-weight:600">
+                        マスターファイル抜粋｜主機能：マトリクス（多対多）</div>
+                    <div style="padding:2px 16px">
+                        <div style="display:flex;gap:14px;padding:11px 0;border-bottom:1px solid #f4f4f4">
+                            <div style="width:128px;flex-shrink:0;color:#888">これは何か</div>
+                            <div style="flex:1">複数のソースを複数の表示出力へルーティング。任意の入力を任意の出力に割当て可能</div>
+                        </div>
+                        <div style="display:flex;gap:14px;padding:11px 0;border-bottom:1px solid #f4f4f4">
+                            <div style="width:128px;flex-shrink:0;color:#888">顧客の言い回し例</div>
+                            <div style="flex:1"><span
+                                    style="display:inline-block;background:#eef3f6;color:#345;border-radius:3px;padding:2px 9px;margin:0 5px 5px 0;font-size:12.5px">多対多</span><span
+                                    style="display:inline-block;background:#eef3f6;color:#345;border-radius:3px;padding:2px 9px;margin:0 5px 5px 0;font-size:12.5px">マトリクス</span><span
+                                    style="display:inline-block;background:#eef3f6;color:#345;border-radius:3px;padding:2px 9px;margin:0 5px 5px 0;font-size:12.5px">matrix</span><span
+                                    style="display:inline-block;background:#eef3f6;color:#345;border-radius:3px;padding:2px 9px;margin:0 5px 5px 0;font-size:12.5px">AV
+                                    マトリクス</span><span
+                                    style="display:inline-block;background:#eef3f6;color:#345;border-radius:3px;padding:2px 9px;margin:0 5px 5px 0;font-size:12.5px">N
+                                    台の PC を M 台の画面へ</span><span
+                                    style="display:inline-block;background:#eef3f6;color:#345;border-radius:3px;padding:2px 9px;margin:0 5px 5px 0;font-size:12.5px">…</span>
+                            </div>
+                        </div>
+                        <div style="display:flex;gap:14px;padding:11px 0">
+                            <div style="width:128px;flex-shrink:0;color:#888">聞くべきパラメータ</div>
+                            <div style="flex:1">入力ポート数、出力ポート数（代表値 2 / 4 / 8 / 16 / 32…）<br><span class="gray">AI
+                                    の聞き返し：「ソースは何台ですか？」「何台の画面へ送りますか？」</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="border:1px solid #e2e2e2;border-radius:6px;overflow:hidden;margin-top:14px">
+                    <div style="background:#fafafa;border-bottom:1px solid #eee;padding:9px 16px;font-weight:600">
+                        マスターファイル抜粋｜シーン：会議室 / プレゼン室</div>
+                    <div style="padding:2px 16px">
+                        <div style="display:flex;gap:14px;padding:11px 0;border-bottom:1px solid #f4f4f4">
+                            <div style="width:128px;flex-shrink:0;color:#888">これは何か</div>
+                            <div style="flex:1">オフィス空間での複数ソース切替＋表示。ワイヤレス投影・ビデオ会議連携・ワンタッチのシーン切替がよく必要</div>
+                        </div>
+                        <div style="display:flex;gap:14px;padding:11px 0;border-bottom:1px solid #f4f4f4">
+                            <div style="width:128px;flex-shrink:0;color:#888">見分け方（別名）</div>
+                            <div style="flex:1"><span
+                                    style="display:inline-block;background:#eef3f6;color:#345;border-radius:3px;padding:2px 9px;margin:0 5px 5px 0;font-size:12.5px">会議室</span><span
+                                    style="display:inline-block;background:#eef3f6;color:#345;border-radius:3px;padding:2px 9px;margin:0 5px 5px 0;font-size:12.5px">プレゼン室</span><span
+                                    style="display:inline-block;background:#eef3f6;color:#345;border-radius:3px;padding:2px 9px;margin:0 5px 5px 0;font-size:12.5px">boardroom</span><span
+                                    style="display:inline-block;background:#eef3f6;color:#345;border-radius:3px;padding:2px 9px;margin:0 5px 5px 0;font-size:12.5px">ビデオ会議室</span><span
+                                    style="display:inline-block;background:#eef3f6;color:#345;border-radius:3px;padding:2px 9px;margin:0 5px 5px 0;font-size:12.5px">役員会議室</span><span
+                                    style="display:inline-block;background:#eef3f6;color:#345;border-radius:3px;padding:2px 9px;margin:0 5px 5px 0;font-size:12.5px">…</span>
+                            </div>
+                        </div>
+                        <div style="display:flex;gap:14px;padding:11px 0">
+                            <div style="width:128px;flex-shrink:0;color:#888">このシーンで聞くこと</div>
+                            <div style="flex:1"><span
+                                    style="display:inline-block;border-radius:3px;padding:2px 9px;margin:0 5px 5px 0;font-size:12.5px;background:#fdecec;color:#b0413e;font-weight:600">入出力数
+                                    · 必須</span><span
+                                    style="display:inline-block;border-radius:3px;padding:2px 9px;margin:0 5px 5px 0;font-size:12.5px;background:#fdecec;color:#b0413e;font-weight:600">環境制御の要否
+                                    · 必須</span><span
+                                    style="display:inline-block;border-radius:3px;padding:2px 9px;margin:0 5px 5px 0;font-size:12.5px;background:#fbf2dd;color:#8a6d1f;font-weight:600">制御インターフェース
+                                    · 任意</span><span
+                                    style="display:inline-block;border-radius:3px;padding:2px 9px;margin:0 5px 5px 0;font-size:12.5px;background:#f2f2f2;color:#9aa1ad">距離
+                                    · 通常は省略</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <p class="gray" style="max-width:1000px;font-size:13px;margin-top:8px">
+                専門家が記入するのはこれらの項目——別名、聞くべきパラメータ、聞き返し文です。AI はこのファイルから読み、人も同じファイルを編集します：
+                人と AI が同じ知識の上で協働することこそ、このシステムの本当の働き方です。
+            </p>
+
+            <img class="natural" src="../../builder/images/07_aiAgent03.png"
+                alt="第二世代 /agent-tag-chat-sim の UI：左の対話がターンごとに構造化タグを蓄積し、タスクボードが収集済み／未取得のパラメータを表示、右の debug ファネルパネルが聞き返しごとに候補プールがどう収束するかを示す">
+            <!-- TODO screenshot (dev-only): /agent-tag-chat-sim conversation + task board + debug funnel panel -> builder/images/07_aiAgent03.png -->
+
+            <h3>ハルシネーション対策：プロンプトの注意書きではなく、仕組みにする</h3>
+            <div class="line_area">
+                <h6>選択肢は実在の値からのみ</h6>
+                <p>聞き返しのクイック選択肢は「候補プールに実際に存在する仕様値」から選ぶ必要があります——
+                    LLM はプールに無い値を提案できません。</p>
+            </div>
+            <div class="line_area">
+                <h6>ハルシネーション値の検出</h6>
+                <p>LLM が存在しない値を出しても、純粋関数の層が検出し、「条件を緩める」提案へ変換します。</p>
+            </div>
+            <div class="line_area">
+                <h6>競合の解決は LLM を通さない</h6>
+                <p>過去の教訓：「2 つの機能が競合したときの選択肢」を LLM に作らせるとハルシネーションが起きます。
+                    Catalog のシーン例文から直接選ぶ方式に変え、LLM は一切関与させません。</p>
+            </div>
+
+            <h3>コスト設計：1 ターン最大 2 回の LLM 呼出</h3>
+            <p>LLM の手前に 3 つの前段ルーティングを置き、モデルを呼ばずに済むなら呼びません：</p>
+            <div class="line_area">
+                <h6>Fast Lane</h6>
+                <p>純粋関数のキーワードが「PM が内面化したシーン → 製品セット」に命中すれば、LLM 0 回でそのままリストを出します。</p>
+            </div>
+            <div class="line_area">
+                <h6>軽量分類器</h6>
+                <p>初回ターンで脱線かどうか・どのシーンに命中したかを判定し、プロンプトに必要な部分だけを読み込ませます。</p>
+            </div>
+            <div class="line_area">
+                <h6>Scenario Planner</h6>
+                <p>シーン命中・聞き返しプールの縮小・タスクテンプレートの導出は、すべて純粋関数で事前計算。LLM は自然言語の抽出と文章書きだけを行います。</p>
+            </div>
+
+            <h3>限界：なぜ第三世代が必要だったか</h3>
+            <div class="line_area">
+                <h6>案件全体の設計は組合せを列挙しきれない</h6>
+                <p>狭いクエリ（「4 ポート 4K の KVM 切替器」）はとても得意です。しかし案件全体の設計（宴会場：ビデオウォール＋プロジェクター＋カメラ＋来客
+                    PC＋中央制御）には<strong>組合せ推論</strong>が要ります——あらゆるタスクの組合せを事前にテンプレ化すると、保守量が爆発し、永遠に書き終わりません。</p>
+            </div>
+            <div class="line_area">
+                <h6>毎ターン知識ベースを再投入するので高コスト</h6>
+                <p>呼出回数を 1 ターン 2 回に抑えても、毎回 製品知識ベース全体をモデルに渡します——コストの大半は繰り返しの入力に費やされ、ターン数とともに積み上がります。</p>
+            </div>
+            <div class="line_area">
+                <h6>ハードコードした組合せテンプレは静かに陳腐化する</h6>
+                <p>自社のテスト例ですら誤っていました：宴会場の組込み例は「12 入力 8 出力」と書かれていましたが、実際の要件は「4 入力 14 出力」でした。</p>
+            </div>
+            <p>この 3 点がそのまま第三世代へつながります。</p>
+
+            <!-- generation 3 -->
+            <div class="session" id="gen3">第三世代：事実をロック</div>
+            <h2>推論をモデルに返し、2 つのゲートで挟む</h2>
+            <p>
+                第三世代は教科書的な <strong>agent harness</strong> です：function-calling の推論ループ（ツール上限 8 ステップ）が判断を担い、
+                入口のファクトゲートと出口の検証ゲートがグラウンディングを担う——モデルは自由に推論し、事実の面は固く挟まれます。
+            </p>
+
+            <h3>核心原則：決定論の境界を正しい場所に引く</h3>
+            <div class="row mt-md" style="width:100%;max-width:1000px;margin-left:auto;margin-right:auto">
+                <div class="col-6 col-sm-12 plr-sm mb-md">
+                    <div style="border:1px solid #cfe0ee;border-radius:6px;overflow:hidden;height:100%">
+                        <div style="background:#f0f6ff;color:#2c6184;padding:10px 16px;font-weight:700">🔒 ロックする：事実
+                        </div>
+                        <ul style="list-style:disc;padding:12px 18px 14px 34px;font-size:13.5px;margin:0">
+                            <li style="margin:6px 0">製品が実在し、現行品かどうか</li>
+                            <li style="margin:6px 0">仕様と数量（入出力数、解像度）</li>
+                            <li style="margin:6px 0">確定的な含意：Apple TV を繋ぐなら HDCP 必須。さもなくば画面が映らない</li>
+                            <li style="margin:6px 0">リスト上のすべての型番</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-6 col-sm-12 plr-sm mb-md">
+                    <div style="border:1px solid #f0ddc4;border-radius:6px;overflow:hidden;height:100%">
+                        <div style="background:#fff8f0;color:#90602a;padding:10px 16px;font-weight:700">🧠 解放する：判断</div>
+                        <ul style="list-style:disc;padding:12px 18px 14px 34px;font-size:13.5px;margin:0">
+                            <li style="margin:6px 0">全体アーキテクチャを集中型にするか分散型にするか</li>
+                            <li style="margin:6px 0">何から聞くか、どう聞けばベテラン SI らしいか</li>
+                            <li style="margin:6px 0">構成をどう記述し、どの言語で説明するか</li>
+                            <li style="margin:6px 0">複数の妥当な選択肢の間でどう取捨するか</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <p class="highlight">
+                目指すのは「ばらつきゼロ」ではなく「<strong>有界のばらつき</strong>」：<strong>事実はロック、判断は解放</strong>。
+                ランダム性は「どう聞くか・どう組むか・どう書くか」にだけ残します——それは元々モデルに委ねるべきものです。
+            </p>
+
+            <h3>フロー：入口にファクトゲート、出口に検証ゲート</h3>
+            <div style="margin:24px 0">
+                <div
+                    style="display:flex;gap:16px;align-items:flex-start;background:#fff;border:1px solid #e8e6e1;border-radius:12px;padding:16px 20px;max-width:1000px;margin-left:auto;margin-right:auto">
+                    <div
+                        style="flex-shrink:0;font-size:11.5px;font-weight:800;letter-spacing:1px;padding:4px 11px;border-radius:99px;margin-top:2px;min-width:48px;text-align:center;background:#f1f3f5;color:#5a6170;border:1px solid #e2e8f0">
+                        入力</div>
+                    <div>
+                        <div style="font-size:15.5px;font-weight:700">ユーザーが一言で要件を述べる</div>
+                        <div style="font-size:14px;color:#5a6170;margin-top:3px"></div>
+                        <div style="font-size:13px;color:#9aa1ad;margin-top:6px"><code
+                                style="background:#fafaf8;border:1px solid #e8e6e1;border-radius:5px;padding:1px 7px;font-size:12.5px">「宴会場、3×4 のビデオウォール、4K プロジェクター 2 台、Apple TV、来客 PC」</code>
+                        </div>
+                    </div>
+                </div>
+                <div
+                    style="text-align:center;color:#9aa1ad;font-size:18px;line-height:1.5;padding:2px 0;max-width:1000px;margin:0 auto">
+                    ↓</div>
+                <div
+                    style="display:flex;gap:16px;align-items:flex-start;background:#fff;border:1px solid #e8e6e1;border-radius:12px;padding:16px 20px;max-width:1000px;margin-left:auto;margin-right:auto">
+                    <div
+                        style="flex-shrink:0;font-size:11.5px;font-weight:800;letter-spacing:1px;padding:4px 11px;border-radius:99px;margin-top:2px;min-width:48px;text-align:center;background:#eef4fb;color:#2c6184;border:1px solid #cfe0ee">
+                        🔒 ロック</div>
+                    <div>
+                        <div style="font-size:15.5px;font-weight:700">① ファクトゲート：確定ルールを先にロック</div>
+                        <div style="font-size:14px;color:#5a6170;margin-top:3px">AI の「記憶」に頼らず、ルールが直接発火——100% 命中、コストゼロ。
+                        </div>
+                        <div style="font-size:13px;color:#9aa1ad;margin-top:6px"><code
+                                style="background:#fafaf8;border:1px solid #e8e6e1;border-radius:5px;padding:1px 7px;font-size:12.5px">Apple TV</code>
+                            を検出 → HDCP を必須化；<code
+                                style="background:#fafaf8;border:1px solid #e8e6e1;border-radius:5px;padding:1px 7px;font-size:12.5px">ビデオウォール</code>
+                            を検出 → タイリング能力を必須化</div>
+                    </div>
+                </div>
+                <div
+                    style="text-align:center;color:#9aa1ad;font-size:18px;line-height:1.5;padding:2px 0;max-width:1000px;margin:0 auto">
+                    ↓</div>
+                <div
+                    style="display:flex;gap:16px;align-items:flex-start;background:#fff;border:1px solid #e8e6e1;border-radius:12px;padding:16px 20px;max-width:1000px;margin-left:auto;margin-right:auto">
+                    <div
+                        style="flex-shrink:0;font-size:11.5px;font-weight:800;letter-spacing:1px;padding:4px 11px;border-radius:99px;margin-top:2px;min-width:48px;text-align:center;background:#fdf3e7;color:#90602a;border:1px solid #f0ddc4">
+                        🧠 思考</div>
+                    <div>
+                        <div style="font-size:15.5px;font-weight:700">② シーンを認識し、シーンの台本を読み込む</div>
+                        <div style="font-size:14px;color:#5a6170;margin-top:3px">
+                            宴会場／会議室／サーバー室を認識し、そのシーンの台本を読み込む：何を聞くか・何を除外するか・アーキテクチャ指針・必要な製品ロール。</div>
+                    </div>
+                </div>
+                <div
+                    style="text-align:center;color:#9aa1ad;font-size:18px;line-height:1.5;padding:2px 0;max-width:1000px;margin:0 auto">
+                    ↓</div>
+                <div
+                    style="display:flex;gap:16px;align-items:flex-start;background:#fff;border:1px solid #e8e6e1;border-radius:12px;padding:16px 20px;max-width:1000px;margin-left:auto;margin-right:auto">
+                    <div
+                        style="flex-shrink:0;font-size:11.5px;font-weight:800;letter-spacing:1px;padding:4px 11px;border-radius:99px;margin-top:2px;min-width:48px;text-align:center;background:#fdf3e7;color:#90602a;border:1px solid #f0ddc4">
+                        🧠 思考</div>
+                    <div>
+                        <div style="font-size:15.5px;font-weight:700">③ 専門的な聞き返し（複数ターン可）</div>
+                        <div style="font-size:14px;color:#5a6170;margin-top:3px">
+                            重要情報が欠ければ聞き返す。各問いにはタップできる選択肢を付け、既定値を勝手に仮定することは禁止。</div>
+                        <div style="font-size:13px;color:#9aa1ad;margin-top:6px">
+                            「ビデオウォールとプロジェクターは同じ映像か、別々か？」——状況に即した問い、ベテラン SI のように</div>
+                    </div>
+                </div>
+                <div
+                    style="text-align:center;color:#9aa1ad;font-size:18px;line-height:1.5;padding:2px 0;max-width:1000px;margin:0 auto">
+                    ↓</div>
+                <div
+                    style="display:flex;gap:16px;align-items:flex-start;background:#fff;border:1px solid #e8e6e1;border-radius:12px;padding:16px 20px;max-width:1000px;margin-left:auto;margin-right:auto">
+                    <div
+                        style="flex-shrink:0;font-size:11.5px;font-weight:800;letter-spacing:1px;padding:4px 11px;border-radius:99px;margin-top:2px;min-width:48px;text-align:center;background:#fdf3e7;color:#90602a;border:1px solid #f0ddc4">
+                        🧠 思考</div>
+                    <div>
+                        <div style="font-size:15.5px;font-weight:700">④ 実在の製品ライブラリを検索し、選定し、台数を決める</div>
+                        <div style="font-size:14px;color:#5a6170;margin-top:3px">
+                            条件で実在の製品ライブラリを検索し、<strong>結果の中からのみ選定</strong>、ロール一覧と照合して台数を算出（function-calling の推論ループ、ツール上限
+                            8 ステップ）。</div>
+                        <div style="font-size:13px;color:#9aa1ad;margin-top:6px">4 ソース → 送信機 4 台；壁 12 面 ＋ 投影 2 → 受信機 14
+                            台</div>
+                    </div>
+                </div>
+                <div
+                    style="text-align:center;color:#9aa1ad;font-size:18px;line-height:1.5;padding:2px 0;max-width:1000px;margin:0 auto">
+                    ↓</div>
+                <div
+                    style="display:flex;gap:16px;align-items:flex-start;background:#fff;border:1px solid #e8e6e1;border-radius:12px;padding:16px 20px;max-width:1000px;margin-left:auto;margin-right:auto">
+                    <div
+                        style="flex-shrink:0;font-size:11.5px;font-weight:800;letter-spacing:1px;padding:4px 11px;border-radius:99px;margin-top:2px;min-width:48px;text-align:center;background:#eef4fb;color:#2c6184;border:1px solid #cfe0ee">
+                        🔒 ロック</div>
+                    <div>
+                        <div style="font-size:15.5px;font-weight:700">⑤ 検証ゲート：退場前に 1 つずつ検証</div>
+                        <div style="font-size:14px;color:#5a6170;margin-top:3px">
+                            リストの各型番は直前の実検索結果に必ず含まれていなければならず、なければリストごと差し戻して再選定。架空の型番や生産終了品は一切出られません。</div>
+                    </div>
+                </div>
+                <div
+                    style="text-align:center;color:#9aa1ad;font-size:18px;line-height:1.5;padding:2px 0;max-width:1000px;margin:0 auto">
+                    ↓</div>
+                <div
+                    style="display:flex;gap:16px;align-items:flex-start;background:#fff;border:1px solid #e8e6e1;border-radius:12px;padding:16px 20px;max-width:1000px;margin-left:auto;margin-right:auto">
+                    <div
+                        style="flex-shrink:0;font-size:11.5px;font-weight:800;letter-spacing:1px;padding:4px 11px;border-radius:99px;margin-top:2px;min-width:48px;text-align:center;background:#f1f3f5;color:#5a6170;border:1px solid #e2e8f0">
+                        出力</div>
+                    <div>
+                        <div style="font-size:15.5px;font-weight:700">検証済みの製品リスト 1 枚</div>
+                        <div style="font-size:14px;color:#5a6170;margin-top:3px">
+                            唯一の成果物。下流はすべてこれを消費します：比較表、キャンバス配線図、BOM、アクセサリー。</div>
+                    </div>
+                </div>
+            </div>
+
+            <h3>仕組みが保証する 3 つの振る舞い</h3>
+            <p class="gray" style="margin-top:0">この 3 つは設計上の保証であって、テスト結果ではありません——型番が実検索に合致しなければ、純粋関数が通しません。</p>
+            <div class="row mt-md mb-lg" style="width:100%">
+                <div class="col-4 col-sm-12 plr-sm mb-md">
+                    <h4>でっち上げを止める</h4>
+                    <p>リストを出す前に、各型番を実検索結果と 1 つずつ照合。合わなければリストごと差し戻し——架空の型番や生産終了品は出られません。</p>
+                </div>
+                <div class="col-4 col-sm-12 plr-sm mb-md">
+                    <h4>正直に空欄にする</h4>
+                    <p>あるロールに合う実在製品が見つからないとき、無理にこじつけるのは禁止——ルール上、聞き返すか「現状の範囲外」と明記するかのみ。</p>
+                </div>
+                <div class="col-4 col-sm-12 plr-sm mb-md">
+                    <h4>理由のある判断</h4>
+                    <p>集中型か分散型かといった全体判断は AI に委ねますが、判断理由とどのルールが発火したかの明示が必須——確認・監査が可能です。</p>
+                </div>
+            </div>
+
+            <h3>保守するのはフローではなく、3 種類の「知識ブロック」</h3>
+            <div class="row mt-md mb-lg" style="width:100%">
+                <div class="col-4 col-sm-12 plr-sm mb-md">
+                    <h4>確定ルール</h4>
+                    <p>X なら必ず → Y、決定論的に発火。<br>
+                        <span class="gray">Apple TV / PS5 / Blu-ray → HDCP 2.2；フロアを跨ぐ → IP 経由</span>
+                    </p>
+                </div>
+                <div class="col-4 col-sm-12 plr-sm mb-md">
+                    <h4>シーン台本</h4>
+                    <p>何を聞くか・何を除外するか・主アーキテクチャの指針・必要な製品ロール。<br>
+                        <span class="gray">宴会場：規模と配置を聞く；KVM を除外；出力 &gt;9 またはゾーン跨ぎ → 分散型</span>
+                    </p>
+                </div>
+                <div class="col-4 col-sm-12 plr-sm mb-md">
+                    <h4>実製品の検索</h4>
+                    <p>第二世代と同じ純粋関数の検索を共用し、モデルのツールになります——モデルは検索結果からしか型番を選べません。</p>
+                </div>
+            </div>
+            <p>
+                第二世代でハードコードしていた 14 種のタスクテンプレートと 4 層の設定マージは、この経路では<strong>まるごと削除</strong>——
+                有限のブロックだけを維持し、無限の組合せはモデルにその場で組ませます。
+            </p>
+
+            <img class="natural" src="../../builder/images/07_aiAgent04.png"
+                alt="第三世代 /agent-architect の UI：構成カードが主アーキテクチャ・品目・数量・「範囲外」宣言を提示；下に聞き返し選択肢チップ；右の『AI 検索ステップ』debug が function-calling の各ツール呼出と、検証ゲートが実在しない型番を止めて自動で再選定する過程を表示">
+            <!-- TODO screenshot (dev-only): /agent-architect solution card + follow-up chips + AI search steps debug -> builder/images/07_aiAgent04.png -->
+
+            <h3>実測結果（3 シーンの headless 検証）</h3>
+            <div class="line_area">
+                <h6>検証ゲートは理論ではない——実際にハルシネーションを止めた</h6>
+                <p>会議室シーンの初回ターンで、モデルは存在しない型番を 2 つ推薦しましたが、検証ゲートが実測で阻止；
+                    修正後はハルシネーションが消え、3 案すべて実在 SKU で着地しました。</p>
+            </div>
+            <div class="line_area">
+                <h6>正直に空欄にする</h6>
+                <p>見つからなければでっち上げず、質問するか正直に「範囲外」と宣言します——
+                    無理に答えを出すチャットボットではなく、ベテラン SI のように振る舞います。</p>
+            </div>
+            <div class="line_area">
+                <h6>コストが一桁下がる</h6>
+                <p>1 案あたり 3.7〜4.9K トークン。第二世代の 1 ターン約 58K に対し、およそ 6〜15 倍の節約（社内実測、同等級モデル）。
+                    さらに手つかずの第 2 層があります：第三世代は知識を 1 ファイルに集約しプロンプト接頭辞も固定なので、入力キャッシュと相性が良い——
+                    1 案あたりの使用量が小さく、繰り返す冒頭部分にさらに割引が効きます。</p>
+            </div>
+
+            <!-- cost comparison -->
+            <div style="width:100%;max-width:1000px;margin:8px auto 16px auto;font-size:13px">
+                <div style="display:flex;align-items:center;margin-bottom:10px">
+                    <div style="width:150px;flex-shrink:0">第二世代 <span class="gray">1 ターン</span></div>
+                    <div style="flex:1;background:#f2f2f2;border-radius:4px;height:30px;overflow:hidden">
+                        <div
+                            style="width:100%;height:100%;background:#cfe0ee;display:flex;align-items:center;padding-left:12px;color:#2c4a5a;font-weight:600">
+                            ≈ 58K token</div>
+                    </div>
+                </div>
+                <div style="display:flex;align-items:center">
+                    <div style="width:150px;flex-shrink:0">第三世代 <span class="gray">1 案</span></div>
+                    <div
+                        style="flex:1;background:#f2f2f2;border-radius:4px;height:30px;overflow:hidden;position:relative">
+                        <div style="width:8%;height:100%;background:#cfe0ee;border-radius:4px"></div>
+                        <div
+                            style="position:absolute;top:0;left:calc(8% + 12px);height:100%;display:flex;align-items:center;color:#2c4a5a;font-weight:600">
+                            3.7–4.9K token</div>
+                    </div>
+                </div>
+            </div>
+            <p class="gray" style="max-width:1000px;font-size:13px;margin-top:2px">
+                差は手法の違いから：第二世代は毎ターン製品知識ベース全体をモデルに再投入しますが、第三世代はモデルにツールで検索させ、命中した候補だけを返します。
+            </p>
+
+            <h3>おまけ：多言語対応</h3>
+            <p>
+                第一世代では N 言語に対応するため、聞き返し文ごとに N 本の翻訳を保守する必要がありました。第三世代では聞き返しと構成の記述を、モデルがユーザーの言語でその場生成し、
+                一字一句の正確さが要る部分（法的免責、BOM のヘッダー）だけ既存翻訳にロックします。
+                <strong>アーキテクチャを正しく選べば、多言語対応はコストから標準機能へ変わります。</strong>
+            </p>
+
+            <!-- 設計原則 -->
+            <div class="session" id="principles">設計原則</div>
+            <h2>三世代を通じて変わらない 4 つの原則</h2>
+            <div class="line_area">
+                <h6>唯一の成果物は「検証済みの製品リスト 1 枚」</h6>
+                <p>比較表、キャンバス配線図、BOM 出力、アクセサリー推薦はすべてこのリストを消費します。
+                    AI の仕事を 1 つに収束させるからこそ、下流が安定して受け取れます。</p>
+            </div>
+            <div class="line_area">
+                <h6>知識はデータに置き、プロンプトの散文には置かない</h6>
+                <p>Catalog・台本・確定ルールはすべて構造化データで、翻訳・判断・検索の三者が共用できます；
+                    プロンプトに書いた知識は、モデルが「覚えている」間しか存在しません。</p>
+            </div>
+            <div class="line_area">
+                <h6>決定論的なロジックはすべて純粋関数</h6>
+                <p>決定エンジン、検索ファネル、設問プールの縮小、トポロジー導出はすべて副作用のない純粋関数——
+                    単体テスト可能・再現可能で、フロントエンドと Node の間で移植できます。</p>
+            </div>
+            <div class="line_area">
+                <h6>ハルシネーションは仕組みで止める。LLM プロンプトの注意書きでは止めない</h6>
+                <p>三世代を通じて有効だったハルシネーション対策は、最終的にすべて仕組みになりました——第二世代のハルシネーション値検出から、第三世代の「検索結果に無ければ差し戻して再選定」する検証ゲートまで、プロンプトの言い回しに頼ったものは
+                    1 つもありません。</p>
+            </div>
+
+            <h3>なぜ「汎用モデルをユーザー自身に使わせる」で済まないのか</h3>
+            <p>
+                第一世代の教訓には、より鋭い問いが潜んでいます：汎用の大規模モデルの方が完全に答えるなら、このモジュールが存在する理由は何か？
+                答えは「我々の判断の方が汎用モデルより正確だから」ではありません——判断は 100% 正確である必要はないのです。100% が要るのは別の 2 つです。
+            </p>
+            <div class="row mt-md mb-md" style="width:100%">
+                <div class="col-6 col-sm-12 plr-sm mb-md">
+                    <div style="border:1px solid #e2e2e2;border-radius:6px;overflow:hidden;height:100%">
+                        <div style="background:#fafafa;border-bottom:1px solid #eee;padding:10px 16px;font-weight:700">
+                            100% 正確な製品情報</div>
+                        <div style="padding:12px 16px;font-size:13.5px;line-height:1.6">
+                            <div style="margin-bottom:8px"><span style="color:#b0413e;font-weight:600">汎用
+                                    ChatGPT</span>：記憶頼りで型番をでっち上げ、生産終了品を勧める。</div>
+                            <div><span style="color:#3f7553;font-weight:600">この
+                                    agent</span>：全型番が検証ゲートを通過——実在・現行・仕様正確；B2B の営業では、ここは妥協できません。</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 col-sm-12 plr-sm mb-md">
+                    <div style="border:1px solid #e2e2e2;border-radius:6px;overflow:hidden;height:100%">
+                        <div style="background:#fafafa;border-bottom:1px solid #eee;padding:10px 16px;font-weight:700">
+                            専用のアプリケーション（UI）</div>
+                        <div style="padding:12px 16px;font-size:13.5px;line-height:1.6">
+                            <div style="margin-bottom:8px"><span style="color:#b0413e;font-weight:600">汎用
+                                    ChatGPT</span>：テキストしか返せない。</div>
+                            <div><span style="color:#3f7553;font-weight:600">この agent</span>：リストがサービス全体に直結——比較表、Builder
+                                での作図、BOM、アクセサリー。提案から実装までツールを切り替えません。</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <p class="highlight">
+                <strong>差別化（堀）は、汎用モデルには出せない 2 つ——製品情報が 100% 正確であること、そしてリストを実装までつなぐ専用アプリケーションです。</strong>
+                三世代とも唯一の成果物を「検証済みリスト 1 枚」に収束させたのはこのためです：それは工学上の制約であると同時に、製品の足場でもあります。
+            </p>
+
+            <h3>なぜこれが UX デザイナーの課題なのか</h3>
+            <p>
+                純粋な ML エンジニアリングは目標を「モデルが正解する」に置きがちで、<strong>聞き返しの体験</strong>を見落とします——
+                しかし B2B では「ベテラン SI のように聞く」こと自体が信頼の源です。
+                純粋な UX は対話のあるべき形を知っていても、ハーネスを設計する工学的手段を持たず——「判断と事実を階層に分ける」ことができず、プロンプトの言い回しで無理に調整するしかありません。
+                このモジュールでは、聞き返し選択肢の設計、Catalog の語彙設計、決定エンジンの純粋関数の境界、プロンプトからの役割の切り出しが、
+                <strong>同じ人が同じ図の上で描き出したもの</strong>です——対話体験のあらゆる制約が、そのまま 1 つの工学的な仕組みに対応します。
+                ハーネスを設計する深さは、対話体験を設計する深さでもあり、その逆もまた然りです。
+            </p>
+
+            <h3>現状</h3>
+            <p>
+                第一世代は A/B の対照群として凍結、第二世代は現行のデモかつ狭いクエリの主力、
+                第三世代は核心の検証とフロント／バックエンド連携（複数ターンの聞き返し、BOM コピー、推論ステップの可視化）を完了。
+                現在の天井は<strong>製品タグのカバレッジ</strong>（シーンの約 3 割をカバー）であって、アーキテクチャではありません——
+                次は不足する製品ファミリーのタグを埋め、実案件でブラインド A/B を行います。
+            </p>
+            <p class="gray">本文中のトークン数と時間の数値は社内開発の実測で、桁感の参考用です。</p>
+
+            <!-- whats next -->
+            <div class="session">この先</div>
+            <h2>リストを手にしてから、ユーザーの旅が始まる</h2>
+            <p>
+                AI の唯一の成果物は「検証済みの製品リスト 1 枚」です。しかしユーザーにとっては、リストを得てからが始まり——
+                この先は<strong>AI に渡しません</strong>：これらは製品データが直接駆動する決定論的なサービスフローで、間違いが起きず、そしてこれから設計していく部分です。
+            </p>
+
+            <h3>体験の全体導線</h3>
+            <div
+                style="width:100%;max-width:1000px;margin:16px auto;display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-size:13px">
+                <span
+                    style="background:#f0f6ff;border:1px solid #cfe0ee;border-radius:6px;padding:8px 12px">Planner<span
+                        class="gray"> · 対話で要件を収束</span></span>
+                <span class="gray">→</span>
+                <span style="background:#e8f6ed;border:1px solid #c7e6d3;border-radius:6px;padding:8px 12px">製品リスト<span
+                        class="gray"> · 検証済みの構成</span></span>
+                <span class="gray">→</span>
+                <span style="background:#fff8f0;border:1px solid #f0ddc4;border-radius:6px;padding:8px 12px">製品<span
+                        class="gray"> · 単品の詳細 / 差替え</span></span>
+                <span class="gray">→</span>
+                <span style="background:#fff8f0;border:1px solid #f0ddc4;border-radius:6px;padding:8px 12px">アクセサリー<span
+                        class="gray"> · ケーブル / ドーターカード / 追加購入</span></span>
+            </div>
+            <p class="gray" style="max-width:1000px;font-size:13px;margin-top:0">
+                チャットは前半（要件の収束、リスト生成）で最も価値を発揮します。後半の詳細閲覧・差替え・アクセサリー選びは、既存のブラウズ UI に任せた方が体験が良い——まさに設計チームが力を発揮できる領域です。
+            </p>
+
+            <h3>リスト後のフロー枠組み（非 AI・設計予定）</h3>
+            <div class="row mt-md mb-lg" style="width:100%">
+                <div class="col-4 col-sm-12 plr-sm mb-md">
+                    <div style="background:#fff;border:1px solid #e8e6e1;border-radius:12px;padding:20px;height:100%">
+                        <div style="font-size:26px;margin-bottom:10px">🔌</div>
+                        <div style="font-size:16px;font-weight:800;margin-bottom:6px">アクセサリー推薦</div>
+                        <p style="font-size:13.5px;color:#5a6170;margin:0">
+                            リスト確定後、製品データから対応するケーブル・ドーターカード・追加購入の選択肢を自動で引き出します——ルール照合で、AI に推測させません。</p>
+                    </div>
+                </div>
+                <div class="col-4 col-sm-12 plr-sm mb-md">
+                    <div style="background:#fff;border:1px solid #e8e6e1;border-radius:12px;padding:20px;height:100%">
+                        <div style="font-size:26px;margin-bottom:10px">🛡️</div>
+                        <div style="font-size:16px;font-weight:800;margin-bottom:6px">重要情報の自動補完</div>
+                        <p style="font-size:13.5px;color:#5a6170;margin:0">
+                            保証・認証など購入判断に必要な情報を、製品ライブラリから直接リストに取り込みます——速く、しかも正確さが保証されます。</p>
+                    </div>
+                </div>
+                <div class="col-4 col-sm-12 plr-sm mb-md">
+                    <div style="background:#fff;border:1px solid #e8e6e1;border-radius:12px;padding:20px;height:100%">
+                        <div style="font-size:26px;margin-bottom:10px">🏗️</div>
+                        <div style="font-size:16px;font-weight:800;margin-bottom:6px">Builder の深いサービスへ引き継ぐ</div>
+                        <p style="font-size:13.5px;color:#5a6170;margin:0">対話からシームレスに Builder
+                            へ移り、作図・編集・見積もりなど、より深いサービスへ続けます。</p>
+                    </div>
+                </div>
+            </div>
+
+            <h3>専用アプリケーション：2 つのルート</h3>
+            <div class="row mt-md mb-lg" style="width:100%">
+                <div class="col-6 col-sm-12 plr-sm mb-md">
+                    <h4>① チャットが直接サービスを提供</h4>
+                    <p class="gray">対話の中で「見えて・持ち帰れる」成果物を得る</p>
+                    <div class="line_area">
+                        <h6>AI が配線図を直接描く</h6>
+                        <p>Builder が編集機能を AI に開放し、構成を仕上がった配線図として描き出します。</p>
+                    </div>
+                    <div class="line_area">
+                        <h6>対話の中で BOM 帳票を生成</h6>
+                        <p>Builder の BOM 生成と連携し、その場で PDF と Excel を出力します。</p>
+                    </div>
+                    <div class="line_area">
+                        <h6>Salesforce と連携</h6>
+                        <p>構成と要件のデータが CRM へ流れ、営業がそのままフォローできます。</p>
+                    </div>
+                </div>
+                <div class="col-6 col-sm-12 plr-sm mb-md">
+                    <h4>② Builder へ誘導</h4>
+                    <p class="gray">対話の成果を、Builder に入る理由に変える</p>
+                    <div class="line_area">
+                        <h6>製品リストをワンクリックで Builder 編集へ</h6>
+                        <p>AI が出したリストをそのまま Builder に入れ、すぐ編集を体験。あるいは描き終えたアイデアをそのまま相談できます。</p>
+                    </div>
+                    <div class="line_area">
+                        <h6>リストに応じて Builder のツールを提示</h6>
+                        <p>リストに応じて製品／ドーターカード／Audio セレクター、VK 計算機を提供。Audio や VK のような論理的な選択は、<strong>AI
+                                より専用ツールの方が適しています</strong>。</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- wrap-up -->
+            <div class="session">まとめ</div>
+            <h2>制約を正しい場所に置けば、モデルは力を発揮できる</h2>
+            <p>
+                このモジュール最大の収穫は、1 つの境界原則です：<strong>事実はロック、判断は解放</strong>。
+                第一世代はフローまでロックして、硬直したフォーム入力機になりました。第三世代は事実だけをロックし、推論力が戻り、それでもハルシネーションは 2 つのゲートで門前払いされます。
+                LLM を本格的な製品に組み込むあらゆるチームにとって、「不確実性をどこに置くか」は最初に答えるべき設計課題です——
+                それを「<strong>対話体験とハーネスの同じ 1 つの課題</strong>」として解けることこそ、UX デザイナーが立てる場所です。
+            </p>
+
+        </div>
+    </div>
+
+    <footer></footer>
+    <script src="../js/app.js"></script>
+
+    <!--
+	⚠️ ドラフト状態のメモ（公開前に対応）：
+	1. js/app.js の portfolioData にエントリーカード未登録（PROGRESS.md の決定：3 ページ完成後に index 入口を追加）。
+	   登録前はこのページに sidebar と前後ナビが無いため、URL で直接アクセスしてプレビュー。
+	2. 画像不足（img プレースホルダー 4 か所。src のファイル名は記入済み。撮影後 repo 直下の builder/images/ へ）：
+	   - 07_aiAgent05.png 完成品：/agent-architect の実構成カード（結果）
+	   - 07_aiAgent06.png 使用フロー：複数ターンの聞き返し + 選択肢チップ + 検索ステップ debug
+	   - 07_aiAgent03.png 第二世代：/agent-tag-chat-sim 対話 + タスクボード + debug ファネルパネル
+	   - 07_aiAgent04.png 第三世代：/agent-architect 構成カード + 聞き返しチップ + AI 検索ステップ debug
+	   （他：制約境界図・コスト比較図・完成品の入力→出力モック・使用フロー帯はすべて純 HTML/CSS で、画像不要）
+	3. 数値（58K / 3.7-4.9K token、4-5 call、10 秒、6-15 倍、約 2,000 SKU、宴会場の例 12入8出→4入14出）
+	   社内実測／提案文書由来。社外公開前に開示可否を確認；「汎用大規模モデルの方が完全に答える」という比較記述は特定製品を名指ししない表現に変更済み。
+	   入力キャッシュはアーキテクチャ上の最適化余地の見積もり（未実測）。「余地／見積もり」のトーンで記述、実測値ではない。
+	4. 内容の出所：builder repo の docs/portfolio/08_ai_agent.md（両方の変更は同期すること）。
+	-->
+</body>
+
+</html>

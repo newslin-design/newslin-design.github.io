@@ -1,0 +1,1143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, maximum-scale=1.5">
+    <meta name="robots" content="noindex, nofollow">
+    <title>AI Agent: Constraining LLM Uncertainty — Portfolio</title>
+    <script>workName = "a_builder_agent"; lang = "en"; basePath = "../";</script>
+    <link rel="stylesheet" href="../style/reset.css">
+    <link rel="stylesheet" href="../style/style_layout.css">
+    <link rel="stylesheet" href="../style/style.css">
+    <link rel="stylesheet" href="../style/article.css">
+    <link rel="icon" type="image/png" href="../web_icon.png" />
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-114514958-1"></script>
+    <script>
+        (function (w, d, s, l, i) {
+            w[l] = w[l] || []; w[l].push({
+                'gtm.start': new Date().getTime(), event: 'gtm.js'
+            }); var f = d.getElementsByTagName(s)[0],
+                j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+                    'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', 'GTM-PMLJXPC');
+    </script>
+</head>
+
+<body>
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PMLJXPC" height="0" width="0"
+            style="display:none;visibility:hidden"></iframe></noscript>
+
+    <header></header>
+    <div id="sidebar"></div>
+
+    <div class="container mt-xl">
+        <h1>AI Product Advisor Agent<br><span class="gray"
+                style="font-size:19px;font-weight:400;letter-spacing:0">Putting LLM uncertainty in the right
+                place</span></h1>
+        <div class="row mb-lg">
+            <div class="col-6 col-sm-12 pr-md">
+                <p>2026 – Present</p>
+                <h3>When the recommended result must be real, in-production, spec-correct products,<br>where should the
+                    LLM's uncertainty be constrained?</h3>
+                <p>
+                    This is the AI product-advisor module of Solution Builder: users describe their needs in natural
+                    language
+                    ("the meeting room needs projection", "17 servers in the server room need centralized management"),
+                    and the system recommends the right products from ~2,000 real ATEN SKUs. It went through three
+                    generations
+                    of architecture, with the answer moving from "lock everything" to "lock decisions, free translation"
+                    to
+                    "lock facts, free judgment" — each generation a direct response to the previous one's lessons.
+                </p>
+
+                <h6 class="mb-xxs">My role</h6>
+                <p>Conversational experience design, product-vocabulary (Catalog) design, pipeline architecture and
+                    full-stack implementation, prompt engineering<br>
+                    <span class="gray">A UX designer treating "the conversation experience" and "the engineering
+                        mechanisms that make it reliable" as one design problem — every conversational constraint maps
+                        to a mechanism, drawn by the same person on the same diagram.</span>
+                </p>
+
+                <h6 class="mb-xxs">Project attributes</h6>
+                <p>B2B AI Agent · LLM harness design · Conversational UX · Full-stack implementation</p>
+            </div>
+            <div class="col-6 col-sm-12">
+                <img class="w-100" src="../../builder/images/07_aiAgent01.png"
+                    alt="Gen 1 AI Agent chat interface: drawer-style conversation with three intent entry points">
+            </div>
+        </div>
+
+        <!-- series note -->
+        <div class="article">
+            <p class="highlight">
+                <strong>This series has three parts:</strong> this is part three, focused on the AI Agent's
+                architectural evolution.
+                For the product itself, see ⟨<a href="a_builder.html">Solution Builder</a>⟩;
+                for how the product data behind AI search is structured, see ⟨<a href="a_builder_llm.html">Structuring
+                    product data with an LLM</a>⟩.
+            </p>
+        </div>
+
+        <!-- real usage example -->
+        <div class="article">
+            <div class="session">A real usage example</div>
+            <h2>One sentence describing a scenario, in return a deployable product list</h2>
+            <p>
+                Every time a Systems Integrator (SI) takes on a project, they have to assemble a compatible,
+                in-production,
+                spec-correct solution out of ~2,000 ATEN models — flipping through spec sheets, checking Excel,
+                confirming
+                the in/out ports line up. It's slow and easy to get wrong. Asking a general-purpose chatbot is even
+                riskier:
+                it invents plausible-sounding models that don't exist, or recommends discontinued ones. This module aims
+                to do
+                the same job just by talking — and guarantees every model is real.
+            </p>
+            <p>
+                You describe a scenario, and it returns a solution — <strong>how the main architecture connects, which
+                    product
+                    roles are needed, how many of each, and why</strong>. When information is missing, it asks back like
+                a senior SI
+                rather than forcing an answer. The whole list can be copied into Excel with one click, or fed straight
+                into the
+                downstream comparison table, canvas diagram, and BOM.
+            </p>
+
+            <!-- input → output illustration -->
+            <div style="width:100%;max-width:1000px;margin:24px auto;font-size:13px;line-height:1.6">
+                <div style="text-align:right;margin-bottom:12px">
+                    <div
+                        style="display:inline-block;text-align:left;max-width:88%;background:#e6f4ff;border:1px solid #cfe6fb;border-radius:8px;padding:10px 14px">
+                        <div class="gray" style="font-size:12px;margin-bottom:2px">You</div>
+                        Executive meeting room: 3 sources (laptop, Apple TV, video-conference host) switching to 2× 4K
+                        displays; guests need wireless projection; one-touch scene switching.
+                    </div>
+                </div>
+                <div style="text-align:left">
+                    <div
+                        style="display:inline-block;text-align:left;max-width:96%;background:#fafafa;border:1px solid #f0f0f0;border-radius:8px;padding:12px 16px">
+                        <div class="gray" style="font-size:12px;margin-bottom:8px">AI Architect</div>
+                        <div style="margin-bottom:10px;line-height:2.2">
+                            <span
+                                style="background:#e6f4ff;color:#1677b3;border-radius:4px;padding:3px 8px;margin-right:6px">Scenario:
+                                Executive meeting room</span>
+                            <span
+                                style="background:#f0eafb;color:#722ed1;border-radius:4px;padding:3px 8px;margin-right:6px">Rule:
+                                Apple TV → HDCP</span>
+                            <span
+                                style="background:#e8f6ed;color:#389e5c;border-radius:4px;padding:3px 8px;margin-right:6px">✓
+                                All models validated</span>
+                            <span style="background:#f2f2f2;color:#666;border-radius:4px;padding:3px 8px">≈ 4K
+                                tokens</span>
+                        </div>
+                        <div style="margin-bottom:10px"><strong>Main architecture:</strong> 3 sources, 2× 4K displays,
+                            no cross-zone → centralized seamless switching; guest wireless projection on a separate
+                            path, can join one-touch scenes.</div>
+                        <table style="width:100%;border-collapse:collapse;font-size:12.5px">
+                            <thead>
+                                <tr style="text-align:left;color:#888">
+                                    <th style="padding:5px 8px;border-bottom:1px solid #eee;font-weight:500">Role</th>
+                                    <th style="padding:5px 8px;border-bottom:1px solid #eee;font-weight:500">Model</th>
+                                    <th style="padding:5px 8px;border-bottom:1px solid #eee;font-weight:500">Qty</th>
+                                    <th style="padding:5px 8px;border-bottom:1px solid #eee;font-weight:500">Reason</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style="padding:5px 8px;border-bottom:1px solid #f4f4f4">Seamless switcher</td>
+                                    <td style="padding:5px 8px;border-bottom:1px solid #f4f4f4"><span
+                                            style="color:#389e5c">✓ Validated</span></td>
+                                    <td style="padding:5px 8px;border-bottom:1px solid #f4f4f4">1</td>
+                                    <td style="padding:5px 8px;border-bottom:1px solid #f4f4f4">3-in 2-out, needs
+                                        instant seamless switching</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding:5px 8px;border-bottom:1px solid #f4f4f4">Wireless projection
+                                        receiver</td>
+                                    <td style="padding:5px 8px;border-bottom:1px solid #f4f4f4"><span
+                                            style="color:#389e5c">✓ Validated</span></td>
+                                    <td style="padding:5px 8px;border-bottom:1px solid #f4f4f4">1</td>
+                                    <td style="padding:5px 8px;border-bottom:1px solid #f4f4f4">Guest wireless
+                                        projection, no physical cabling</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding:5px 8px">Central control / scenes</td>
+                                    <td style="padding:5px 8px"><span style="color:#389e5c">✓ Validated</span></td>
+                                    <td style="padding:5px 8px">1</td>
+                                    <td style="padding:5px 8px">One-touch scene switching, integrates all sources</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="gray" style="margin-top:10px">Out of scope / procure separately: displays,
+                            conferencing-software licenses</div>
+                        <div style="margin-top:10px"><span
+                                style="border:1px solid #d9d9d9;border-radius:4px;padding:4px 12px;color:#444">Copy list
+                                (paste into Excel)</span></div>
+                    </div>
+                </div>
+            </div>
+            <p class="gray" style="max-width:1000px;font-size:13px;margin-top:0">
+                It can produce a product list from the user's needs, with every model passing the validation gate as
+                genuinely existing. (The Model column is a structural illustration; see the screenshot below for the
+                actual screen.)
+            </p>
+
+            <!-- result screenshot placeholder -->
+            <img class="natural" src="../../builder/images/07_aiAgent05.png"
+                alt="Gen 3 /agent-architect actual output: the solution card with scenario and rule tags, an all-models-validated badge, main-architecture description, product list table (role / model / qty / reason), out-of-scope statement, and a 'Copy list (paste into Excel)' button">
+
+            <!-- usage flow -->
+            <h3>Usage flow: enough info → solution; not enough → it asks back</h3>
+            <div
+                style="width:100%;max-width:1000px;margin:16px auto;display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-size:13px">
+                <span style="background:#fff8f0;border:1px solid #f0ddc4;border-radius:6px;padding:8px 12px">① Describe
+                    the scenario in plain words</span>
+                <span class="gray">→</span>
+                <span style="background:#f0f6ff;border:1px solid #cfe0ee;border-radius:6px;padding:8px 12px">② Info
+                    missing — AI asks back (with option chips)</span>
+                <span class="gray">→</span>
+                <span style="background:#fff8f0;border:1px solid #f0ddc4;border-radius:6px;padding:8px 12px">③ Tap /
+                    answer, converge over a few rounds</span>
+                <span class="gray">→</span>
+                <span style="background:#f0f6ff;border:1px solid #cfe0ee;border-radius:6px;padding:8px 12px">④ Produce
+                    the solution card</span>
+                <span class="gray">→</span>
+                <span style="background:#e8f6ed;border:1px solid #c7e6d3;border-radius:6px;padding:8px 12px">⑤ One-click
+                    copy BOM / hand off downstream</span>
+            </div>
+            <p class="gray" style="max-width:1000px;font-size:13px;margin-top:0">
+                Asking back and answering all happen in the same conversation — options appear as chips; one tap fills
+                the requirement, no retyping.
+            </p>
+
+            <!-- usage flow screenshot placeholder -->
+            <img class="natural" src="../../builder/images/07_aiAgent06.png"
+                alt="Actual multi-round clarification flow: the AI asks follow-ups when info is missing, with tappable option chips; after the user taps, the conversation keeps converging, while the 'AI search steps' debug panel on the right shows each tool call in sync">
+        </div>
+
+        <!-- project nav -->
+        <div class="article">
+            <div class="project-nav">
+                <a href="#problem" class="nav-item">
+                    <span class="step">01</span>
+                    <span class="label">Core problem</span>
+                </a>
+                <a href="#overview" class="nav-item">
+                    <span class="step">02</span>
+                    <span class="label">Three generations</span>
+                </a>
+                <a href="#gen1" class="nav-item">
+                    <span class="step">03</span>
+                    <span class="label">Gen 1: Lock everything</span>
+                </a>
+                <a href="#gen2" class="nav-item">
+                    <span class="step">04</span>
+                    <span class="label">Gen 2: Lock decisions</span>
+                </a>
+                <a href="#gen3" class="nav-item">
+                    <span class="step">05</span>
+                    <span class="label">Gen 3: Lock facts</span>
+                </a>
+                <a href="#principles" class="nav-item">
+                    <span class="step">06</span>
+                    <span class="label">Design principles</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="article">
+
+            <!-- core problem -->
+            <div class="session" id="problem">Core problem</div>
+            <h2>Why this agent is needed instead of just plugging in a ChatGPT (a mature AI company's chatbot)</h2>
+            <p>
+                Feeding product data straight into an LLM hits two fatal problems:
+            </p>
+            <div class="row mt-md mb-lg" style="width:100%">
+                <div class="col-6 col-sm-12 plr-sm mb-md">
+                    <h4>Hallucinated SKUs</h4>
+                    <p>The LLM recommends models that "sound reasonable but don't exist", or discontinued products.
+                        For a B2B sales tool, recommending a fake model means trust drops to zero.</p>
+                </div>
+                <div class="col-6 col-sm-12 plr-sm mb-md">
+                    <h4>Not reproducible</h4>
+                    <p>The same question gives a different answer each time. An SI (systems integrator) can't make
+                        "it happened to be right this time" part of a workflow.</p>
+                </div>
+            </div>
+            <p>
+                But the reverse — "locking the LLM entirely inside rules" — doesn't work either. That's exactly Gen 1's
+                lesson.
+            </p>
+            <p class="highlight">
+                <strong>Core thesis: uncertainty isn't to be reduced to zero, it's to be placed correctly.</strong>
+                The three generations are three attempts at "drawing the boundary" — in engineering terms, three
+                attempts at designing a harness for the LLM (scaffolding for constraint, grounding, and validation).
+            </p>
+
+            <!-- three generations -->
+            <div class="session" id="overview">Three generations</div>
+            <h2>Three attempts at drawing the boundary</h2>
+
+            <!-- constraint-boundary evolution -->
+            <div style="width:100%;max-width:1000px;margin:28px auto 8px auto;font-size:13px;line-height:1.5">
+                <div style="display:flex;align-items:center;margin-bottom:12px">
+                    <div style="width:104px;flex-shrink:0;padding-right:12px"><strong>Gen 1</strong><br><span
+                            class="gray">Form-filler</span></div>
+                    <div
+                        style="flex:1;display:flex;height:40px;border-radius:6px;overflow:hidden;border:1px solid #e2e2e2">
+                        <div
+                            style="flex:88;background:#cfe0ee;display:flex;align-items:center;justify-content:center;color:#2c4a5a">
+                            🔒 Judgment · Translation · Flow — all locked</div>
+                        <div
+                            style="flex:12;background:#f7e3cb;display:flex;align-items:center;justify-content:center;color:#7a5230">
+                            Fill-in</div>
+                    </div>
+                </div>
+                <div style="display:flex;align-items:center;margin-bottom:12px">
+                    <div style="width:104px;flex-shrink:0;padding-right:12px"><strong>Gen 2</strong><br><span
+                            class="gray">Translator</span></div>
+                    <div
+                        style="flex:1;display:flex;height:40px;border-radius:6px;overflow:hidden;border:1px solid #e2e2e2">
+                        <div
+                            style="flex:58;background:#cfe0ee;display:flex;align-items:center;justify-content:center;color:#2c4a5a">
+                            🔒 Decisions · Flow</div>
+                        <div
+                            style="flex:42;background:#f7e3cb;display:flex;align-items:center;justify-content:center;color:#7a5230">
+                            🧠 Translation · Copy</div>
+                    </div>
+                </div>
+                <div style="display:flex;align-items:center">
+                    <div style="width:104px;flex-shrink:0;padding-right:12px"><strong>Gen 3</strong><br><span
+                            class="gray">Reasoning agent</span></div>
+                    <div
+                        style="flex:1;display:flex;height:40px;border-radius:6px;overflow:hidden;border:1px solid #e2e2e2">
+                        <div
+                            style="flex:24;background:#cfe0ee;display:flex;align-items:center;justify-content:center;color:#2c4a5a">
+                            🔒 Facts</div>
+                        <div
+                            style="flex:76;background:#f7e3cb;display:flex;align-items:center;justify-content:center;color:#7a5230">
+                            🧠 Judgment · Translation · Description</div>
+                    </div>
+                </div>
+                <div class="gray" style="display:flex;margin-top:10px;font-size:12px">
+                    <div style="width:104px;flex-shrink:0"></div>
+                    <div style="flex:1;display:flex;justify-content:space-between"><span>🔒 Locked
+                            (deterministic)</span><span>🧠 Given to the LLM</span></div>
+                </div>
+            </div>
+            <p class="gray" style="max-width:1000px;font-size:13px;margin-top:0">
+                All three generations redraw the same boundary — the locked region retreats from "judgment" all the way
+                down to just "facts", while the model's room to operate freely grows in the opposite direction.
+            </p>
+
+            <div class="row mt-md mb-lg" style="width:100%">
+                <div class="col-4 col-sm-12 plr-sm mb-md">
+                    <h4>Gen 1: Fixed fill-in</h4>
+                    <h6 class="gray">LLM's role: form-filler</h6>
+                    <p>A fixed-intent pipeline; fields, follow-ups, and flow all hard-coded — the LLM just stuffs the
+                        user's words into fixed fields.</p>
+                    <h6 class="gray">Outcome</h6>
+                    <p>Safe but rigid — expensive and slow, and it answered worse than a general-purpose model. Now
+                        frozen as a control group.</p>
+                </div>
+                <div class="col-4 col-sm-12 plr-sm mb-md">
+                    <h4>Gen 2: Tag accumulation</h4>
+                    <h6 class="gray">LLM's role: translator + copywriter</h6>
+                    <p>The LLM only translates "natural language ↔ structured tags"; what to ask next and when to output
+                        are decided by a pure-function decision engine.</p>
+                    <h6 class="gray">Result</h6>
+                    <p>Efficient on narrow queries (at most 2 LLM calls per round); currently the main workhorse. But
+                        full-project design can't be exhausted combinatorially.</p>
+                </div>
+                <div class="col-4 col-sm-12 plr-sm mb-md">
+                    <h4>Gen 3: Two gates</h4>
+                    <h6 class="gray">LLM's role: reasoning agent</h6>
+                    <p>Let the model reason holistically like a senior SI, but enter through a "fact gate" and exit
+                        through a "validation gate".</p>
+                    <h6 class="gray">Result</h6>
+                    <p>Multi-device full-project design: correct main-architecture judgment, zero hallucinations in
+                        testing, cost down an order of magnitude.</p>
+                </div>
+            </div>
+            <p class="gray">
+                All three systems coexist in the codebase, deliberately kept for A/B comparison.
+            </p>
+
+            <!-- Gen 1 -->
+            <div class="session" id="gen1">Gen 1: Lock everything</div>
+            <h2>The lesson of locking the LLM down completely</h2>
+            <p>
+                Gen 1 split the conversation into a fixed pipeline: intent routing → two-stage translation (first lock
+                device type, then fill required fields per schema) →
+                follow-up-quality decision → pure-JS search → analysis summary. In every stage the LLM only "fills in
+                blanks";
+                fields, follow-up limits, and flow order are all hard-coded.
+            </p>
+            <img class="natural" src="../../builder/images/07_aiAgent01.png"
+                alt="Gen 1 chat interface: three fixed intent entry points, avoiding the choice anxiety of facing a blank input box">
+            <img class="natural" src="../../builder/images/07_aiAgent02.png"
+                alt="Gen 1 recommendation result: each product card can be added directly to the canvas">
+
+            <h3>Why it wasn't enough</h3>
+            <div class="line_area">
+                <h6>Rigid — like filling in a fixed form</h6>
+                <p>Three fixed intent entry points; fields and follow-ups all hard-coded — the user feels like they're
+                    filling a form, not talking to an expert.
+                    Especially obvious when looking for ready-made solution templates.</p>
+            </div>
+            <div class="line_area">
+                <h6>Full-project and single-product were two separate paths</h6>
+                <p>"Find a single product" and "find a solution (room template)" each ran on their own,
+                    so you couldn't freely assemble a diverse product list within a single conversation.</p>
+            </div>
+            <div class="line_area">
+                <h6>Hard-coded flow</h6>
+                <p>Every new scenario meant changing the whole pipeline.</p>
+            </div>
+
+            <p class="highlight">
+                <strong>Lesson:</strong> putting determinism on "<strong>flow and judgment</strong>" binds the user into
+                a fixed form —
+                safe, but neither expert-like nor able to assemble a free product list. The question isn't "to constrain
+                or not", it's that <strong>the wrong thing was constrained</strong>.
+            </p>
+
+            <!-- Gen 2 -->
+            <div class="session" id="gen2">Gen 2: Lock decisions</div>
+            <h2>Decisions don't go to the LLM</h2>
+            <p>
+                Gen 2's boundary: <strong>the LLM does language work only; all decisions are made by pure
+                    functions.</strong>
+            </p>
+
+            <h3>Division of labor: the Translator can "say", only the decision engine can "do"</h3>
+            <div
+                style="width:100%;max-width:1000px;margin:28px auto;font-size:14px;line-height:1.6;border-top:1px solid #e2e2e2">
+                <div style="display:flex;gap:14px;padding:11px 0;border-bottom:1px solid #f0f0f0;">
+                    <div style="width:74px;flex-shrink:0"><span
+                            style="display:inline-block;font-size:11px;color:#888;padding:2px 0">Input</span></div>
+                    <div style="flex:1"><strong>User's one sentence</strong>　<span class="gray">"The classroom needs the
+                            teacher's screen split to 8 displays"</span></div>
+                </div>
+                <div style="display:flex;gap:14px;padding:11px 0;border-bottom:1px solid #f0f0f0;">
+                    <div style="width:74px;flex-shrink:0"><span
+                            style="display:inline-block;font-size:11px;background:#f6e9d6;color:#90602a;padding:2px 7px;border-radius:3px">LLM</span>
+                    </div>
+                    <div style="flex:1"><strong>Translator</strong>　natural language → structured tags (only vocabulary
+                        inside the Catalog)</div>
+                </div>
+                <div style="display:flex;gap:14px;padding:11px 0;border-bottom:1px solid #f0f0f0;">
+                    <div style="width:74px;flex-shrink:0"><span
+                            style="display:inline-block;font-size:11px;background:#e3edf5;color:#2c6184;padding:2px 7px;border-radius:3px">Pure
+                            fn</span></div>
+                    <div style="flex:1"><strong>Decision engine</strong>　looks at accumulated tags and candidate-pool
+                        size and decides: ask again, or output?</div>
+                </div>
+                <div style="display:flex;gap:14px;padding:11px 0;border-bottom:1px solid #f0f0f0;">
+                    <div style="width:74px;flex-shrink:0"><span
+                            style="display:inline-block;font-size:11px;background:#f6e9d6;color:#90602a;padding:2px 7px;border-radius:3px">LLM</span>
+                    </div>
+                    <div style="flex:1"><span class="gray" style="font-size:12px">Branch A · info
+                            insufficient</span><br><strong>Questioner</strong>　turns the decision engine's chosen
+                        question into a readable follow-up with options; after the answer, loops back to the
+                        "Translator"</div>
+                </div>
+                <div style="display:flex;gap:14px;padding:11px 0;border-bottom:1px solid #f0f0f0;">
+                    <div style="width:74px;flex-shrink:0"><span
+                            style="display:inline-block;font-size:11px;background:#e3edf5;color:#2c6184;padding:2px 7px;border-radius:3px">Pure
+                            fn</span></div>
+                    <div style="flex:1"><span class="gray" style="font-size:12px">Branch B · conditions
+                            met</span><br><strong>Six-stage funnel search</strong>　exclude → main-feature intersection →
+                        params → sub-features → ioInterface → top candidates<br><span class="gray"
+                            style="font-size:13px">Source: product API (~2,000 real ATEN records,
+                            <code>/rest/product</code>, cached 30 min)</span></div>
+                </div>
+                <div style="display:flex;gap:14px;padding:11px 0;border-bottom:1px solid #f0f0f0;">
+                    <div style="width:74px;flex-shrink:0"><span
+                            style="display:inline-block;font-size:11px;background:#f6e9d6;color:#90602a;padding:2px 7px;border-radius:3px">LLM</span>
+                    </div>
+                    <div style="flex:1"><strong>Analyst</strong>　writes the candidates into a product comparison table +
+                        recommendation reasons (the 2nd and final LLM call of the round)</div>
+                </div>
+                <div style="display:flex;gap:14px;padding:11px 0;">
+                    <div style="width:74px;flex-shrink:0"><span
+                            style="display:inline-block;font-size:11px;background:#e8f0e9;color:#3f7553;padding:2px 7px;border-radius:3px">Output</span>
+                    </div>
+                    <div style="flex:1"><strong>Product comparison table + analysis</strong>　<span class="gray">what the
+                            user sees</span></div>
+                </div>
+            </div>
+            <p class="gray" style="max-width:1000px;font-size:13px;margin-top:4px">The left column is the division of
+                labor: orange = the LLM's language work, blue = pure-function decisions and facts.</p>
+            <p>
+                This main loop is <strong>Translator →(decision)→ search (drawing on the product API)→ Analyst</strong>:
+                both ends are the LLM's language work; the decisions and filtering in the middle are all pure functions.
+                The LLM never decides the flow — it translates the need, writes follow-ups, and turns candidates into
+                analysis, nothing more; decisions, when to output, and which products to filter are all set by pure
+                functions.
+            </p>
+
+            <h3>📚 All domain knowledge lives in "one file"</h3>
+            <p>
+                No matter which generation of AI or which feature it feeds, the domain knowledge to load is centralized
+                in <strong>one structured file (JSON)</strong>:
+                product main/sub-feature definitions (what a matrix is, what HDCP is, parameters and aliases), site
+                information (what to ask and exclude per scenario), and
+                industry know-how (hard rules, architecture guidelines, follow-up phrasings).
+            </p>
+            <p>
+                Adding a feature = editing one JSON entry; translation, decision, search, and follow-up all keep up
+                automatically — <strong>no code changes, no prompt changes</strong> —
+                change once, take effect everywhere, no two-sided knowledge drift. And this file <strong>doesn't need
+                    engineers to maintain</strong>:
+                it comes with a visual editor, so PMs, SIs, and product lines can fill and edit it themselves without
+                coding.
+            </p>
+
+            <!-- one file: real example -->
+            <div style="max-width:1000px;margin:18px auto;font-size:13px">
+                <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px">
+                    <span
+                        style="background:#f4f4f4;border:1px solid #e2e2e2;border-radius:4px;padding:6px 12px"><code>Featurecatalog.json</code>　<span
+                            class="gray">Knowledge master file (single source of truth)</span></span>
+                    <span
+                        style="background:#f4f4f4;border:1px solid #e2e2e2;border-radius:4px;padding:6px 12px"><code>feature-catalog-editor.html</code>　<span
+                            class="gray">Visual editor for domain experts</span></span>
+                </div>
+                <div style="border:1px solid #e2e2e2;border-radius:6px;overflow:hidden">
+                    <div style="background:#fafafa;border-bottom:1px solid #eee;padding:9px 16px;font-weight:600">
+                        Master-file excerpt | Main feature: Matrix (many-to-many)</div>
+                    <div style="padding:2px 16px">
+                        <div style="display:flex;gap:14px;padding:11px 0;border-bottom:1px solid #f4f4f4">
+                            <div style="width:128px;flex-shrink:0;color:#888">What it is</div>
+                            <div style="flex:1">Routes multiple signal sources to multiple display outputs; any input
+                                can be assigned to any output</div>
+                        </div>
+                        <div style="display:flex;gap:14px;padding:11px 0;border-bottom:1px solid #f4f4f4">
+                            <div style="width:128px;flex-shrink:0;color:#888">How customers might say it</div>
+                            <div style="flex:1"><span
+                                    style="display:inline-block;background:#eef3f6;color:#345;border-radius:3px;padding:2px 9px;margin:0 5px 5px 0;font-size:12.5px">many-to-many</span><span
+                                    style="display:inline-block;background:#eef3f6;color:#345;border-radius:3px;padding:2px 9px;margin:0 5px 5px 0;font-size:12.5px">matrix</span><span
+                                    style="display:inline-block;background:#eef3f6;color:#345;border-radius:3px;padding:2px 9px;margin:0 5px 5px 0;font-size:12.5px">AV
+                                    matrix</span><span
+                                    style="display:inline-block;background:#eef3f6;color:#345;border-radius:3px;padding:2px 9px;margin:0 5px 5px 0;font-size:12.5px">N
+                                    computers to M screens</span><span
+                                    style="display:inline-block;background:#eef3f6;color:#345;border-radius:3px;padding:2px 9px;margin:0 5px 5px 0;font-size:12.5px">switch
+                                    any source freely</span><span
+                                    style="display:inline-block;background:#eef3f6;color:#345;border-radius:3px;padding:2px 9px;margin:0 5px 5px 0;font-size:12.5px">…</span>
+                            </div>
+                        </div>
+                        <div style="display:flex;gap:14px;padding:11px 0">
+                            <div style="width:128px;flex-shrink:0;color:#888">Parameters to ask</div>
+                            <div style="flex:1">Input port count, output port count (typical 2 / 4 / 8 / 16 /
+                                32…)<br><span class="gray">AI follow-ups: "How many signal sources?" "To how many
+                                    screens?"</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="border:1px solid #e2e2e2;border-radius:6px;overflow:hidden;margin-top:14px">
+                    <div style="background:#fafafa;border-bottom:1px solid #eee;padding:9px 16px;font-weight:600">
+                        Master-file excerpt | Scenario: Meeting room / presentation room</div>
+                    <div style="padding:2px 16px">
+                        <div style="display:flex;gap:14px;padding:11px 0;border-bottom:1px solid #f4f4f4">
+                            <div style="width:128px;flex-shrink:0;color:#888">What it is</div>
+                            <div style="flex:1">Multi-source switching + display in an office space; often needs
+                                wireless projection, video-conference integration, one-touch scene switching</div>
+                        </div>
+                        <div style="display:flex;gap:14px;padding:11px 0;border-bottom:1px solid #f4f4f4">
+                            <div style="width:128px;flex-shrink:0;color:#888">How to recognize it (aliases)</div>
+                            <div style="flex:1"><span
+                                    style="display:inline-block;background:#eef3f6;color:#345;border-radius:3px;padding:2px 9px;margin:0 5px 5px 0;font-size:12.5px">meeting
+                                    room</span><span
+                                    style="display:inline-block;background:#eef3f6;color:#345;border-radius:3px;padding:2px 9px;margin:0 5px 5px 0;font-size:12.5px">presentation
+                                    room</span><span
+                                    style="display:inline-block;background:#eef3f6;color:#345;border-radius:3px;padding:2px 9px;margin:0 5px 5px 0;font-size:12.5px">boardroom</span><span
+                                    style="display:inline-block;background:#eef3f6;color:#345;border-radius:3px;padding:2px 9px;margin:0 5px 5px 0;font-size:12.5px">video-conference
+                                    room</span><span
+                                    style="display:inline-block;background:#eef3f6;color:#345;border-radius:3px;padding:2px 9px;margin:0 5px 5px 0;font-size:12.5px">executive
+                                    meeting room</span><span
+                                    style="display:inline-block;background:#eef3f6;color:#345;border-radius:3px;padding:2px 9px;margin:0 5px 5px 0;font-size:12.5px">…</span>
+                            </div>
+                        </div>
+                        <div style="display:flex;gap:14px;padding:11px 0">
+                            <div style="width:128px;flex-shrink:0;color:#888">What to ask in this scenario</div>
+                            <div style="flex:1"><span
+                                    style="display:inline-block;border-radius:3px;padding:2px 9px;margin:0 5px 5px 0;font-size:12.5px;background:#fdecec;color:#b0413e;font-weight:600">In/out
+                                    count · must ask</span><span
+                                    style="display:inline-block;border-radius:3px;padding:2px 9px;margin:0 5px 5px 0;font-size:12.5px;background:#fdecec;color:#b0413e;font-weight:600">Environment
+                                    control · must ask</span><span
+                                    style="display:inline-block;border-radius:3px;padding:2px 9px;margin:0 5px 5px 0;font-size:12.5px;background:#fbf2dd;color:#8a6d1f;font-weight:600">Control
+                                    interface · optional</span><span
+                                    style="display:inline-block;border-radius:3px;padding:2px 9px;margin:0 5px 5px 0;font-size:12.5px;background:#f2f2f2;color:#9aa1ad">Distance
+                                    · usually skip</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <p class="gray" style="max-width:1000px;font-size:13px;margin-top:8px">
+                These fields are what domain experts fill: aliases, follow-up parameters, follow-up phrasings. The AI
+                reads from this file and people edit the same file —
+                letting humans and AI collaborate on the same knowledge is how this system actually works.
+            </p>
+
+            <img class="natural" src="../../builder/images/07_aiAgent03.png"
+                alt="Gen 2 /agent-tag-chat-sim interface: the conversation accumulates structured tags round by round on the left, a task board shows collected and still-to-ask parameters, and a debug funnel panel on the right shows how the candidate pool converges with each follow-up">
+
+            <h3>Anti-hallucination: built into mechanisms, not written as prompt reminders</h3>
+            <div class="line_area">
+                <h6>Options can only come from real values</h6>
+                <p>Quick-reply options must be picked from "spec values that actually exist in the candidate pool" —
+                    the LLM can't recommend a value that isn't in the pool.</p>
+            </div>
+            <div class="line_area">
+                <h6>Hallucinated-value detection</h6>
+                <p>Even if the LLM suggests a non-existent value, the pure-function layer catches it and turns it into a
+                    "relax the criteria" suggestion.</p>
+            </div>
+            <div class="line_area">
+                <h6>Conflict resolution doesn't go through the LLM</h6>
+                <p>A historical lesson: letting the LLM invent "options when two features conflict" hallucinates.
+                    Switched to picking directly from the Catalog's scenario examples, with the LLM not involved at all.
+                </p>
+            </div>
+
+            <h3>Cost engineering: at most 2 LLM calls per round</h3>
+            <p>Three pre-routes in front of the LLM, so it isn't called when it doesn't need to be:</p>
+            <div class="line_area">
+                <h6>Fast Lane</h6>
+                <p>A pure-function keyword hit on "a scenario the PM has internalized → product combo", 0 LLM calls,
+                    list straight out.</p>
+            </div>
+            <div class="line_area">
+                <h6>Lightweight classifier</h6>
+                <p>A first-round check of whether it's off-topic and which scenario it hits, so the prompt only loads
+                    what's needed.</p>
+            </div>
+            <div class="line_area">
+                <h6>Scenario Planner</h6>
+                <p>Scenario hit, follow-up-pool reduction, and task-template derivation are all pre-computed by pure
+                    functions; the LLM only does natural-language extraction and copywriting.</p>
+            </div>
+
+            <h3>Limitation: why Gen 3 was still needed</h3>
+            <div class="line_area">
+                <h6>Full-project design can't be exhaustively enumerated</h6>
+                <p>Narrow queries ("a 4-port 4K KVM switch") this handles very well; but full-project design (a banquet
+                    hall: video wall + projector + camera + guest laptop + central control) needs <strong>combinatorial
+                        reasoning</strong> — hard-coding every task combination into templates explodes maintenance and
+                    is never finished.</p>
+            </div>
+            <div class="line_area">
+                <h6>Each round still re-stuffs the knowledge base — expensive</h6>
+                <p>Even compressing calls to 2 per round, each one still feeds the whole product knowledge base to the
+                    model — the bulk of cost is repeated input, accumulating with conversation rounds.</p>
+            </div>
+            <div class="line_area">
+                <h6>Hard-coded combo templates quietly go stale</h6>
+                <p>Even our own test example was wrong: the built-in banquet-hall example said "12-in 8-out", but the
+                    real need was actually "4-in 14-out".</p>
+            </div>
+            <p>These three points lead directly to Gen 3.</p>
+
+            <!-- Gen 3 -->
+            <div class="session" id="gen3">Gen 3: Lock facts</div>
+            <h2>Give reasoning back to the model, clamped between two gates</h2>
+            <p>
+                Gen 3 is a standard <strong>agent harness</strong>: a function-calling reasoning loop (tool limit 8
+                steps) does the judging,
+                while a fact gate on entry and a validation gate on exit do the grounding — the model reasons freely,
+                but the factual side is clamped shut.
+            </p>
+
+            <h3>Core principle: draw the deterministic boundary in the right place</h3>
+            <div class="row mt-md" style="width:100%;max-width:1000px;margin-left:auto;margin-right:auto">
+                <div class="col-6 col-sm-12 plr-sm mb-md">
+                    <div style="border:1px solid #cfe0ee;border-radius:6px;overflow:hidden;height:100%">
+                        <div style="background:#f0f6ff;color:#2c6184;padding:10px 16px;font-weight:700">🔒 Locked: facts
+                        </div>
+                        <ul style="list-style:disc;padding:12px 18px 14px 34px;font-size:13.5px;margin:0">
+                            <li style="margin:6px 0">Whether a product is real and in production</li>
+                            <li style="margin:6px 0">Specs and quantities (in/out count, resolution)</li>
+                            <li style="margin:6px 0">Hard implications: connect an Apple TV and HDCP is mandatory, or
+                                you get a black screen</li>
+                            <li style="margin:6px 0">Every model on the list</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-6 col-sm-12 plr-sm mb-md">
+                    <div style="border:1px solid #f0ddc4;border-radius:6px;overflow:hidden;height:100%">
+                        <div style="background:#fff8f0;color:#90602a;padding:10px 16px;font-weight:700">🧠 Released:
+                            judgment</div>
+                        <ul style="list-style:disc;padding:12px 18px 14px 34px;font-size:13.5px;margin:0">
+                            <li style="margin:6px 0">Whether the overall architecture goes centralized or distributed
+                            </li>
+                            <li style="margin:6px 0">What to ask first, and how to ask like a senior SI</li>
+                            <li style="margin:6px 0">How to describe the solution, and in what language</li>
+                            <li style="margin:6px 0">How to trade off among several reasonable options</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <p class="highlight">
+                The goal isn't "zero variation", it's "<strong>bounded variation</strong>": <strong>facts locked,
+                    judgment free</strong>.
+                Randomness is left only in "how to ask, how to assemble, how to write" — which is exactly what should be
+                left to the model.
+            </p>
+
+            <h3>Flow: a fact gate on entry, a validation gate on exit</h3>
+            <div style="margin:24px 0">
+                <div
+                    style="display:flex;gap:16px;align-items:flex-start;background:#fff;border:1px solid #e8e6e1;border-radius:12px;padding:16px 20px;max-width:1000px;margin-left:auto;margin-right:auto">
+                    <div
+                        style="flex-shrink:0;font-size:11.5px;font-weight:800;letter-spacing:1px;padding:4px 11px;border-radius:99px;margin-top:2px;min-width:48px;text-align:center;background:#f1f3f5;color:#5a6170;border:1px solid #e2e8f0">
+                        Input</div>
+                    <div>
+                        <div style="font-size:15.5px;font-weight:700">User describes the need in one sentence</div>
+                        <div style="font-size:14px;color:#5a6170;margin-top:3px"></div>
+                        <div style="font-size:13px;color:#9aa1ad;margin-top:6px"><code
+                                style="background:#fafaf8;border:1px solid #e8e6e1;border-radius:5px;padding:1px 7px;font-size:12.5px">"Banquet hall, 3×4 video wall, 2× 4K projectors, Apple TV, guest laptop"</code>
+                        </div>
+                    </div>
+                </div>
+                <div
+                    style="text-align:center;color:#9aa1ad;font-size:18px;line-height:1.5;padding:2px 0;max-width:1000px;margin:0 auto">
+                    ↓</div>
+                <div
+                    style="display:flex;gap:16px;align-items:flex-start;background:#fff;border:1px solid #e8e6e1;border-radius:12px;padding:16px 20px;max-width:1000px;margin-left:auto;margin-right:auto">
+                    <div
+                        style="flex-shrink:0;font-size:11.5px;font-weight:800;letter-spacing:1px;padding:4px 11px;border-radius:99px;margin-top:2px;min-width:48px;text-align:center;background:#eef4fb;color:#2c6184;border:1px solid #cfe0ee">
+                        🔒 Lock</div>
+                    <div>
+                        <div style="font-size:15.5px;font-weight:700">① Fact gate: hard rules lock first</div>
+                        <div style="font-size:14px;color:#5a6170;margin-top:3px">Doesn't rely on the AI "remembering" —
+                            rules trigger directly, 100% hit, zero cost.</div>
+                        <div style="font-size:13px;color:#9aa1ad;margin-top:6px">Detect <code
+                                style="background:#fafaf8;border:1px solid #e8e6e1;border-radius:5px;padding:1px 7px;font-size:12.5px">Apple TV</code>
+                            → force HDCP; detect <code
+                                style="background:#fafaf8;border:1px solid #e8e6e1;border-radius:5px;padding:1px 7px;font-size:12.5px">video wall</code>
+                            → force tiling-wall capability</div>
+                    </div>
+                </div>
+                <div
+                    style="text-align:center;color:#9aa1ad;font-size:18px;line-height:1.5;padding:2px 0;max-width:1000px;margin:0 auto">
+                    ↓</div>
+                <div
+                    style="display:flex;gap:16px;align-items:flex-start;background:#fff;border:1px solid #e8e6e1;border-radius:12px;padding:16px 20px;max-width:1000px;margin-left:auto;margin-right:auto">
+                    <div
+                        style="flex-shrink:0;font-size:11.5px;font-weight:800;letter-spacing:1px;padding:4px 11px;border-radius:99px;margin-top:2px;min-width:48px;text-align:center;background:#fdf3e7;color:#90602a;border:1px solid #f0ddc4">
+                        🧠 Brain</div>
+                    <div>
+                        <div style="font-size:15.5px;font-weight:700">② Recognize scenario, load the "scenario script"
+                        </div>
+                        <div style="font-size:14px;color:#5a6170;margin-top:3px">Recognizes banquet hall / meeting room
+                            / server room and loads that scenario's script: what to ask, what to exclude, architecture
+                            guidelines, which product roles are needed.</div>
+                    </div>
+                </div>
+                <div
+                    style="text-align:center;color:#9aa1ad;font-size:18px;line-height:1.5;padding:2px 0;max-width:1000px;margin:0 auto">
+                    ↓</div>
+                <div
+                    style="display:flex;gap:16px;align-items:flex-start;background:#fff;border:1px solid #e8e6e1;border-radius:12px;padding:16px 20px;max-width:1000px;margin-left:auto;margin-right:auto">
+                    <div
+                        style="flex-shrink:0;font-size:11.5px;font-weight:800;letter-spacing:1px;padding:4px 11px;border-radius:99px;margin-top:2px;min-width:48px;text-align:center;background:#fdf3e7;color:#90602a;border:1px solid #f0ddc4">
+                        🧠 Brain</div>
+                    <div>
+                        <div style="font-size:15.5px;font-weight:700">③ Professional follow-ups (multi-round)</div>
+                        <div style="font-size:14px;color:#5a6170;margin-top:3px">Asks when key info is missing, each
+                            question with tappable options; not allowed to assume defaults on its own.</div>
+                        <div style="font-size:13px;color:#9aa1ad;margin-top:6px">"Should the video wall and projector
+                            show the same image, or each their own?" — situational questions, like a senior SI</div>
+                    </div>
+                </div>
+                <div
+                    style="text-align:center;color:#9aa1ad;font-size:18px;line-height:1.5;padding:2px 0;max-width:1000px;margin:0 auto">
+                    ↓</div>
+                <div
+                    style="display:flex;gap:16px;align-items:flex-start;background:#fff;border:1px solid #e8e6e1;border-radius:12px;padding:16px 20px;max-width:1000px;margin-left:auto;margin-right:auto">
+                    <div
+                        style="flex-shrink:0;font-size:11.5px;font-weight:800;letter-spacing:1px;padding:4px 11px;border-radius:99px;margin-top:2px;min-width:48px;text-align:center;background:#fdf3e7;color:#90602a;border:1px solid #f0ddc4">
+                        🧠 Brain</div>
+                    <div>
+                        <div style="font-size:15.5px;font-weight:700">④ Search the real product DB, select, set
+                            quantities</div>
+                        <div style="font-size:14px;color:#5a6170;margin-top:3px">Takes the conditions to search the real
+                            product DB, <strong>can only pick from search results</strong>, then cross-checks the role
+                            list to compute quantities (function-calling reasoning loop, tool limit 8 steps).</div>
+                        <div style="font-size:13px;color:#9aa1ad;margin-top:6px">4 sources → 4 transmitters; 12 walls +
+                            2 projectors → 14 receivers</div>
+                    </div>
+                </div>
+                <div
+                    style="text-align:center;color:#9aa1ad;font-size:18px;line-height:1.5;padding:2px 0;max-width:1000px;margin:0 auto">
+                    ↓</div>
+                <div
+                    style="display:flex;gap:16px;align-items:flex-start;background:#fff;border:1px solid #e8e6e1;border-radius:12px;padding:16px 20px;max-width:1000px;margin-left:auto;margin-right:auto">
+                    <div
+                        style="flex-shrink:0;font-size:11.5px;font-weight:800;letter-spacing:1px;padding:4px 11px;border-radius:99px;margin-top:2px;min-width:48px;text-align:center;background:#eef4fb;color:#2c6184;border:1px solid #cfe0ee">
+                        🔒 Lock</div>
+                    <div>
+                        <div style="font-size:15.5px;font-weight:700">⑤ Validation gate: verify one by one before exit
+                        </div>
+                        <div style="font-size:14px;color:#5a6170;margin-top:3px">Every model on the list must appear in
+                            the search results just produced, otherwise the whole list is sent back for reselection.
+                            Invented models and discontinued products can't get out.</div>
+                    </div>
+                </div>
+                <div
+                    style="text-align:center;color:#9aa1ad;font-size:18px;line-height:1.5;padding:2px 0;max-width:1000px;margin:0 auto">
+                    ↓</div>
+                <div
+                    style="display:flex;gap:16px;align-items:flex-start;background:#fff;border:1px solid #e8e6e1;border-radius:12px;padding:16px 20px;max-width:1000px;margin-left:auto;margin-right:auto">
+                    <div
+                        style="flex-shrink:0;font-size:11.5px;font-weight:800;letter-spacing:1px;padding:4px 11px;border-radius:99px;margin-top:2px;min-width:48px;text-align:center;background:#f1f3f5;color:#5a6170;border:1px solid #e2e8f0">
+                        Output</div>
+                    <div>
+                        <div style="font-size:15.5px;font-weight:700">A validated product list</div>
+                        <div style="font-size:14px;color:#5a6170;margin-top:3px">The only deliverable. Everything
+                            downstream consumes it: comparison table, canvas diagram, BOM, accessories.</div>
+                    </div>
+                </div>
+            </div>
+
+            <h3>Three behaviors guaranteed by mechanism</h3>
+            <p class="gray" style="margin-top:0">These three are guaranteed by design, not test results — whenever a
+                model doesn't match the real search, the pure function simply won't let it through.</p>
+            <div class="row mt-md mb-lg" style="width:100%">
+                <div class="col-4 col-sm-12 plr-sm mb-md">
+                    <h4>Block fabrication</h4>
+                    <p>Before the list ships, every model is matched one by one against the real search results; any
+                        mismatch sends the whole list back for reselection — invented models and discontinued products
+                        don't ship.</p>
+                </div>
+                <div class="col-4 col-sm-12 plr-sm mb-md">
+                    <h4>Honest gaps</h4>
+                    <p>When no suitable real product exists for a role, no forcing allowed — the rules can only turn it
+                        into a follow-up, or mark it "beyond current scope".</p>
+                </div>
+                <div class="col-4 col-sm-12 plr-sm mb-md">
+                    <h4>Justified judgment</h4>
+                    <p>Holistic judgments like centralized vs distributed go to the AI, but it must attach the reasoning
+                        and which rule was triggered — inspectable and auditable.</p>
+                </div>
+            </div>
+
+            <h3>What's maintained isn't a flow, it's three "knowledge building blocks"</h3>
+            <div class="row mt-md mb-lg" style="width:100%">
+                <div class="col-4 col-sm-12 plr-sm mb-md">
+                    <h4>Hard rules</h4>
+                    <p>X always → Y, deterministic trigger.<br>
+                        <span class="gray">Apple TV / PS5 / Blu-ray → HDCP 2.2; cross-floor → go IP</span>
+                    </p>
+                </div>
+                <div class="col-4 col-sm-12 plr-sm mb-md">
+                    <h4>Scenario scripts</h4>
+                    <p>What to ask, what to exclude, main-architecture guidelines, which product roles are needed.<br>
+                        <span class="gray">Banquet hall: ask about scale and distribution; exclude KVM; outputs &gt;9 or
+                            cross-zone → distributed</span>
+                    </p>
+                </div>
+                <div class="col-4 col-sm-12 plr-sm mb-md">
+                    <h4>Real product search</h4>
+                    <p>Shares the same pure-function search as Gen 2, becoming the model's tool — the model can only
+                        pick models from search results.</p>
+                </div>
+            </div>
+            <p>
+                Gen 2's 14 pre-hardcoded task templates and 4 layers of config merging are <strong>removed
+                    entirely</strong> on this path —
+                maintain finite blocks, and leave the infinite combinations for the model to assemble on the spot.
+            </p>
+
+            <img class="natural" src="../../builder/images/07_aiAgent04.png"
+                alt="Gen 3 /agent-architect interface: the solution card shows the main architecture, items, quantities, and an 'out of scope' statement; follow-up option chips below; on the right the 'AI search steps' debug shows each function-calling tool call and the validation gate catching a non-existent model and auto-returning it for reselection">
+
+            <h3>Test results (three scenarios, headless validation)</h3>
+            <div class="line_area">
+                <h6>The validation gate isn't theory — it actually caught hallucinations</h6>
+                <p>In the first round of the meeting-room scenario, the model recommended two non-existent models,
+                    caught in testing by the validation gate;
+                    after correction the hallucinations vanished, and all three cases ended on real SKUs.</p>
+            </div>
+            <div class="line_area">
+                <h6>Honest gaps</h6>
+                <p>When nothing is found it doesn't fabricate — it asks a question or honestly states "beyond scope" —
+                    behaving like a senior SI, not a chatbot forcing an answer.</p>
+            </div>
+            <div class="line_area">
+                <h6>Cost down an order of magnitude</h6>
+                <p>3.7–4.9K tokens per case vs ~58K per round in Gen 2, roughly 6–15× savings (internal testing,
+                    same-tier model).
+                    There's a second layer untouched: Gen 3 centralizes knowledge into one file with a fixed prompt
+                    prefix, naturally friendly to input caching —
+                    per-case usage shrinks, and the repeated prefix gets discounted again.</p>
+            </div>
+
+            <!-- cost comparison -->
+            <div style="width:100%;max-width:1000px;margin:8px auto 16px auto;font-size:13px">
+                <div style="display:flex;align-items:center;margin-bottom:10px">
+                    <div style="width:150px;flex-shrink:0">Gen 2 <span class="gray">per round</span></div>
+                    <div style="flex:1;background:#f2f2f2;border-radius:4px;height:30px;overflow:hidden">
+                        <div
+                            style="width:100%;height:100%;background:#cfe0ee;display:flex;align-items:center;padding-left:12px;color:#2c4a5a;font-weight:600">
+                            ≈ 58K tokens</div>
+                    </div>
+                </div>
+                <div style="display:flex;align-items:center">
+                    <div style="width:150px;flex-shrink:0">Gen 3 <span class="gray">per case</span></div>
+                    <div
+                        style="flex:1;background:#f2f2f2;border-radius:4px;height:30px;overflow:hidden;position:relative">
+                        <div style="width:8%;height:100%;background:#cfe0ee;border-radius:4px"></div>
+                        <div
+                            style="position:absolute;top:0;left:calc(8% + 12px);height:100%;display:flex;align-items:center;color:#2c4a5a;font-weight:600">
+                            3.7–4.9K tokens</div>
+                    </div>
+                </div>
+            </div>
+            <p class="gray" style="max-width:1000px;font-size:13px;margin-top:2px">
+                The gap comes from a different approach: Gen 2 re-stuffs the whole product knowledge base to the model
+                every round; Gen 3 lets the model use a tool to look things up and only returns the hits.
+            </p>
+
+            <h3>Bonus: multilingual</h3>
+            <p>
+                Gen 1 needed N translated maintenance copies for every follow-up to support N languages; Gen 3's
+                follow-ups and solution descriptions are generated by the model on the fly in
+                the user's language, while parts needing word-for-word precision (legal disclaimers, BOM headers) stay
+                locked to existing translations.
+                <strong>Choose the right architecture, and multilingual goes from a cost to a built-in
+                    capability.</strong>
+            </p>
+
+            <!-- design principles -->
+            <div class="session" id="principles">Design principles</div>
+            <h2>Four principles unchanged across three generations</h2>
+            <div class="line_area">
+                <h6>The sole deliverable is "a validated product list"</h6>
+                <p>The comparison table, canvas diagram, BOM export, and accessory recommendations all consume this
+                    list.
+                    Converge the AI's job to one thing, and downstream can connect to it reliably.</p>
+            </div>
+            <div class="line_area">
+                <h6>Put knowledge in data, not in prose prompts</h6>
+                <p>The Catalog, scripts, and hard rules are all structured data shared by translation, decision, and
+                    search;
+                    knowledge written into the prompt only exists when the model "remembers" it.</p>
+            </div>
+            <div class="line_area">
+                <h6>Deterministic logic is always a pure function</h6>
+                <p>The decision engine, search funnel, question-pool reduction, and topology derivation are all
+                    side-effect-free pure functions —
+                    unit-testable, reproducible, and portable between the frontend and Node.</p>
+            </div>
+            <div class="line_area">
+                <h6>Block hallucinations with mechanisms, not with reminders in the LLM prompt</h6>
+                <p>Every effective anti-hallucination measure across the three generations ended up as a mechanism —
+                    from Gen 2's hallucinated-value detection to Gen 3's "not in the search results, send back for
+                    reselection" validation gate, none rely on prompt wording.</p>
+            </div>
+
+            <h3>Why not just have users use a general-purpose model</h3>
+            <p>
+                Inside Gen 1's lesson hides a sharper question: if a general-purpose large model answers more
+                completely, why does this module exist?
+                The answer isn't "our judgment is more accurate than a general model's" — judgment doesn't need to be
+                100% accurate. Two other things do.
+            </p>
+            <div class="row mt-md mb-md" style="width:100%">
+                <div class="col-6 col-sm-12 plr-sm mb-md">
+                    <div style="border:1px solid #e2e2e2;border-radius:6px;overflow:hidden;height:100%">
+                        <div style="background:#fafafa;border-bottom:1px solid #eee;padding:10px 16px;font-weight:700">
+                            100% correct product content</div>
+                        <div style="padding:12px 16px;font-size:13.5px;line-height:1.6">
+                            <div style="margin-bottom:8px"><span style="color:#b0413e;font-weight:600">General
+                                    ChatGPT</span>: invents models from impression, recommends discontinued products.
+                            </div>
+                            <div><span style="color:#3f7553;font-weight:600">This agent</span>: every model passes the
+                                validation gate — real, in production, spec-correct; for B2B sales this can't be
+                                compromised.</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 col-sm-12 plr-sm mb-md">
+                    <div style="border:1px solid #e2e2e2;border-radius:6px;overflow:hidden;height:100%">
+                        <div style="background:#fafafa;border-bottom:1px solid #eee;padding:10px 16px;font-weight:700">A
+                            dedicated application service (UI)</div>
+                        <div style="padding:12px 16px;font-size:13.5px;line-height:1.6">
+                            <div style="margin-bottom:8px"><span style="color:#b0413e;font-weight:600">General
+                                    ChatGPT</span>: can only give text.</div>
+                            <div><span style="color:#3f7553;font-weight:600">This agent</span>: the list connects
+                                straight to the whole service — comparison table, Builder diagram, BOM, accessories —
+                                from recommendation to deployment without switching tools.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <p class="highlight">
+                <strong>The moat is two things a general model can't give — 100% correct product content, plus a
+                    dedicated application service that connects the list to deployment.</strong>
+                That's also why all three generations converge the sole deliverable into one validated list: it's both
+                an engineering constraint and the product's footing.
+            </p>
+
+            <h3>Why this is a UX designer's problem</h3>
+            <p>
+                Pure ML engineering tends to set the goal as "the model answers correctly", overlooking the
+                <strong>follow-up experience</strong> —
+                but in B2B, "asking like a senior SI" is itself a source of trust;
+                pure UX knows what the conversation should look like but lacks the engineering means to design a harness
+                — it can't "layer judgment and facts", and can only force-tune via prompt wording.
+                In this module, the follow-up option design, the Catalog vocabulary design, the decision engine's
+                pure-function boundary, and the prompt's role-offloading
+                were <strong>drawn by the same person on the same diagram</strong> — every constraint on the
+                conversational experience maps directly to an engineering mechanism.
+                As far as the harness is designed, so is the conversation experience, and vice versa.
+            </p>
+
+            <h3>Current status</h3>
+            <p>
+                Gen 1 is frozen as an A/B control; Gen 2 is the current DEMO and the workhorse for narrow queries;
+                Gen 3 has completed core validation and full-stack integration (multi-round follow-ups, BOM copy,
+                reasoning-step visualization).
+                The current ceiling is <strong>product-tag coverage</strong> (about 30% of scenarios covered), not the
+                architecture —
+                the next step is filling tags for the missing product families, then running blind A/B tests on real
+                cases.
+            </p>
+            <p class="gray">The token and time figures in this article are internal development measurements, for
+                order-of-magnitude reference only.</p>
+
+            <!-- what's next -->
+            <div class="session">What's next</div>
+            <h2>Once you have the list, the user's journey is just beginning</h2>
+            <p>
+                The AI's sole deliverable is "a validated product list". But for the user, getting the list is the start
+                —
+                the following are <strong>not handed to the AI</strong>: they're deterministic service flows, driven
+                directly by product data, error-free, and also the part to be designed next.
+            </p>
+
+            <h3>The full experience flow</h3>
+            <div
+                style="width:100%;max-width:1000px;margin:16px auto;display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-size:13px">
+                <span
+                    style="background:#f0f6ff;border:1px solid #cfe0ee;border-radius:6px;padding:8px 12px">Planner<span
+                        class="gray"> · converge needs via conversation</span></span>
+                <span class="gray">→</span>
+                <span style="background:#e8f6ed;border:1px solid #c7e6d3;border-radius:6px;padding:8px 12px">Product
+                    list<span class="gray"> · validated solution</span></span>
+                <span class="gray">→</span>
+                <span
+                    style="background:#fff8f0;border:1px solid #f0ddc4;border-radius:6px;padding:8px 12px">Product<span
+                        class="gray"> · inspect / replace single items</span></span>
+                <span class="gray">→</span>
+                <span
+                    style="background:#fff8f0;border:1px solid #f0ddc4;border-radius:6px;padding:8px 12px">Accessories<span
+                        class="gray"> · cables / sub-cards / add-ons</span></span>
+            </div>
+            <p class="gray" style="max-width:1000px;font-size:13px;margin-top:0">
+                The chat box is most valuable on the front half (converging needs, producing the list); the back half —
+                inspecting, replacing, picking accessories — works better in the existing browsing interface. That's
+                exactly where the design team can contribute.
+            </p>
+
+            <h3>Post-list flow frameworks (non-AI · to be designed)</h3>
+            <div class="row mt-md mb-lg" style="width:100%">
+                <div class="col-4 col-sm-12 plr-sm mb-md">
+                    <div style="background:#fff;border:1px solid #e8e6e1;border-radius:12px;padding:20px;height:100%">
+                        <div style="font-size:26px;margin-bottom:10px">🔌</div>
+                        <div style="font-size:16px;font-weight:800;margin-bottom:6px">Accessory recommendations</div>
+                        <p style="font-size:13.5px;color:#5a6170;margin:0">Once the list is finalized, corresponding
+                            cables, sub-cards, and add-on options are pulled automatically from product data —
+                            rule-matching, no AI guessing needed.</p>
+                    </div>
+                </div>
+                <div class="col-4 col-sm-12 plr-sm mb-md">
+                    <div style="background:#fff;border:1px solid #e8e6e1;border-radius:12px;padding:20px;height:100%">
+                        <div style="font-size:26px;margin-bottom:10px">🛡️</div>
+                        <div style="font-size:16px;font-weight:800;margin-bottom:6px">Auto-fill key info</div>
+                        <p style="font-size:13.5px;color:#5a6170;margin:0">Purchase-decision info like warranty and
+                            certification is pulled straight from the product DB into the list — fast and guaranteed
+                            correct.</p>
+                    </div>
+                </div>
+                <div class="col-4 col-sm-12 plr-sm mb-md">
+                    <div style="background:#fff;border:1px solid #e8e6e1;border-radius:12px;padding:20px;height:100%">
+                        <div style="font-size:26px;margin-bottom:10px">🏗️</div>
+                        <div style="font-size:16px;font-weight:800;margin-bottom:6px">Hand off to Builder's deeper
+                            services</div>
+                        <p style="font-size:13.5px;color:#5a6170;margin:0">Move seamlessly from the conversation into
+                            Builder to continue with diagramming, editing, quoting, and other deeper services.</p>
+                    </div>
+                </div>
+            </div>
+
+            <h3>Dedicated application service: two routes</h3>
+            <div class="row mt-md mb-lg" style="width:100%">
+                <div class="col-6 col-sm-12 plr-sm mb-md">
+                    <h4>① The chat box provides services directly</h4>
+                    <p class="gray">Get "visible, takeaway" output right in the conversation</p>
+                    <div class="line_area">
+                        <h6>AI draws the wiring diagram directly</h6>
+                        <p>Builder opens editing capabilities to the AI, which draws the solution into a rendered wiring
+                            diagram directly.</p>
+                    </div>
+                    <div class="line_area">
+                        <h6>Produce a BOM report right in the chat</h6>
+                        <p>Hook into Builder's BOM generation to produce PDF and Excel on the spot.</p>
+                    </div>
+                    <div class="line_area">
+                        <h6>Integrate with Salesforce</h6>
+                        <p>Solution and requirement data flow into the CRM, so sales can follow up directly.</p>
+                    </div>
+                </div>
+                <div class="col-6 col-sm-12 plr-sm mb-md">
+                    <h4>② Funnel into Builder</h4>
+                    <p class="gray">Turn conversation outcomes into a reason to enter Builder</p>
+                    <div class="line_area">
+                        <h6>One-click the product list into Builder for editing</h6>
+                        <p>Drop the AI-produced list straight into Builder to immediately experience editing, or come
+                            consult directly after sketching the idea.</p>
+                    </div>
+                    <div class="line_area">
+                        <h6>Surface Builder mini-tools from the list</h6>
+                        <p>Offer product / sub-card / Audio selectors and a VK calculator based on the list. For logical
+                            choices like Audio and VK, <strong>a tool fits better than the AI</strong>.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- summary -->
+            <div class="session">Summary</div>
+            <h2>Place the constraint right, and the model can perform</h2>
+            <p>
+                The biggest takeaway from this module is a boundary principle: <strong>facts locked, judgment
+                    free</strong>.
+                Gen 1 locked the flow too, getting a rigid form-filling machine; Gen 3 locks only facts, the reasoning
+                came back, and hallucinations are still held outside by two gates.
+                For any team putting an LLM into a serious product, "where to place the uncertainty" is the first design
+                question to answer —
+                and being able to solve it as "<strong>the same problem of conversational experience and
+                    harness</strong>" is exactly the position a UX designer can stand in.
+            </p>
+
+        </div>
+    </div>
+
+    <footer></footer>
+    <script src="../js/app.js"></script>
+
+    <!--
+	English version of a_builder_agent.html. Content source: builder repo docs/portfolio/08_ai_agent.md (keep both languages in sync).
+	Image placeholders: 07_aiAgent03/04/05/06.png still to be captured (see the zh-TW master file for details).
+	Header / sidebar / nav are populated by app.js using the site i18n; ensure an "en" entry exists for workName "a_builder_agent".
+	Internal links (a_builder.html, a_builder_llm.html) point to the existing files — repoint to English siblings once they exist.
+	-->
+</body>
+
+</html>

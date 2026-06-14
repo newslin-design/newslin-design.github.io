@@ -4,7 +4,8 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, maximum-scale=1.5">
-	<title>ATEN Solution Builder - Portfolio</title>
+	<meta name="robots" content="noindex, nofollow">
+	<title>ATEN Solution Builder - ポートフォリオ</title>
 	<script>workName = "a_builder"; lang = "ja"; basePath = "../";</script>
 	<link rel="stylesheet" href="../style/reset.css">
 	<link rel="stylesheet" href="../style/style_layout.css">
@@ -35,413 +36,753 @@
 		<h1>ATEN Solution Builder</h1>
 		<div class="row mb-lg">
 			<div class="col-6 col-sm-12 pr-md">
-				<p>2023 - Present</p>
-				<h3>Driving Enterprise Transformation Through Digital Tools:<br>
-					From Selling Products to Delivering Solutions</h3>
+				<p>2023 – 現在</p>
+				<h3>システムインテグレーター（SI）がキャンバス上で Pro AV 提案を完成させる：<br>仕様書と Excel から、ビジュアルな結線図とワンクリック納品へ</h3>
 				<p>
-					This case study deconstructs ATEN Solution Builder — a pivotal project that catalyzed ATEN's
-					strategic transformation from a <strong>"Product-Oriented"</strong> sales model to a
-					<strong>"Solution-Oriented"</strong> approach.
+					Solution Builder は B2B 向けのビジュアル提案ツールである。SI はキャンバス上でデバイスをドラッグ＆ドロップして接続を引き、
+					システムは信号の互換性をリアルタイムに検証し、部品表（BOM）を計算し、最後に顧客へそのまま渡せるドキュメントをワンクリックで出力する。
+					これは同時に、企業が<strong>「製品販売」</strong>から<strong>「ソリューション販売」</strong>へ転換する戦略を、実地に落とし込む受け皿でもある。
 					<br><br>
-					As the lead Product Designer and UX Engineer, I detail how we transformed a complex business
-					challenge into a seamless digital experience, ultimately driving measurable revenue growth and
-					operational efficiency.
+					本プロジェクトでは、プロダクト定義、UX/UI デザイン、フロントエンド開発、データ分析基盤を担当した——
+					リサーチの示唆を受け取り、解決策を定義し、自ら実装し、データで検証するまでの一連のループである。
 				</p>
 
-				<h6 class="mb-xxs">My Role</h6>
-				<p>UX/UI Design, Frontend Development (React), Data Analytics Architecture</p>
+				<h6 class="mb-xxs">担当領域</h6>
+				<p>プロダクト定義 · UX/UI デザイン · フロントエンド開発（React）· データ分析基盤<br>
+					<span class="gray">ユーザーインタビューはリサーチャーが担当。私はその示唆を受け取り、解決策へと収束させた。</span>
+				</p>
 
-				<h6 class="mb-xxs">Project Type</h6>
-				<p>B2B Business Tool · Enterprise Digital Transformation · Complex System Visualization</p>
+				<h6 class="mb-xxs">プロジェクト種別</h6>
+				<p>B2B SaaS · ビジュアルエディター · 企業のデジタルトランスフォーメーション</p>
 			</div>
 			<div class="col-6 col-sm-12">
-				<img class="w-100" alt="Solution Builder application hero screenshot showing the visual topology editor interface with connected devices on canvas">
+				<img class="w-100" src="../../builder/images/01_main_editor.png"
+					alt="Solution Builder メインエディター：左にデバイスライブラリ、中央にビジュアルキャンバス、右にプロパティパネル">
 			</div>
 		</div>
 
-		<!-- Project Nav -->
+		<!-- シリーズ説明 -->
+		<div class="article">
+			<p class="highlight">
+				<strong>全 3 部構成のシリーズ：</strong>本稿は Solution Builder というプロダクトそのもの（戦略・デザイン・フロントエンド工学・データ検証）に焦点を当てる。
+				残りの 2 本は、このプロダクトを支える独立した技術プロジェクトである：
+				<a href="a_builder_llm.html">LLM によるプロダクトデータの構造化</a> と
+				<a href="a_builder_agent.html">AI Agent：LLM の不確実性を制約する</a>。
+			</p>
+		</div>
+
+		<!-- 目次ナビ -->
 		<div class="article">
 			<div class="project-nav">
 				<a href="#overview" class="nav-item">
 					<span class="step">01</span>
-					<span class="label">Overview</span>
+					<span class="label">概要</span>
 				</a>
 				<a href="#challenge" class="nav-item">
 					<span class="step">02</span>
-					<span class="label">Challenge & Strategy</span>
+					<span class="label">課題と戦略</span>
+				</a>
+				<a href="#framework" class="nav-item">
+					<span class="step">03</span>
+					<span class="label">フレームワーク設計</span>
 				</a>
 				<a href="#features" class="nav-item">
-					<span class="step">03</span>
-					<span class="label">Product Features</span>
+					<span class="step">04</span>
+					<span class="label">機能</span>
 				</a>
 				<a href="#technical" class="nav-item">
-					<span class="step">04</span>
-					<span class="label">Technical</span>
+					<span class="step">05</span>
+					<span class="label">エンジニアリング</span>
 				</a>
 				<a href="#impact" class="nav-item">
-					<span class="step">05</span>
-					<span class="label">Impact</span>
+					<span class="step">06</span>
+					<span class="label">成果</span>
 				</a>
 			</div>
 		</div>
 
 		<div class="article">
 
-			<div class="session" id="overview">Core Contributions</div>
-			<p class="highlight">
-				<strong>Built from 0 to 1:</strong> Designed and developed a visual diagram simulator,
-				replacing the traditional cumbersome Excel/Visio planning workflow.<br><br>
-				<strong>Business Model Transformation:</strong> Helped the company transition from
-				single-product sales (Product-Oriented) to a scenario-based solution provider
-				(Solution-Oriented).<br><br>
-				<strong>Data Closed Loop:</strong> Established an analytics architecture from frontend
-				behavioral data (GA4) to business intelligence (PowerBI), validating design effectiveness.
-			</p>
-			<p>
-				This project was not merely a tool development effort — it served as a key engine driving
-				enterprise strategic transformation. Let's dive into the business challenges and strategies
-				behind it.
-			</p>
-
-			<div class="session" id="challenge">The Challenge & Strategy</div>
-			<h2>Dissecting Business Pain Points & User Needs</h2>
-			<p>
-				Any successful product begins with a deep understanding of the business environment and
-				target audience. This section deconstructs the core challenges ATEN faced and outlines
-				the user-centered design strategy we developed in response.
-			</p>
-
-			<h3>At the Crossroads of Business Transformation</h3>
-			<p>
-				At the project's inception, the company was at a critical transformation juncture,
-				facing two major business challenges:
-			</p>
-
-			<h4>1. Market Disconnection</h4>
-			<p>
-				The heavy reliance on distributors for single-product sales made it difficult for the
-				company to grasp end-customer needs and behavioral data. This gap not only compressed
-				product margins but also limited the cultivation of customer loyalty.
-			</p>
-
-			<h4>2. High Proposal Barrier</h4>
-			<p>
-				Pro AV system architectures are extremely complex. New sales personnel or System
-				Integrators (SI) required a lengthy learning curve to independently complete a professional
-				proposal, directly leading to extended sales cycles and low efficiency.
-			</p>
-			<img alt="Diagram illustrating ATEN's two core business challenges: market disconnection from end-customers through distributor-dependent model, and high proposal barriers for system integrators">
-
-			<h3>UX as a Strategic Driver</h3>
-			<p>
-				Facing these challenges, the role of UX extended beyond interface optimization to become
-				a <strong>strategic core driving revenue growth</strong>. Our key proposition was:
-				<br><br>
-				<em>"How can we lower the proposal barrier for SIs and improve proposal success rates?"</em>
-				<br><br>
-				<strong>Solution Builder</strong> was our answer — a digital tool designed to standardize,
-				visualize, and automate the complex system planning process. It not only solved the efficiency
-				problem but became the company's strategic pivot for directly reaching end-users and driving
-				solution-based sales.
-			</p>
-			<img alt="Strategic positioning diagram showing how Solution Builder bridges UX, business transformation, and direct customer engagement as a central pivot point">
-
-			<h3>Target Audience & Layered Design Strategy</h3>
-			<p>
-				To ensure the product precisely met different users' needs, we defined three core target
-				personas and tailored a layered design strategy for each:
+			<!-- 主な貢献 -->
+			<div class="session" id="overview">主な貢献</div>
+			<p>3 つの層をまたぐエンドツーエンドの貢献——<strong>戦略の翻訳</strong>から、<strong>プロダクトの実装</strong>、そして<strong>データのクローズドループ</strong>まで。
 			</p>
 
 			<div class="row mt-md mb-lg" style="width:100%">
 				<div class="col-4 col-sm-12 plr-sm mb-md">
-					<h4>Novice SI</h4>
-					<h6 class="gray">Pain Point</h6>
+					<div style="border:1px solid #e8e6e1;border-radius:12px;overflow:hidden;height:100%">
+						<div
+							style="background:#f0f6ff;color:#2c6184;padding:12px 16px;font-weight:700;display:flex;align-items:center;gap:10px">
+							<span
+								style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:6px;background:#fff;border:1px solid currentColor;font-size:12px;font-weight:800;flex:none">01</span>戦略を実行可能な仕様へ翻訳する
+						</div>
+						<p style="padding:14px 16px;margin:0;font-size:13.5px;line-height:1.75;color:#444">
+							「単一製品の販売から案件（現場）単位の販売へ」という企業の新方針を受け取り、ユーザーリサーチと組み合わせ、その大きな方向性を具体的で実行可能なプロダクト仕様と機能定義へと翻訳した。
+						</p>
+					</div>
+				</div>
+				<div class="col-4 col-sm-12 plr-sm mb-md">
+					<div style="border:1px solid #e8e6e1;border-radius:12px;overflow:hidden;height:100%">
+						<div
+							style="background:#fff8f0;color:#90602a;padding:12px 16px;font-weight:700;display:flex;align-items:center;gap:10px">
+							<span
+								style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:6px;background:#fff;border:1px solid currentColor;font-size:12px;font-weight:800;flex:none">02</span>0
+							から 1 までの完全なソフトウェアサービスを構築
+						</div>
+						<p style="padding:14px 16px;margin:0;font-size:13.5px;line-height:1.75;color:#444">
+							仕様策定、システムアーキテクチャ、UX/UI デザインからフロントエンド実装まで——後期には AI と協働する新しい開発フローも確立した。</p>
+					</div>
+				</div>
+				<div class="col-4 col-sm-12 plr-sm mb-md">
+					<div style="border:1px solid #e8e6e1;border-radius:12px;overflow:hidden;height:100%">
+						<div
+							style="background:#e8f6ed;color:#3f7553;padding:12px 16px;font-weight:700;display:flex;align-items:center;gap:10px">
+							<span
+								style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:6px;background:#fff;border:1px solid currentColor;font-size:12px;font-weight:800;flex:none">03</span>データトラッキングの仕組みを構築
+						</div>
+						<p style="padding:14px 16px;margin:0;font-size:13.5px;line-height:1.75;color:#444">
+							フロントエンドの GA4 から BigQuery、PowerBI まで、さらに CRM（Salesforce）へ接続し、営業プロセスとつないだ。</p>
+					</div>
+				</div>
+			</div>
+
+			<!-- 背景・課題・戦略 -->
+			<div class="session" id="challenge">背景・課題・戦略</div>
+			<h2>ビジネス課題からデザインの問いへ</h2>
+
+			<h3>ビジネス背景</h3>
+			<p>
+				ATEN は世界規模の Pro AV / KVM メーカーで、製品ラインは数千の SKU に及ぶ。従来の SI の提案プロセスは、5 つの段階を経る：
+			</p>
+
+			<div style="width:100%;max-width:1000px;margin:20px 0 8px">
+				<div style="display:flex;flex-wrap:wrap;align-items:center;gap:10px 6px;font-size:14px">
+					<span
+						style="border:1px solid #ccc;border-radius:6px;padding:8px 14px;background:#fafafa;white-space:nowrap">現場要件の把握</span>
+					<span style="color:#bbb">→</span>
+					<span
+						style="border:1px solid #ccc;border-radius:6px;padding:8px 14px;background:#fafafa;white-space:nowrap">初期システム設計</span>
+					<span style="color:#bbb">→</span>
+					<span
+						style="border:1px solid #ccc;border-radius:6px;padding:8px 14px;background:#fafafa;white-space:nowrap">仕様書と
+						Excel を調べる</span>
+					<span style="color:#bbb">→</span>
+					<span
+						style="border:1px solid #ccc;border-radius:6px;padding:8px 14px;background:#fafafa;white-space:nowrap">結線図の作成</span>
+					<span style="color:#bbb">→</span>
+					<span
+						style="border:1px solid #ccc;border-radius:6px;padding:8px 14px;background:#fafafa;white-space:nowrap">機器の互換性を検証</span>
+				</div>
+				<div class="gray" style="display:flex;align-items:center;gap:6px;font-size:13px;margin-top:10px">
+					<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9e9e9e" stroke-width="2"
+						stroke-linecap="round" stroke-linejoin="round" style="flex:none" aria-hidden="true">
+						<polyline points="1 4 1 10 7 10" />
+						<path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10" />
+					</svg>
+					各段階は何度も後戻りする——仕様が合わなければ設計に戻り、要件が変われば最初からもう一巡。
+				</div>
+			</div>
+
+			<p>
+				新人 SI にとっては長い学習曲線であり、ベテラン SI にとっては大量の反復作業である。
+				<br><br>
+				同時に、長らく代理店に依存してきた販売モデルのため、企業はエンド顧客が本当に必要とするものを把握しづらかった。
+				そこで戦略は、次の 2 つの方向に絞られた：
+			</p>
+
+			<div class="line_area">
+				<h6>市場インサイトを深める</h6>
+				<p>市場の需要とエンドユーザーの実際の状況を直接つかむ能力を構築し、プロダクトの意思決定を実際の利用により近づける。</p>
+			</div>
+			<div class="line_area">
+				<h6>パートナーの成長を支援する</h6>
+				<p>初級 SI にはソリューション構築の素早い出発点を提供して学習曲線を短縮し、同時にベテラン SI が ATEN の膨大な製品ラインをより効率的に探索・活用できるようにして、案件創出を加速する。</p>
+			</div>
+
+			<h3>UX の戦略的な問い</h3>
+			<p>
+				<em>「SI の提案のハードルを下げつつ、受注率と追跡可能性をどう高めるか？」</em>
+				<br><br>
+				Solution Builder はこの問いへの答えである。デザインにあたって、私はリサーチャーの示唆を
+				<strong>ユーザー類型ごとに異なる 3 つの需要曲線</strong>へと再構成した。外部ユーザーは一つのスペクトラム上に位置する：
+				製品ラインをまだ学んでいるエンドユーザーや新人 SI から、長期的に取引のある代理店やベテランのパートナー SI まで——
+				同じ SI でも 1 年目と 5 年目では必要なツールの段階が異なる。社内営業はそのスペクトラムの出口に立ち、
+				外部ユーザーの行動を追跡可能な商談へと変える。
+				そこで 3 種類の UI を別々に作るのではなく、<strong>段階を切り替えられる 1 つのツール</strong>を作り、
+				社内向けの商談トラッキングとユーザー管理のバックオフィスを組み合わせた。
+			</p>
+
+			<!-- ユーザーのスペクトラム -->
+			<div style="width:100%;max-width:1000px;margin:24px auto 8px">
+				<div class="gray" style="font-size:13px;margin-bottom:10px">一本の能力スペクトラム、異なる位置に立つ 3
+					種類のユーザー——ツールは段階を切り替えて全域をカバーし、3 つに分裂させない。</div>
+				<div
+					style="display:flex;flex-wrap:wrap;border-radius:8px;overflow:hidden;border:1px solid #e2e2e2;font-size:13px">
+					<div style="flex:1;min-width:160px;background:#DCEDF4;color:#2F6E84;padding:13px 14px">
+						<strong>エンドユーザー · 新人 SI</strong><br><span style="font-size:12px">まずテンプレートで自信を築く</span>
+					</div>
+					<div style="flex:1;min-width:160px;background:#E0F0E3;color:#3E7D4E;padding:13px 14px">
+						<strong>代理店 · ベテランパートナー SI</strong><br><span style="font-size:12px">完全なキャンバスとリアルタイム検証</span>
+					</div>
+					<div style="flex:1;min-width:160px;background:#F7ECD8;color:#8F6020;padding:13px 14px">
+						<strong>社内営業 · 子会社</strong><br><span style="font-size:12px">スペクトラムの出口：行動を商談に変える</span>
+					</div>
+				</div>
+				<div style="display:flex;font-size:11px;color:#aaa;margin-top:6px">
+					<div style="flex:1">← 製品ラインを学習中</div>
+					<div style="flex:1;text-align:center">習熟・長期的な取引</div>
+					<div style="flex:1;text-align:right">追跡可能な商談 →</div>
+				</div>
+			</div>
+
+			<div class="row mt-md mb-lg" style="width:100%">
+				<div class="col-4 col-sm-12 plr-sm mb-md">
+					<div
+						style="width:56px;height:56px;border-radius:50%;background:#f5f5f5;display:flex;align-items:center;justify-content:center;margin-bottom:12px">
+						<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#5C5C5C" stroke-width="1.5"
+							stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+							<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+							<circle cx="9" cy="7" r="4" />
+							<line x1="19" y1="8" x2="19" y2="14" />
+							<line x1="16" y1="11" x2="22" y2="11" />
+						</svg>
+					</div>
+					<h4>エンドユーザー・新人 SI</h4>
+					<div style="display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 14px">
+						<span
+							style="font-size:12px;font-weight:500;line-height:1;color:#2F6E84;background:#DCEDF4;border-radius:999px;padding:6px 12px;white-space:nowrap">新規開拓</span>
+						<span
+							style="font-size:12px;font-weight:500;line-height:1;color:#2F6E84;background:#DCEDF4;border-radius:999px;padding:6px 12px;white-space:nowrap">ブランドへの信頼を高める</span>
+					</div>
+					<h6 class="gray">課題の本質</h6>
+					<p>現場領域の知識という出発点がない——その種の空間で何が実現でき、どの製品を使えばよいか分からない。空白のキャンバスは、彼らにとって自由ではなく負担である。</p>
+					<h6 class="gray">戦略：まずテンプレート、次にキャンバス</h6>
 					<p>
-						Unfamiliar with product lines, unsure how to combine products,
-						lacks confidence in proposals.
-					</p>
-					<h6 class="gray">Strategy: Guided Templates</h6>
-					<p>
-						We designed a wizard-like guided experience that abstracts product complexity.
-						Users only need to answer simple scenario questions (e.g., "Medium Conference Room"),
-						and the system generates an effective solution draft — enabling newcomers to create
-						professional proposals in <strong>minutes instead of days</strong>.
+						ログイン不要で閲覧できる 2,000 以上のモジュール式テンプレートが、まず「この種の現場はどんな形になり得るか、
+						ATEN にどんな対応ソリューションがあるか」に答える。そのうえで、既存の案を修正することから学んでもらう。
+						エンドユーザーにも SI にも、これは ATEN のソリューション力への自信とブランドへの信頼を同時に積み上げる。
 					</p>
 				</div>
 				<div class="col-4 col-sm-12 plr-sm mb-md">
-					<h4>Expert SI</h4>
-					<h6 class="gray">Pain Point</h6>
+					<div
+						style="width:56px;height:56px;border-radius:50%;background:#f5f5f5;display:flex;align-items:center;justify-content:center;margin-bottom:12px">
+						<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#5C5C5C" stroke-width="1.5"
+							stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+							<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+							<circle cx="9" cy="7" r="4" />
+							<path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+							<path d="M16 3.13a4 4 0 0 1 0 7.75" />
+						</svg>
+					</div>
+					<h4>代理店・長期パートナー SI</h4>
+					<div style="display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 14px">
+						<span
+							style="font-size:12px;font-weight:500;line-height:1;color:#3E7D4E;background:#E0F0E3;border-radius:999px;padding:6px 12px;white-space:nowrap">パートナーとの結びつきを強める</span>
+						<span
+							style="font-size:12px;font-weight:500;line-height:1;color:#3E7D4E;background:#E0F0E3;border-radius:999px;padding:6px 12px;white-space:nowrap">共に成長する</span>
+					</div>
+					<h6 class="gray">課題の本質</h6>
+					<p>ボトルネックは知識ではなく検証の効率にある——仕様書をめくって互換性を確認し、納品ドキュメントをまとめる作業に多くの時間がかかる。</p>
+					<h6 class="gray">戦略：即時フィードバック × エラーを商機に</h6>
 					<p>
-						Pursues maximum efficiency, needs to quickly handle complex architectures
-						and verify compatibility.
-					</p>
-					<h6 class="gray">Strategy: Flexible Canvas + Real-time Validation</h6>
-					<p>
-						We provided an unrestricted drag-and-drop canvas for maximum expert efficiency.
-						Crucially, we embedded a <strong>compatibility engine</strong> that provides
-						real-time feedback on connections, allowing rapid prototyping and risk mitigation
-						for complex custom architectures.
+						設計から検証、納品までの完全なツールを提供する：自由なキャンバスでケーブルを引いた瞬間に互換性を検証し、
+						BOM とドキュメントをワンクリックで出力して、ATEN 製品を中心としたソリューションを素早く組み上げる。
+						非互換のときは警告するだけでなく、問題を解決するコンバーターも提案する——エラーをネガティブな体験から、新しい製品の発見へと反転させる。
 					</p>
 				</div>
 				<div class="col-4 col-sm-12 plr-sm mb-md">
-					<h4>Internal Sales / Subsidiaries</h4>
-					<h6 class="gray">Pain Point</h6>
+					<div
+						style="width:56px;height:56px;border-radius:50%;background:#f5f5f5;display:flex;align-items:center;justify-content:center;margin-bottom:12px">
+						<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#5C5C5C" stroke-width="1.5"
+							stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+							<polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />
+						</svg>
+					</div>
+					<h4>社内営業・子会社の販売</h4>
+					<div style="display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 14px">
+						<span
+							style="font-size:12px;font-weight:500;line-height:1;color:#8F6020;background:#F7ECD8;border-radius:999px;padding:6px 12px;white-space:nowrap">商談を創出する</span>
+						<span
+							style="font-size:12px;font-weight:500;line-height:1;color:#8F6020;background:#F7ECD8;border-radius:999px;padding:6px 12px;white-space:nowrap">営業の負担を減らす</span>
+					</div>
+					<h6 class="gray">課題の本質</h6>
+					<p>外部ユーザーの行動が「図を描く」で止まれば、営業からは見えない。商談は手作業で CRM へ移す必要があり、追跡しづらい。</p>
+					<h6 class="gray">戦略：ユーザーを商談へ × 階層管理</h6>
 					<p>
-						Need to quickly respond to small-to-medium cases and reduce internal training costs.
-					</p>
-					<h6 class="gray">Strategy: Automated Proposal Generation</h6>
-					<p>
-						The system automates the last mile — generating complete documents including
-						<strong>BOM (Bill of Materials)</strong> and system architecture diagrams.
-						This frees sales teams from tedious paperwork, allowing them to focus on
-						high-value client communication.
+						「直接問い合わせ」が設計を自動的に Salesforce の商談（Opportunity）へパッケージ化し、該当地域の営業担当へ通知する——
+						プラットフォームのユーザーが、追跡可能なビジネス機会へ直接変換される。階層型のユーザー管理バックオフィス
+						（Admin / RBU / Area / Sales）と組み合わせ、各地域と子会社が配下のユーザーとグループを管理する。
 					</p>
 				</div>
 			</div>
-			<img alt="Overview of three persona cards (Novice SI, Expert SI, Internal Sales) mapped to their corresponding feature strategies: Guided Templates, Flexible Canvas, and Automated Proposals">
 
-
-			<div class="session" id="features">Product Features & Design Details</div>
-			<h2>Core Features Deep Dive</h2>
+			<!-- フレームワーク設計 -->
+			<div class="session" id="framework">フレームワーク設計</div>
+			<h2>最初の 1 行を書く前に、システムを 3 層に分ける</h2>
 			<p>
-				These features were meticulously designed to fundamentally disrupt the traditional,
-				time-consuming analog workflow, reshaping it into an intuitive, intelligent digital experience.
-			</p>
-
-			<h2 class="box mb-0 mt-lg">Feature 1. Visual Topology Editor</h2>
-			<h2 class="hightlight">The Heart of the Application</h2>
-			<p>
-				A powerful visual canvas that allows users to build system architectures as easily as
-				drawing on a whiteboard.
-			</p>
-
-			<h3>Technical Foundation</h3>
-			<p>
-				Built with <strong>React</strong> framework and deeply customized on top of
-				<strong>@xyflow/react</strong> library, ensuring smooth interaction and high extensibility.
-			</p>
-
-			<h3>Intuitive Operation</h3>
-			<p>
-				Users can drag and drop device icons from the right-side device library onto the canvas
-				for rapid layout composition.
-			</p>
-			<img alt="Screenshot of the drag-and-drop interface showing device icons being placed from the right-side library panel onto the visual canvas">
-
-			<h3>Rich Editing Tools</h3>
-			<p>
-				<strong>Device Icons:</strong> Four different sizes (Full Detail, L, S, T (Text-only)),
-				allowing users to freely switch detail levels based on diagram complexity and presentation needs.
+				着手の時点で、多くの派生シナリオが見込めた：プロダクトセレクター、自由キャンバス、AI 製品検索、結線図ジェネレーター、
+				現場オーディオ生成ツール、外部 API…… それぞれを個別に作っていては、小さなチームでは支えきれない。
+				そこで作業を始める前にシステムを 3 層に切り分け、新しいシナリオが既存の能力の<strong>組み立て</strong>で実現できるようにした（作り直しではなく）。
 				<br><br>
-				<strong>Device Labels:</strong> A unique colored-border system that lets users tag devices
-				as Core (orange), Main (blue), Auxiliary (green), or Unresolved Issue (red),
-				making complex architecture diagrams instantly comprehensible.
-				<br><br>
-				<strong>Auxiliary Graphics:</strong> Built-in annotation tools and background shapes
-				including text, circles, and rectangular containers, helping users create professional,
-				highly readable system diagrams.
+				この土台は、異なる時間軸上の 2 つの問題も同時に解く：リリース後、顧客やステークホルダーからのフィードバックの多くはアプリケーション層に落ちるため、
+				下層に触れずに迅速に調整できる。一方、プロジェクト初期にデータ層がまだ整備途中のあいだは、エンジン層とアプリケーション層を少量のサンプルデータで開発し、
+				両者を並行して進め、データが揃っていないことに足を止められなかった。
 			</p>
-			<img alt="Comparison of four device icon sizes (Full Detail, L, S, Text-only) and the colored-border label system showing Core (orange), Main (blue), Auxiliary (green), and Unresolved Issue (red) categories">
 
-			<h3>Smart Connections</h3>
+			<div style="width:100%;max-width:1000px;margin:32px auto;font-size:14px;line-height:1.7">
+				<div
+					style="border:1px solid #ccc;border-radius:8px;padding:16px 20px;background:#fafafa;display:flex;align-items:flex-start;gap:14px">
+					<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#5C5C5C" stroke-width="1.5"
+						stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:4px"
+						aria-hidden="true">
+						<rect x="3" y="4" width="18" height="16" rx="2" />
+						<line x1="3" y1="9" x2="21" y2="9" />
+						<line x1="10" y1="9" x2="10" y2="20" />
+					</svg>
+					<div>
+						<strong>アプリケーション層</strong>—— 「ユーザー × シナリオ」で下層の能力を組み立てる<br>
+						<span class="gray">プロダクトセレクター · 自由キャンバス · AI 製品検索 · AI 結線図生成 · BOM / PDF 出力 · Salesforce
+							連携</span>
+					</div>
+				</div>
+				<div style="text-align:center;color:#999;padding:4px">▲ 消費：ノード / 接続 / インタラクション API</div>
+				<div
+					style="border:1px solid #ccc;border-radius:8px;padding:16px 20px;background:#fafafa;display:flex;align-items:flex-start;gap:14px">
+					<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#5C5C5C" stroke-width="1.5"
+						stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:4px"
+						aria-hidden="true">
+						<circle cx="5" cy="6" r="2.5" />
+						<circle cx="19" cy="6" r="2.5" />
+						<circle cx="12" cy="18" r="2.5" />
+						<path d="M7.5 6h9M6.3 8.2l4.4 7.6M17.7 8.2l-4.4 7.6" />
+					</svg>
+					<div>
+						<strong>コアエンジン層</strong>—— AV を理解した作図能力。ただし利用シナリオは前提にしない<br>
+						<span class="gray">React Flow の深いカスタマイズ · Handle の動的生成 · 互換性チェック · 17 個のカスタム Hook ·
+							純フロントエンドの出力パイプライン</span>
+					</div>
+				</div>
+				<div style="text-align:center;color:#999;padding:4px">▲ 消費：標準化された Product Schema</div>
+				<div
+					style="border:1px solid #ccc;border-radius:8px;padding:16px 20px;background:#fafafa;display:flex;align-items:flex-start;gap:14px">
+					<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#5C5C5C" stroke-width="1.5"
+						stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:4px"
+						aria-hidden="true">
+						<ellipse cx="12" cy="5" rx="8" ry="3" />
+						<path d="M4 5v14c0 1.66 3.58 3 8 3s8-1.34 8-3V5" />
+						<path d="M4 12c0 1.66 3.58 3 8 3s8-1.34 8-3" />
+					</svg>
+					<div>
+						<strong>データ層</strong>—— 上層が混乱を意識せずに済むようにする<br>
+						<span class="gray">productDatabase.json の単一の信頼できる情報源 · LLM 構造化パイプライン（別稿で詳述）·
+							プロダクト管理バックオフィス</span>
+					</div>
+				</div>
+			</div>
+
 			<p>
-				Users simply drag between device ports to establish connections. The system automatically
-				colors lines based on preset signal-type color schemes
-				(Video: blue, Audio: pink, Network: light blue),
-				dramatically improving diagram readability and professionalism.
-			</p>
-			<img alt="Close-up of smart connection lines between device ports, color-coded by signal type: Video (blue), Audio (pink), Network (light blue), with automatic routing paths">
-
-			<h2 class="box mb-0 mt-lg">Feature 2. Flexible Project Creation</h2>
-			<h2 class="hightlight">Dual-Path Design for All Skill Levels</h2>
-
-			<h3>Start from a Template</h3>
-			<p>
-				This mode provides a <strong>wizard-like guided experience</strong>. Users select a
-				preset application scenario from the homepage, such as "Conference Room" or "Classroom."
-				Through the RoomConditionSelector component, users further select specific conditions and
-				additional equipment — the system then auto-generates a pre-configured diagram that only
-				needs minor adjustments.
-			</p>
-			<img alt="Step-by-step wizard interface of the template-based project creation flow, showing scenario selection (Conference Room, Classroom) and the RoomConditionSelector component with equipment options">
-
-			<h3>Build from Scratch</h3>
-			<p>
-				For senior experts, this mode provides a completely blank canvas. Users can design highly
-				customized solutions without any restrictions, fully leveraging their professional expertise.
-			</p>
-			<img alt="Side-by-side comparison of two project creation paths: Template mode (left) with pre-configured diagram vs. Scratch mode (right) with blank canvas for expert users">
-
-			<h2 class="box mb-0 mt-lg">Feature 3. Automated Documentation</h2>
-			<h2 class="hightlight">Automating the Last Mile of the Proposal Process</h2>
-
-			<h3>BOM Generation</h3>
-			<p>
-				The <strong>"Export BOM"</strong> feature exports all products and quantities from the
-				canvas into a standard Excel Bill of Materials with a single click — eliminating tedious
-				manual counting and errors.
+				中核となる原則は、<strong>下層は上に誰がいるかを知らず、上層は標準インターフェースを通じてのみ下層を消費する</strong>こと。
+				層をまたぐ各インターフェース（Schema、Hook API、JSON フォーマット）は、デザイン・エンジニアリング・ビジネスを同時に含む意思決定である——
+				たとえば Schema は Handle のレンダリングを念頭に設計し、Hook はプロダクトセレクターとキャンバスで共有するニーズを念頭に設計する。
 			</p>
 
-			<h3>System Architecture Diagram Export</h3>
-			<p>
-				The <strong>"Export Diagram"</strong> feature generates a professional PDF document from
-				the current canvas content, allowing users to customize author, date, and other information
-				for direct use in formal proposals.
-			</p>
-
-			<h3>Smart BOM Calculation</h3>
-			<p>
-				The system features advanced calculation logic. BOM calculations precisely account for
-				device quantities within "group" nodes (including multipliers) and automatically filter
-				nodes marked as "hidden" — ensuring final document accuracy.
-			</p>
-			<img alt="Examples of automated documentation outputs: Excel BOM spreadsheet with product quantities on the left, and a professionally formatted PDF system architecture diagram with custom metadata on the right">
-
-
-			<div class="session" id="technical">Technical Implementation & Contribution</div>
-			<h2>Crossing the Boundary Between Design and Development</h2>
-			<p>
-				As a UX Engineer, my contribution extended beyond drafting design blueprints to hands-on
-				implementation. This section details the key engineering tasks I undertook.
-			</p>
-
-			<h2 class="box mb-0 mt-lg">Engineering 1. Frontend Architecture & Component Development</h2>
-			<h2 class="hightlight">Building a Modular, Scalable System</h2>
-
-			<h3>Technology Stack</h3>
-			<p>
-				<strong>React</strong> as core framework, <strong>Ant Design</strong> as UI component
-				library, and <strong>@xyflow/react</strong> for the visual diagram editing functionality.
-			</p>
-
-			<h3>Custom Node Components</h3>
-			<p>
-				I created highly customized React components for canvas elements, such as
-				<strong>DeviceNode</strong> and <strong>GroupNode</strong>. This approach transformed canvas
-				nodes from static icons into intelligent, self-contained agents.
-			</p>
-
-			<h3>Performance Optimization</h3>
-			<p>
-				A critical UX challenge was the product library's scale — <strong>thousands of devices</strong>.
-				I implemented a <strong>batch-request lazy-loading strategy</strong> through the getDeviceList function,
-				ensuring the app becomes interactive within seconds while the complete device library
-				loads seamlessly in the background.
-			</p>
-			<img alt="React component architecture diagram showing DeviceNode and GroupNode custom components, with data flow between the canvas, device library, and lazy-loading batch request system">
-
-			<h2 class="box mb-0 mt-lg">Engineering 2. AI-Driven Product Data Unification</h2>
-			<h2 class="hightlight">Solving the Legacy Data Bottleneck with LLMs</h2>
-
-			<h3>The Problem</h3>
-			<p>
-				Decades of legacy product specifications existed only in <strong>unstructured, inconsistent
-				HTML tables</strong>, making them unusable by modern applications.
-			</p>
-
-			<h3>The Solution</h3>
-			<p>
-				I developed a <strong>Node.js script</strong> to automate data cleansing and structuring.
-				The script leverages the <strong>OpenAI API (GPT-4o)</strong> to transform messy product
-				specification tables into clean, unified JSON format.
-			</p>
-
-			<h3>Precision Prompt Engineering</h3>
-			<p>
-				I designed detailed prompts with strict rules to handle complex scenarios:
-				parsing quantity expressions ("2 x HDMI"), accurately classifying port types,
-				and correctly identifying special devices like signal extenders.
-			</p>
-			<img alt="Before-and-after comparison of product data: messy unstructured HTML tables on the left transformed into clean structured JSON format on the right, with the Node.js + GPT-4o pipeline illustrated in between">
-
-			<h2 class="box mb-0 mt-lg">Engineering 3. Elegant Solutions for Complex Features</h2>
-			<h2 class="hightlight">Implementation Highlights</h2>
-
-			<h3>Atomic BOM Download</h3>
-			<p>
-				When users click download, the system creates a <strong>temporary project</strong>
-				in the backend, calculates BOM, exports Excel, then immediately deletes the temporary project.
-				This provides instant gratification while avoiding orphaned projects in the workspace.
-			</p>
-
-			<h3>Batch Automation Processing</h3>
-			<p>
-				The handleBatchProcess function automatically generates all permutations of a template's
-				options and executes a series of automated actions on each combination, providing
-				tremendous convenience for large-scale template management.
-			</p>
-			<img alt="Flow diagram of the Atomic BOM Download process: user clicks download, system creates temporary project, calculates BOM from visible nodes, exports Excel, then auto-deletes the temporary project">
-
-
-			<div class="session" id="impact">Validation & Business Impact</div>
-			<h2>Data-Driven Value Measurement</h2>
-			<p>
-				We established a quantifiable direct link connecting user engagement
-				to core business outcomes such as lead generation and sales conversion.
-			</p>
-
-			<h3>Defining Success Metrics</h3>
-
-			<h4>Efficiency Improvement</h4>
-			<p>
-				Proposal preparation time was dramatically reduced
-				from an average of <strong>3 days to 30 minutes</strong>.
-			</p>
-
-			<h4>Marketing & Sales Funnel</h4>
-			<p>
-				<strong>Acquisition:</strong> The tool itself became a powerful lead magnet, attracting
-				a significant number of new System Integrators to register.
-				<br><br>
-				<strong>Retention:</strong> We tracked high-value SI users' platform engagement and
-				return rates to measure product stickiness.
-				<br><br>
-				<strong>Conversion:</strong> The system converts draft diagrams created in the simulator
-				directly into Salesforce opportunities.
-			</p>
-			<img alt="Key metrics dashboard showing efficiency improvement (3 days to 30 minutes), and the marketing-sales funnel stages: Acquisition, Retention, Conversion">
-
-			<h3>Establishing the Data Feedback Loop</h3>
-
-			<h4>Data Architecture</h4>
-			<p>
-				Frontend <strong>GA4</strong> tracking → <strong>BigQuery</strong> storage & analysis →
-				<strong>PowerBI</strong> integration with CRM sales data.
-			</p>
-			<img alt="Data architecture pipeline diagram: GA4 frontend tracking flows into BigQuery for storage and analysis, then integrates with CRM sales data in PowerBI">
-
-			<h4>Insights to Action</h4>
-
+			<h3>階層化がもたらすレバレッジ</h3>
+			<p>アプリケーション層は、ビジネスの要請に応じて新機能をいつでも生やせる——エンジン層とデータ層は動かさず、新しいシナリオは組み立てで対応する。</p>
 			<div class="line_area">
-				<h6>Market Demand Insights</h6>
-				<p>
-					After analyzing massive diagram data, we discovered the most popular product
-					combinations, directly prompting targeted <strong>"Product Bundle"</strong> sales campaigns.
-				</p>
+				<h6>すでに本番稼働</h6>
+				<p>シナリオセレクター、AI 製品ソリューションセレクター、結線図エディター——いずれも同じエンジン層とデータ層を消費し、
+					自分のフローと UI だけを書く。たとえば AI 製品ソリューションセレクターでは、データ層の Schema をそのまま LLM へ渡し、
+					アプリケーション層はエージェントのプロンプトと推薦 UI を追加するだけでよい。</p>
+			</div>
+			<div class="line_area">
+				<h6>開発中</h6>
+				<p>結線図ジェネレーター、モジュール式の製品バンドルツール、現場オーディオ生成ツールなど——エンジンはすでに「JSON
+					を読んで図を生成する」能力を持つため、新しいアプリケーションも同様にアプリケーション層で組み立てるだけで、下層に手を入れる必要はない。</p>
+			</div>
+			<div class="line_area">
+				<h6>外部 API：すでに部門横断で活用</h6>
+				<p>アプリケーション層とエンジン層の通信は当初から JSON として定義されており、Schema はすでに安定した契約である——現在 FAE チームの AI
+					サポートがこの API を直接利用しており、階層化の恩恵はチームと部門の枠を越えて広がっている。</p>
+			</div>
+
+			<!-- 機能とデザインの詳細 -->
+			<div class="session" id="features">機能とデザインの詳細</div>
+			<h2>中核機能とデザインの意思決定</h2>
+
+			<h2 class="box mb-0 mt-lg">機能 1：ビジュアル結線図エディター</h2>
+			<h2 class="hightlight">プロダクトの中核キャンバス</h2>
+			<p>
+				3 カラムのレイアウト：左にデバイスライブラリ（検索 + カテゴリ + ドラッグ）、中央に React Flow のキャンバス、右にプロパティパネル。
+				上部のツールバーには Undo / Redo / Save / Export の 4 つだけを置き、高度な機能は右クリックメニューに収めた。
+				信号カラーコードの凡例（Legend）を右下に常駐させ、初心者でもルールを覚えずに図を読める。
+			</p>
+			<img class="natural" src="../../builder/images/01_main_editor_example.png"
+				alt="実際のソリューション例：Frame による区分け、Group の乗算、7 色の信号接続を組み合わせた完全なシステム図">
+
+			<h3>カスタムノードと動的なポート</h3>
+			<p>
+				React Flow の標準ノードは Pro AV のセマンティクスを担えない——1 台の Matrix Switcher は 30 以上の I/O を持ち得る。
+				各ノードのポート（Handle）は productDatabase.json の Schema から<strong>動的に生成</strong>され、
+				信号タイプ・帯域・解像度などの属性を持ち、接続時の互換性チェックに使われる。
+				ポートは Video / Audio / USB / Control / Network ごとにグループ表示され、「HDMI 出力」を探すときは Video グループだけを見ればよい。
+			</p>
+			<img class="natural" src="../../builder/images/02_node_deviceNodeWithPort_KVMExample.png"
+				alt="KVM デバイスノード：Schema から動的に生成されたグループ化されたポート">
+			<p>
+				ユーザーは <strong>Custom Device</strong> を作成してサードパーティ機器を設計に描き込むこともできる——これらの型番は管理画面に記録され、
+				R&amp;D が市場のギャップを理解するための材料になる（成果を参照）。顧客向けのプレゼン用途には、3D パース風のノードも用意した。
+			</p>
+
+			<h3>信号カラーコードと接続</h3>
+			<p>
+				接続は信号タイプに応じて 7 色のカラーコードを自動適用する（企業既存の信号カラー規格を踏襲。本プロジェクトの仕事は、それを
+				Handle・接続・BOM・凡例に行き渡らせることだった）。トポロジーに応じて Bezier / Step / Straight の 3 つのエッジスタイルを提供し、
+				同色の接続が交差するときは半円のホップ記号を自動で描画して、複雑なトポロジーでも絡まないようにする。
+			</p>
+			<img class="natural" src="../../builder/images/01_main_editor_flowType.png"
+				alt="3 つの接続スタイル：放射状トポロジーの Bezier、マトリクストポロジーの Step、直結の Straight">
+
+			<h3>複雑さの階層化：強制露出ではなく、自発的な深掘り</h3>
+			<p>
+				機器の仕様は情報量が膨大なため、デザインは段階的開示を採る：既定ではデバイスのアイコンだけ（L0）、ホバーで Handle が現れ（L1）、
+				「ポート表示」をクリックすると全ポートが展開し（L2）、モーダルを開くと完全な仕様が見え（L3）、必要なときだけメーカーのデータシートに至る（L4）。
+				Port Visibility の粒度は「映像ポートはオン、音声ポートはオフ」まで細かく、熟練者は今の作業に関係する信号だけを見られる。
+			</p>
+
+			<!-- L0–L4 段階的開示のラダー -->
+			<div style="width:100%;max-width:1000px;margin:20px auto 8px">
+				<div style="display:flex;flex-wrap:wrap;align-items:stretch;gap:6px">
+					<div
+						style="flex:1;min-width:130px;background:#fafafa;border:1px solid #e2e2e2;border-radius:6px;padding:11px 13px">
+						<div style="font-weight:800;color:#2c6184;font-size:12px">L0 · 既定</div>
+						<div style="font-size:12.5px;color:#555;margin-top:4px">デバイスアイコンのみ</div>
+					</div>
+					<div
+						style="flex:1;min-width:130px;background:#fafafa;border:1px solid #e2e2e2;border-radius:6px;padding:11px 13px">
+						<div style="font-weight:800;color:#2c6184;font-size:12px">L1 · ホバー</div>
+						<div style="font-size:12.5px;color:#555;margin-top:4px">Handle が現れる</div>
+					</div>
+					<div
+						style="flex:1;min-width:130px;background:#fafafa;border:1px solid #e2e2e2;border-radius:6px;padding:11px 13px">
+						<div style="font-weight:800;color:#2c6184;font-size:12px">L2 · クリック</div>
+						<div style="font-size:12.5px;color:#555;margin-top:4px">全ポートを展開</div>
+					</div>
+					<div
+						style="flex:1;min-width:130px;background:#fafafa;border:1px solid #e2e2e2;border-radius:6px;padding:11px 13px">
+						<div style="font-weight:800;color:#2c6184;font-size:12px">L3 · モーダル</div>
+						<div style="font-size:12.5px;color:#555;margin-top:4px">完全な仕様</div>
+					</div>
+					<div
+						style="flex:1;min-width:130px;background:#fafafa;border:1px solid #e2e2e2;border-radius:6px;padding:11px 13px">
+						<div style="font-weight:800;color:#2c6184;font-size:12px">L4 · データシート</div>
+						<div style="font-size:12.5px;color:#555;margin-top:4px">メーカー PDF</div>
+					</div>
+				</div>
+				<div
+					style="height:6px;border-radius:99px;margin-top:8px;background:linear-gradient(90deg,#eef4fb,#cfe0ee 55%,#2c6184)">
+				</div>
+				<div class="gray" style="display:flex;justify-content:space-between;font-size:11px;margin-top:5px">
+					<span>情報密度：低</span><span>自発的な深掘り——各レベルはユーザーが要求する</span><span>情報密度：高</span>
+				</div>
+			</div>
+			<img class="natural" src="../../builder/images/04_portVisibility_KVM.png"
+				alt="Port Visibility の制御：信号タイプごとにポートの表示・非表示を決める">
+
+			<h3>Frame と Group ×N：大規模な設計を整理する</h3>
+			<p>
+				設計が「1 つの会議室」から「12 の教室 + サーバールーム + コントロールセンター」へ拡大すると、ノードを積み上げるだけでは画面が破綻する。
+				<strong>Frame</strong> は Figma のメンタルモデルを借りて空間を区分けし、<strong>Group ×N</strong>
+				は SI が代表的な部屋を 1 つ設計すれば、数量の乗算はシステムが処理する——外側 ×4 の会議室、内側 ×2 のスピーカーで、
+				BOM は自動的に 8 個と算出する。設計の責任と数量の責任を分離する。
+			</p>
+			<img class="natural" src="../../builder/images/04_group_nested.png"
+				alt="ネストした Group ×N：1 つの設計が N セットの機器を表し、BOM が自動的に乗算される">
+
+			<h2 class="box mb-0 mt-lg">機能 2：テンプレートシステム</h2>
+			<h2 class="hightlight">フロントの製品セレクター + 管理画面のセルフ入稿</h2>
+
+			<h3>テンプレートから始める</h3>
+			<p>
+				初心者が利用シーン（会議室、教室…）を選ぶと、システムは推奨機器と既定の接続をすでに含む下書きを生成する——あとは微調整するだけ。
+				プロダクトセレクターは一度きりのチュートリアルではなく、<strong>常駐する出発点</strong>である：テンプレート生成後はすべての要素が編集可能で、カスタムテンプレートとして保存できる。
+				熟練者も素早い初稿に使い、ベテランの専門家には「白紙から始める」を常に残している。
+			</p>
+
+			<h3>2,000 以上のテンプレートを生み出す管理画面</h3>
+			<p>
+				テンプレートライブラリはすでに 2,000 以上のモジュール式テンプレートを蓄積している——この量はデザイナー 1 人で支えられるものではない。
+				コンテンツはプロダクト企画担当が管理画面を通じて継続的に入稿・維持する。<strong>私の担当は、入稿を容易にするデータ構造と編集ツールだった</strong>——
+				エンジニア出身でない企画担当でも、部屋・シーン・接続設定を維持でき、そのたびにエンジニアにコード修正を頼まずに済む。
+				テンプレートの図編集はメインエディターと同じコンポーネントを流用しており、企画担当が管理画面で作ったものは、フロントの SI が見るのと同じノードと接続である。
+				<br><br>
+				入稿に加え、管理画面には運用効率を高める専用ツールも順次備えてきた——操作録画、テンプレートとオプションの組み合わせ管理、バッチ処理——
+				これらの設計と開発により、テンプレート数が増え続けても維持・検証のコストが暴走しないようにした。
+			</p>
+			<img class="natural" src="../../builder/images/03_templateEditor_diaEidtor.png"
+				alt="テンプレートエディターの管理画面：メインエディターのコンポーネントを流用したテンプレート図の編集インターフェース">
+
+			<h2 class="box mb-0 mt-lg">機能 3：ワンクリック納品</h2>
+			<h2 class="hightlight">提案の最後の 1 マイルを自動化する</h2>
+
+			<h3>BOM のリアルタイム計算</h3>
+			<p>
+				製品リストはキャンバスとともにリアルタイムで更新される：ノードの増減も Group ×N の調整も即座に反映され、
+				ブランドとカテゴリで自動的にグループ化し、非表示ノードを除外する。合計行は、営業がそのままざっくり見積もるのに使える。
+			</p>
+			<img class="natural" src="../../builder/images/04_bom_panel.png"
+				alt="BOM パネル：キャンバスとともにリアルタイム更新される製品リスト。グループ乗算とカテゴリ別集計を含む">
+
+			<h3>Excel 見積書と PDF システム図</h3>
+			<p>
+				ワンクリックで、企業公式テンプレートを適用した Excel 見積書（顧客情報と見積項目を含む）と、
+				表紙・案件情報・信号凡例・透かしを備えた PDF のシステム結線図を出力する——
+				顧客へそのまま渡せ、追加の加工は不要。出力は<strong>純フロントエンドのパイプライン</strong>（html-to-image + jsPDF）を採り、バックエンドに依存しない。
+			</p>
+			<img class="natural" src="../../builder/images/04_export_pdf_output.png"
+				alt="PDF 出力結果：Frame の区分け、信号カラーコード、Group の表記を保持した完全なソリューション文書">
+
+			<!-- エンジニアリングと技術的貢献 -->
+			<div class="session" id="technical">エンジニアリングと技術的貢献</div>
+			<h2>デザインと開発の境界を越える</h2>
+			<p>
+				このプロジェクトの工数は、本来であれば複数のフロントエンドエンジニアの協働を要する規模である。極小のチームで納品できたのは、
+				前述の 3 層アーキテクチャに加え、AI を日々の開発フローに取り込んだことによる——アーキテクチャと UX の意思決定が同じ頭の中で揃い、
+				デザインとエンジニアリングの間の引き継ぎロスをなくした。
+			</p>
+
+			<h2 class="box mb-0 mt-lg">フロントエンドアーキテクチャ</h2>
+			<h2 class="hightlight">React 18 + @xyflow/react の深いカスタマイズ</h2>
+			<p>
+				React 18 + Vite + React Router、UI は Ant Design に Tailwind で細部を上書きする。
+				状態管理に Redux は使わず、<strong>責務で分離した 17 個のカスタム Hook</strong>
+				（履歴、グループ、整列・スナップ、Handle 管理…）を用い、各 Hook が明確な API を公開する。
+				アプリケーション層はそのうち一部だけを組み立てられる——たとえば公開閲覧ページは Render と Zoom だけを読み込み、編集関連の Hook は読み込まない。
+			</p>
+
+			<h3>React Flow カスタマイズのハイライト</h3>
+			<div class="row mt-md mb-md" style="width:100%">
+				<div class="col-4 col-sm-12 plr-sm mb-md">
+					<div style="background:#fff;border:1px solid #e8e6e1;border-radius:12px;padding:18px;height:100%">
+						<div style="font-size:15px;font-weight:800;margin-bottom:8px">Handle の動的生成</div>
+						<p style="font-size:13.5px;color:#5a6170;line-height:1.7;margin:0">
+							ポートはハードコードせず、productDatabase.json
+							から動的にレンダリングする。だからこそ専門家が引く各種のエッジケース（4K を 1080p へ、HDMI を HDBaseT 越しに）にも対応できる。</p>
+					</div>
+				</div>
+				<div class="col-4 col-sm-12 plr-sm mb-md">
+					<div style="background:#fff;border:1px solid #e8e6e1;border-radius:12px;padding:18px;height:100%">
+						<div style="font-size:15px;font-weight:800;margin-bottom:8px">互換性チェックエンジン</div>
+						<p style="font-size:13.5px;color:#5a6170;line-height:1.7;margin:0">
+							ケーブルを引いた瞬間に両端のポート属性を読み、リアルタイムで検証する。非互換のときは警告を示し、コンバーター製品を提案する。チェックのロジックは一度だけ、エンジン層に書き、あらゆる利用シーンで共有する。
+						</p>
+					</div>
+				</div>
+				<div class="col-4 col-sm-12 plr-sm mb-md">
+					<div style="background:#fff;border:1px solid #e8e6e1;border-radius:12px;padding:18px;height:100%">
+						<div style="font-size:15px;font-weight:800;margin-bottom:8px">エッジ交差の検出</div>
+						<p style="font-size:13.5px;color:#5a6170;line-height:1.7;margin:0">
+							同色エッジの交点を計算し、上側のエッジにホップ記号を描画するアルゴリズム。</p>
+					</div>
+				</div>
+			</div>
+
+			<h3>パフォーマンスとエンジニアリングの詳細</h3>
+			<div class="row mt-md mb-md" style="width:100%">
+				<div class="col-4 col-sm-12 plr-sm mb-md">
+					<div style="background:#fff;border:1px solid #e8e6e1;border-radius:12px;padding:18px;height:100%">
+						<div style="font-size:15px;font-weight:800;margin-bottom:8px">製品ライブラリの遅延読み込み</div>
+						<p style="font-size:13.5px;color:#5a6170;line-height:1.7;margin:0">数千の SKU
+							に対し、バッチリクエストで分割読み込みする。アプリは数秒で操作可能になり、完全なデバイスライブラリはバックグラウンドで補完される。</p>
+					</div>
+				</div>
+				<div class="col-4 col-sm-12 plr-sm mb-md">
+					<div style="background:#fff;border:1px solid #e8e6e1;border-radius:12px;padding:18px;height:100%">
+						<div style="font-size:15px;font-weight:800;margin-bottom:8px">アトミックな BOM ダウンロード</div>
+						<p style="font-size:13.5px;color:#5a6170;line-height:1.7;margin:0">未保存のキャンバスからも BOM
+							を直接ダウンロードできる——バックエンドが一時プロジェクトを即時に作成し、計算・出力・削除を行い、ワークスペースに孤立プロジェクトを残さない。</p>
+					</div>
+				</div>
+				<div class="col-4 col-sm-12 plr-sm mb-md">
+					<div style="background:#fff;border:1px solid #e8e6e1;border-radius:12px;padding:18px;height:100%">
+						<div style="font-size:15px;font-weight:800;margin-bottom:8px">テンプレートのバッチ処理</div>
+						<p style="font-size:13.5px;color:#5a6170;line-height:1.7;margin:0">
+							テンプレートの全オプションの組み合わせを自動生成し、それぞれに検証アクションを実行する。2,000
+							以上のテンプレートの維持コストを管理可能に保つ。</p>
+					</div>
+				</div>
+			</div>
+
+			<h3>管理画面：プロダクトマネージャー</h3>
+			<p>
+				数千 SKU の仕様は、自由記述ではなく構造化されたフォームで維持する。フィールドのグループは
+				productDatabase.json の Schema に直接対応する——デザインとデータ構造が同時に形になる。クロスフィルタとバッチ更新を備え、
+				製品データの維持は「エンジニアリングの納品物」から「営業のセルフサービス」へ変わる。
+			</p>
+			<img class="natural" src="../../builder/images/05_ProductManager01.png"
+				alt="プロダクトマネージャーの管理画面：数千 SKU の構造化された仕様維持インターフェース">
+
+			<p class="highlight">
+				<strong>関連記事（それぞれ独立した稿）：</strong>データ層の鍵は、PDF / HTML に散らばり形式の異なる数千件の製品仕様を、
+				GPT-4o + プロンプトエンジニアリングで標準化された JSON へ構造化することにある——詳しくは <a href="a_builder_llm.html">LLM
+					によるプロダクトデータの構造化</a> を参照。
+				アプリケーション層の AI Agent が不確実性をどこに置くか——詳しくは <a href="a_builder_agent.html">AI Agent：LLM
+					の不確実性を制約する</a> を参照。
+			</p>
+
+			<!-- 成果とビジネスインパクト -->
+			<div class="session" id="impact">成果とビジネスインパクト</div>
+			<h2>社内ツールから外部サービスへ、そしてデータのクローズドループへ</h2>
+
+			<h3>事業の拡大</h3>
+			<p>
+				Solution Builder は社内ツールから、企業が対外的に公開する正式な SaaS サービスへと発展し、
+				世界各地の子会社に教育研修と営業推進の統一ツールとして採用された。
+				ログイン不要のテンプレート閲覧は、馴染みのない SI の参入障壁を下げる。設計の完成後の「直接問い合わせ」は、
+				設計 JSON・BOM・キャンバスのスクリーンショットを自動的に Salesforce の商談へパッケージ化し、営業が引き継ぐときには完全な文脈がすでに揃っている。
+			</p>
+
+			<!-- ユーザーを商談へ変えるフロー -->
+			<div
+				style="width:100%;max-width:1000px;margin:18px auto 8px;display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-size:13px">
+				<span
+					style="background:#fff8f0;border:1px solid #f0ddc4;border-radius:6px;padding:8px 12px">設計が完成</span>
+				<span class="gray">→</span>
+				<span
+					style="background:#fff8f0;border:1px solid #f0ddc4;border-radius:6px;padding:8px 12px">「直接問い合わせ」をクリック</span>
+				<span class="gray">→</span>
+				<span
+					style="background:#f0f6ff;border:1px solid #cfe0ee;border-radius:6px;padding:8px 12px">自動パッケージ化<span
+						class="gray" style="font-size:11.5px"> 設計 JSON · BOM · キャンバス画像</span></span>
+				<span class="gray">→</span>
+				<span style="background:#f0f6ff;border:1px solid #cfe0ee;border-radius:6px;padding:8px 12px">Salesforce
+					商談を作成</span>
+				<span class="gray">→</span>
+				<span
+					style="background:#e8f6ed;border:1px solid #c7e6d3;border-radius:6px;padding:8px 12px">地域営業へ通知して引き継ぎ</span>
+			</div>
+			<p class="gray" style="max-width:1000px;font-size:13px;margin-top:0">プラットフォーム上の「図を描く」行為が、そのまま CRM
+				内の追跡可能な商談になる——営業が手作業でデータを移す必要はない。</p>
+
+			<!-- スクリーンショット placeholder：自動作成された Salesforce 商談の画面 -->
+			<img class="natural" src="../../builder/images/06_salesforce_opportunity.png"
+				alt="「直接問い合わせ」が自動作成した Salesforce 商談：設計 JSON・BOM・キャンバス画像を伴い、営業は完全な提案文脈とともに開ける">
+
+			<h3>データアーキテクチャ：デザイン段階で Event Schema を定義する</h3>
+			<p>
+				計測は後付けではない。デザインの成果物は、ワイヤーフレームとインタラクション仕様から 3 点へ拡張した——
+				<strong>Event Spec</strong> を加え、各インタラクティブ要素に対応するイベントを Figma 上で注記する。
+				イベントはセマンティックに命名し、階層化する（ビジネスイベント / インタラクションイベント / Debug）。そして必ず context を伴う：
+				たとえば device_added は、製品がどこから追加されたか（検索 / テンプレート / AI 推薦）を記録し、
+				「AI が提案した製品は本当に採用されたか？」のような具体的な問いに答えられるようにする。
+			</p>
+			<p>
+				データフロー：フロントエンドの GTM イベント → <strong>GA4</strong> → <strong>BigQuery</strong>（クロスセッション分析、CRM
+				データの結合）→
+				<strong>PowerBI</strong>。マーケティング・R&amp;D・UX の 3 つのダッシュボードに分け、3 つの意思決定者グループに対応する。
+			</p>
+
+			<!-- データパイプライン + 3 つのダッシュボード -->
+			<div style="width:100%;max-width:1000px;margin:20px auto 8px;font-size:13px">
+				<div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px">
+					<span
+						style="background:#fff8f0;border:1px solid #f0ddc4;color:#90602a;border-radius:6px;padding:8px 13px">フロントエンド
+						GTM イベント</span>
+					<span class="gray">→</span>
+					<span
+						style="background:#f0f6ff;border:1px solid #cfe0ee;color:#2c6184;border-radius:6px;padding:8px 13px">GA4</span>
+					<span class="gray">→</span>
+					<span
+						style="background:#f0f6ff;border:1px solid #cfe0ee;color:#2c6184;border-radius:6px;padding:8px 13px">BigQuery<span
+							class="gray" style="font-size:11.5px"> クロスセッション · CRM 結合</span></span>
+					<span class="gray">→</span>
+					<span
+						style="background:#e8f6ed;border:1px solid #c7e6d3;color:#3f7553;border-radius:6px;padding:8px 13px">PowerBI</span>
+				</div>
+				<div class="gray" style="text-align:center;font-size:16px;line-height:1;margin:10px 0 12px">↓ 3
+					つの意思決定者グループへ分配
+				</div>
+				<div style="display:flex;flex-wrap:wrap;gap:8px">
+					<div style="flex:1;min-width:200px;border:1px solid #e8e6e1;border-radius:10px;overflow:hidden">
+						<div style="background:#fafafa;border-bottom:1px solid #eee;padding:9px 14px;font-weight:700">
+							マーケティング ダッシュボード</div>
+						<div style="padding:10px 14px;font-size:12.5px;color:#5a6170;line-height:1.6">人気の製品組み合わせ →
+							バンドル施策と標準推奨構成
+						</div>
+					</div>
+					<div style="flex:1;min-width:200px;border:1px solid #e8e6e1;border-radius:10px;overflow:hidden">
+						<div style="background:#fafafa;border-bottom:1px solid #eee;padding:9px 14px;font-weight:700">
+							R&amp;D
+							ダッシュボード</div>
+						<div style="padding:10px 14px;font-size:12.5px;color:#5a6170;line-height:1.6">サードパーティ機器のギャップ →
+							新製品企画化の判断材料
+						</div>
+					</div>
+					<div style="flex:1;min-width:200px;border:1px solid #e8e6e1;border-radius:10px;overflow:hidden">
+						<div style="background:#fafafa;border-bottom:1px solid #eee;padding:9px 14px;font-weight:700">UX
+							ダッシュボード</div>
+						<div style="padding:10px 14px;font-size:12.5px;color:#5a6170;line-height:1.6">機能の採用率とインタラクション経路
+							→ プロダクトの意思決定
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- TODO：PowerBI のレポート画像（初期の基本利用状況、公開可）を builder/images/06_powerbi_usage.png として保存したら、下の行のコメントを外す
+			<img class="natural" src="../../builder/images/06_powerbi_usage.png"
+				alt="PowerBI 利用状況レポート：サービス初期の基本的な利用状況ダッシュボード"> -->
+
+			<h3>実際の 2 つのクローズドループ事例</h3>
+
+			<!-- データのクローズドループ図 -->
+			<div style="width:100%;max-width:1000px;margin:16px auto 18px;font-size:13px">
+				<div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px">
+					<span
+						style="background:#fff;border:1px solid #e8e6e1;border-radius:8px;padding:9px 14px"><strong>ユーザー行動</strong><br><span
+							class="gray" style="font-size:11.5px">製品追加 · テンプレート利用 · Custom Device 作成</span></span>
+					<span class="gray">→</span>
+					<span
+						style="background:#fff;border:1px solid #e8e6e1;border-radius:8px;padding:9px 14px"><strong>セマンティックイベント</strong><br><span
+							class="gray" style="font-size:11.5px">GA4 · BigQuery</span></span>
+					<span class="gray">→</span>
+					<span
+						style="background:#fff;border:1px solid #e8e6e1;border-radius:8px;padding:9px 14px"><strong>インサイト</strong><br><span
+							class="gray" style="font-size:11.5px">ダッシュボードでのセグメント</span></span>
+					<span class="gray">→</span>
+					<span
+						style="background:#e8f6ed;border:1px solid #c7e6d3;color:#3f7553;border-radius:8px;padding:9px 14px"><strong>ビジネス／R&amp;D
+							アクション</strong><br><span style="font-size:11.5px">バンドル · 新製品評価</span></span>
+				</div>
+				<div class="gray" style="margin-top:8px;font-size:12px;border-top:1px dashed #d8d8d8;padding-top:8px">↺
+					アクションは製品と SI
+					への推薦にフィードバックされ、ユーザーの次の行動が再び記録される——<strong style="color:#5a6170">ユーザー行動そのものが、継続的な市場調査になる</strong>。
+				</div>
 			</div>
 
 			<div class="line_area">
-				<h6>Product R&D Guidance</h6>
-				<p>
-					We discovered users frequently resorting to third-party solutions to fill
-					functionality gaps, feeding this data back to R&D to develop <strong>several new products</strong>.
-				</p>
+				<h6>人気の製品組み合わせ → バンドル施策</h6>
+				<p>BigQuery を使って、1 つの設計の中で最も一緒に現れる製品ペアを見つけ出し、マーケティングはそれをもとにバンドル提供を打ち出し、その組み合わせを SI 研修の標準推奨構成にも組み込んだ。</p>
 			</div>
-			<img alt="Two case studies of data-driven insights: Product Bundle campaign and new product development initiatives triggered by usage gap data">
 
+			<div class="line_area">
+				<h6>サードパーティ機器のギャップ → R&amp;D による評価</h6>
+				<p>Custom Device
+					のイベントを追跡したところ、ある種のサードパーティ機器が頻繁に追加されていることが分かった——しかもこれらのユーザーの設計にはすでに自社製品が複数含まれており、足りないのは顧客ではなく製品だった。この「ギャップのシグナル」を
+					R&amp;D へ還元し、新製品企画化の判断材料とした。ユーザー行動そのものが、継続的な市場調査になる。</p>
+			</div>
 
-			<div class="session">Conclusion</div>
-			<h2>More Than a Tool — A Catalyst for Business Transformation</h2>
+			<p class="gray">正確な売上や社内データは NDA の制約があり、本稿では公開可能な範囲のみを開示する。</p>
+
+			<!-- プロジェクトの総括 -->
+			<div class="session">プロジェクトの総括</div>
+			<h2>デザイン・エンジニアリング・データを 1 人の中で揃える</h2>
 			<p>
-				ATEN Solution Builder is not merely a software tool — it is a core vehicle driving
-				business model transformation. This project demonstrates how a UX Engineer can
-				integrate <strong>business strategy thinking</strong>, <strong>robust frontend development</strong>,
-				and <strong>data-driven insights</strong> to transform a complex, traditional hardware
-				sales process into a smooth, efficient digital experience.
+				Solution Builder が示すのは、1 つの働き方である：Schema を設計するときはフロントエンドがどう消費するかを念頭に置き、
+				インタラクションを設計するときに計測を同時に定義し、機能を設計するときにビジネスファネル上の位置に対応させる。
+				UX が下層のデータとアーキテクチャを掌握すれば、「支援部門」から「プロダクトの意思決定」へと踏み込める——
+				このプロジェクトにおける 3 層アーキテクチャ、互換性チェック、データのクローズドループは、いずれもこの領域横断の統合がもたらした産物である。
 				<br><br>
-				Ultimately, Solution Builder established a new paradigm for how ATEN interacts with
-				its customers — proving that the deep fusion of design and engineering can not only
-				solve user pain points but fundamentally reshape a company's market strategy.
+				この働き方を支えるのは、AI ツールと開発フローの深い結合である：LLM のデータパイプラインから日々の AI 協働開発まで、
+				プロダクト開発のテンポが速まり、本来なら複数の開発人員を要したときのデザインとエンジニアリング間の往復コストも省ける——
+				だからこそ、社内ツールが極小のチームの手で、成熟した対外プロダクトサービスへと育ち得た。
 			</p>
 
 		</div>

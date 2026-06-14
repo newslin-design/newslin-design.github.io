@@ -4,23 +4,24 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, maximum-scale=1.5">
+	<meta name="robots" content="noindex, nofollow">
 	<title>ATEN Solution Builder - Portfolio</title>
-	<script>workName = "a_builder"</script>
-	<link rel="stylesheet" href="style/reset.css">
-	<link rel="stylesheet" href="style/style_layout.css">
-	<link rel="stylesheet" href="style/style.css">
-	<link rel="stylesheet" href="style/article.css">
-	<link rel="icon" type="image/png" href="web_icon.png" />
+	<script>workName = "a_builder"; lang = "en"; basePath = "../";</script>
+	<link rel="stylesheet" href="../style/reset.css">
+	<link rel="stylesheet" href="../style/style_layout.css">
+	<link rel="stylesheet" href="../style/style.css">
+	<link rel="stylesheet" href="../style/article.css">
+	<link rel="icon" type="image/png" href="../web_icon.png" />
 
 	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-114514958-1"></script>
 	<script>
-			(function (w, d, s, l, i) {
-				w[l] = w[l] || []; w[l].push({
-					'gtm.start': new Date().getTime(), event: 'gtm.js'
-				}); var f = d.getElementsByTagName(s)[0],
-					j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
-						'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
-			})(window, document, 'script', 'dataLayer', 'GTM-PMLJXPC');
+		(function (w, d, s, l, i) {
+			w[l] = w[l] || []; w[l].push({
+				'gtm.start': new Date().getTime(), event: 'gtm.js'
+			}); var f = d.getElementsByTagName(s)[0],
+				j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+					'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+		})(window, document, 'script', 'dataLayer', 'GTM-PMLJXPC');
 	</script>
 </head>
 
@@ -31,38 +32,54 @@
 	<header></header>
 	<div id="sidebar"></div>
 
-	<!-- ========================================
-		Section 1: Project Overview
-	======================================== -->
 	<div class="container mt-xl">
 		<h1>ATEN Solution Builder</h1>
 		<div class="row mb-lg">
 			<div class="col-6 col-sm-12 pr-md">
-				<p>2023 - Present</p>
-				<h3>Driving Enterprise Transformation Through Digital Tools:<br>
-					From Selling Products to Delivering Solutions</h3>
+				<p>2023 – Present</p>
+				<h3>Pro AV proposals, completed on a canvas by System Integrators (SI):<br>from spec sheets and Excel to
+					visual wiring diagrams and one-click delivery</h3>
 				<p>
-					This case study deconstructs ATEN Solution Builder — a pivotal project that catalyzed ATEN's
-					strategic transformation from a <strong>"Product-Oriented"</strong> sales model to a
-					<strong>"Solution-Oriented"</strong> approach.
+					Solution Builder is a B2B visual proposal tool: SIs drag and drop devices onto a canvas and draw
+					connections, while the system validates signal compatibility in real time, computes the Bill of
+					Materials (BOM), and exports client-ready documents in one click.
+					It's also the vehicle that operationalizes the company's strategic shift from
+					<strong>"product selling"</strong> to <strong>"solution selling."</strong>
 					<br><br>
-					As the lead Product Designer and UX Engineer, I detail how we transformed a complex business
-					challenge into a seamless digital experience, ultimately driving measurable revenue growth and
-					operational efficiency.
+					I owned product definition, UX/UI design, front-end development, and the data-analytics
+					architecture—
+					the full loop from receiving research insights, to defining the solution, to building it myself, to
+					validating with data.
 				</p>
 
-				<h6 class="mb-xxs">My Role</h6>
-				<p>UX/UI Design, Frontend Development (React), Data Analytics Architecture</p>
+				<h6 class="mb-xxs">My role</h6>
+				<p>Product definition · UX/UI design · Front-end development (React) · Data-analytics architecture<br>
+					<span class="gray">User interviews were run by a researcher; I took the insights and converged them
+						into solutions.</span>
+				</p>
 
-				<h6 class="mb-xxs">Project Type</h6>
-				<p>B2B Business Tool · Enterprise Digital Transformation · Complex System Visualization</p>
+				<h6 class="mb-xxs">Project type</h6>
+				<p>B2B SaaS · Visual editor · Enterprise digital transformation</p>
 			</div>
 			<div class="col-6 col-sm-12">
-				<img class="w-100" alt="Solution Builder application hero screenshot showing the visual topology editor interface with connected devices on canvas">
+				<img class="w-100" src="../../builder/images/01_main_editor.png"
+					alt="Solution Builder main editor: device library on the left, visual canvas in the center, properties panel on the right">
 			</div>
 		</div>
 
-		<!-- Project Nav -->
+		<!-- Series note -->
+		<div class="article">
+			<p class="highlight">
+				<strong>Three-part series:</strong> This piece focuses on the Solution Builder product itself (strategy,
+				design, front-end engineering, and data validation). The other two are standalone technical projects
+				that
+				support it:
+				<a href="a_builder_llm.html">Structuring product data with an LLM</a> and
+				<a href="a_builder_agent.html">AI Agent: constraining the uncertainty of LLMs</a>.
+			</p>
+		</div>
+
+		<!-- Project nav -->
 		<div class="article">
 			<div class="project-nav">
 				<a href="#overview" class="nav-item">
@@ -71,454 +88,834 @@
 				</a>
 				<a href="#challenge" class="nav-item">
 					<span class="step">02</span>
-					<span class="label">Challenge & Strategy</span>
+					<span class="label">Challenge &amp; Strategy</span>
+				</a>
+				<a href="#framework" class="nav-item">
+					<span class="step">03</span>
+					<span class="label">Framework Design</span>
 				</a>
 				<a href="#features" class="nav-item">
-					<span class="step">03</span>
-					<span class="label">Product Features</span>
+					<span class="step">04</span>
+					<span class="label">Features</span>
 				</a>
 				<a href="#technical" class="nav-item">
-					<span class="step">04</span>
-					<span class="label">Technical</span>
+					<span class="step">05</span>
+					<span class="label">Engineering</span>
 				</a>
 				<a href="#impact" class="nav-item">
-					<span class="step">05</span>
+					<span class="step">06</span>
 					<span class="label">Impact</span>
 				</a>
 			</div>
 		</div>
 
-		<!-- Main Content -->
 		<div class="article">
 
-			<!-- ========================================
-				Section 1: Core Contributions
-			======================================== -->
+			<!-- Core Contributions -->
 			<div class="session" id="overview">Core Contributions</div>
-			<p class="highlight">
-				<strong>Built from 0 to 1:</strong> Designed and developed a visual diagram simulator,
-				replacing the traditional cumbersome Excel/Visio planning workflow.<br><br>
-				<strong>Business Model Transformation:</strong> Helped the company transition from
-				single-product sales (Product-Oriented) to a scenario-based solution provider
-				(Solution-Oriented).<br><br>
-				<strong>Data Closed Loop:</strong> Established an analytics architecture from frontend
-				behavioral data (GA4) to business intelligence (PowerBI), validating design effectiveness.
-			</p>
-			<p>
-				This project was not merely a tool development effort — it served as a key engine driving
-				enterprise strategic transformation. Let's dive into the business challenges and strategies
-				behind it.
+			<p>End-to-end contributions across three layers—from <strong>strategy translation</strong>, to
+				<strong>product implementation</strong>, to a <strong>closed data loop</strong>.
 			</p>
 
-
-			<!-- ========================================
-				Section 2: Challenge & Strategy
-			======================================== -->
-			<div class="session" id="challenge">The Challenge & Strategy</div>
-			<h2>Dissecting Business Pain Points & User Needs</h2>
-			<p>
-				Any successful product begins with a deep understanding of the business environment and
-				target audience. This section deconstructs the core challenges ATEN faced and outlines
-				the user-centered design strategy we developed in response.
-			</p>
-
-			<h3>At the Crossroads of Business Transformation</h3>
-			<p>
-				At the project's inception, the company was at a critical transformation juncture,
-				facing two major business challenges:
-			</p>
-
-			<h4>1. Market Disconnection</h4>
-			<p>
-				The heavy reliance on distributors for single-product sales made it difficult for the
-				company to grasp end-customer needs and behavioral data. This gap not only compressed
-				product margins but also limited the cultivation of customer loyalty.
-			</p>
-
-			<h4>2. High Proposal Barrier</h4>
-			<p>
-				Pro AV system architectures are extremely complex. New sales personnel or System
-				Integrators (SI) required a lengthy learning curve to independently complete a professional
-				proposal, directly leading to extended sales cycles and low efficiency.
-			</p>
-			<img alt="Diagram illustrating ATEN's two core business challenges: market disconnection from end-customers through distributor-dependent model, and high proposal barriers for system integrators">
-
-			<h3>UX as a Strategic Driver</h3>
-			<p>
-				Facing these challenges, the role of UX extended beyond interface optimization to become
-				a <strong>strategic core driving revenue growth</strong>. Our key proposition was:
-				<br><br>
-				<em>"How can we lower the proposal barrier for SIs and improve proposal success rates?"</em>
-				<br><br>
-				<strong>Solution Builder</strong> was our answer — a digital tool designed to standardize,
-				visualize, and automate the complex system planning process. It not only solved the efficiency
-				problem but became the company's strategic pivot for directly reaching end-users and driving
-				solution-based sales.
-			</p>
-			<img alt="Strategic positioning diagram showing how Solution Builder bridges UX, business transformation, and direct customer engagement as a central pivot point">
-
-			<h3>Target Audience & Layered Design Strategy</h3>
-			<p>
-				To ensure the product precisely met different users' needs, we defined three core target
-				personas and tailored a layered design strategy for each:
-			</p>
-
-			<!-- Persona Table -->
 			<div class="row mt-md mb-lg" style="width:100%">
 				<div class="col-4 col-sm-12 plr-sm mb-md">
-					<h4>Novice SI</h4>
-					<h6 class="gray">Pain Point</h6>
-					<p>
-						Unfamiliar with product lines, unsure how to combine products,
-						lacks confidence in proposals.
-					</p>
-					<h6 class="gray">Strategy: Guided Templates</h6>
-					<p>
-						We designed a wizard-like guided experience that abstracts product complexity.
-						Users only need to answer simple scenario questions (e.g., "Medium Conference Room"),
-						and the system generates an effective solution draft — enabling newcomers to create
-						professional proposals in <strong>minutes instead of days</strong>.
-					</p>
+					<div style="border:1px solid #e8e6e1;border-radius:12px;overflow:hidden;height:100%">
+						<div
+							style="background:#f0f6ff;color:#2c6184;padding:12px 16px;font-weight:700;display:flex;align-items:center;gap:10px">
+							<span
+								style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:6px;background:#fff;border:1px solid currentColor;font-size:12px;font-weight:800;flex:none">01</span>Translating
+							strategy into executable specs
+						</div>
+						<p style="padding:14px 16px;margin:0;font-size:13.5px;line-height:1.75;color:#444">
+							Took the company's new direction—"from selling individual products to selling whole
+							sites"—combined it with user research, and translated the broad direction into concrete,
+							actionable product specs and feature definitions.</p>
+					</div>
 				</div>
 				<div class="col-4 col-sm-12 plr-sm mb-md">
-					<h4>Expert SI</h4>
-					<h6 class="gray">Pain Point</h6>
-					<p>
-						Pursues maximum efficiency, needs to quickly handle complex architectures
-						and verify compatibility.
-					</p>
-					<h6 class="gray">Strategy: Flexible Canvas + Real-time Validation</h6>
-					<p>
-						We provided an unrestricted drag-and-drop canvas for maximum expert efficiency.
-						Crucially, we embedded a <strong>compatibility engine</strong> that provides
-						real-time feedback on connections, allowing rapid prototyping and risk mitigation
-						for complex custom architectures.
-					</p>
+					<div style="border:1px solid #e8e6e1;border-radius:12px;overflow:hidden;height:100%">
+						<div
+							style="background:#fff8f0;color:#90602a;padding:12px 16px;font-weight:700;display:flex;align-items:center;gap:10px">
+							<span
+								style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:6px;background:#fff;border:1px solid currentColor;font-size:12px;font-weight:800;flex:none">02</span>Building
+							a complete software service from 0 to 1
+						</div>
+						<p style="padding:14px 16px;margin:0;font-size:13.5px;line-height:1.75;color:#444">
+							From spec definition, system architecture, and UX/UI design through front-end
+							implementation—later establishing a new AI-assisted development workflow.</p>
+					</div>
 				</div>
 				<div class="col-4 col-sm-12 plr-sm mb-md">
-					<h4>Internal Sales / Subsidiaries</h4>
-					<h6 class="gray">Pain Point</h6>
-					<p>
-						Need to quickly respond to small-to-medium cases and reduce internal training costs.
-					</p>
-					<h6 class="gray">Strategy: Automated Proposal Generation</h6>
-					<p>
-						The system automates the last mile — generating complete documents including
-						<strong>BOM (Bill of Materials)</strong> and system architecture diagrams.
-						This frees sales teams from tedious paperwork, allowing them to focus on
-						high-value client communication.
-					</p>
+					<div style="border:1px solid #e8e6e1;border-radius:12px;overflow:hidden;height:100%">
+						<div
+							style="background:#e8f6ed;color:#3f7553;padding:12px 16px;font-weight:700;display:flex;align-items:center;gap:10px">
+							<span
+								style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:6px;background:#fff;border:1px solid currentColor;font-size:12px;font-weight:800;flex:none">03</span>Building
+							the data-tracking pipeline
+						</div>
+						<p style="padding:14px 16px;margin:0;font-size:13.5px;line-height:1.75;color:#444">
+							From front-end GA4 to BigQuery to PowerBI, wired back into the CRM (Salesforce) to connect
+							with
+							the sales process.</p>
+					</div>
 				</div>
 			</div>
-			<img alt="Overview of three persona cards (Novice SI, Expert SI, Internal Sales) mapped to their corresponding feature strategies: Guided Templates, Flexible Canvas, and Automated Proposals">
 
+			<!-- Background, Challenge & Strategy -->
+			<div class="session" id="challenge">Background, Challenge &amp; Strategy</div>
+			<h2>From a business challenge to a design problem</h2>
 
-			<!-- ========================================
-				Section 3: Product Features & Design Details
-			======================================== -->
-			<div class="session" id="features">Product Features & Design Details</div>
-			<h2>Core Features Deep Dive</h2>
+			<h3>Business context</h3>
 			<p>
-				These features were meticulously designed to fundamentally disrupt the traditional,
-				time-consuming analog workflow, reshaping it into an intuitive, intelligent digital experience.
+				ATEN is a global Pro AV / KVM manufacturer with a product line spanning thousands of SKUs. A traditional
+				SI's proposal process runs through five stages:
 			</p>
 
-			<!-- 3.1 Visual Topology Editor -->
-			<h2 class="box mb-0 mt-lg">Feature 1. Visual Topology Editor</h2>
-			<h2 class="hightlight">The Heart of the Application</h2>
-			<p>
-				A powerful visual canvas that allows users to build system architectures as easily as
-				drawing on a whiteboard.
-			</p>
+			<div style="width:100%;max-width:1000px;margin:20px 0 8px">
+				<div style="display:flex;flex-wrap:wrap;align-items:center;gap:10px 6px;font-size:14px">
+					<span
+						style="border:1px solid #ccc;border-radius:6px;padding:8px 14px;background:#fafafa;white-space:nowrap">Understand
+						site requirements</span>
+					<span style="color:#bbb">→</span>
+					<span
+						style="border:1px solid #ccc;border-radius:6px;padding:8px 14px;background:#fafafa;white-space:nowrap">Initial
+						system design</span>
+					<span style="color:#bbb">→</span>
+					<span
+						style="border:1px solid #ccc;border-radius:6px;padding:8px 14px;background:#fafafa;white-space:nowrap">Dig
+						through spec sheets &amp; Excel</span>
+					<span style="color:#bbb">→</span>
+					<span
+						style="border:1px solid #ccc;border-radius:6px;padding:8px 14px;background:#fafafa;white-space:nowrap">Draw
+						the wiring diagram</span>
+					<span style="color:#bbb">→</span>
+					<span
+						style="border:1px solid #ccc;border-radius:6px;padding:8px 14px;background:#fafafa;white-space:nowrap">Verify
+						device compatibility</span>
+				</div>
+				<div class="gray" style="display:flex;align-items:center;gap:6px;font-size:13px;margin-top:10px">
+					<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9e9e9e" stroke-width="2"
+						stroke-linecap="round" stroke-linejoin="round" style="flex:none" aria-hidden="true">
+						<polyline points="1 4 1 10 7 10" />
+						<path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10" />
+					</svg>
+					Each stage loops back repeatedly—a spec mismatch sends you back to redesign; an evolving requirement
+					means another full pass.
+				</div>
+			</div>
 
-			<h3>Technical Foundation</h3>
 			<p>
-				Built with <strong>React</strong> framework and deeply customized on top of
-				<strong>@xyflow/react</strong> library, ensuring smooth interaction and high extensibility.
-			</p>
-
-			<h3>Intuitive Operation</h3>
-			<p>
-				Users can drag and drop device icons from the right-side device library onto the canvas
-				for rapid layout composition.
-			</p>
-			<img alt="Screenshot of the drag-and-drop interface showing device icons being placed from the right-side library panel onto the visual canvas">
-
-			<h3>Rich Editing Tools</h3>
-			<p>
-				<strong>Device Icons:</strong> Four different sizes (Full Detail, L, S, T (Text-only)),
-				allowing users to freely switch detail levels based on diagram complexity and presentation needs.
+				For a junior SI it's a long learning curve; for a senior SI it's a lot of repetitive labor.
 				<br><br>
-				<strong>Device Labels:</strong> A unique colored-border system that lets users tag devices
-				as Core (orange), Main (blue), Auxiliary (green), or Unresolved Issue (red),
-				making complex architecture diagrams instantly comprehensible.
-				<br><br>
-				<strong>Auxiliary Graphics:</strong> Built-in annotation tools and background shapes
-				including text, circles, and rectangular containers, helping users create professional,
-				highly readable system diagrams.
-			</p>
-			<img alt="Comparison of four device icon sizes (Full Detail, L, S, Text-only) and the colored-border label system showing Core (orange), Main (blue), Auxiliary (green), and Unresolved Issue (red) categories">
-
-			<h3>Smart Connections</h3>
-			<p>
-				Users simply drag between device ports to establish connections. The system automatically
-				colors lines based on preset signal-type color schemes
-				(Video: blue, Audio: pink, Network: light blue),
-				dramatically improving diagram readability and professionalism.
-			</p>
-			<img alt="Close-up of smart connection lines between device ports, color-coded by signal type: Video (blue), Audio (pink), Network (light blue), with automatic routing paths">
-
-			<!-- 3.2 Flexible Project Creation -->
-			<h2 class="box mb-0 mt-lg">Feature 2. Flexible Project Creation</h2>
-			<h2 class="hightlight">Dual-Path Design for All Skill Levels</h2>
-
-			<h3>Start from a Template</h3>
-			<p>
-				This mode provides a <strong>wizard-like guided experience</strong>. Users select a
-				preset application scenario from the homepage, such as "Conference Room" or "Classroom."
-				Through the RoomConditionSelector component, users further select specific conditions and
-				additional equipment — the system then auto-generates a pre-configured diagram that only
-				needs minor adjustments.
-			</p>
-			<img alt="Step-by-step wizard interface of the template-based project creation flow, showing scenario selection (Conference Room, Classroom) and the RoomConditionSelector component with equipment options">
-
-			<h3>Build from Scratch</h3>
-			<p>
-				For senior experts, this mode provides a completely blank canvas. Users can design highly
-				customized solutions without any restrictions, fully leveraging their professional expertise.
-			</p>
-			<p>
-				This dual-path design approach was a direct outcome of our user research, ensuring the
-				tool is immediately accessible to novice SIs through templates while providing experts with
-				unlimited creative freedom.
-			</p>
-			<img alt="Side-by-side comparison of two project creation paths: Template mode (left) with pre-configured diagram vs. Scratch mode (right) with blank canvas for expert users">
-
-			<!-- 3.3 Automated Documentation -->
-			<h2 class="box mb-0 mt-lg">Feature 3. Automated Documentation</h2>
-			<h2 class="hightlight">Automating the Last Mile of the Proposal Process</h2>
-
-			<h3>BOM Generation</h3>
-			<p>
-				The <strong>"Export BOM"</strong> feature exports all products and quantities from the
-				canvas into a standard Excel Bill of Materials with a single click — eliminating tedious
-				manual counting and errors.
-			</p>
-
-			<h3>System Architecture Diagram Export</h3>
-			<p>
-				The <strong>"Export Diagram"</strong> feature generates a professional PDF document from
-				the current canvas content, allowing users to customize author, date, and other information
-				for direct use in formal proposals.
-			</p>
-
-			<h3>Smart BOM Calculation</h3>
-			<p>
-				The system features advanced calculation logic. BOM calculations precisely account for
-				device quantities within "group" nodes (including multipliers) and automatically filter
-				nodes marked as "hidden" — ensuring final document accuracy.
-			</p>
-			<img alt="Examples of automated documentation outputs: Excel BOM spreadsheet with product quantities on the left, and a professionally formatted PDF system architecture diagram with custom metadata on the right">
-
-
-			<!-- ========================================
-				Section 4: Technical Implementation
-			======================================== -->
-			<div class="session" id="technical">Technical Implementation & Contribution</div>
-			<h2>Crossing the Boundary Between Design and Development</h2>
-			<p>
-				As a UX Engineer, my contribution extended beyond drafting design blueprints to hands-on
-				implementation. This section details the key engineering tasks I undertook — work that not
-				only realized the design vision but solved a foundational data problem blocking project
-				progress, while building a robust, scalable frontend architecture.
-			</p>
-
-			<!-- 4.1 Frontend Architecture -->
-			<h2 class="box mb-0 mt-lg">Engineering 1. Frontend Architecture & Component Development</h2>
-			<h2 class="hightlight">Building a Modular, Scalable System</h2>
-
-			<h3>Technology Stack</h3>
-			<p>
-				<strong>React</strong> as core framework, <strong>Ant Design</strong> as UI component
-				library, and <strong>@xyflow/react</strong> for the visual diagram editing functionality.
-			</p>
-
-			<h3>Custom Node Components</h3>
-			<p>
-				I created highly customized React components for canvas elements, such as
-				<strong>DeviceNode</strong> and <strong>GroupNode</strong>. This approach transformed canvas
-				nodes from static icons into intelligent, self-contained agents. Each node manages its own
-				data fetching, view management, and port rendering logic — creating a highly modular
-				and extensible architecture.
-			</p>
-
-			<h3>Performance Optimization</h3>
-			<p>
-				A critical UX challenge was the product library's scale — <strong>thousands of devices</strong>.
-				Traditional loading would cause unacceptable initial load times. I implemented a
-				<strong>batch-request lazy-loading strategy</strong> through the getDeviceList function,
-				ensuring the app becomes interactive within seconds while the complete device library
-				loads seamlessly in the background.
-			</p>
-			<img alt="React component architecture diagram showing DeviceNode and GroupNode custom components, with data flow between the canvas, device library, and lazy-loading batch request system">
-
-			<!-- 4.2 AI-Driven Data Unification -->
-			<h2 class="box mb-0 mt-lg">Engineering 2. AI-Driven Product Data Unification</h2>
-			<h2 class="hightlight">Solving the Legacy Data Bottleneck with LLMs</h2>
-
-			<h3>The Problem</h3>
-			<p>
-				The project was initially blocked by a critical data problem: decades of legacy product
-				specifications existed only in <strong>unstructured, inconsistent HTML tables</strong>,
-				making them unusable by modern applications. This became a massive bottleneck.
-			</p>
-
-			<h3>The Solution</h3>
-			<p>
-				I developed a <strong>Node.js script</strong> to automate data cleansing and structuring.
-				The script fetches messy product specification tables from internal APIs and leverages
-				the <strong>OpenAI API (GPT-4o)</strong> to transform them into clean, unified JSON format.
-			</p>
-
-			<h3>Precision Prompt Engineering</h3>
-			<p>
-				The solution's success hinged on meticulous prompt engineering. I designed detailed prompts
-				with strict rules to guide the AI in handling complex scenarios such as:
-				parsing quantity expressions ("2 x HDMI"), accurately classifying port types,
-				and correctly identifying special devices like signal extenders — categorizing their
-				unique "Unit to Unit" interfaces as video inputs or outputs.
-				<br><br>
-				This not only solved the data problem but demonstrated the technical depth of leveraging
-				Large Language Models to solve real-world business challenges.
-			</p>
-			<img alt="Before-and-after comparison of product data: messy unstructured HTML tables on the left transformed into clean structured JSON format on the right, with the Node.js + GPT-4o pipeline illustrated in between">
-
-			<!-- 4.3 Complex Feature Implementation -->
-			<h2 class="box mb-0 mt-lg">Engineering 3. Elegant Solutions for Complex Features</h2>
-			<h2 class="hightlight">Implementation Highlights</h2>
-
-			<h3>Atomic BOM Download</h3>
-			<p>
-				To solve the "download BOM directly from template preview" requirement, I designed an
-				elegant flow: when users click download, the system creates a <strong>temporary project</strong>
-				in the backend, passes the BOM calculated from visible nodes, triggers Excel export,
-				then immediately deletes the temporary project.
-				<br><br>
-				This design provides the instant gratification of direct downloads while avoiding orphaned
-				or temporary projects in the user's workspace — maintaining a clean, purpose-driven UX.
-			</p>
-
-			<h3>Batch Automation Processing</h3>
-			<p>
-				The handleBatchProcess function is a powerful internal tool that automatically generates
-				all permutations of a template's options and executes a series of automated actions
-				(e.g., standardizing line thickness, saving projects) on each combination.
-				<br><br>
-				This showcases architectural foresight, providing the internal team with tremendous
-				convenience for large-scale template management and maintenance.
-			</p>
-			<img alt="Flow diagram of the Atomic BOM Download process: user clicks download, system creates temporary project, calculates BOM from visible nodes, exports Excel, then auto-deletes the temporary project">
-
-
-			<!-- ========================================
-				Section 5: Validation & Business Impact
-			======================================== -->
-			<div class="session" id="impact">Validation & Business Impact</div>
-			<h2>Data-Driven Value Measurement</h2>
-			<p>
-				A project's success depends not only on usability but on its substantive contribution
-				to business goals. We established a quantifiable direct link connecting user engagement
-				to core business outcomes such as lead generation and sales conversion — something
-				previously untrackable.
-			</p>
-
-			<!-- Key Metrics -->
-			<h3>Defining Success Metrics</h3>
-
-			<h4>Efficiency Improvement</h4>
-			<p>
-				Based on internal team testing, proposal preparation time was dramatically reduced
-				from an average of <strong>3 days to 30 minutes</strong>.
-			</p>
-
-			<h4>Marketing & Sales Funnel</h4>
-			<p>
-				<strong>Acquisition:</strong> The tool itself became a powerful lead magnet, attracting
-				a significant number of new System Integrators to register, effectively expanding the
-				prospect list.
-				<br><br>
-				<strong>Retention:</strong> We tracked high-value SI users' platform engagement and
-				return rates to measure product stickiness.
-				<br><br>
-				<strong>Conversion:</strong> The system converts draft diagrams created in the simulator
-				directly into Salesforce opportunities, seamlessly integrating with the sales process.
-			</p>
-			<img alt="Key metrics dashboard showing efficiency improvement (3 days to 30 minutes), and the marketing-sales funnel stages: Acquisition (lead magnet), Retention (engagement tracking), Conversion (Salesforce integration)">
-
-			<!-- Data Feedback Loop -->
-			<h3>Establishing the Data Feedback Loop</h3>
-
-			<h4>Data Architecture</h4>
-			<p>
-				We used <strong>GA4</strong> on the frontend for precise user behavior tracking,
-				streamed data to <strong>BigQuery</strong> for storage and analysis, and ultimately
-				integrated with CRM sales data in <strong>PowerBI</strong> to form a complete business
-				insight dashboard.
-			</p>
-			<img alt="Data architecture pipeline diagram: GA4 frontend tracking flows into BigQuery for storage and analysis, then integrates with CRM sales data in PowerBI to form a complete business intelligence dashboard">
-
-			<h4>Insights to Action</h4>
-			<p>
-				Through this data system, we gained invaluable insights that translated into concrete
-				business actions:
+				At the same time, a sales model long dependent on distributors made it hard for the company to grasp
+				what
+				end customers actually needed. The strategy therefore focused on two directions:
 			</p>
 
 			<div class="line_area">
-				<h6>Market Demand Insights</h6>
-				<p>
-					After analyzing massive diagram data, we discovered the most popular product
-					combinations in the market. This directly prompted the marketing department
-					to launch targeted <strong>"Product Bundle"</strong> sales campaigns.
-				</p>
+				<h6>Deepen market insight</h6>
+				<p>Build the ability to grasp market demand and the real situations of end users directly, so product
+					decisions stay closer to actual use.</p>
+			</div>
+			<div class="line_area">
+				<h6>Empower partners to grow</h6>
+				<p>Give entry-level SIs a fast starting point for building solutions and shorten the learning curve; at
+					the same time, let senior SIs explore and apply ATEN's vast product line more efficiently,
+					accelerating deal generation.</p>
+			</div>
+
+			<h3>The UX strategic question</h3>
+			<p>
+				<em>"How do we lower the barrier to proposing, while raising win rate and traceability?"</em>
+				<br><br>
+				Solution Builder is the answer to that question. In design, I restructured the researcher's insights
+				into
+				<strong>three different demand curves across user types</strong>. External users sit on a spectrum:
+				from end users and junior SIs still learning the product line, to long-term distributors and senior
+				partner SIs—the same SI needs different tiers of tooling in year one versus year five. Internal sales
+				sit at the exit of that spectrum, turning external users' actions into trackable opportunities.
+				So rather than building three separate UIs, I built <strong>one tool with switchable tiers</strong>,
+				paired with an internal opportunity-tracking and user-management back office.
+			</p>
+
+			<!-- User spectrum -->
+			<div style="width:100%;max-width:1000px;margin:24px auto 8px">
+				<div class="gray" style="font-size:13px;margin-bottom:10px">One capability spectrum, three user types
+					standing at different points—the tool serves the whole range by switching tiers, instead of
+					splitting into three.</div>
+				<div
+					style="display:flex;flex-wrap:wrap;border-radius:8px;overflow:hidden;border:1px solid #e2e2e2;font-size:13px">
+					<div style="flex:1;min-width:160px;background:#DCEDF4;color:#2F6E84;padding:13px 14px">
+						<strong>End users · Junior SIs</strong><br><span style="font-size:12px">Templates first, build
+							confidence</span>
+					</div>
+					<div style="flex:1;min-width:160px;background:#E0F0E3;color:#3E7D4E;padding:13px 14px">
+						<strong>Distributors · Senior partner SIs</strong><br><span style="font-size:12px">Full canvas,
+							real-time validation</span>
+					</div>
+					<div style="flex:1;min-width:160px;background:#F7ECD8;color:#8F6020;padding:13px 14px">
+						<strong>Internal sales · Subsidiaries</strong><br><span style="font-size:12px">Spectrum exit:
+							turn
+							actions into opportunities</span>
+					</div>
+				</div>
+				<div style="display:flex;font-size:11px;color:#aaa;margin-top:6px">
+					<div style="flex:1">← Still learning the product line</div>
+					<div style="flex:1;text-align:center">Familiar, long-term partners</div>
+					<div style="flex:1;text-align:right">Trackable opportunities →</div>
+				</div>
+			</div>
+
+			<div class="row mt-md mb-lg" style="width:100%">
+				<div class="col-4 col-sm-12 plr-sm mb-md">
+					<div
+						style="width:56px;height:56px;border-radius:50%;background:#f5f5f5;display:flex;align-items:center;justify-content:center;margin-bottom:12px">
+						<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#5C5C5C" stroke-width="1.5"
+							stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+							<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+							<circle cx="9" cy="7" r="4" />
+							<line x1="19" y1="8" x2="19" y2="14" />
+							<line x1="16" y1="11" x2="22" y2="11" />
+						</svg>
+					</div>
+					<h4>End users &amp; junior SIs</h4>
+					<div style="display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 14px">
+						<span
+							style="font-size:12px;font-weight:500;line-height:1;color:#2F6E84;background:#DCEDF4;border-radius:999px;padding:6px 12px;white-space:nowrap">Cold
+							outreach</span>
+						<span
+							style="font-size:12px;font-weight:500;line-height:1;color:#2F6E84;background:#DCEDF4;border-radius:999px;padding:6px 12px;white-space:nowrap">Build
+							brand confidence</span>
+					</div>
+					<h6 class="gray">Core pain point</h6>
+					<p>No starting point of site-domain knowledge—unsure what such a space can achieve or which products
+						to use. A blank canvas is a burden to them, not freedom.</p>
+					<h6 class="gray">Strategy: templates first, canvas second</h6>
+					<p>
+						2,000+ modular templates browsable without login first answer "what can this kind of site
+						become,
+						and which ATEN solutions fit," then let them learn by modifying ready-made solutions.
+						For end users and SIs alike, this builds confidence in ATEN's solution capabilities and trust in
+						the brand.
+					</p>
+				</div>
+				<div class="col-4 col-sm-12 plr-sm mb-md">
+					<div
+						style="width:56px;height:56px;border-radius:50%;background:#f5f5f5;display:flex;align-items:center;justify-content:center;margin-bottom:12px">
+						<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#5C5C5C" stroke-width="1.5"
+							stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+							<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+							<circle cx="9" cy="7" r="4" />
+							<path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+							<path d="M16 3.13a4 4 0 0 1 0 7.75" />
+						</svg>
+					</div>
+					<h4>Distributors &amp; long-term partner SIs</h4>
+					<div style="display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 14px">
+						<span
+							style="font-size:12px;font-weight:500;line-height:1;color:#3E7D4E;background:#E0F0E3;border-radius:999px;padding:6px 12px;white-space:nowrap">Strengthen
+							partner ties</span>
+						<span
+							style="font-size:12px;font-weight:500;line-height:1;color:#3E7D4E;background:#E0F0E3;border-radius:999px;padding:6px 12px;white-space:nowrap">Grow
+							together</span>
+					</div>
+					<h6 class="gray">Core pain point</h6>
+					<p>The bottleneck isn't knowledge—it's verification efficiency. Huge amounts of time go into
+						checking spec sheets for compatibility and assembling delivery documents.</p>
+					<h6 class="gray">Strategy: instant feedback × errors as opportunities</h6>
+					<p>
+						Give them the full toolset from design to verification to delivery: compatibility checked the
+						instant a cable is drawn on a free canvas, BOM and documents exported in one click, quickly
+						assembling solutions built around ATEN products.
+						On an incompatibility it doesn't just warn—it suggests a converter that solves the problem,
+						flipping an error from a negative experience into the discovery of a new product.
+					</p>
+				</div>
+				<div class="col-4 col-sm-12 plr-sm mb-md">
+					<div
+						style="width:56px;height:56px;border-radius:50%;background:#f5f5f5;display:flex;align-items:center;justify-content:center;margin-bottom:12px">
+						<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#5C5C5C" stroke-width="1.5"
+							stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+							<polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />
+						</svg>
+					</div>
+					<h4>Internal sales &amp; subsidiary sales</h4>
+					<div style="display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 14px">
+						<span
+							style="font-size:12px;font-weight:500;line-height:1;color:#8F6020;background:#F7ECD8;border-radius:999px;padding:6px 12px;white-space:nowrap">Create
+							opportunities</span>
+						<span
+							style="font-size:12px;font-weight:500;line-height:1;color:#8F6020;background:#F7ECD8;border-radius:999px;padding:6px 12px;white-space:nowrap">Reduce
+							sales workload</span>
+					</div>
+					<h6 class="gray">Core pain point</h6>
+					<p>If an external user's action stops at "drawing," sales never see it; opportunities have to be
+						moved
+						into the CRM by hand and are hard to track.</p>
+					<h6 class="gray">Strategy: user-to-opportunity × tiered management</h6>
+					<p>
+						"Direct inquiry" automatically packages a design into a Salesforce Opportunity and notifies the
+						matching regional sales rep—platform users convert directly into trackable business
+						opportunities. Paired with a tiered user-management back office
+						(Admin / RBU / Area / Sales), each region and subsidiary manages the users and groups under it.
+					</p>
+				</div>
+			</div>
+
+			<!-- Framework Design -->
+			<div class="session" id="framework">Framework Design</div>
+			<h2>Before the first line of code, split the system into three layers</h2>
+			<p>
+				From the start we could anticipate many derivative scenarios: product selector, free canvas, AI product
+				search, wiring-diagram generator, room-audio generator, an external API…… If each were built
+				independently, a small team couldn't sustain it.
+				So before any work began, the system was cut into three layers, so new scenarios land by
+				<strong>assembling</strong> existing capabilities rather than rebuilding.
+				<br><br>
+				This foundation also solves two problems on different timelines: after launch, most feedback from
+				customers and stakeholders lands in the application layer and can be adjusted promptly without touching
+				the lower layers; early on, while the data layer was still being assembled, the engine and application
+				layers were developed on a small sample dataset—both progressing in parallel, never blocked by data that
+				wasn't ready yet.
+			</p>
+
+			<div style="width:100%;max-width:1000px;margin:32px auto;font-size:14px;line-height:1.7">
+				<div
+					style="border:1px solid #ccc;border-radius:8px;padding:16px 20px;background:#fafafa;display:flex;align-items:flex-start;gap:14px">
+					<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#5C5C5C" stroke-width="1.5"
+						stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:4px"
+						aria-hidden="true">
+						<rect x="3" y="4" width="18" height="16" rx="2" />
+						<line x1="3" y1="9" x2="21" y2="9" />
+						<line x1="10" y1="9" x2="10" y2="20" />
+					</svg>
+					<div>
+						<strong>Application layer</strong>— assembles lower-layer capabilities by "user × scenario"<br>
+						<span class="gray">Product selector · Free canvas · AI product search · AI-generated wiring
+							diagrams · BOM / PDF export · Salesforce integration</span>
+					</div>
+				</div>
+				<div style="text-align:center;color:#999;padding:4px">▲ consumes: node / connection / interaction APIs
+				</div>
+				<div
+					style="border:1px solid #ccc;border-radius:8px;padding:16px 20px;background:#fafafa;display:flex;align-items:flex-start;gap:14px">
+					<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#5C5C5C" stroke-width="1.5"
+						stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:4px"
+						aria-hidden="true">
+						<circle cx="5" cy="6" r="2.5" />
+						<circle cx="19" cy="6" r="2.5" />
+						<circle cx="12" cy="18" r="2.5" />
+						<path d="M7.5 6h9M6.3 8.2l4.4 7.6M17.7 8.2l-4.4 7.6" />
+					</svg>
+					<div>
+						<strong>Core engine layer</strong>— AV-aware diagramming capability, with no assumed use
+						case<br>
+						<span class="gray">Deep React Flow customization · Dynamic Handle generation · Compatibility
+							checking · 17 custom Hooks · Pure front-end export pipeline</span>
+					</div>
+				</div>
+				<div style="text-align:center;color:#999;padding:4px">▲ consumes: standardized Product Schema</div>
+				<div
+					style="border:1px solid #ccc;border-radius:8px;padding:16px 20px;background:#fafafa;display:flex;align-items:flex-start;gap:14px">
+					<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#5C5C5C" stroke-width="1.5"
+						stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:4px"
+						aria-hidden="true">
+						<ellipse cx="12" cy="5" rx="8" ry="3" />
+						<path d="M4 5v14c0 1.66 3.58 3 8 3s8-1.34 8-3V5" />
+						<path d="M4 12c0 1.66 3.58 3 8 3s8-1.34 8-3" />
+					</svg>
+					<div>
+						<strong>Data layer</strong>— lets the upper layers ignore the mess<br>
+						<span class="gray">productDatabase.json single source of truth · LLM structuring pipeline
+							(covered
+							separately) · Product-management back office</span>
+					</div>
+				</div>
+			</div>
+
+			<p>
+				Core principle: <strong>lower layers don't know who's above them; upper layers consume lower layers only
+					through standard interfaces.</strong>
+				Every cross-layer interface (Schema, Hook API, JSON format) is a decision that touches design,
+				engineering, and business at once—
+				for example, the Schema is designed with Handle rendering in mind, and Hooks are designed with the
+				shared
+				needs of the product selector and the canvas in mind.
+			</p>
+
+			<h3>The leverage of layering</h3>
+			<p>The application layer can grow new features as business needs arise—the engine and data layers stay put,
+				and new scenarios are assembled.</p>
+			<div class="line_area">
+				<h6>Already shipped</h6>
+				<p>Scenario selector, AI product-solution selector, wiring-diagram editor—each consumes the same engine
+					and data layers, writing only its own flow and UI. For example, the AI product-solution selector:
+					the
+					data-layer Schema feeds the LLM directly, and the application layer only adds an agent prompt and a
+					recommendation UI.</p>
+			</div>
+			<div class="line_area">
+				<h6>In active development</h6>
+				<p>Wiring-diagram generator, modular product-bundle tool, room-audio generator, and more—the engine
+					already has the "consume JSON, produce a diagram" capability, so new applications are likewise just
+					assembled in the application layer without touching the layers below.</p>
+			</div>
+			<div class="line_area">
+				<h6>External API: already used across departments</h6>
+				<p>Communication between the application and engine layers was defined as JSON from the start, and the
+					Schema is already a stable contract—the FAE team's AI support assistant now uses this API directly,
+					so the dividend of layering reaches beyond the team and across departments.</p>
+			</div>
+
+			<!-- Features & Design Details -->
+			<div class="session" id="features">Features &amp; Design Details</div>
+			<h2>Core features and design decisions</h2>
+
+			<h2 class="box mb-0 mt-lg">Feature 1: Visual wiring-diagram editor</h2>
+			<h2 class="hightlight">The product's core canvas</h2>
+			<p>
+				Three-column layout: device library on the left (search + categories + drag), a React Flow canvas in the
+				center, properties panel on the right.
+				The top toolbar carries only four buttons—Undo / Redo / Save / Export—with advanced features tucked
+				into the right-click menu;
+				a signal color-code legend is pinned to the bottom-right so newcomers can read a diagram without
+				memorizing the rules.
+			</p>
+			<img class="natural" src="../../builder/images/01_main_editor_example.png"
+				alt="A real solution example: a complete system diagram mixing Frame zoning, Group multipliers, and seven-color signal connections">
+
+			<h3>Custom nodes and dynamic ports</h3>
+			<p>
+				React Flow's default nodes can't carry Pro AV semantics—a single Matrix Switcher can have 30+ I/O.
+				Each node's ports (Handles) are <strong>generated dynamically</strong> from the Schema in
+				productDatabase.json,
+				carrying attributes like signal type, bandwidth, and resolution for use in compatibility checks when
+				connecting.
+				Ports are grouped by Video / Audio / USB / Control / Network, so finding an "HDMI output" only means
+				looking at the Video group.
+			</p>
+			<img class="natural" src="../../builder/images/02_node_deviceNodeWithPort_KVMExample.png"
+				alt="A KVM device node: grouped ports generated dynamically from the Schema">
+			<p>
+				Users can also create a <strong>Custom Device</strong> to draw third-party equipment into a
+				design—these models are logged in the back office and become material for R&amp;D to understand market
+				gaps (see Impact). A 3D perspective-style node is also available for client-presentation scenarios.
+			</p>
+
+			<h3>Signal color coding and connections</h3>
+			<p>
+				Connections automatically apply a seven-color code by signal type (reusing the company's existing
+				signal-color standard; this project's job was to enforce it across
+				Handles, connections, BOM, and the Legend). Three edge styles—Bezier / Step / Straight—match different
+				topologies;
+				when same-color connections cross, a semicircular hop symbol is rendered automatically so complex
+				topologies don't tangle.
+			</p>
+			<img class="natural" src="../../builder/images/01_main_editor_flowType.png"
+				alt="Three connection styles: Bezier for fan-out topologies, Step for matrix topologies, Straight for direct links">
+
+			<h3>Layered complexity: opt-in depth, not forced exposure</h3>
+			<p>
+				Device specs carry a huge amount of information, so the design uses progressive disclosure: by default
+				you see only the device icon (L0), hover reveals the Handles (L1),
+				clicking "show ports" expands the full set of ports (L2), opening a modal shows the full spec (L3), and
+				only when needed do you reach the manufacturer's datasheet (L4).
+				Port Visibility is granular down to "video ports on, audio ports off," so an expert can see only the
+				signals relevant to the task at hand.
+			</p>
+
+			<!-- L0–L4 progressive-disclosure ladder -->
+			<div style="width:100%;max-width:1000px;margin:20px auto 8px">
+				<div style="display:flex;flex-wrap:wrap;align-items:stretch;gap:6px">
+					<div
+						style="flex:1;min-width:130px;background:#fafafa;border:1px solid #e2e2e2;border-radius:6px;padding:11px 13px">
+						<div style="font-weight:800;color:#2c6184;font-size:12px">L0 · Default</div>
+						<div style="font-size:12.5px;color:#555;margin-top:4px">Device icon only</div>
+					</div>
+					<div
+						style="flex:1;min-width:130px;background:#fafafa;border:1px solid #e2e2e2;border-radius:6px;padding:11px 13px">
+						<div style="font-weight:800;color:#2c6184;font-size:12px">L1 · Hover</div>
+						<div style="font-size:12.5px;color:#555;margin-top:4px">Handles appear</div>
+					</div>
+					<div
+						style="flex:1;min-width:130px;background:#fafafa;border:1px solid #e2e2e2;border-radius:6px;padding:11px 13px">
+						<div style="font-weight:800;color:#2c6184;font-size:12px">L2 · Click</div>
+						<div style="font-size:12.5px;color:#555;margin-top:4px">Expand full ports</div>
+					</div>
+					<div
+						style="flex:1;min-width:130px;background:#fafafa;border:1px solid #e2e2e2;border-radius:6px;padding:11px 13px">
+						<div style="font-weight:800;color:#2c6184;font-size:12px">L3 · Modal</div>
+						<div style="font-size:12.5px;color:#555;margin-top:4px">Full spec</div>
+					</div>
+					<div
+						style="flex:1;min-width:130px;background:#fafafa;border:1px solid #e2e2e2;border-radius:6px;padding:11px 13px">
+						<div style="font-weight:800;color:#2c6184;font-size:12px">L4 · Datasheet</div>
+						<div style="font-size:12.5px;color:#555;margin-top:4px">Manufacturer PDF</div>
+					</div>
+				</div>
+				<div
+					style="height:6px;border-radius:99px;margin-top:8px;background:linear-gradient(90deg,#eef4fb,#cfe0ee 55%,#2c6184)">
+				</div>
+				<div class="gray" style="display:flex;justify-content:space-between;font-size:11px;margin-top:5px">
+					<span>Low information density</span><span>Opt-in depth—every level is requested by the
+						user</span><span>High information density</span>
+				</div>
+			</div>
+			<img class="natural" src="../../builder/images/04_portVisibility_KVM.png"
+				alt="Port Visibility control: showing or hiding ports per signal type">
+
+			<h3>Frame and Group ×N: organizing large designs</h3>
+			<p>
+				When a design scales from "one meeting room" to "twelve classrooms + a server room + a control center,"
+				simply piling on nodes makes the view unmanageable.
+				<strong>Frame</strong> borrows Figma's mental model for spatial zoning; <strong>Group ×N</strong>
+				lets an SI design a single representative room while the system handles quantity multiplication—an outer
+				×4 meeting rooms and inner ×2 speakers,
+				and the BOM computes 8 automatically. Design responsibility and quantity responsibility are separated.
+			</p>
+			<img class="natural" src="../../builder/images/04_group_nested.png"
+				alt="Nested Group ×N: one design expresses N sets of equipment, with the BOM multiplied automatically">
+
+			<h2 class="box mb-0 mt-lg">Feature 2: Template system</h2>
+			<h2 class="hightlight">Front-end product selector + back-office self-service authoring</h2>
+
+			<h3>Starting from a template</h3>
+			<p>
+				A newcomer picks an application scenario (meeting room, classroom…), and the system generates a draft
+				already containing recommended devices and default connections—just fine-tune.
+				The product selector isn't a one-off tutorial but a <strong>persistent starting point</strong>: after a
+				template is generated, every element is editable and can be saved as a custom template;
+				experts use it for fast first drafts too—and "start from blank" is always available for seasoned pros.
+			</p>
+
+			<h3>The back office that makes 2,000+ templates possible</h3>
+			<p>
+				The template library has accumulated 2,000+ modular templates—a volume no single designer could
+				sustain.
+				Content is authored and maintained by product planners through the back office; <strong>my job was the
+					data structures and editing tools that make authoring easy</strong>,
+				so planners without an engineering background can maintain rooms, scenes, and connection settings
+				without
+				asking engineering to change code each time.
+				Template diagram editing reuses the same components as the main editor, so what planners build in the
+				back office is exactly the same nodes and connections SIs see on the front end.
+				<br><br>
+				Beyond authoring, the back office has gradually been equipped with purpose-built tools that raise
+				operational efficiency—action recording, template/option-combination management, batch processing—
+				whose design and development keep maintenance and validation costs from spiraling as the template count
+				keeps growing.
+			</p>
+			<img class="natural" src="../../builder/images/03_templateEditor_diaEidtor.png"
+				alt="Template-editor back office: a template-diagram editing interface reusing the main editor's components">
+
+			<h2 class="box mb-0 mt-lg">Feature 3: One-click delivery</h2>
+			<h2 class="hightlight">Automating the last mile of a proposal</h2>
+
+			<h3>Real-time BOM calculation</h3>
+			<p>
+				The product list updates live with the canvas: adding or removing nodes and adjusting Group ×N are
+				reflected instantly,
+				automatically grouped by brand and category, with hidden nodes filtered out. The totals row gives sales
+				a
+				quick rough quote directly.
+			</p>
+			<img class="natural" src="../../builder/images/04_bom_panel.png"
+				alt="BOM panel: a product list that updates live with the canvas, including group multiplication and category totals">
+
+			<h3>Excel quote and PDF system diagram</h3>
+			<p>
+				One click exports an Excel quote using the company's official template (with customer info and pricing
+				fields),
+				plus a PDF system wiring diagram complete with cover page, project info, signal legend, and watermark—
+				deliverable to the client as-is, no rework needed. Export uses a <strong>pure front-end
+					pipeline</strong> (html-to-image + jsPDF) with no back-end dependency.
+			</p>
+			<img class="natural" src="../../builder/images/04_export_pdf_output.png"
+				alt="PDF export result: a complete solution document preserving Frame zoning, signal color codes, and Group labels">
+
+			<!-- Engineering & Technical Contributions -->
+			<div class="session" id="technical">Engineering &amp; Technical Contributions</div>
+			<h2>Crossing the line between design and development</h2>
+			<p>
+				The engineering volume here would normally require several front-end engineers working together.
+				Delivering it with a tiny team came down to the three-layer architecture above, plus bringing AI into
+				the
+				daily development workflow—architecture and UX decisions aligned in a single mind,
+				eliminating the hand-off loss between design and engineering.
+			</p>
+
+			<h2 class="box mb-0 mt-lg">Front-end architecture</h2>
+			<h2 class="hightlight">Deep customization on React 18 + @xyflow/react</h2>
+			<p>
+				React 18 + Vite + React Router, with Ant Design for UI and Tailwind for fine-grained overrides.
+				State management uses no Redux—instead, <strong>17 custom Hooks separated by responsibility</strong>
+				(history, grouping, alignment/snapping, Handle management…), each exposing a clear API.
+				The application layer can assemble just a subset—for example, the public browse page loads only Render
+				and Zoom, not the editing-related Hooks.
+			</p>
+
+			<h3>React Flow customization highlights</h3>
+			<div class="row mt-md mb-md" style="width:100%">
+				<div class="col-4 col-sm-12 plr-sm mb-md">
+					<div style="background:#fff;border:1px solid #e8e6e1;border-radius:12px;padding:18px;height:100%">
+						<div style="font-size:15px;font-weight:800;margin-bottom:8px">Dynamic Handle generation</div>
+						<p style="font-size:13.5px;color:#5a6170;line-height:1.7;margin:0">Ports aren't hard-coded;
+							they're rendered dynamically from productDatabase.json, which is what makes it possible to
+							support the edge cases experts draw (4K into 1080p, HDMI across HDBaseT).</p>
+					</div>
+				</div>
+				<div class="col-4 col-sm-12 plr-sm mb-md">
+					<div style="background:#fff;border:1px solid #e8e6e1;border-radius:12px;padding:18px;height:100%">
+						<div style="font-size:15px;font-weight:800;margin-bottom:8px">Compatibility-check engine</div>
+						<p style="font-size:13.5px;color:#5a6170;line-height:1.7;margin:0">The moment a cable is drawn,
+							it
+							reads both ports' attributes and validates in real time; on an incompatibility it flags a
+							warning and suggests a converter product. The checking logic is written once, in the engine
+							layer, and shared across every application scenario.</p>
+					</div>
+				</div>
+				<div class="col-4 col-sm-12 plr-sm mb-md">
+					<div style="background:#fff;border:1px solid #e8e6e1;border-radius:12px;padding:18px;height:100%">
+						<div style="font-size:15px;font-weight:800;margin-bottom:8px">Edge-crossing detection</div>
+						<p style="font-size:13.5px;color:#5a6170;line-height:1.7;margin:0">An algorithm that computes
+							the
+							intersections of same-color edges and renders a hop symbol on the upper edge.</p>
+					</div>
+				</div>
+			</div>
+
+			<h3>Performance and engineering details</h3>
+			<div class="row mt-md mb-md" style="width:100%">
+				<div class="col-4 col-sm-12 plr-sm mb-md">
+					<div style="background:#fff;border:1px solid #e8e6e1;border-radius:12px;padding:18px;height:100%">
+						<div style="font-size:15px;font-weight:800;margin-bottom:8px">Product-library lazy loading</div>
+						<p style="font-size:13.5px;color:#5a6170;line-height:1.7;margin:0">Facing thousands of SKUs, the
+							library loads in batched requests in segments; the app is interactive within seconds while
+							the
+							full device library fills in in the background.</p>
+					</div>
+				</div>
+				<div class="col-4 col-sm-12 plr-sm mb-md">
+					<div style="background:#fff;border:1px solid #e8e6e1;border-radius:12px;padding:18px;height:100%">
+						<div style="font-size:15px;font-weight:800;margin-bottom:8px">Atomic BOM download</div>
+						<p style="font-size:13.5px;color:#5a6170;line-height:1.7;margin:0">Even an unsaved canvas can
+							download a BOM directly—the back end creates a temporary project on the fly, computes,
+							exports, and deletes it, leaving no orphan project in the workspace.</p>
+					</div>
+				</div>
+				<div class="col-4 col-sm-12 plr-sm mb-md">
+					<div style="background:#fff;border:1px solid #e8e6e1;border-radius:12px;padding:18px;height:100%">
+						<div style="font-size:15px;font-weight:800;margin-bottom:8px">Template batch processing</div>
+						<p style="font-size:13.5px;color:#5a6170;line-height:1.7;margin:0">Automatically generates all
+							permutations of a template's options and runs the validation action on each, keeping the
+							maintenance cost of 2,000+ templates manageable.</p>
+					</div>
+				</div>
+			</div>
+
+			<h3>Back office: the Product Manager</h3>
+			<p>
+				Specs for thousands of SKUs are maintained through structured forms (not free text), with field groups
+				mapping directly to
+				the Schema in productDatabase.json—design and data structure taking shape together. With cross-filtering
+				and batch updates,
+				maintaining product data shifts from "an engineering deliverable" to "sales self-service."
+			</p>
+			<img class="natural" src="../../builder/images/05_ProductManager01.png"
+				alt="Product Manager back office: a structured spec-maintenance interface for thousands of SKUs">
+
+			<p class="highlight">
+				<strong>Further reading (each its own piece):</strong> The key to the data layer is turning thousands of
+				product specs—scattered across PDF / HTML in inconsistent formats—
+				into standardized JSON using GPT-4o + prompt engineering; see <a href="a_builder_llm.html">Structuring
+					product data with an LLM</a>.
+				How the application layer's AI Agent puts uncertainty in the right place; see <a
+					href="a_builder_agent.html">AI Agent: constraining the uncertainty of LLMs</a>.
+			</p>
+
+			<!-- Impact & Business Outcomes -->
+			<div class="session" id="impact">Impact &amp; Business Outcomes</div>
+			<h2>From internal tool to external service to a closed data loop</h2>
+
+			<h3>Commercial expansion</h3>
+			<p>
+				Solution Builder grew from an internal tool into an official, publicly released SaaS service,
+				adopted by subsidiaries worldwide as a unified tool for training and sales enablement.
+				Login-free template browsing lowers the entry barrier for unfamiliar SIs; after a design is complete,
+				"Direct inquiry"
+				automatically packages the design JSON, BOM, and a canvas screenshot into a Salesforce Opportunity, so
+				sales pick it up with full context already in place.
+			</p>
+
+			<!-- User-to-opportunity flow -->
+			<div
+				style="width:100%;max-width:1000px;margin:18px auto 8px;display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-size:13px">
+				<span style="background:#fff8f0;border:1px solid #f0ddc4;border-radius:6px;padding:8px 12px">Design
+					completed</span>
+				<span class="gray">→</span>
+				<span style="background:#fff8f0;border:1px solid #f0ddc4;border-radius:6px;padding:8px 12px">Click
+					"Direct
+					inquiry"</span>
+				<span class="gray">→</span>
+				<span
+					style="background:#f0f6ff;border:1px solid #cfe0ee;border-radius:6px;padding:8px 12px">Auto-package<span
+						class="gray" style="font-size:11.5px"> Design JSON · BOM · canvas screenshot</span></span>
+				<span class="gray">→</span>
+				<span style="background:#f0f6ff;border:1px solid #cfe0ee;border-radius:6px;padding:8px 12px">Create
+					Salesforce Opportunity</span>
+				<span class="gray">→</span>
+				<span style="background:#e8f6ed;border:1px solid #c7e6d3;border-radius:6px;padding:8px 12px">Notify
+					regional sales to take over</span>
+			</div>
+			<p class="gray" style="max-width:1000px;font-size:13px;margin-top:0">A "drawing" action on the platform
+				becomes a trackable opportunity in the CRM—no manual data shuffling for sales.</p>
+
+			<!-- Screenshot placeholder: the auto-created Salesforce Opportunity -->
+			<img class="natural" src="../../builder/images/06_salesforce_opportunity.png"
+				alt="A Salesforce Opportunity auto-created by 'Direct inquiry': carrying the design JSON, BOM, and canvas screenshot, so sales open it with full proposal context">
+
+			<h3>Data architecture: defining the Event Schema at the design stage</h3>
+			<p>
+				Instrumentation isn't bolted on afterward. The design deliverables expanded from wireframes and an
+				interaction spec to three artifacts—adding an
+				<strong>Event Spec</strong>, where every interactive element is annotated with its corresponding event
+				right in Figma.
+				Events use semantic naming and are layered (business events / interaction events / debug), and always
+				carry context:
+				for example, device_added records where a product was added from (search / template / AI
+				recommendation),
+				so we can answer concrete questions like "were the products the AI suggested actually adopted?"
+			</p>
+			<p>
+				Data flow: front-end GTM events → <strong>GA4</strong> → <strong>BigQuery</strong> (cross-session
+				analysis, joining CRM data) →
+				<strong>PowerBI</strong>, split into three dashboards—Marketing, R&amp;D, and UX—for three groups of
+				decision-makers.
+			</p>
+
+			<!-- Data pipeline + three dashboards -->
+			<div style="width:100%;max-width:1000px;margin:20px auto 8px;font-size:13px">
+				<div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px">
+					<span
+						style="background:#fff8f0;border:1px solid #f0ddc4;color:#90602a;border-radius:6px;padding:8px 13px">Front-end
+						GTM events</span>
+					<span class="gray">→</span>
+					<span
+						style="background:#f0f6ff;border:1px solid #cfe0ee;color:#2c6184;border-radius:6px;padding:8px 13px">GA4</span>
+					<span class="gray">→</span>
+					<span
+						style="background:#f0f6ff;border:1px solid #cfe0ee;color:#2c6184;border-radius:6px;padding:8px 13px">BigQuery<span
+							class="gray" style="font-size:11.5px"> Cross-session · Join CRM</span></span>
+					<span class="gray">→</span>
+					<span
+						style="background:#e8f6ed;border:1px solid #c7e6d3;color:#3f7553;border-radius:6px;padding:8px 13px">PowerBI</span>
+				</div>
+				<div class="gray" style="text-align:center;font-size:16px;line-height:1;margin:10px 0 12px">↓ split
+					among
+					three groups of decision-makers</div>
+				<div style="display:flex;flex-wrap:wrap;gap:8px">
+					<div style="flex:1;min-width:200px;border:1px solid #e8e6e1;border-radius:10px;overflow:hidden">
+						<div style="background:#fafafa;border-bottom:1px solid #eee;padding:9px 14px;font-weight:700">
+							Marketing dashboard</div>
+						<div style="padding:10px 14px;font-size:12.5px;color:#5a6170;line-height:1.6">Popular product
+							pairings → bundle marketing and standard recommended configs</div>
+					</div>
+					<div style="flex:1;min-width:200px;border:1px solid #e8e6e1;border-radius:10px;overflow:hidden">
+						<div style="background:#fafafa;border-bottom:1px solid #eee;padding:9px 14px;font-weight:700">
+							R&amp;D
+							dashboard</div>
+						<div style="padding:10px 14px;font-size:12.5px;color:#5a6170;line-height:1.6">Third-party device
+							gaps → input for greenlighting new products</div>
+					</div>
+					<div style="flex:1;min-width:200px;border:1px solid #e8e6e1;border-radius:10px;overflow:hidden">
+						<div style="background:#fafafa;border-bottom:1px solid #eee;padding:9px 14px;font-weight:700">UX
+							dashboard</div>
+						<div style="padding:10px 14px;font-size:12.5px;color:#5a6170;line-height:1.6">Feature adoption
+							and
+							interaction paths → product decisions</div>
+					</div>
+				</div>
+			</div>
+			<!-- TODO: once the PowerBI report screenshot (early basic usage, public-safe) is saved as builder/images/06_powerbi_usage.png, uncomment the line below
+			<img class="natural" src="../../builder/images/06_powerbi_usage.png"
+				alt="PowerBI usage report: a basic usage dashboard from the service's early days"> -->
+
+			<h3>Two real closed-loop cases</h3>
+
+			<!-- Closed data loop -->
+			<div style="width:100%;max-width:1000px;margin:16px auto 18px;font-size:13px">
+				<div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px">
+					<span style="background:#fff;border:1px solid #e8e6e1;border-radius:8px;padding:9px 14px"><strong>User
+							behavior</strong><br><span class="gray" style="font-size:11.5px">Add products · use
+							templates
+							· create Custom Devices</span></span>
+					<span class="gray">→</span>
+					<span style="background:#fff;border:1px solid #e8e6e1;border-radius:8px;padding:9px 14px"><strong>Semantic
+							events</strong><br><span class="gray" style="font-size:11.5px">GA4 · BigQuery</span></span>
+					<span class="gray">→</span>
+					<span
+						style="background:#fff;border:1px solid #e8e6e1;border-radius:8px;padding:9px 14px"><strong>Insight</strong><br><span
+							class="gray" style="font-size:11.5px">Dashboard segmentation</span></span>
+					<span class="gray">→</span>
+					<span
+						style="background:#e8f6ed;border:1px solid #c7e6d3;color:#3f7553;border-radius:8px;padding:9px 14px"><strong>Business
+							/ R&amp;D action</strong><br><span style="font-size:11.5px">Bundles · new-product
+							evaluation</span></span>
+				</div>
+				<div class="gray" style="margin-top:8px;font-size:12px;border-top:1px dashed #d8d8d8;padding-top:8px">↺
+					Actions feed
+					back into the product and SI recommendations, and the user's next round of behavior is recorded
+					again—<strong style="color:#5a6170">user behavior itself becomes continuous market
+						research</strong>.</div>
 			</div>
 
 			<div class="line_area">
-				<h6>Product R&D Guidance</h6>
-				<p>
-					When we discovered users frequently resorting to third-party solutions to fill
-					functionality gaps for specific connection needs, we fed this data back to the R&D team.
-					This directly led to the development of <strong>several new products</strong>,
-					successfully converting market demand into new revenue drivers for the company.
-				</p>
+				<h6>Popular product pairings → bundle marketing</h6>
+				<p>Using BigQuery to find the product pairs that most often appear together in a single design,
+					marketing
+					launched bundled offers based on them and added the combination to the standard recommended
+					configuration in SI training.</p>
 			</div>
-			<img alt="Two case studies of data-driven insights: Product Bundle campaign generated from popular product combination analysis, and new product development initiatives triggered by third-party usage gap data">
 
+			<div class="line_area">
+				<h6>Third-party device gaps → R&amp;D evaluation</h6>
+				<p>Tracking Custom Device events revealed that certain types of third-party equipment were being added
+					frequently—and these users' designs already included multiple in-house products, so what was missing
+					wasn't the customer, it was the product. This "gap signal" feeds back to R&amp;D as input for
+					greenlighting new products. User behavior itself becomes continuous market research.</p>
+			</div>
 
-			<!-- ========================================
-				Section 6: Conclusion
-			======================================== -->
-			<div class="session">Conclusion</div>
-			<h2>More Than a Tool — A Catalyst for Business Transformation</h2>
+			<p class="gray">Exact revenue and internal figures are under NDA; this piece discloses only what's public.
+			</p>
+
+			<!-- Project Summary -->
+			<div class="session">Project Summary</div>
+			<h2>Design, engineering, and data aligned in one person</h2>
 			<p>
-				ATEN Solution Builder is not merely a software tool — it is a core vehicle driving
-				business model transformation. This project fully demonstrates how a UX Engineer can
-				integrate <strong>business strategy thinking</strong>, <strong>robust frontend development</strong>,
-				and <strong>data-driven insights</strong> to transform a complex, traditional hardware
-				sales process into a smooth, efficient digital experience.
+				Solution Builder demonstrates a way of working: designing the Schema with how the front end will consume
+				it in mind,
+				defining instrumentation as you design interactions, and placing each feature against its position in
+				the
+				business funnel.
+				When UX commands the underlying data and architecture, it can move from a "support function" into
+				"product decisions"—
+				the three-layer architecture, compatibility checking, and closed data loop in this project are all
+				products of that cross-domain integration.
 				<br><br>
-				Ultimately, Solution Builder established a new paradigm for how ATEN interacts with
-				its customers — proving that the deep fusion of design and engineering can not only
-				solve user pain points but fundamentally reshape a company's market strategy, creating
-				lasting business impact.
+				What sustains this way of working is a deep integration of AI tools into the development process: from
+				the
+				LLM data pipeline to everyday AI-assisted development,
+				the pace of product development speeds up while eliminating the back-and-forth between design and
+				engineering that would otherwise require several developers—
+				which is how an internal tool could grow, in the hands of a tiny team, into a mature external product
+				service.
 			</p>
 
 		</div>
 	</div>
 
-	<footer>
-	</footer>
-
-	<script src="js/app.js"></script>
+	<footer></footer>
+	<script src="../js/app.js"></script>
 </body>
 
 </html>

@@ -15,13 +15,13 @@
 
 	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-114514958-1"></script>
 	<script>
-			(function (w, d, s, l, i) {
-				w[l] = w[l] || []; w[l].push({
-					'gtm.start': new Date().getTime(), event: 'gtm.js'
-				}); var f = d.getElementsByTagName(s)[0],
-					j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
-						'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
-			})(window, document, 'script', 'dataLayer', 'GTM-PMLJXPC');
+		(function (w, d, s, l, i) {
+			w[l] = w[l] || []; w[l].push({
+				'gtm.start': new Date().getTime(), event: 'gtm.js'
+			}); var f = d.getElementsByTagName(s)[0],
+				j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+					'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+		})(window, document, 'script', 'dataLayer', 'GTM-PMLJXPC');
 	</script>
 </head>
 
@@ -36,12 +36,12 @@
 		<h1>用 LLM 結構化產品資料</h1>
 		<div class="row mb-lg">
 			<div class="col-6 col-sm-12 pr-md">
-				<p>2025 - 2026</p>
+				<p>2025</p>
 				<h3>數千筆規格散落在格式不一的 HTML 與 PDF 裡，<br>怎麼變成前端能直接消費的資料庫？</h3>
 				<p>
 					這是 Solution Builder 資料層的核心工程：把數千個 SKU、橫跨多個世代的遺留規格文件，
 					用 <strong>GPT-4o + Prompt 規則 + 三道品質防線</strong>結構化為統一的
-					productDatabase.json——驅動前端的埠口渲染、相容性檢測與產品搜尋。
+					<strong>產品資料庫（Product Database）</strong>——驅動前端的埠口渲染、相容性檢測與產品搜尋。
 					<br><br>
 					傳統上這是後端團隊的 Data Wrangling 難題；LLM 把它翻轉成
 					<strong>Prompt Engineering 問題</strong>，讓 UX 小隊能獨立完成資料工程。
@@ -50,8 +50,9 @@
 				</p>
 
 				<h6 class="mb-xxs">我的角色</h6>
-				<p>Schema 設計、Prompt Engineering、Node.js Pipeline、品質防線設計<br>
-					<span class="gray">Schema 從前端消費性倒推，因為設計它的人同時在寫消費它的前端</span></p>
+				<p>Schema 設計、Prompt Engineering、Node.js Pipeline<br>
+					<span class="gray">Schema 從場域與產業知識出發、對齊前端的實際消費——設計它的人同時在寫消費它的前端</span>
+				</p>
 
 				<h6 class="mb-xxs">專案屬性</h6>
 				<p>資料工程 · LLM Pipeline · Prompt Engineering</p>
@@ -109,16 +110,47 @@
 
 			<!-- 問題規模 -->
 			<div class="session" id="problem">問題規模</div>
-			<h2>同一個 HDMI 埠，有四種以上的寫法</h2>
+			<!-- TODO（待補）：下方「產品 A～D」四種寫法目前為示意，待換成真實規格範例（資料由作者後補） -->
+			<h2>同一個 HDMI 埠，有四種以上的寫法
+				<span
+					style="display:inline-block;vertical-align:middle;font-size:12px;font-weight:600;color:#90602a;background:#fff8f0;border:1px solid #f0ddc4;border-radius:999px;padding:3px 10px;margin-left:8px">⚠
+					範例待換成真實規格（資料待補）</span>
+			</h2>
 			<p>
 				產品規格存在於兩類遺留系統：不同世代資訊架構各異的<strong>產品頁 HTML</strong>，
 				以及掃描版、Word 轉存、手工編排混雜的<strong>規格書 PDF</strong>。
 				同樣是「兩個 HDMI 輸入埠」，實際資料長這樣：
 			</p>
-			<pre style="font-family:Consolas,Menlo,monospace;font-size:13px;background:#f7f7f7;border:1px solid #e0e0e0;border-radius:8px;padding:16px 20px;overflow-x:auto;max-width:1000px;width:100%;line-height:1.8;margin:16px 0">產品 A：「2 x HDMI Type A Female」
+			<!-- Before → After 對比 -->
+			<div
+				style="width:100%;max-width:1000px;margin:16px 0;display:flex;flex-wrap:wrap;align-items:stretch;gap:10px">
+				<div style="flex:1;min-width:280px;border:1px solid #f0ddc4;border-radius:10px;overflow:hidden">
+					<div style="background:#fff8f0;color:#90602a;padding:9px 14px;font-weight:700;font-size:13px">原始規格 ·
+						同一件事 4 種寫法</div>
+					<pre
+						style="font-family:Consolas,Menlo,monospace;font-size:12.5px;margin:0;padding:12px 14px;line-height:1.95;white-space:pre-wrap;background:#fff">產品 A：「2 x HDMI Type A Female」
 產品 B：「HDMI Input x 2」
 產品 C：「HDMI (female) ×2，支援 4K@60Hz HDR」
 產品 D：「HDMI 輸入埠：2 個（Type A，母座，含 HDCP 2.2）」</pre>
+				</div>
+				<div
+					style="display:flex;align-items:center;justify-content:center;color:#bbb;font-size:20px;padding:0 2px">
+					→
+				</div>
+				<div style="flex:1;min-width:280px;border:1px solid #c7e6d3;border-radius:10px;overflow:hidden">
+					<div style="background:#e8f6ed;color:#3f7553;padding:9px 14px;font-weight:700;font-size:13px">結構化後 ·
+						統一、可被程式消費</div>
+					<pre
+						style="font-family:Consolas,Menlo,monospace;font-size:12.5px;margin:0;padding:12px 14px;line-height:1.7;white-space:pre-wrap;overflow-x:auto;background:#fff">[
+  { "ioName": "HDMI In 1", "interface": "HDMI",
+    "connector": "Type A Female", "hdcp": "2.2" },
+  { "ioName": "HDMI In 2", "interface": "HDMI",
+    "connector": "Type A Female", "hdcp": "2.2" }
+]</pre>
+				</div>
+			</div>
+			<p class="gray" style="max-width:1000px;font-size:13px;margin-top:0">四種自由文字 →
+				兩個欄位一致、可直接比對的獨立 port 物件。整條 Pipeline 要做的，就是把左邊變成右邊。</p>
 			<p>
 				要把數千 SKU × 數十個欄位 × 多世代的資料結構化，傳統做法需要專門的
 				Data Engineer 團隊、為每個世代手工維護解析規則表，再逐筆人工檢查——
@@ -128,13 +160,26 @@
 				這把問題從「寫得出 Parser 嗎」變成「規則定義得夠精確嗎」——後者是設計師擅長的事。
 			</p>
 
+			<!-- 問題重構：從工程題 → 設計題 -->
+			<div
+				style="width:100%;max-width:1000px;margin:16px 0;display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:13px">
+				<span
+					style="background:#f4f4f4;border:1px solid #e2e2e2;color:#666;border-radius:999px;padding:9px 16px">寫得出
+					Parser 嗎？<span class="gray" style="font-size:12px">　後端工程題</span></span>
+				<span class="gray" style="font-size:18px">→</span>
+				<span
+					style="background:#e8f6ed;border:1px solid #c7e6d3;color:#3f7553;border-radius:999px;padding:9px 16px;font-weight:600">規則定義得夠精確嗎？<span
+						style="font-size:12px;font-weight:400">　設計師擅長的題</span></span>
+			</div>
+
 			<!-- 目標 Schema -->
 			<div class="session" id="schema">目標 Schema</div>
-			<h2>從前端消費性倒推，而非從資料完整性出發</h2>
+			<h2>從產業知識出發，建立資料庫結構</h2>
 			<p>
-				Schema 設計的每個決定都對應一個前端需求：
+				資料庫結構不從「資料完整性」出發，而是從產業知識——再讓每個欄位對應一個具體的前端消費需求：
 			</p>
-			<pre style="font-family:Consolas,Menlo,monospace;font-size:13px;background:#f7f7f7;border:1px solid #e0e0e0;border-radius:8px;padding:16px 20px;overflow-x:auto;max-width:1000px;width:100%;line-height:1.6;margin:16px 0">{
+			<pre
+				style="font-family:Consolas,Menlo,monospace;font-size:13px;background:#f7f7f7;border:1px solid #e0e0e0;border-radius:8px;padding:16px 20px;overflow-x:auto;max-width:1000px;width:100%;line-height:1.6;margin:16px 0">{
   "modelName": "VM5404H",
   "deviceType": "Matrix",
   "features": ["seamless switch", "scaler", "EDID", "video-wall"],
@@ -170,35 +215,113 @@
 				屬性面板的 <strong>I/O 分組顯示</strong>、以及 Wizard 模板的<strong>自動配對</strong>。
 				一份 Schema、三處消費——這是它穩定的原因，也是它必須先被設計好的原因。
 			</p>
+
+			<!-- 一份 Schema → 三處消費 扇出 -->
+			<div style="width:100%;max-width:1000px;margin:20px auto 8px;font-size:13px">
+				<div style="display:flex;justify-content:center;margin-bottom:6px">
+					<span
+						style="background:#fafafa;border:1px solid #e2e2e2;border-radius:8px;padding:10px 16px;font-family:Consolas,Menlo,monospace;font-weight:700">productDatabase.json</span>
+				</div>
+				<div class="gray" style="text-align:center;font-size:16px;line-height:1;margin:2px 0 10px">↓ 同一份
+					Schema，三處消費</div>
+				<div style="display:flex;flex-wrap:wrap;gap:8px">
+					<div style="flex:1;min-width:200px;border:1px solid #e8e6e1;border-radius:10px;overflow:hidden">
+						<div style="background:#f0f6ff;color:#2c6184;padding:9px 14px;font-weight:700">Diagram Engine
+						</div>
+						<div style="padding:10px 14px;font-size:12.5px;color:#5a6170;line-height:1.6">Handle
+							動態生成<br><span class="gray">依 video.input[] / output[] 直接渲染方向</span></div>
+					</div>
+					<div style="flex:1;min-width:200px;border:1px solid #e8e6e1;border-radius:10px;overflow:hidden">
+						<div style="background:#f0f6ff;color:#2c6184;padding:9px 14px;font-weight:700">屬性面板</div>
+						<div style="padding:10px 14px;font-size:12.5px;color:#5a6170;line-height:1.6">I/O 分組顯示<br><span
+								class="gray">依介面類別分組呈現埠口</span></div>
+					</div>
+					<div style="flex:1;min-width:200px;border:1px solid #e8e6e1;border-radius:10px;overflow:hidden">
+						<div style="background:#f0f6ff;color:#2c6184;padding:9px 14px;font-weight:700">Wizard 模板</div>
+						<div style="padding:10px 14px;font-size:12.5px;color:#5a6170;line-height:1.6">自動配對<br><span
+								class="gray">用結構化欄位媒合推薦設備</span></div>
+					</div>
+				</div>
+				<p class="gray" style="font-size:12px;margin:10px 0 0">所以 Schema 不是「資料完整就好」，而是要先被設計好——三處消費全靠它穩定。</p>
+			</div>
+
 			<img class="natural" src="../../builder/images/05_ProductManager_editor_video.png"
 				alt="後台規格編輯器的視訊欄位群組：表單結構直接對應 Schema 的 video.input[] 分組">
+
 
 			<!-- Pipeline -->
 			<div class="session" id="pipeline">Pipeline 架構</div>
 			<h2>三階段：LLM 結構化 → 規則驗證 → 人工抽檢</h2>
 
-			<div style="width:100%;max-width:1000px;margin:32px auto;font-size:14px;line-height:1.7">
-				<div style="border:1px solid #ccc;border-radius:8px;padding:14px 20px;background:#fafafa">
-					<strong>遺留資料</strong>　<span class="gray">產品頁 HTML（scraping）· 規格書 PDF（文字抽取）</span>
+			<div style="margin:24px 0">
+				<div
+					style="display:flex;gap:16px;align-items:flex-start;background:#fff;border:1px solid #e8e6e1;border-radius:12px;padding:16px 20px;max-width:1000px;margin-left:auto;margin-right:auto">
+					<div
+						style="flex-shrink:0;font-size:11.5px;font-weight:800;letter-spacing:1px;padding:4px 11px;border-radius:99px;margin-top:2px;min-width:48px;text-align:center;background:#f1f3f5;color:#5a6170;border:1px solid #e2e8f0">
+						輸入</div>
+					<div>
+						<div style="font-size:15.5px;font-weight:700">遺留資料</div>
+						<div style="font-size:14px;color:#5a6170;margin-top:3px">產品頁 HTML（scraping）· 規格書 PDF（文字抽取）</div>
+					</div>
 				</div>
-				<div style="text-align:center;color:#999;padding:4px">▼</div>
-				<div style="border:1px solid #ccc;border-radius:8px;padding:14px 20px;background:#fff8f0">
-					<strong>🧠 第一階段：GPT-4o 結構化</strong><br>
-					<span class="gray">System Prompt = Schema 定義 + 規則集 + Few-Shot 範例 → 輸出初版 JSON</span>
+				<div
+					style="text-align:center;color:#9aa1ad;font-size:18px;line-height:1.5;padding:2px 0;max-width:1000px;margin:0 auto">
+					↓</div>
+				<div
+					style="display:flex;gap:16px;align-items:flex-start;background:#fff;border:1px solid #e8e6e1;border-radius:12px;padding:16px 20px;max-width:1000px;margin-left:auto;margin-right:auto">
+					<div
+						style="flex-shrink:0;font-size:11.5px;font-weight:800;letter-spacing:1px;padding:4px 11px;border-radius:99px;margin-top:2px;min-width:48px;text-align:center;background:#fdf3e7;color:#90602a;border:1px solid #f0ddc4">
+						🧠 LLM</div>
+					<div>
+						<div style="font-size:15.5px;font-weight:700">第一階段 · GPT-4o 結構化</div>
+						<div style="font-size:14px;color:#5a6170;margin-top:3px">System Prompt = Schema 定義 + 規則集 +
+							Few-Shot 範例 →
+							輸出初版 JSON</div>
+					</div>
 				</div>
-				<div style="text-align:center;color:#999;padding:4px">▼</div>
-				<div style="border:1px solid #ccc;border-radius:8px;padding:14px 20px;background:#f0f6ff">
-					<strong>🔒 第二階段：規則驗證（Node.js）</strong><br>
-					<span class="gray">JSON Schema 校驗（ajv）· 業務規則檢查 · 失敗案例回饋 → Prompt 迭代</span>
+				<div
+					style="text-align:center;color:#9aa1ad;font-size:18px;line-height:1.5;padding:2px 0;max-width:1000px;margin:0 auto">
+					↓</div>
+				<div
+					style="display:flex;gap:16px;align-items:flex-start;background:#fff;border:1px solid #e8e6e1;border-radius:12px;padding:16px 20px;max-width:1000px;margin-left:auto;margin-right:auto">
+					<div
+						style="flex-shrink:0;font-size:11.5px;font-weight:800;letter-spacing:1px;padding:4px 11px;border-radius:99px;margin-top:2px;min-width:48px;text-align:center;background:#eef4fb;color:#2c6184;border:1px solid #cfe0ee">
+						🔒 驗證</div>
+					<div>
+						<div style="font-size:15.5px;font-weight:700">第二階段 · 規則驗證（Node.js）</div>
+						<div style="font-size:14px;color:#5a6170;margin-top:3px">JSON Schema 校驗（ajv）· 業務規則檢查 · 失敗案例回饋 →
+							Prompt
+							迭代</div>
+					</div>
 				</div>
-				<div style="text-align:center;color:#999;padding:4px">▼</div>
-				<div style="border:1px solid #ccc;border-radius:8px;padding:14px 20px;background:#f0f6ff">
-					<strong>👁 第三階段：人工抽檢</strong><br>
-					<span class="gray">隨機抽 5%，UX 與產品企劃共同比對；錯誤案例回收為新的 Few-Shot 範例</span>
+				<div
+					style="text-align:center;color:#9aa1ad;font-size:18px;line-height:1.5;padding:2px 0;max-width:1000px;margin:0 auto">
+					↓</div>
+				<div
+					style="display:flex;gap:16px;align-items:flex-start;background:#fff;border:1px solid #e8e6e1;border-radius:12px;padding:16px 20px;max-width:1000px;margin-left:auto;margin-right:auto">
+					<div
+						style="flex-shrink:0;font-size:11.5px;font-weight:800;letter-spacing:1px;padding:4px 11px;border-radius:99px;margin-top:2px;min-width:48px;text-align:center;background:#f3f0fa;color:#6b4ea8;border:1px solid #e2d9f3">
+						👁 人工</div>
+					<div>
+						<div style="font-size:15.5px;font-weight:700">第三階段 · 人工抽檢</div>
+						<div style="font-size:14px;color:#5a6170;margin-top:3px">隨機抽 5%，UX 與產品企劃共同比對；錯誤案例回收為新的 Few-Shot
+							範例
+						</div>
+					</div>
 				</div>
-				<div style="text-align:center;color:#999;padding:4px">▼</div>
-				<div style="border:1px solid #ccc;border-radius:8px;padding:14px 20px;background:#fafafa">
-					<strong>productDatabase.json</strong>　<span class="gray">前端直接消費的單一事實來源</span>
+				<div
+					style="text-align:center;color:#9aa1ad;font-size:18px;line-height:1.5;padding:2px 0;max-width:1000px;margin:0 auto">
+					↓</div>
+				<div
+					style="display:flex;gap:16px;align-items:flex-start;background:#fff;border:1px solid #e8e6e1;border-radius:12px;padding:16px 20px;max-width:1000px;margin-left:auto;margin-right:auto">
+					<div
+						style="flex-shrink:0;font-size:11.5px;font-weight:800;letter-spacing:1px;padding:4px 11px;border-radius:99px;margin-top:2px;min-width:48px;text-align:center;background:#e8f0e9;color:#3f7553;border:1px solid #c7e6d3">
+						產出</div>
+					<div>
+						<div style="font-size:15.5px;font-weight:700;font-family:Consolas,Menlo,monospace">
+							productDatabase.json</div>
+						<div style="font-size:14px;color:#5a6170;margin-top:3px">前端直接消費的單一事實來源</div>
+					</div>
 				</div>
 			</div>
 			<p>
@@ -214,35 +337,65 @@
 				每條規則都來自一個「不這樣做，前端功能就會壞」的具體原因。
 			</p>
 
-			<h3>規則一：乘數展開（最常見的陷阱）</h3>
-			<p>
-				「2 x HDMI」直覺的輸出是 <code style="font-family:Consolas,Menlo,monospace;background:#f0f0f0;padding:1px 6px;border-radius:4px">{ "interface": "HDMI", "count": 2 }</code>——
-				但前端需要的是<strong>兩個獨立的 port 物件</strong>，因為每個埠都是獨立的
-				Handle：獨立 ID、獨立位置、獨立連線狀態。規則明定「展開為 N 個物件並自動編號，
-				絕不輸出 count 欄位」。
-			</p>
-
-			<h3>規則二：介面清洗</h3>
-			<p>
-				interface 欄位只允許枚舉值（HDMI / DisplayPort / DVI / SDI / USB-C…），
-				性別拆到 connector、HDCP 與 EDID 等協議拆到對應欄位——
-				各世代的自由文字在這一步收斂成可比對的結構。
-			</p>
-
-			<h3>規則三：Extender 的 T/R 方向判定</h3>
-			<p>
-				延伸器成對出現：型號後綴 <strong>-T</strong>（Transmitter）的 Unit-to-Unit 埠是
-				video.output，後綴 <strong>-R</strong>（Receiver）則是 video.input。
-				這條領域知識若沒寫進 Prompt，LLM 會把兩端都標成 input——
-				Handle 方向全錯、相容性檢測直接失效。
-			</p>
-
-			<h3>規則四：共享屬性繼承</h3>
-			<p>
-				規格書常把共通規格寫在前言（「本產品所有 HDMI 埠支援 18Gbps、HDR」），
-				規則要求識別這類敘述並把屬性複製到<strong>每一個</strong>相關 port 物件，
-				而不是只掛在第一個。
-			</p>
+			<div class="row mt-md mb-md" style="width:100%">
+				<div class="col-6 col-sm-12 plr-sm mb-md">
+					<div style="background:#fff;border:1px solid #e8e6e1;border-radius:12px;padding:18px;height:100%">
+						<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+							<span style="font-size:15px;font-weight:800">規則一 · 乘數展開</span>
+							<span
+								style="font-size:11px;color:#b0413e;background:#fdecec;border-radius:999px;padding:3px 9px;white-space:nowrap">最常見的陷阱</span>
+						</div>
+						<p style="font-size:13.5px;color:#5a6170;line-height:1.7;margin:0 0 10px">
+							「2 x HDMI」直覺的輸出是 <code
+								style="font-family:Consolas,Menlo,monospace;background:#f0f0f0;padding:1px 6px;border-radius:4px">{ "interface": "HDMI", "count": 2 }</code>——但前端需要的是<strong>兩個獨立的
+								port 物件</strong>，因為每個埠都是獨立的 Handle：獨立 ID、獨立位置、獨立連線狀態。規則明定「展開為 N 個物件並自動編號，絕不輸出 count 欄位」。
+						</p>
+						<div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-size:12px">
+							<span
+								style="background:#fdecec;color:#b0413e;border-radius:6px;padding:5px 10px;font-family:Consolas,Menlo,monospace">✗
+								{ count: 2 }</span>
+							<span class="gray">→</span>
+							<span style="background:#e8f6ed;color:#3f7553;border-radius:6px;padding:5px 10px">✓ HDMI In
+								1 ＋ HDMI In 2（2 個獨立物件）</span>
+						</div>
+					</div>
+				</div>
+				<div class="col-6 col-sm-12 plr-sm mb-md">
+					<div style="background:#fff;border:1px solid #e8e6e1;border-radius:12px;padding:18px;height:100%">
+						<div style="font-size:15px;font-weight:800;margin-bottom:8px">規則二 · 介面清洗</div>
+						<p style="font-size:13.5px;color:#5a6170;line-height:1.7;margin:0">
+							interface 欄位只允許枚舉值（HDMI / DisplayPort / DVI / SDI / USB-C…），性別拆到 connector、HDCP 與 EDID
+							等協議拆到對應欄位——各世代的自由文字在這一步收斂成可比對的結構。</p>
+					</div>
+				</div>
+				<div class="col-6 col-sm-12 plr-sm mb-md">
+					<div style="background:#fff;border:1px solid #e8e6e1;border-radius:12px;padding:18px;height:100%">
+						<div style="font-size:15px;font-weight:800;margin-bottom:8px">規則三 · Extender 的 T/R 方向判定</div>
+						<p style="font-size:13.5px;color:#5a6170;line-height:1.7;margin:0 0 10px">
+							延伸器成對出現：型號後綴 <strong>-T</strong>（Transmitter）的 Unit-to-Unit 埠是 video.output，後綴
+							<strong>-R</strong>（Receiver）則是 video.input。這條領域知識若沒寫進 Prompt，LLM 會把兩端都標成
+							input——Handle 方向全錯、相容性檢測直接失效。
+						</p>
+						<div style="display:flex;flex-wrap:wrap;gap:8px;font-size:12px">
+							<span
+								style="background:#f0f6ff;color:#2c6184;border-radius:6px;padding:5px 10px"><strong>-T</strong>
+								Transmitter → <code
+									style="font-family:Consolas,Menlo,monospace">video.output</code></span>
+							<span
+								style="background:#f0f6ff;color:#2c6184;border-radius:6px;padding:5px 10px"><strong>-R</strong>
+								Receiver → <code style="font-family:Consolas,Menlo,monospace">video.input</code></span>
+						</div>
+					</div>
+				</div>
+				<div class="col-6 col-sm-12 plr-sm mb-md">
+					<div style="background:#fff;border:1px solid #e8e6e1;border-radius:12px;padding:18px;height:100%">
+						<div style="font-size:15px;font-weight:800;margin-bottom:8px">規則四 · 共享屬性繼承</div>
+						<p style="font-size:13.5px;color:#5a6170;line-height:1.7;margin:0">
+							規格書常把共通規格寫在前言（「本產品所有 HDMI 埠支援 18Gbps、HDR」），規則要求識別這類敘述並把屬性複製到<strong>每一個</strong>相關 port
+							物件，而不是只掛在第一個。</p>
+					</div>
+				</div>
+			</div>
 
 			<h3>Few-Shot 範例 &gt; 純規則文字</h3>
 			<p>
@@ -276,28 +429,85 @@
 
 			<h3>迭代成效</h3>
 			<p>經過三輪 Prompt 迭代，各類錯誤率的變化：</p>
-			<div class="line_area">
-				<h6>乘數展開錯誤：22% → 低於 1%</h6>
-				<p>規則一明確化 + 對應 Few-Shot 範例。</p>
-			</div>
-			<div class="line_area">
-				<h6>介面清洗錯誤：15% → 低於 2%</h6>
-				<p>枚舉值白名單 + 欄位拆分規則。</p>
-			</div>
-			<div class="line_area">
-				<h6>Extender 方向錯誤：40% → 低於 3%</h6>
-				<p>領域知識寫成規則三後降幅最大——這正是「規則要由懂前端消費的人來寫」的證據。</p>
+
+			<!-- 錯誤率 before/after 長條圖 -->
+			<div style="width:100%;max-width:1000px;margin:18px auto 8px;font-size:13px">
+				<div style="margin-bottom:18px">
+					<div style="font-weight:700;margin-bottom:8px">乘數展開錯誤</div>
+					<div style="display:flex;align-items:center;gap:10px;margin-bottom:5px">
+						<span class="gray" style="width:52px;flex:none;font-size:12px">迭代前</span>
+						<div style="flex:1;background:#f2f2f2;border-radius:4px;height:20px;overflow:hidden">
+							<div style="width:44%;height:100%;background:#efcf9b"></div>
+						</div>
+						<span style="width:52px;flex:none;text-align:right;color:#90602a;font-weight:700">22%</span>
+					</div>
+					<div style="display:flex;align-items:center;gap:10px">
+						<span class="gray" style="width:52px;flex:none;font-size:12px">迭代後</span>
+						<div style="flex:1;background:#f2f2f2;border-radius:4px;height:20px;overflow:hidden">
+							<div style="width:2%;height:100%;background:#8fcaa8"></div>
+						</div>
+						<span style="width:52px;flex:none;text-align:right;color:#3f7553;font-weight:700">＜1%</span>
+					</div>
+					<div class="gray" style="font-size:12px;margin-top:6px">規則一明確化 + 對應 Few-Shot 範例。</div>
+				</div>
+
+				<div style="margin-bottom:18px">
+					<div style="font-weight:700;margin-bottom:8px">介面清洗錯誤</div>
+					<div style="display:flex;align-items:center;gap:10px;margin-bottom:5px">
+						<span class="gray" style="width:52px;flex:none;font-size:12px">迭代前</span>
+						<div style="flex:1;background:#f2f2f2;border-radius:4px;height:20px;overflow:hidden">
+							<div style="width:30%;height:100%;background:#efcf9b"></div>
+						</div>
+						<span style="width:52px;flex:none;text-align:right;color:#90602a;font-weight:700">15%</span>
+					</div>
+					<div style="display:flex;align-items:center;gap:10px">
+						<span class="gray" style="width:52px;flex:none;font-size:12px">迭代後</span>
+						<div style="flex:1;background:#f2f2f2;border-radius:4px;height:20px;overflow:hidden">
+							<div style="width:4%;height:100%;background:#8fcaa8"></div>
+						</div>
+						<span style="width:52px;flex:none;text-align:right;color:#3f7553;font-weight:700">＜2%</span>
+					</div>
+					<div class="gray" style="font-size:12px;margin-top:6px">枚舉值白名單 + 欄位拆分規則。</div>
+				</div>
+
+				<div>
+					<div style="font-weight:700;margin-bottom:8px">Extender 方向錯誤</div>
+					<div style="display:flex;align-items:center;gap:10px;margin-bottom:5px">
+						<span class="gray" style="width:52px;flex:none;font-size:12px">迭代前</span>
+						<div style="flex:1;background:#f2f2f2;border-radius:4px;height:20px;overflow:hidden">
+							<div style="width:80%;height:100%;background:#efcf9b"></div>
+						</div>
+						<span style="width:52px;flex:none;text-align:right;color:#90602a;font-weight:700">40%</span>
+					</div>
+					<div style="display:flex;align-items:center;gap:10px">
+						<span class="gray" style="width:52px;flex:none;font-size:12px">迭代後</span>
+						<div style="flex:1;background:#f2f2f2;border-radius:4px;height:20px;overflow:hidden">
+							<div style="width:6%;height:100%;background:#8fcaa8"></div>
+						</div>
+						<span style="width:52px;flex:none;text-align:right;color:#3f7553;font-weight:700">＜3%</span>
+					</div>
+					<div class="gray" style="font-size:12px;margin-top:6px">領域知識寫成規則三後降幅最大——這正是「規則要由懂前端消費的人來寫」的證據。</div>
+				</div>
 			</div>
 			<p class="gray">錯誤率為內部抽檢實測，僅供量級參考。</p>
 
 			<h3>工程考量</h3>
-			<p>
-				<strong>成本：</strong>結構化主流程用 GPT-4o，簡單清洗用 GPT-4o-mini；
-				批次處理避免單次上下文過長；規則版本號 + 輸入雜湊做快取，避免重跑。
-				<br><br>
-				<strong>可重現性：</strong>Prompt 以 git 版本化，每筆產品記錄由哪個版本生成；
-				失敗案例保留原始輸入與 LLM 回應，供後續迭代分析。
-			</p>
+			<div class="row mt-md mb-md" style="width:100%">
+				<div class="col-6 col-sm-12 plr-sm mb-md">
+					<div style="background:#fff;border:1px solid #e8e6e1;border-radius:12px;padding:18px;height:100%">
+						<div style="font-size:15px;font-weight:800;margin-bottom:8px">成本</div>
+						<p style="font-size:13.5px;color:#5a6170;line-height:1.7;margin:0">結構化主流程用 GPT-4o，簡單清洗用
+							GPT-4o-mini；批次處理避免單次上下文過長；規則版本號 + 輸入雜湊做快取，避免重跑。</p>
+					</div>
+				</div>
+				<div class="col-6 col-sm-12 plr-sm mb-md">
+					<div style="background:#fff;border:1px solid #e8e6e1;border-radius:12px;padding:18px;height:100%">
+						<div style="font-size:15px;font-weight:800;margin-bottom:8px">可重現性</div>
+						<p style="font-size:13.5px;color:#5a6170;line-height:1.7;margin:0">Prompt 以 git
+							版本化，每筆產品記錄由哪個版本生成；失敗案例保留原始輸入與 LLM 回應，供後續迭代分析。</p>
+					</div>
+				</div>
+			</div>
 
 			<!-- 工具升格 -->
 			<div class="session" id="tool">工具升格</div>
@@ -332,6 +542,10 @@
 				</div>
 			</div>
 
+			<!-- 截圖 placeholder：ProductTool 工作檯 -->
+			<img class="natural" src="../../builder/images/05_ProductTool_workbench.png"
+				alt="ProductTool 工作檯：上方選產品與類型，Preview 確定性解析原料、Process 跑 GPT Pipeline、左右對照 review 比對原始規格與結構化結果，支援批次模式逐筆跑與批次存">
+
 			<h3>Skill 組合式 Prompt 架構</h3>
 			<p>
 				Prompt 不再是一大段文字，而是<strong>可組合的 Skill</strong>：
@@ -341,7 +555,64 @@
 				工作檯的類型下拉與 Skill 勾選自動跟上，不改 UI code。
 			</p>
 
+			<!-- Skill 組合 → PromptBuilder → System Prompt -->
+			<div style="width:100%;max-width:1000px;margin:18px auto 8px;font-size:13px">
+				<div style="display:flex;flex-wrap:wrap;align-items:stretch;gap:10px">
+					<div style="flex:1;min-width:230px;display:flex;flex-direction:column;gap:8px">
+						<div style="border:1px solid #cfe0ee;border-radius:8px;overflow:hidden">
+							<div
+								style="background:#f0f6ff;color:#2c6184;padding:7px 12px;font-weight:700;font-size:12.5px">
+								type
+								skill</div>
+							<div style="padding:8px 12px;font-size:12.5px;color:#5a6170">KVM / ProAV<br><span
+									class="gray">決定 Schema 與系統角色</span></div>
+						</div>
+						<div style="border:1px solid #f0ddc4;border-radius:8px;overflow:hidden">
+							<div
+								style="background:#fff8f0;color:#90602a;padding:7px 12px;font-weight:700;font-size:12.5px">
+								modifier
+								skill</div>
+							<div style="padding:8px 12px;font-size:12.5px;color:#5a6170">如 VE 延伸器<br><span
+									class="gray">疊加規則</span></div>
+						</div>
+					</div>
+					<div style="display:flex;align-items:center;justify-content:center;color:#bbb;font-size:18px">→
+					</div>
+					<div
+						style="flex:none;display:flex;align-items:center;justify-content:center;background:#fafafa;border:1px solid #e2e2e2;border-radius:8px;padding:10px 16px;font-weight:700;text-align:center">
+						PromptBuilder
+					</div>
+					<div style="display:flex;align-items:center;justify-content:center;color:#bbb;font-size:18px">→
+					</div>
+					<div style="flex:1;min-width:230px;border:1px solid #c7e6d3;border-radius:8px;overflow:hidden">
+						<div style="background:#e8f6ed;color:#3f7553;padding:7px 12px;font-weight:700;font-size:12.5px">
+							System
+							Prompt（三階段）</div>
+						<div style="padding:8px 12px;font-size:12.5px;color:#5a6170;line-height:1.7">抽取 → 轉換 →
+							驗證<br><span class="gray">含 Few-Shot 與常見錯誤清單</span></div>
+					</div>
+				</div>
+				<p class="gray" style="font-size:12px;margin:10px 0 0">skillRegistry 是唯一事實來源：新增一種產品類型 = 加一個 Skill
+					class、註冊表加一筆，工作檯下拉與勾選自動跟上，不改 UI code。</p>
+			</div>
+
 			<h3>確定性優先，LLM 只補洞</h3>
+
+			<!-- 確定性 vs LLM 補洞 邊界條 -->
+			<div style="width:100%;max-width:1000px;margin:16px auto 14px;font-size:13px">
+				<div style="display:flex;height:42px;border-radius:8px;overflow:hidden;border:1px solid #e2e2e2">
+					<div
+						style="flex:80;background:#cfe0ee;display:flex;align-items:center;justify-content:center;color:#2c4a5a;font-weight:600;text-align:center;padding:0 8px">
+						🔒 純函式先做：規格表解析 · featureTag 比對 · 埠數計算</div>
+					<div
+						style="flex:20;background:#f7e3cb;display:flex;align-items:center;justify-content:center;color:#7a5230;font-weight:600;text-align:center;padding:0 8px">
+						🧠 LLM 補洞</div>
+				</div>
+				<div class="gray" style="display:flex;justify-content:space-between;font-size:11.5px;margin-top:6px">
+					<span>🔒 確定性、可單元測試、可重現</span><span>🧠 只補純函式填不了的缺口，再過 validate</span>
+				</div>
+			</div>
+
 			<div class="line_area">
 				<h6>規格表先過確定性解析</h6>
 				<p>specTableParser 把規格表 HTML 解析成乾淨結構——GPT 收到的是乾淨文字，不是原始 HTML，從源頭減少幻覺空間。</p>
@@ -350,7 +621,8 @@
 				<h6>featureTag 先由純函式產生</h6>
 				<p>官網既有的 Product Filter 參數直接寫入；產品 Features 文字比對 catalog 別名
 					（單詞邊界比對、泛用詞排除清單、長別名優先），每個 tag 都帶來源標記。
-					<strong>GPT 只負責補缺口</strong>，最後再過 validate 驗證。</p>
+					<strong>GPT 只負責補缺口</strong>，最後再過 validate 驗證。
+				</p>
 			</div>
 			<div class="line_area">
 				<h6>確定性邏輯都是純函式、附單元測試</h6>
@@ -373,21 +645,104 @@
 				失敗則通知企劃補齊。<strong>產品資料維護不再排隊等工程資源</strong>——
 				這是資料層對商業流程最直接的改變。
 			</p>
+
+			<!-- 新舊上架流程對比 -->
+			<div style="width:100%;max-width:1000px;margin:18px auto 8px;font-size:13px">
+				<div style="margin-bottom:14px">
+					<div class="gray" style="font-size:12px;margin-bottom:8px">舊流程 · 卡在工程資源</div>
+					<div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px">
+						<span
+							style="background:#f4f4f4;border:1px solid #e2e2e2;border-radius:6px;padding:8px 12px">產品企劃</span>
+						<span class="gray">→</span>
+						<span
+							style="background:#fdecec;border:1px solid #f3d2d0;color:#b0413e;border-radius:6px;padding:8px 12px;font-weight:600">排隊等工程資源</span>
+						<span class="gray">→</span>
+						<span
+							style="background:#f4f4f4;border:1px solid #e2e2e2;border-radius:6px;padding:8px 12px">工程手寫解析規則</span>
+						<span class="gray">→</span>
+						<span
+							style="background:#f4f4f4;border:1px solid #e2e2e2;border-radius:6px;padding:8px 12px">上架</span>
+					</div>
+				</div>
+				<div>
+					<div style="color:#3f7553;font-size:12px;margin-bottom:8px;font-weight:600">新流程 · 產品企劃自助、瓶頸消失</div>
+					<div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px">
+						<span
+							style="background:#fff8f0;border:1px solid #f0ddc4;border-radius:6px;padding:8px 12px">產品企劃貼入規格文字</span>
+						<span class="gray">→</span>
+						<span
+							style="background:#f0f6ff;border:1px solid #cfe0ee;border-radius:6px;padding:8px 12px">觸發單產品結構化</span>
+						<span class="gray">→</span>
+						<span
+							style="background:#f0f6ff;border:1px solid #cfe0ee;border-radius:6px;padding:8px 12px">Schema
+							校驗</span>
+						<span class="gray">→</span>
+						<span
+							style="background:#e8f6ed;border:1px solid #c7e6d3;color:#3f7553;border-radius:6px;padding:8px 12px;font-weight:600">通過即自動上架</span>
+					</div>
+				</div>
+				<p class="gray" style="font-size:12px;margin:10px 0 0">同樣的終點，少了中間「等工程」這一段——維護從「工程交付」變成「企劃自助」。</p>
+			</div>
+
 			<img class="natural" src="../../builder/images/05_ProductManager_batch.png"
 				alt="產品管理後台的批次更新介面：數千 SKU 的維護操作">
 
 			<h3>為什麼這是跨域題</h3>
-			<p>
-				<strong>Schema 從前端倒推</strong>——因為設計 Schema 的人同時在寫消費它的
-				Handle 渲染邏輯，知道埠口需要獨立物件而不是 count。
-				<br><br>
-				<strong>Prompt 規則從 UX 倒推</strong>——因為知道乘數不展開、方向不判定，
-				相容性檢測這個核心體驗就不成立。
-				<br><br>
-				<strong>用 LLM 取代 Regex</strong>——接受「90% 自動 + 三道防線」勝過
-				「追求 100% 規則覆蓋」：Regex 方案要為每個世代維護解析規則，
-				錯誤率與維護成本都遠高於 Prompt 迭代。
-			</p>
+			<div class="row mt-md mb-md" style="width:100%">
+				<div class="col-4 col-sm-12 plr-sm mb-md">
+					<div style="background:#fff;border:1px solid #e8e6e1;border-radius:12px;padding:18px;height:100%">
+						<div style="font-size:15px;font-weight:800;margin-bottom:8px">結構從場域與產業知識出發</div>
+						<p style="font-size:13.5px;color:#5a6170;line-height:1.7;margin:0">資料庫結構來自 Pro AV
+							場域知識——什麼是埠、訊號怎麼流、T/R 方向、相容性怎麼判定；再結合前端怎麼消費（埠口要獨立物件而不是 count），兩端一起決定 Schema 該長什麼樣。</p>
+					</div>
+				</div>
+				<div class="col-4 col-sm-12 plr-sm mb-md">
+					<div style="background:#fff;border:1px solid #e8e6e1;border-radius:12px;padding:18px;height:100%">
+						<div style="font-size:15px;font-weight:800;margin-bottom:8px">Prompt 規則對著下游功能寫</div>
+						<p style="font-size:13.5px;color:#5a6170;line-height:1.7;margin:0">
+							每條規則都對應一個「不這樣做，下游就會壞」的後果——乘數不展開、方向不判定，相容性檢測與
+							Handle 渲染就直接失效。要知道資料被誰、怎麼用，才知道該約束什麼。</p>
+					</div>
+				</div>
+				<div class="col-4 col-sm-12 plr-sm mb-md">
+					<div style="background:#fff;border:1px solid #e8e6e1;border-radius:12px;padding:18px;height:100%">
+						<div style="font-size:15px;font-weight:800;margin-bottom:8px">用 LLM 取代 Regex</div>
+						<p style="font-size:13.5px;color:#5a6170;line-height:1.7;margin:0">接受「90% 自動 + 三道防線」勝過「追求 100%
+							規則覆蓋」：Regex 方案要為每個世代維護解析規則，錯誤率與維護成本都遠高於 Prompt 迭代。</p>
+					</div>
+				</div>
+			</div>
+
+			<!-- Regex vs LLM 兩欄對比 -->
+			<div class="row mb-lg" style="width:100%">
+				<div class="col-6 col-sm-12 plr-sm mb-md">
+					<div style="border:1px solid #e2e2e2;border-radius:6px;overflow:hidden;height:100%">
+						<div style="background:#fafafa;border-bottom:1px solid #eee;padding:10px 16px;font-weight:700">
+							Regex /
+							規則表方案</div>
+						<div style="padding:12px 16px;font-size:13px;line-height:1.7;color:#5a6170">
+							<div style="margin-bottom:6px">涵蓋方式：<span style="color:#b0413e;font-weight:600">追求 100%
+									規則覆蓋</span></div>
+							<div style="margin-bottom:6px">維護：每個世代各維護一套解析規則表</div>
+							<div>新增格式：改 code、回歸測試</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-6 col-sm-12 plr-sm mb-md">
+					<div style="border:1px solid #c7e6d3;border-radius:6px;overflow:hidden;height:100%">
+						<div
+							style="background:#e8f6ed;border-bottom:1px solid #d6ecdd;padding:10px 16px;font-weight:700;color:#3f7553">
+							LLM
+							+ 三道防線（本專案）</div>
+						<div style="padding:12px 16px;font-size:13px;line-height:1.7;color:#5a6170">
+							<div style="margin-bottom:6px">涵蓋方式：<span style="color:#3f7553;font-weight:600">90% 自動 +
+									三道防線兜底</span></div>
+							<div style="margin-bottom:6px">維護：改 Prompt 規則與 Few-Shot，一處生效</div>
+							<div>新增格式：多半靠迭代 Prompt，不必為每個世代寫 parser</div>
+						</div>
+					</div>
+				</div>
+			</div>
 
 			<h3>可複用的方法論</h3>
 			<p>這套做法適用於任何「遺留資料結構化」場景：</p>
@@ -406,13 +761,17 @@
 
 			<!-- 總結 -->
 			<div class="session">專案總結</div>
-			<h2>把後端難題翻轉成設計師能解的題</h2>
-			<p>
-				這個 Pipeline 是整個 Solution Builder 的地基：沒有它，
-				動態 Handle、相容性檢測、AI 產品搜尋都不成立。
-				它展示的能力不是「會寫 Prompt」，而是<strong>把領域知識、前端消費需求與品質機制
-				設計成一條可迭代的資料生產線</strong>——用 AI 解決一個原本屬於後端團隊的工程問題。
-			</p>
+			<div
+				style="max-width:1000px;margin:20px auto 8px;padding:30px 32px;background:#f7faf8;border:1px solid #d6ecdd;border-left:5px solid #3f7553;border-radius:16px">
+				<div style="font-size:24px;font-weight:800;line-height:1.5;color:#2f5c46;letter-spacing:-0.01em">
+					把原本屬於後端團隊的工程難題，<br>翻轉成設計師能解的設計題。
+				</div>
+				<p style="margin:18px 0 0;font-size:14.5px;line-height:1.85;color:#4a5158">
+					這條 Pipeline 是整個 Solution Builder 的地基：沒有它，動態 Handle、相容性檢測、AI 產品搜尋都不成立。
+					它展示的能力不是「會寫 Prompt」，而是<strong>把領域知識、前端消費需求與品質機制設計成一條可迭代的資料生產線</strong>——用
+					AI 解決一個原本屬於後端團隊的工程問題。
+				</p>
+			</div>
 
 		</div>
 	</div>
