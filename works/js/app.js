@@ -38,9 +38,69 @@ function i18n(value) {
 	return value || '';
 }
 
+// ============================================
+// 篩選 Tag 系統（讓 HR 快速找到有興趣的專案）
+// ============================================
+// filterTagDefs: 篩選列的 tag 定義（key + 多語顯示名），陣列順序即篩選列顯示順序
+// filterTagMap : 每個作品對應 1~2 個 tag key
+// 與卡片既有的 tags（hover 浮出的技能標籤）是兩套系統，互不影響
+const filterTagDefs = [
+	{ key: "ai-agent", label: { en: "AI Agent", zh: "AI Agent", ja: "AI Agent" } },
+	{ key: "ai-tool", label: { en: "AI Tool", zh: "AI 工具", ja: "AI ツール" } },
+	{ key: "uiux", label: { en: "UI/UX Design", zh: "UI/UX 設計", ja: "UI/UX デザイン" } },
+	{ key: "ui", label: { en: "UI Design", zh: "UI 設計", ja: "UI デザイン" } },
+	{ key: "frontend", label: { en: "Front-end Dev", zh: "前端開發", ja: "フロントエンド" } },
+	{ key: "visual", label: { en: "Visual Design", zh: "視覺設計", ja: "ビジュアル" } },
+	{ key: "product", label: { en: "Product Design", zh: "產品設計", ja: "プロダクト" } }
+];
+
+const filterTagMap = {
+	a_builder: ["uiux", "frontend"],
+	a_builder_llm: ["ai-tool", "frontend"],
+	a_builder_agent: ["ai-agent", "uiux"],
+	a_foodAnimal: ["ai-tool", "frontend"],
+	d_uc: ["uiux", "ui"],
+	d_tts: ["ai-tool", "uiux"],
+	d_ftr: ["uiux", "ui"],
+	d_uvc: ["ui"],
+	d_ds: ["ui"],
+	d_so: ["uiux", "frontend"],
+	d_ofweb: ["uiux"],
+	d_game: ["ui"],
+	d_wall: ["product"],
+	d_vrbot: ["product"],
+	d_ar: ["ui", "product"],
+	v_vis: ["visual"],
+	v_ino: ["visual"],
+	v_3d: ["visual"],
+	c_auto_tag: ["ai-tool"],
+	"c_auto-matome": ["ai-tool"],
+	c_demo: ["frontend"],
+	c_party: ["frontend"],
+	c_test: ["frontend"],
+	c_an: ["frontend"]
+};
+
+// 套用「最小卡片」樣式的作品 id（層級更小，給次要的工具型作品）
+// 同一分類內，compact 卡片會在渲染時自動排到最後、聚在一起
+const compactCards = [
+	"c_auto_tag", "c_auto-matome", "c_test",
+	"d_ar", "d_game", "d_ofweb", "d_ds", "d_uvc"
+];
+
+function isCompact(id) {
+	return compactCards.indexOf(id) !== -1;
+}
+
+// 取得作品的篩選 tag keys
+function getFilterTags(id) {
+	return filterTagMap[id] || [];
+}
+
 const portfolioData = {
-	design: {
-		title: "",
+	fullProject: {
+		title: { en: "Full-Cycle Projects", zh: "全流程專案", ja: "フルサイクル開発" },
+		desc: { en: "Owned across spec, design, and front-end", zh: "規格制訂、設計到前端開發，一手主導", ja: "仕様策定・デザイン・フロントエンド開発を一貫して担当" },
 		titleClass: "",
 		cards: [
 			{
@@ -72,12 +132,53 @@ const portfolioData = {
 				cardConfig: { colClass: "col-4 col-md-6 col-xs-12" }
 			},
 			{
+				id: "a_builder_llm",
+				hasLocalPage: true,
+				langOnly: ["zh"],
+				title: {
+					en: "Structuring Product Data with LLMs",
+					zh: "用 LLM 結構化產品資料",
+					ja: "LLMで製品データを構造化"
+				},
+				desc: {
+					en: "Turning thousands of scattered, inconsistent spec documents into a unified product database the front-end can consume directly — built with GPT-4o, prompt rules, and a three-layer quality gate.",
+					zh: "把數千筆散落在格式不一文件裡的規格，用 GPT-4o、Prompt 規則與三道品質防線，結構化為前端可直接消費的統一產品資料庫。",
+					ja: "フォーマットの異なる文書に散在する数千件の仕様を、GPT-4o・プロンプトルール・三段階の品質ゲートでフロントエンドが直接利用できる統一製品データベースへ構造化。"
+				},
+				tags: ["LLM Pipeline", "Prompt Engineering", "Node.js"],
+				cardConfig: { colClass: "col-6 col-md-6 col-xs-12" }
+			},
+			{
+				id: "a_builder_agent",
+				hasLocalPage: true,
+				langOnly: ["zh"],
+				title: {
+					en: "AI Product Advisor Agent",
+					zh: "AI 產品顧問 Agent",
+					ja: "AI製品コンサルタント Agent"
+				},
+				desc: {
+					en: "A B2B agent that recommends correct products from ~2,000 real SKUs based on natural-language needs — three architecture generations that put the LLM's uncertainty in the right place.",
+					zh: "B2B AI 產品顧問：使用者用自然語言描述需求，系統從約 2,000 個真實 SKU 中推薦正確產品。歷經三代架構，把 LLM 的不確定性放對位置。",
+					ja: "自然言語のニーズから約2,000の実SKUの中から正しい製品を推薦するB2Bエージェント。三世代の設計でLLMの不確実性を適切な位置に配置。"
+				},
+				tags: ["B2B AI Agent", "LLM Harness", "Conversational UX"],
+				cardConfig: { colClass: "col-6 col-md-6 col-xs-12" }
+			}
+		]
+	},
+	design: {
+		title: { en: "Design", zh: "設計", ja: "デザイン" },
+		desc: { en: "UX research, UI, and visual design", zh: "UX 研究、UI 設計與視覺", ja: "UXリサーチ・UIデザイン・ビジュアル" },
+		titleClass: "",
+		cards: [
+			{
 				id: "d_uc",
 				hasLocalPage: true,
 				title: {
-					en: "All-in-One Streaming Studio </br> Solution Application",
-					zh: "一體化直播工作站 </br> 解決方案應用",
-					ja: "オールインワン配信スタジオ </br> ソリューションアプリケーション"
+					en: "Professional Live Streaming Solution",
+					zh: "專業直播解決方案",
+					ja: "プロフェッショナルライブ配信ソリューション"
 				},
 				desc: {
 					en: "An award-winning live streaming product series that achieved the highest annual sales, simplifying professional broadcasting through integrated hardware-software solutions.",
@@ -211,6 +312,7 @@ const portfolioData = {
 			{
 				id: "d_vrbot",
 				hasLocalPage: true,
+				homeHidden: true,
 				title: {
 					en: "Remote VR Interactive Robot",
 					zh: "遠端 VR 互動機器人",
@@ -286,7 +388,8 @@ const portfolioData = {
 			}]
 	},
 	development: {
-		title: "Development",
+		title: { en: "Development", zh: "程式開發", ja: "開発" },
+		desc: { en: "Front-end, automation tools, and experiments", zh: "前端、自動化工具與互動實驗", ja: "フロントエンド・自動化ツール・実験" },
 		titleClass: "",
 		cards: [
 			{
@@ -401,12 +504,16 @@ function getWorkById(id) {
 	return null;
 }
 
+// 攤平所有分類的作品；過濾掉非當前語言（langOnly）與不列入目錄的（homeHidden）
+// 讓側邊欄上/下篇導覽也跳過 homeHidden 的作品
+function getAllWorks() {
+	return Object.keys(portfolioData)
+		.reduce((arr, cat) => arr.concat(portfolioData[cat].cards), [])
+		.filter(work => (!work.langOnly || work.langOnly.indexOf(lang) !== -1) && !work.homeHidden);
+}
+
 function getPreviousWork(currentId) {
-	// 將所有作品攤平成一個陣列
-	const allWorks = [
-		...portfolioData.design.cards,
-		...portfolioData.development.cards
-	];
+	const allWorks = getAllWorks();
 	const currentIndex = allWorks.findIndex(work => work.id === currentId);
 	if (currentIndex > 0) {
 		return allWorks[currentIndex - 1];
@@ -415,10 +522,7 @@ function getPreviousWork(currentId) {
 }
 
 function getNextWork(currentId) {
-	const allWorks = [
-		...portfolioData.design.cards,
-		...portfolioData.development.cards
-	];
+	const allWorks = getAllWorks();
 	const currentIndex = allWorks.findIndex(work => work.id === currentId);
 	if (currentIndex >= 0 && currentIndex < allWorks.length - 1) {
 		return allWorks[currentIndex + 1];
@@ -462,10 +566,14 @@ try {
 		const currentWork = getWorkById(workName);
 
 		if (currentWork) {
-			// 設定頁面標題
+			// 設定頁面標題：只有當頁面沒有自行撰寫 <h1> 時才自動填入
+			// （手寫頁如 a_builder 系列會保留自己的標題與副標）
 			var workTitle = i18n(currentWork.title);
-			$tag("title")[0].innerHTML = workTitle.replace(/<\/?br>/g, '').replace(/<\/?\/br>/g, '');
-			$tag("h1")[0].innerHTML = workTitle;
+			var h1El = $tag("h1")[0];
+			if (h1El && h1El.textContent.trim() === '') {
+				$tag("title")[0].innerHTML = workTitle.replace(/<\/?br>/g, '').replace(/<\/?\/br>/g, '');
+				h1El.innerHTML = workTitle;
+			}
 
 			// 載入圖片
 			let img = $tag("img")
@@ -780,29 +888,48 @@ function renderPortfolioCards() {
 	}
 
 	let cardsHtml = '';
+	// 記錄實際會顯示的作品用到哪些 filter tag，篩選列只放有用到的
+	const usedTags = {};
 
 	Object.keys(portfolioData).forEach((category) => {
 		const categoryData = portfolioData[category];
 
-		// 加入類別標題
-		if (categoryData.title) {
-			cardsHtml += `
-				<div id="${category}" class="session-border pt-xs pb-xs">
-					<h2 class="${categoryData.titleClass || ''}">${categoryData.title}</h2>
-				</div>
-			`;
-		}
+		// 過濾：langOnly 限定語言、homeHidden 不在首頁目錄顯示
+		const cards = categoryData.cards.filter(work => (!work.langOnly || work.langOnly.indexOf(lang) !== -1) && !work.homeHidden);
+		if (cards.length === 0) return;
+
+		// 同分類內把 compact 卡片排到最後，讓它們聚在一起（穩定排序，其餘順序不變）
+		cards.sort((a, b) => (isCompact(a.id) ? 1 : 0) - (isCompact(b.id) ? 1 : 0));
+
+		// 加入類別標題（含簡短說明）
+		cardsHtml += `
+			<div id="${category}" class="session-border pt-xs pb-xs">
+				<h2 class="${categoryData.titleClass || ''}">${i18n(categoryData.title)}</h2>
+				${categoryData.desc ? `<p class="cat-desc">${i18n(categoryData.desc)}</p>` : ''}
+			</div>
+		`;
 
 		// 卡片區塊
 		cardsHtml += '<div class="row workCards">';
-		categoryData.cards.forEach((work) => {
+		cards.forEach((work) => {
 			const config = work.cardConfig || {};
-			const colClass = config.colClass || 'col-4 col-md-6 col-xs-12 m-0';
-	
+			const compact = isCompact(work.id);
+			let colClass = config.colClass || 'col-4 col-md-6 col-xs-12 m-0';
+			if (compact) colClass += ' col-compact';
+
 			const displayTitle = i18n(work.title);
 			const displayDesc = i18n(work.desc);
 
+			// hover 浮出的技能標籤（原本就有）
 			const tagsHtml = work.tags.map(tag => `<p class="tag">${tag}</p>`).join('');
+
+			// 永遠可見的篩選 tag
+			const ftKeys = getFilterTags(work.id);
+			ftKeys.forEach(k => { usedTags[k] = true; });
+			const ftHtml = ftKeys.map(k => {
+				const def = filterTagDefs.find(d => d.key === k);
+				return def ? `<span class="ftag">${i18n(def.label)}</span>` : '';
+			}).join('');
 
 			// 卡片連結：有該語言頁面的留在當前資料夾，否則跳回英文根目錄
 			const hasLocalPage = (lang !== 'en' && work.hasLocalPage);
@@ -811,14 +938,15 @@ function renderPortfolioCards() {
 				: `${pageBasePath}${work.id}.html#img00`;
 
 			cardsHtml += `
-				<div class="${colClass}">
-					<a class="workCard" href="${cardHref}" >
+				<div class="${colClass}" data-tags="${ftKeys.join(' ')}">
+					<a class="workCard${compact ? ' compact' : ''}" href="${cardHref}" >
 						<div class="work-image" style="background-image: url(${imgBasePath}cover_${work.id}.png);">
 							<div class="detail_box row flex-c">${tagsHtml}</div>
 						</div>
 						<div class="textBox">
+							${ftHtml ? `<div class="filter-tags row">${ftHtml}</div>` : ''}
 							<h3>${displayTitle}</h3>
-							<p>${displayDesc}</p>
+							<p class="card-desc">${displayDesc}</p>
 						</div>
 					</a>
 				</div>
@@ -828,7 +956,56 @@ function renderPortfolioCards() {
 		cardsHtml += '</div>';
 	});
 
-	workCardsContainer.innerHTML = cardsHtml;
+	// 篩選列：依 filterTagDefs 順序，只放有用到的 tag
+	const chips = filterTagDefs
+		.filter(def => usedTags[def.key])
+		.map(def => `<button class="filter-chip" data-filter="${def.key}">${i18n(def.label)}</button>`)
+		.join('');
+	const allLabel = (lang === 'zh') ? '全部' : (lang === 'ja') ? 'すべて' : 'All';
+	const filterBarHtml = `
+		<div class="filter-bar">
+			<button class="filter-chip active" data-filter="all">${allLabel}</button>
+			${chips}
+		</div>
+	`;
+
+	workCardsContainer.innerHTML = filterBarHtml + cardsHtml;
+
+	setupCardFilter();
+}
+
+// 篩選互動：點 tag 只顯示符合的卡片，整個分類為空時連標題一起隱藏
+function setupCardFilter() {
+	const container = document.getElementById('workCardsContainer');
+	if (!container) return;
+	const chips = container.querySelectorAll('.filter-chip');
+	const rows = container.querySelectorAll('.workCards');
+
+	function applyFilter(key) {
+		rows.forEach(row => {
+			let visibleCount = 0;
+			row.querySelectorAll(':scope > [data-tags]').forEach(col => {
+				const tags = (col.getAttribute('data-tags') || '').split(' ');
+				const show = (key === 'all') || tags.indexOf(key) !== -1;
+				col.style.display = show ? '' : 'none';
+				if (show) visibleCount++;
+			});
+			// 連同前一個分類標題一起隱藏
+			const header = row.previousElementSibling;
+			row.style.display = visibleCount ? '' : 'none';
+			if (header && header.classList.contains('session-border')) {
+				header.style.display = visibleCount ? '' : 'none';
+			}
+		});
+	}
+
+	chips.forEach(chip => {
+		chip.addEventListener('click', function () {
+			chips.forEach(c => c.classList.remove('active'));
+			chip.classList.add('active');
+			applyFilter(chip.getAttribute('data-filter'));
+		});
+	});
 }
 
 // ============================================

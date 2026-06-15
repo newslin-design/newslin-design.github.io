@@ -24,12 +24,29 @@
 
 .workCards .workCard {
 	display: flex;
-	flex-wrap: wrap;
+	flex-direction: column;
 	min-height: 220px;
 	padding: 4px;
 	background-color: #ffffff;
 	border: 1px solid #e3e9eb;
 	border-radius: 6px;
+}
+
+/* 同列卡片高度對齊最高張：欄位撐滿整列高度、卡片填滿欄位、文字區補滿底部 */
+.workCards>[class*="col-"] {
+	display: flex;
+}
+
+.workCards>[class*="col-"]>.workCard {
+	flex: 1 1 auto;
+}
+
+.workCards .work-image {
+	flex-shrink: 0;
+}
+
+.workCards .textBox {
+	flex: 1 0 auto;
 }
 
 
@@ -176,7 +193,7 @@
 
 
 .workCards .star-project .workCard {
-	height: 320px;
+	min-height: 340px;
 	overflow: hidden;
 }
 
@@ -247,4 +264,109 @@
 		display: none;
 	}
 
+}
+
+
+/* -----------------
+	大類別簡短說明
+----------------- */
+.cat-desc {
+	margin: 2px 0 0;
+	font-size: 14px;
+	font-weight: 300;
+	color: #6b7a80;
+	letter-spacing: -0.01em;
+}
+
+
+/* -----------------
+	篩選列 filter bar
+----------------- */
+.filter-bar {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	margin-bottom: 12px;
+	padding: 4px 0;
+}
+
+.filter-bar .filter-chip {
+	font-family: inherit;
+	font-size: 14px;
+	font-weight: 350;
+	padding: 6px 16px;
+	border-radius: 99px;
+	border: 1px solid #cdd8dc;
+	background-color: #ffffff;
+	color: #46555a;
+	cursor: pointer;
+	transition: 0.2s;
+}
+
+.filter-bar .filter-chip:hover {
+	border-color: #50afee;
+	color: #1c2a2f;
+}
+
+.filter-bar .filter-chip.active {
+	background-color: #2b3a40;
+	border-color: #2b3a40;
+	color: #ffffff;
+}
+
+
+/* -----------------
+	卡片上永遠可見的篩選 tag
+----------------- */
+.workCards .filter-tags {
+	flex-wrap: wrap;
+	gap: 4px;
+	margin-bottom: 6px;
+}
+
+.workCards .filter-tags .ftag {
+	font-size: 11px;
+	font-weight: 400;
+	line-height: 1.6;
+	padding: 1px 9px;
+	border-radius: 99px;
+	background-color: #dfeaee;
+	color: #2b5c6b;
+	letter-spacing: 0;
+}
+
+
+/* -----------------
+	最小卡片 compact（層級更小，給次要的工具型作品）
+----------------- */
+.workCards>.col-compact {
+	align-self: flex-start;
+	/* 不被拉到與同列最高張同高，維持精簡的小尺寸 */
+}
+
+.workCards .workCard.compact {
+	min-height: 0;
+}
+
+.workCards .workCard.compact .work-image {
+	flex: 0 0 120px;
+	height: 120px;
+}
+
+.workCards .workCard.compact .textBox {
+	flex: 0 0 auto;
+	padding: 8px 12px;
+}
+
+.workCards .workCard.compact h3 {
+	font-size: 15px;
+	margin-bottom: 2px;
+}
+
+.workCards .workCard.compact .card-desc {
+	font-size: 13px;
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
 }
