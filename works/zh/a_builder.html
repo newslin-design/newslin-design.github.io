@@ -56,7 +56,7 @@
 				<p>B2B SaaS · 視覺化編輯器 · 企業數位轉型</p>
 			</div>
 			<div class="col-6 col-sm-12">
-				<img class="w-100" src="../../builder/images/01_main_editor.png"
+				<img class="w-100" src="../../image/builder/01_main_editor.png"
 					alt="Solution Builder 主編輯器：左側設備庫、中間視覺化畫布、右側屬性面板">
 			</div>
 		</div>
@@ -413,7 +413,7 @@
 				頂部工具列只放 Undo / Redo / Save / Export 四顆，高階功能收進右鍵選單；
 				訊號色碼 Legend 常駐右下角，新手不需記憶規則就能讀圖。
 			</p>
-			<img class="natural" src="../../builder/images/01_main_editor_example.png"
+			<img class="natural" src="../../image/builder/01_main_editor_example.png"
 				alt="實際方案範例：混用 Frame 分區、Group 乘算與七色訊號連線的完整系統圖">
 
 			<h3>自訂節點與動態埠口</h3>
@@ -423,7 +423,7 @@
 				攜帶訊號類型、頻寬、解析度等屬性，供連線時的相容性檢測使用。
 				埠口依 Video / Audio / USB / Control / Network 分組顯示，找「HDMI 輸出」時只需看 Video 組。
 			</p>
-			<img class="natural" src="../../builder/images/02_node_deviceNodeWithPort_KVMExample.png"
+			<img class="natural" src="../../image/builder/02_node_deviceNodeWithPort_KVMExample.png"
 				alt="KVM 設備節點：依 Schema 動態生成的分組埠口">
 			<p>
 				使用者也可建立 <strong>Custom Device</strong> 把第三方設備畫進方案——這些型號會被後台記錄，
@@ -436,7 +436,7 @@
 				Handle、連線、BOM 與 Legend）。提供 Bezier / Step / Straight 三種邊樣式對應不同拓撲；
 				同色連線交叉時自動渲染半圓跳線符號，複雜拓撲不打結。
 			</p>
-			<img class="natural" src="../../builder/images/01_main_editor_flowType.png"
+			<img class="natural" src="../../image/builder/01_main_editor_flowType.png"
 				alt="三種連線樣式：Bezier 散射拓撲、Step 矩陣拓撲、Straight 直連">
 
 			<h3>複雜度分層：自願下探，而非強制暴露</h3>
@@ -482,7 +482,7 @@
 					<span>資訊密度低</span><span>自願下探，每一層都由使用者主動要求</span><span>資訊密度高</span>
 				</div>
 			</div>
-			<img class="natural" src="../../builder/images/04_portVisibility_KVM.png"
+			<img class="natural" src="../../image/builder/04_portVisibility_KVM.png"
 				alt="Port Visibility 控制：逐訊號類型決定埠口顯示與否">
 
 			<h3>Frame 與 Group ×N：組織大型方案</h3>
@@ -492,7 +492,7 @@
 				讓 SI 只設計一份典型房間，系統處理數量乘算——外層 ×4 會議室、內層 ×2 喇叭，
 				BOM 自動算出 8 顆。設計責任與數量責任分離。
 			</p>
-			<img class="natural" src="../../builder/images/04_group_nested.png" alt="巢狀 Group ×N：一份設計表達 N 套設備，BOM 自動乘算">
+			<img class="natural" src="../../image/builder/04_group_nested.png" alt="巢狀 Group ×N：一份設計表達 N 套設備，BOM 自動乘算">
 
 			<h2 class="box mb-0 mt-lg">功能二：模板系統</h2>
 			<h2 class="hightlight">前台產品選擇器 + 後台自助上稿</h2>
@@ -514,7 +514,7 @@
 				上稿之外，後台也陸續配備提高維運效率的專用工具——行為錄影、模板與選項組合管理、批次處理——
 				這些工具的設計與開發讓模板量持續成長時，維護與驗證成本不會跟著失控。
 			</p>
-			<img class="natural" src="../../builder/images/03_templateEditor_diaEidtor.png"
+			<img class="natural" src="../../image/builder/03_templateEditor_diaEidtor.png"
 				alt="模板編輯器後台：沿用主編輯器元件的模板圖編輯介面">
 
 			<h2 class="box mb-0 mt-lg">功能三：一鍵交付</h2>
@@ -525,7 +525,7 @@
 				產品清單隨畫布即時更新：增減節點、調整 Group ×N 都立刻反映，
 				自動依品牌與類別分組、過濾隱藏節點。統計行直接給業務做粗估報價。
 			</p>
-			<img class="natural" src="../../builder/images/04_bom_panel.png" alt="BOM 面板：隨畫布即時更新的產品清單，含群組乘算與分類統計">
+			<img class="natural" src="../../image/builder/04_bom_panel.png" alt="BOM 面板：隨畫布即時更新的產品清單，含群組乘算與分類統計">
 
 			<h3>Excel 報價單與 PDF 系統圖</h3>
 			<p>
@@ -533,7 +533,7 @@
 				以及含封面、專案資訊、訊號 Legend 與浮水印的 PDF 系統連線圖——
 				可直接交付客戶，不需再加工。匯出採<strong>純前端管線</strong>（html-to-image + jsPDF），無後端依賴。
 			</p>
-			<img class="natural" src="../../builder/images/04_export_pdf_output.png"
+			<img class="natural" src="../../image/builder/04_export_pdf_output.png"
 				alt="PDF 匯出結果：保留 Frame 分區、訊號色碼與 Group 標記的完整方案文件">
 
 			<!-- 技術實踐與工程貢獻 -->
@@ -610,7 +610,7 @@
 				productDatabase.json 的 Schema——設計與資料結構同時成型。搭配交叉篩選與批次更新，
 				產品資料的維護從「工程交付」變成「業務自助」。
 			</p>
-			<img class="natural" src="../../builder/images/05_ProductManager01.png" alt="產品管理器後台：數千 SKU 的結構化規格維護介面">
+			<img class="natural" src="../../image/builder/05_ProductManager01.png" alt="產品管理器後台：數千 SKU 的結構化規格維護介面">
 
 			<p class="highlight">
 				<strong>延伸閱讀（獨立成篇）：</strong>資料層的關鍵是把散落在 PDF / HTML、格式不一的數千筆產品規格，
@@ -651,7 +651,7 @@
 			</p>
 
 			<!-- 截圖 placeholder：可放 Salesforce Opportunity 自動建立的畫面 -->
-			<img class="natural" src="../../builder/images/06_salesforce_opportunity.png"
+			<img class="natural" src="../../image/builder/06_salesforce_opportunity.png"
 				alt="「直接諮詢」自動建立的 Salesforce Opportunity：附帶方案 JSON、BOM 與畫布截圖，業務開啟時已有完整提案脈絡">
 
 			<h3>數據架構：設計階段就定義 Event Schema</h3>
@@ -711,8 +711,8 @@
 					</div>
 				</div>
 			</div>
-			<!-- TODO：把 PowerBI 報表截圖（早期基本使用量，可公開）存成 builder/images/06_powerbi_usage.png 後，取消下行註解
-			<img class="natural" src="../../builder/images/06_powerbi_usage.png"
+			<!-- TODO：把 PowerBI 報表截圖（早期基本使用量，可公開）存成 image/builder/06_powerbi_usage.png 後，取消下行註解
+			<img class="natural" src="../../image/builder/06_powerbi_usage.png"
 				alt="PowerBI 使用量報表：服務早期的基本使用量儀表板"> -->
 
 			<h3>兩個實際的閉環案例</h3>

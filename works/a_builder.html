@@ -6,12 +6,12 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, maximum-scale=1.5">
 	<meta name="robots" content="noindex, nofollow">
 	<title>ATEN Solution Builder - Portfolio</title>
-	<script>workName = "a_builder"; lang = "en"; basePath = "../";</script>
-	<link rel="stylesheet" href="../style/reset.css">
-	<link rel="stylesheet" href="../style/style_layout.css">
-	<link rel="stylesheet" href="../style/style.css">
-	<link rel="stylesheet" href="../style/article.css">
-	<link rel="icon" type="image/png" href="../web_icon.png" />
+	<script>workName = "a_builder"; lang = "en";</script>
+	<link rel="stylesheet" href="style/reset.css">
+	<link rel="stylesheet" href="style/style_layout.css">
+	<link rel="stylesheet" href="style/style.css">
+	<link rel="stylesheet" href="style/article.css">
+	<link rel="icon" type="image/png" href="web_icon.png" />
 
 	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-114514958-1"></script>
 	<script>
@@ -62,7 +62,7 @@
 				<p>B2B SaaS · Visual editor · Enterprise digital transformation</p>
 			</div>
 			<div class="col-6 col-sm-12">
-				<img class="w-100" src="../../builder/images/01_main_editor.png"
+				<img class="w-100" src="../image/builder/01_main_editor.png"
 					alt="Solution Builder main editor: device library on the left, visual canvas in the center, properties panel on the right">
 			</div>
 		</div>
@@ -481,7 +481,7 @@
 				a signal color-code legend is pinned to the bottom-right so newcomers can read a diagram without
 				memorizing the rules.
 			</p>
-			<img class="natural" src="../../builder/images/01_main_editor_example.png"
+			<img class="natural" src="../image/builder/01_main_editor_example.png"
 				alt="A real solution example: a complete system diagram mixing Frame zoning, Group multipliers, and seven-color signal connections">
 
 			<h3>Custom nodes and dynamic ports</h3>
@@ -494,7 +494,7 @@
 				Ports are grouped by Video / Audio / USB / Control / Network, so finding an "HDMI output" only means
 				looking at the Video group.
 			</p>
-			<img class="natural" src="../../builder/images/02_node_deviceNodeWithPort_KVMExample.png"
+			<img class="natural" src="../image/builder/02_node_deviceNodeWithPort_KVMExample.png"
 				alt="A KVM device node: grouped ports generated dynamically from the Schema">
 			<p>
 				Users can also create a <strong>Custom Device</strong> to draw third-party equipment into a
@@ -511,7 +511,7 @@
 				when same-color connections cross, a semicircular hop symbol is rendered automatically so complex
 				topologies don't tangle.
 			</p>
-			<img class="natural" src="../../builder/images/01_main_editor_flowType.png"
+			<img class="natural" src="../image/builder/01_main_editor_flowType.png"
 				alt="Three connection styles: Bezier for fan-out topologies, Step for matrix topologies, Straight for direct links">
 
 			<h3>Layered complexity: opt-in depth, not forced exposure</h3>
@@ -561,7 +561,7 @@
 						user</span><span>High information density</span>
 				</div>
 			</div>
-			<img class="natural" src="../../builder/images/04_portVisibility_KVM.png"
+			<img class="natural" src="../image/builder/04_portVisibility_KVM.png"
 				alt="Port Visibility control: showing or hiding ports per signal type">
 
 			<h3>Frame and Group ×N: organizing large designs</h3>
@@ -573,7 +573,7 @@
 				×4 meeting rooms and inner ×2 speakers,
 				and the BOM computes 8 automatically. Design responsibility and quantity responsibility are separated.
 			</p>
-			<img class="natural" src="../../builder/images/04_group_nested.png"
+			<img class="natural" src="../image/builder/04_group_nested.png"
 				alt="Nested Group ×N: one design expresses N sets of equipment, with the BOM multiplied automatically">
 
 			<h2 class="box mb-0 mt-lg">Feature 2: Template system</h2>
@@ -605,7 +605,7 @@
 				whose design and development keep maintenance and validation costs from spiraling as the template count
 				keeps growing.
 			</p>
-			<img class="natural" src="../../builder/images/03_templateEditor_diaEidtor.png"
+			<img class="natural" src="../image/builder/03_templateEditor_diaEidtor.png"
 				alt="Template-editor back office: a template-diagram editing interface reusing the main editor's components">
 
 			<h2 class="box mb-0 mt-lg">Feature 3: One-click delivery</h2>
@@ -619,7 +619,7 @@
 				a
 				quick rough quote directly.
 			</p>
-			<img class="natural" src="../../builder/images/04_bom_panel.png"
+			<img class="natural" src="../image/builder/04_bom_panel.png"
 				alt="BOM panel: a product list that updates live with the canvas, including group multiplication and category totals">
 
 			<h3>Excel quote and PDF system diagram</h3>
@@ -630,7 +630,7 @@
 				deliverable to the client as-is, no rework needed. Export uses a <strong>pure front-end
 					pipeline</strong> (html-to-image + jsPDF) with no back-end dependency.
 			</p>
-			<img class="natural" src="../../builder/images/04_export_pdf_output.png"
+			<img class="natural" src="../image/builder/04_export_pdf_output.png"
 				alt="PDF export result: a complete solution document preserving Frame zoning, signal color codes, and Group labels">
 
 			<!-- Engineering & Technical Contributions -->
@@ -721,7 +721,7 @@
 				and batch updates,
 				maintaining product data shifts from "an engineering deliverable" to "sales self-service."
 			</p>
-			<img class="natural" src="../../builder/images/05_ProductManager01.png"
+			<img class="natural" src="../image/builder/05_ProductManager01.png"
 				alt="Product Manager back office: a structured spec-maintenance interface for thousands of SKUs">
 
 			<p class="highlight">
@@ -771,7 +771,7 @@
 				becomes a trackable opportunity in the CRM—no manual data shuffling for sales.</p>
 
 			<!-- Screenshot placeholder: the auto-created Salesforce Opportunity -->
-			<img class="natural" src="../../builder/images/06_salesforce_opportunity.png"
+			<img class="natural" src="../image/builder/06_salesforce_opportunity.png"
 				alt="A Salesforce Opportunity auto-created by 'Direct inquiry': carrying the design JSON, BOM, and canvas screenshot, so sales open it with full proposal context">
 
 			<h3>Data architecture: defining the Event Schema at the design stage</h3>
@@ -836,8 +836,8 @@
 					</div>
 				</div>
 			</div>
-			<!-- TODO: once the PowerBI report screenshot (early basic usage, public-safe) is saved as builder/images/06_powerbi_usage.png, uncomment the line below
-			<img class="natural" src="../../builder/images/06_powerbi_usage.png"
+			<!-- TODO: once the PowerBI report screenshot (early basic usage, public-safe) is saved as image/builder/06_powerbi_usage.png, uncomment the line below
+			<img class="natural" src="../image/builder/06_powerbi_usage.png"
 				alt="PowerBI usage report: a basic usage dashboard from the service's early days"> -->
 
 			<h3>Two real closed-loop cases</h3>
@@ -915,7 +915,7 @@
 	</div>
 
 	<footer></footer>
-	<script src="../js/app.js"></script>
+	<script src="js/app.js"></script>
 </body>
 
 </html>
