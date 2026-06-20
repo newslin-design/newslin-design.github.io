@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>面接スクリプト — ATEN Solution Builder</title>
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --bg: #f7f6f2;
+            --surface: #ffffff;
+            --border: #e2ddd6;
+            --text-primary: #1a1816;
+            --text-body: #3d3a35;
+            --text-muted: #8a857c;
+            --accent-blue: #2c6184;
+            --accent-blue-bg: #eef4f8;
+            --accent-amber: #90602a;
+            --accent-amber-bg: #fdf5ea;
+            --accent-green: #3f7553;
+            --accent-green-bg: #eaf4ee;
+            --sidebar-w: 280px;
+            --font-ja: 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', 'Yu Gothic', sans-serif;
+            --font-mono: 'SF Mono', 'Fira Code', monospace;
+        }
+
+        body {
+            font-family: var(--font-ja);
+            background: var(--bg);
+            color: var(--text-body);
+            display: flex;
+            min-height: 100vh;
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        /* ── Sidebar ── */
+        #sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: var(--sidebar-w);
+            height: 100vh;
+            background: var(--surface);
+            border-right: 1px solid var(--border);
+            overflow-y: auto;
+            padding: 28px 0 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            z-index: 100;
+        }
+
+        .sidebar-header {
+            padding: 0 20px 20px;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 8px;
+        }
+
+        .sidebar-label {
+            font-size: 10px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .sidebar-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-primary);
+            line-height: 1.4;
+        }
+
+        .sidebar-nav {
+            padding: 8px 0;
+        }
+
+        .nav-section-label {
+            font-size: 10px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            padding: 16px 20px 4px;
+            font-weight: 600;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+            padding: 7px 20px;
+            font-size: 13px;
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.15s, background 0.15s;
+            line-height: 1.4;
+        }
+
+        .nav-link:hover {
+            color: var(--text-primary);
+            background: var(--bg);
+        }
+
+        .nav-link.active {
+            color: var(--accent-blue);
+            font-weight: 600;
+            background: var(--accent-blue-bg);
+        }
+
+        .nav-link .num {
+            font-size: 10px;
+            font-family: var(--font-mono);
+            color: var(--text-muted);
+            flex-shrink: 0;
+            width: 18px;
+        }
+
+        .nav-link.active .num {
+            color: var(--accent-blue);
+        }
+
+        .sidebar-footer {
+            margin-top: auto;
+            padding: 16px 20px 0;
+            border-top: 1px solid var(--border);
+            font-size: 11.5px;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .sidebar-footer strong {
+            color: var(--text-body);
+        }
+
+        /* ── Main ── */
+        #main {
+            margin-left: var(--sidebar-w);
+            flex: 1;
+            max-width: 780px;
+            padding: 60px 56px 100px;
+        }
+
+        /* ── Page header ── */
+        .page-header {
+            margin-bottom: 52px;
+            padding-bottom: 32px;
+            border-bottom: 2px solid var(--text-primary);
+        }
+
+        .page-eyebrow {
+            font-size: 11px;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .page-title {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--text-primary);
+            letter-spacing: -0.02em;
+            line-height: 1.25;
+            margin-bottom: 10px;
+        }
+
+        .page-subtitle {
+            font-size: 14px;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        /* ── Section ── */
+        .section {
+            margin-bottom: 56px;
+            scroll-margin-top: 40px;
+        }
+
+        .section-marker {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .section-num {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--text-muted);
+            letter-spacing: 0.06em;
+            background: var(--border);
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--text-primary);
+            letter-spacing: -0.01em;
+        }
+
+        /* ── Script block ── */
+        .script-block {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 16px;
+        }
+
+        .script-role {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            background: var(--bg);
+            border-bottom: 1px solid var(--border);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .role-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .role-dot.you {
+            background: var(--accent-blue);
+        }
+
+        .role-dot.interviewer {
+            background: #bbb;
+        }
+
+        .script-text {
+            padding: 16px 20px;
+            font-size: 14.5px;
+            line-height: 2;
+            color: var(--text-primary);
+        }
+
+        .script-text em {
+            font-style: normal;
+            color: var(--accent-blue);
+            font-weight: 600;
+        }
+
+        .script-text mark {
+            background: #fff8e1;
+            border-radius: 3px;
+            padding: 1px 4px;
+            font-style: italic;
+        }
+
+        /* ── Tip box ── */
+        .tip {
+            display: flex;
+            gap: 12px;
+            padding: 14px 16px;
+            background: var(--accent-amber-bg);
+            border: 1px solid #e8d0b0;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            font-size: 13px;
+            color: var(--accent-amber);
+            line-height: 1.7;
+        }
+
+        .tip-icon {
+            flex-shrink: 0;
+            font-size: 16px;
+            margin-top: 1px;
+        }
+
+        /* ── Key phrase list ── */
+        .phrase-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .phrase-tag {
+            font-size: 12.5px;
+            font-weight: 600;
+            padding: 5px 12px;
+            border-radius: 6px;
+            border: 1px solid;
+        }
+
+        .phrase-tag.blue {
+            color: var(--accent-blue);
+            background: var(--accent-blue-bg);
+            border-color: #cfe0ee;
+        }
+
+        .phrase-tag.green {
+            color: var(--accent-green);
+            background: var(--accent-green-bg);
+            border-color: #c2dfc9;
+        }
+
+        .phrase-tag.amber {
+            color: var(--accent-amber);
+            background: var(--accent-amber-bg);
+            border-color: #e8d0b0;
+        }
+
+        /* ── Section divider ── */
+        .divider {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 40px 0;
+        }
+
+        /* ── Progress indicator ── */
+        .progress-row {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 32px;
+        }
+
+        .progress-item {
+            flex: 1;
+            height: 4px;
+            border-radius: 2px;
+            background: var(--border);
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .progress-item:hover {
+            background: #c8c2b8;
+        }
+
+        .progress-item.done {
+            background: var(--accent-blue);
+        }
+
+        /* ── Casual version block ── */
+        .casual-block {
+            background: #fafaf7;
+            border: 1.5px dashed #c8c2b0;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 16px;
+        }
+
+        .casual-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 9px 16px;
+            background: #f2f0e8;
+            border-bottom: 1.5px dashed #c8c2b0;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.07em;
+            color: var(--text-muted);
+        }
+
+        .casual-label .casual-badge {
+            background: #e8e3d8;
+            color: var(--text-muted);
+            font-size: 10px;
+            padding: 2px 7px;
+            border-radius: 4px;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+        }
+
+        .casual-block .script-text {
+            color: #4a4540;
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 900px) {
+            #sidebar {
+                display: none;
+            }
+
+            #main {
+                margin-left: 0;
+                padding: 32px 20px 80px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- SIDEBAR -->
+    <nav id="sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-label">面接練習</div>
+            <div class="sidebar-title">ATEN Solution Builder<br>スクリプト</div>
+        </div>
+
+        <div class="sidebar-nav">
+            <div class="nav-section-label">自己紹介</div>
+            <a class="nav-link" href="#s1"><span class="num">01</span>30秒の掴み</a>
+            <a class="nav-link" href="#s2"><span class="num">02</span>担当役割と背景</a>
+
+            <div class="nav-section-label">プロダクト説明</div>
+            <a class="nav-link" href="#s3"><span class="num">03</span>課題と戦略</a>
+            <a class="nav-link" href="#s4"><span class="num">04</span>フレームワーク設計</a>
+            <a class="nav-link" href="#s5"><span class="num">05</span>主要機能</a>
+
+            <div class="nav-section-label">技術・成果</div>
+            <a class="nav-link" href="#s6"><span class="num">06</span>エンジニアリング</a>
+            <a class="nav-link" href="#s7"><span class="num">07</span>データ戦略</a>
+            <a class="nav-link" href="#s8"><span class="num">08</span>成果とインパクト</a>
+
+            <div class="nav-section-label">深掘り質問</div>
+            <a class="nav-link" href="#s9"><span class="num">Q1</span>なぜ自分で実装？</a>
+            <a class="nav-link" href="#s10"><span class="num">Q2</span>最も難しかった点</a>
+            <a class="nav-link" href="#s11"><span class="num">Q3</span>AI との協働</a>
+            <a class="nav-link" href="#s12"><span class="num">Q4</span>今後の展望</a>
+        </div>
+
+        <div class="sidebar-footer">
+            <strong>練習のヒント</strong><br>
+            各ブロックを声に出して読む。<br>
+            青字 = 強調ポイント。<br>
+            ★ = 必ず言うべき一言。<br><br>
+            <strong>点線枠</strong> = スタートアップ・<br>
+            カジュアル面接向けの口語版。<br>
+            01・03・Q1・Q2 にあり。
+        </div>
+    </nav>
+
+    <!-- MAIN CONTENT -->
+    <main id="main">
+
+        <header class="page-header">
+            <div class="page-eyebrow">Interview Script · 面接練習用スクリプト</div>
+            <h1 class="page-title">ATEN Solution Builder</h1>
+            <p class="page-subtitle">
+                B2B ビジュアル提案ツール · 2023 年〜現在<br>
+                プロダクト定義・UX/UI・Frontend 実装・データ分析基盤を一貫して担当
+            </p>
+        </header>
+
+        <!-- 01 -->
+        <section class="section" id="s1">
+            <div class="section-marker">
+                <span class="section-num">01</span>
+                <h2 class="section-title">30 秒の掴み ── まず全体像を渡す</h2>
+            </div>
+            <div class="tip">
+                <span class="tip-icon">💡</span>
+                面接官に「何をやった人か」を最初の30秒で伝える。細かい機能ではなく、<strong>あなたが解いたビジネス課題</strong>を一言で。
+            </div>
+            <div class="script-block">
+                <div class="script-role"><span class="role-dot you"></span>あなたのセリフ</div>
+                <div class="script-text">
+                    Solution Builder は、Pro AV 機器メーカー ATEN が B2B 向けに展開するビジュアル提案ツールです。<br><br>
+                    SI
+                    ——システムインテグレーターと呼ばれる設備工事の専門業者——が、キャンバス上で機器をドラッグ＆ドロップして接続を引くと、システムが信号の互換性をリアルタイムで検証し、部品表を自動計算し、顧客へそのまま渡せるドキュメントをワンクリックで出力します。<br><br>
+                    私はこのプロダクトを <em>0 から 1 まで</em> 一人で担当しました。プロダクト定義、UX/UI デザイン、React による Frontend 実装、そして GA4 から
+                    BigQuery・PowerBI を経由して Salesforce につながるデータ基盤まで——<em>戦略を受け取り、自ら実装し、データで検証する</em>、一貫したループです。
+                </div>
+            </div>
+            <div class="casual-block">
+                <div class="casual-label"><span class="casual-badge">CASUAL</span>スタートアップ・カジュアル面接向け</div>
+                <div class="script-text">
+                    一言で言うと、<em>AV 設備の提案を「図を描くだけ」で終わらせるツール</em>を作りました。<br><br>
+                    現場の配線設計って、普通は仕様書を山ほど読んで、Excelで機器を照合して、手書きで結線図を書いて……めちゃくちゃ時間かかるんですよ。それをキャンバス上でドラッグ＆ドロップするだけで、互換性チェックも部品リストも全部自動で出るようにしました。<br><br>
+                    で、それだけじゃなくて、<em>デザインから実装からデータ分析の仕組みまで、全部自分でやった</em>っていうのが、このプロジェクトの一番の特徴です。Salesforce
+                    とも繋いで、ユーザーが図を描くと自動で営業案件になる、みたいな流れも作っています。
+                </div>
+            </div>
+        </section>
+
+        <hr class="divider">
+
+        <!-- 02 -->
+        <section class="section" id="s2">
+            <div class="section-marker">
+                <span class="section-num">02</span>
+                <h2 class="section-title">担当役割と背景</h2>
+            </div>
+            <div class="script-block">
+                <div class="script-role"><span class="role-dot you"></span>あなたのセリフ</div>
+                <div class="script-text">
+                    役割は大きく 3 つの層にまたがります。<br><br>
+                    まず <em>戦略の翻訳</em>。「単一製品の販売から、案件（現場）単位のソリューション販売へ」という企業の方針転換を受け取り、User Research
+                    と組み合わせて、具体的なプロダクト仕様と機能定義に落とし込みました。User Interview 自体はリサーチャーが行い、私はその示唆を受け取って解決策へと収束させる役割です。<br><br>
+                    次に <em>0 から 1 の実装</em>。仕様策定、System Architecture、UX/UI デザインから Frontend 実装まで。後期には AI
+                    と協働する開発フローも確立しました。<br><br>
+                    そして <em>データのクローズドループ</em>。Frontend のイベント設計から BigQuery、PowerBI まで構築し、Salesforce の営業プロセスとつなぎました。
+                </div>
+            </div>
+            <div class="phrase-list">
+                <span class="phrase-tag blue">プロダクト定義</span>
+                <span class="phrase-tag blue">UX/UI デザイン</span>
+                <span class="phrase-tag blue">React Frontend</span>
+                <span class="phrase-tag green">GA4 → BigQuery → PowerBI</span>
+                <span class="phrase-tag amber">Salesforce 連携</span>
+            </div>
+        </section>
+
+        <hr class="divider">
+
+        <!-- 03 -->
+        <section class="section" id="s3">
+            <div class="section-marker">
+                <span class="section-num">03</span>
+                <h2 class="section-title">課題と戦略 ── なぜ作ったか</h2>
+            </div>
+            <div class="script-block">
+                <div class="script-role"><span class="role-dot interviewer"></span>よくある質問：「このプロダクトは何の課題を解いていますか？」</div>
+            </div>
+            <div class="script-block">
+                <div class="script-role"><span class="role-dot you"></span>あなたのセリフ</div>
+                <div class="script-text">
+                    従来の SI の提案プロセスは、「現場要件の把握 → 初期システム設計 → 仕様書と Excel の調査 → 結線図の作成 → 互換性の手動検証」という 5 段階を繰り返す構造でした。問題を 2
+                    つの軸から捉えました。<br><br>
+                    <em>SI 側の課題</em>：新人 SI にとっては急な学習曲線、ベテランにとっては大量の反復作業。どちらも「製品と現場要件の照合」に膨大な時間が取られていました。<br><br>
+                    <em>ビジネス側の課題</em>：代理店経由の販売モデルのため、エンドユーザーが実際に何を必要としているかが見えにくい。<br><br>
+                    戦略は 2 方向に絞りました——<em>パートナーの成長支援</em>（SI
+                    の学習曲線を短縮し、ベテランの効率を上げる）と、<em>市場インサイトの獲得</em>（ユーザー行動をそのまま市場調査に変える仕組みを作る）。<br><br>
+                    そのために、ユーザーを 3 種類のスペクトラムとして定義しました。初級 SI・エンドユーザーにはテンプレートで入口を下げ、ベテランパートナー SI には完全なキャンバスと即時検証を、社内営業には「SI
+                    の設計」を追跡可能な商談へ自動変換する仕組みを——<em>3 つの UI を別々に作るのではなく、段階を切り替えられる 1 つのツール</em>として設計しました。
+                </div>
+            </div>
+            <div class="casual-block">
+                <div class="casual-label"><span class="casual-badge">CASUAL</span>スタートアップ・カジュアル面接向け</div>
+                <div class="script-text">
+                    課題は大きく 2 つあって、まずユーザー側——SI って、現場の要件を聞いてから製品を選ぶまでに、仕様書を何十ページも読んで Excel
+                    で手動チェックして、みたいな作業がずっと続くんですよ。新人は覚えることが多すぎて、ベテランはその繰り返しが地味にしんどい。<br><br>
+                    もう一つはビジネス側。ATEN は代理店モデルなので、<em>実際のお客さんが何を求めているか、直接見えない</em>んです。<br><br>
+                    なので、方針として 2 つを同時に狙いました——SI
+                    の作業を楽にして、かつ、そのユーザーの行動データを全部取れるようにする。<em>ツールを使うこと自体が、市場調査になる</em>みたいな設計です。<br><br>
+                    ユーザーも 3 パターンに分けて——初心者にはテンプレートで「まず見て真似る」入り口を作り、プロには全機能のキャンバスを、社内営業チームには「SI が図を描き終わったら自動で Salesforce
+                    の案件になる」仕組みを。全部、1 つのツールの中に収めました。
+                </div>
+            </div>
+        </section>
+
+        <hr class="divider">
+
+        <!-- 04 -->
+        <section class="section" id="s4">
+            <div class="section-marker">
+                <span class="section-num">04</span>
+                <h2 class="section-title">フレームワーク設計 ── 作る前に考えたこと</h2>
+            </div>
+            <div class="tip">
+                <span class="tip-icon">★</span>
+                <strong>ここが差別化ポイント。</strong>「なぜ 3 層に分けたか」という<em>意思決定の理由</em>を語ると、設計力が伝わる。
+            </div>
+            <div class="script-block">
+                <div class="script-role"><span class="role-dot you"></span>あなたのセリフ</div>
+                <div class="script-text">
+                    着手の時点で、プロダクトセレクター・自由キャンバス・AI 検索・結線図ジェネレーター・外部 API
+                    など、多くの派生シナリオが見込めました。それぞれを個別に作っていては、小さなチームでは支えきれません。<br><br>
+                    そこでコードを 1 行も書く前に、システムを <em>3 層に切り分けました</em>。<br><br>
+                    一番下の <mark>データ層</mark>：productDatabase.json を唯一の信頼できる情報源とし、LLM パイプラインで数千 SKU の仕様を標準化 JSON
+                    に変換します。<br><br>
+                    その上の <mark>コアエンジン層</mark>：React Flow を深くカスタマイズして「AV を理解した作図能力」を持たせます。17 個のカスタム Hook
+                    で責務を分離し、利用シナリオを前提にしない。<br><br>
+                    一番上の <mark>アプリケーション層</mark>：エンジン層の能力を「ユーザー ×
+                    シナリオ」で組み立てる。新しいシナリオが来ても、下層には触れずアプリケーション層だけ追加すればいい。<br><br>
+                    この構造は 2 つの時間軸の問題も同時に解きます——リリース後の高速な調整（アプリケーション層だけ変える）と、データ層がまだ整備途中のあいだの並行開発（少量のサンプルデータでエンジン層から先に作る）。
+                </div>
+            </div>
+        </section>
+
+        <hr class="divider">
+
+        <!-- 05 -->
+        <section class="section" id="s5">
+            <div class="section-marker">
+                <span class="section-num">05</span>
+                <h2 class="section-title">主要機能 ── プロダクトの 3 本柱</h2>
+            </div>
+            <div class="script-block">
+                <div class="script-role"><span class="role-dot you"></span>あなたのセリフ</div>
+                <div class="script-text">
+                    機能は 3 つの柱で構成されています。<br><br>
+                    まず <em>ビジュアル結線図エディター</em>。左にデバイスライブラリ、中央に React Flow のキャンバス、右に Property
+                    Panel。各デバイスのポートは仕様データから動的に生成され、ケーブルを引いた瞬間に信号の互換性をリアルタイム検証します。非互換の場合は警告とともにコンバーター製品を提案する——エラーを「発見の機会」に変える設計です。<br><br>
+                    次に <em>テンプレートシステム</em>。2,000
+                    以上のモジュール式テンプレートをログイン不要で閲覧でき、初心者は「この現場ではどんな構成になるか」をまず見てから始められます。テンプレートの入稿と維持は、私が設計した管理画面でプロダクト企画担当がセルフサービスで行います——エンジニアに頼まずに済む仕組みです。<br><br>
+                    そして <em>ワンクリック納品</em>。キャンバスの状態から、企業公式テンプレートを適用した Excel の見積書と、表紙・凡例・透かし付きの PDF 結線図をワンクリックで出力します。出力は純
+                    Frontend のパイプラインで完結するため、Backend に依存しません。
+                </div>
+            </div>
+        </section>
+
+        <hr class="divider">
+
+        <!-- 06 -->
+        <section class="section" id="s6">
+            <div class="section-marker">
+                <span class="section-num">06</span>
+                <h2 class="section-title">エンジニアリング ── 技術的な深み</h2>
+            </div>
+            <div class="script-block">
+                <div class="script-role"><span class="role-dot interviewer"></span>よくある質問：「技術的に難しかった部分を教えてください」</div>
+            </div>
+            <div class="script-block">
+                <div class="script-role"><span class="role-dot you"></span>あなたのセリフ</div>
+                <div class="script-text">
+                    技術スタックは React 18 + Vite + React Router で、UI は Ant Design に Tailwind で細部を上書き。状態管理は Redux
+                    を使わず、<em>責務で分離した 17 個のカスタム Hook</em> で構成しています。<br><br>
+                    最も力を入れた部分は 3 つあります。<br><br>
+                    <mark>Handle の動的生成</mark>：React Flow の標準ノードは Pro AV のセマンティクスを担えない。Matrix Switcher は 30 以上の I/O
+                    を持ち得るため、各ポートを productDatabase.json の Schema から動的にレンダリングし、信号タイプ・帯域・解像度の属性を持たせています。<br><br>
+                    <mark>互換性チェックエンジン</mark>：ケーブルを引いた瞬間に両端のポート属性を読み、リアルタイムで検証。ロジックはエンジン層に一度だけ書き、全シナリオで共有します。<br><br>
+                    <mark>エッジ交差の検出</mark>：同色のケーブルが交差する点を計算し、上側のエッジにホップ記号を自動描画するアルゴリズムを実装しました。<br><br>
+                    パフォーマンスは、数千 SKU に対してバッチリクエストで分割読み込みし、アプリを数秒で操作可能にしながらデバイスライブラリをバックグラウンドで補完します。
+                </div>
+            </div>
+        </section>
+
+        <hr class="divider">
+
+        <!-- 07 -->
+        <section class="section" id="s7">
+            <div class="section-marker">
+                <span class="section-num">07</span>
+                <h2 class="section-title">データ戦略 ── 計測は後付けではない</h2>
+            </div>
+            <div class="tip">
+                <span class="tip-icon">★</span>
+                これは多くの UX エンジニアが持っていない強み。「デザイン段階でイベント設計をする」というアプローチを丁寧に伝える。
+            </div>
+            <div class="script-block">
+                <div class="script-role"><span class="role-dot you"></span>あなたのセリフ</div>
+                <div class="script-text">
+                    計測は後付けにしませんでした。デザインの成果物を Figma の Wireframe＋仕様から 3 点に拡張し、<em>Event Spec
+                        を加えて各インタラクションに対応するイベントを注記</em>する習慣にしました。<br><br>
+                    イベントはビジネスイベント・インタラクションイベント・Debug の 3 階層にセマンティックに命名し、必ず context を伴わせます。たとえば device_added
+                    は「どこから追加されたか（検索 / テンプレート / AI 推薦）」を記録し、「AI が推薦した製品は実際に採用されたか？」という具体的な問いに答えられるようにします。<br><br>
+                    データフローは、Frontend の GTM イベント → GA4 → BigQuery（クロスセッション分析・CRM データ結合）→ PowerBI。マーケティング・R&D・UX の 3
+                    つのダッシュボードを分けて、3 つの意思決定者グループに対応しています。<br><br>
+                    実際の成果として 2 つのクローズドループが実現しました——よく使われる製品の組み合わせパターンをバンドル施策につなげたこと、Custom
+                    Device（サードパーティ機器）の追加ログから市場のギャップを読み取って R&D の新製品評価に活用したこと。<em>ユーザーの行動そのものが、継続的な市場調査になる</em>という設計です。
+                </div>
+            </div>
+        </section>
+
+        <hr class="divider">
+
+        <!-- 08 -->
+        <section class="section" id="s8">
+            <div class="section-marker">
+                <span class="section-num">08</span>
+                <h2 class="section-title">成果とインパクト</h2>
+            </div>
+            <div class="script-block">
+                <div class="script-role"><span class="role-dot interviewer"></span>よくある質問：「このプロジェクトで何が変わりましたか？」</div>
+            </div>
+            <div class="script-block">
+                <div class="script-role"><span class="role-dot you"></span>あなたのセリフ</div>
+                <div class="script-text">
+                    大きく 3 つの変化がありました。<br><br>
+                    まず <em>社内ツールから対外サービスへ</em>の進化。Solution Builder
+                    は、世界各地の子会社に教育研修と営業推進の統一ツールとして採用されています。ログイン不要のテンプレート閲覧は、馴染みのない SI の参入障壁を下げます。<br><br>
+                    次に <em>SI の設計が商談に直結する仕組み</em>。「直接問い合わせ」ボタンを押すと、設計 JSON・BOM・キャンバス画像が自動的にパッケージされて Salesforce
+                    の商談として作成され、該当地域の営業担当へ通知が届きます。営業がキャンバスを開くときにはすでに完全な文脈が揃っている——手作業でデータを移す必要がない。<br><br>
+                    そして <em>データのクローズドループ</em>。先ほどのイベント設計が、実際のビジネス判断に直結しています。<br><br>
+                    正確な売上データは NDA の制約がありますが、プラットフォームが「図を描く」行動を追跡可能なビジネス機会に変換するという構造は、現在も拡張が続いています。
+                </div>
+            </div>
+        </section>
+
+        <hr class="divider">
+
+        <!-- Q1 -->
+        <section class="section" id="s9">
+            <div class="section-marker">
+                <span class="section-num">Q1</span>
+                <h2 class="section-title">深掘り：なぜ UX だけでなく実装まで？</h2>
+            </div>
+            <div class="script-block">
+                <div class="script-role"><span class="role-dot interviewer"></span>質問：「UX デザイナーなのに、なぜ自分でコードを書いたんですか？」
+                </div>
+            </div>
+            <div class="script-block">
+                <div class="script-role"><span class="role-dot you"></span>あなたのセリフ</div>
+                <div class="script-text">
+                    理由は 2 つあります。<br><br>
+                    一つは <em>引き継ぎのロスをなくすため</em>。Architecture の意思決定と UX
+                    の意思決定が同じ頭の中で揃えば、デザインとエンジニアリングの間に生まれる「翻訳コスト」がなくなります。Schema を設計するときに Frontend
+                    の消費側を念頭に置き、インタラクションを設計するときに計測を同時に定義できる。<br><br>
+                    もう一つは <em>UX が「支援部門」から「プロダクトの意思決定」へ踏み込める</em>から。下層のデータと Architecture
+                    を掌握していれば、「この機能を追加するコスト」「このデータは取れるか」を自分で判断できます。3 層
+                    Architecture、互換性チェック、データのクローズドループは、すべてこの領域横断の統合がもたらした産物です。<br><br>
+                    もちろん、このプロジェクトの規模は本来なら複数のエンジニアを要します。それを極小チームで実現できたのは、AI ツールを日々の開発フローに組み込んだことも大きい。
+                </div>
+            </div>
+            <div class="casual-block">
+                <div class="casual-label"><span class="casual-badge">CASUAL</span>スタートアップ・カジュアル面接向け</div>
+                <div class="script-text">
+                    シンプルに言うと、<em>デザインと実装が別の人だと、間に絶対ズレが生まれる</em>んですよ。「あのインタラクション、実装したらなんか違う」みたいな。それが嫌で、自分でやった方が早いな、と。<br><br>
+                    あと、コードが書けると「この機能、どのくらいかかる？」「このデータ、Frontend から取れる？」を自分で判断できるので、意思決定のスピードが全然違う。UX
+                    だけやってると、どうしてもエンジニアに聞かないと動けない場面が出てくるので。<br><br>
+                    このプロジェクト、<em>本来なら 3〜4 人チームの規模</em>なんですけど、AI ツールをフル活用しながら少人数でやりきりました。それも一つの実験だったかな、と思っています。
+                </div>
+            </div>
+        </section>
+
+        <hr class="divider">
+
+        <!-- Q2 -->
+        <section class="section" id="s10">
+            <div class="section-marker">
+                <span class="section-num">Q2</span>
+                <h2 class="section-title">深掘り：最も難しかったこと</h2>
+            </div>
+            <div class="script-block">
+                <div class="script-role"><span class="role-dot interviewer"></span>質問：「プロジェクトで最も苦労した部分はどこですか？」</div>
+            </div>
+            <div class="script-block">
+                <div class="script-role"><span class="role-dot you"></span>あなたのセリフ</div>
+                <div class="script-text">
+                    技術的な難しさよりも、<em>「データ層がまだない状態でエンジン層を正しく設計する」</em>という問題が最も頭を使いました。<br><br>
+                    数千 SKU の製品仕様を標準化する LLM パイプラインと、それを消費する React のエンジン層を並行して開発する必要があった。Schema
+                    の設計を間違えると、両方を作り直すことになる。<br><br>
+                    解決策は 2 つ——まず少量のサンプルデータで Schema を仮定義して実装を進め、後でデータが揃ったときに差し替えやすい構造にする。そしてデータ層とエンジン層のインターフェース（JSON
+                    フォーマット）を最初から契約として明示する。<br><br>
+                    この判断が正しかったことは、後から FAE チームの AI サポートがこの API
+                    を直接利用し始めたことで証明されました。<em>設計段階で「誰が消費するか」を考え続けた結果</em>が、チームを超えた再利用につながった。
+                </div>
+            </div>
+            <div class="casual-block">
+                <div class="casual-label"><span class="casual-badge">CASUAL</span>スタートアップ・カジュアル面接向け</div>
+                <div class="script-text">
+                    一番しんどかったのは、<em>データがまだ存在しない段階で、そのデータを使うコードを設計しないといけなかった</em>ことですね。<br><br>
+                    製品スペックを JSON に変換する LLM のパイプラインと、それを表示する React
+                    側を同時に作ってたんですけど、「データの形」を最初に間違えると両方やり直しになる。そのプレッシャーが結構きつかった。<br><br>
+                    やったこととしては、少量のサンプルデータで Schema を先に固めて、「この形で来たらこう使う」っていう約束を最初に決めてから実装を進めました。あとから別チームがその API
+                    をそのまま使い始めたので、<em>最初にちゃんと設計しといてよかった</em>な、って思いました（笑）
+                </div>
+            </div>
+        </section>
+
+        <hr class="divider">
+
+        <!-- Q3 -->
+        <section class="section" id="s11">
+            <div class="section-marker">
+                <span class="section-num">Q3</span>
+                <h2 class="section-title">深掘り：AI との協働</h2>
+            </div>
+            <div class="script-block">
+                <div class="script-role"><span class="role-dot interviewer"></span>質問：「AI ツールはどう活用しましたか？」</div>
+            </div>
+            <div class="script-block">
+                <div class="script-role"><span class="role-dot you"></span>あなたのセリフ</div>
+                <div class="script-text">
+                    2 つのレイヤーで使っています。<br><br>
+                    <em>データパイプライン</em>：PDF や HTML に散らばり形式の異なる数千件の製品仕様を、GPT-4o とプロンプトエンジニアリングで標準化された JSON
+                    に構造化しています（詳しくは別稿があります）。これにより、プロダクト企画担当が管理画面からセルフサービスでデータを維持できるようになった。<br><br>
+                    <em>日々の開発フロー</em>：Architecture と UX の意思決定を自分が持ったうえで、コード生成・Refactoring・デバッグを AI と協働します。引き継ぎが不要な状態で AI
+                    を使えるため、テンポが大きく上がります。<br><br>
+                    重要なのは、<em>AI が補完するのはコーディングのスループットであって、設計の意思決定ではない</em>という点です。「なぜこの Schema にするか」「なぜこの Hook
+                    設計か」は人間が持ち続ける。そのバランスが、品質を下げずに小さいチームで大きいプロダクトを届ける鍵だと考えています。
+                </div>
+            </div>
+        </section>
+
+        <hr class="divider">
+
+        <!-- Q4 -->
+        <section class="section" id="s12">
+            <div class="section-marker">
+                <span class="section-num">Q4</span>
+                <h2 class="section-title">深掘り：今後の展望と自己分析</h2>
+            </div>
+            <div class="script-block">
+                <div class="script-role"><span class="role-dot interviewer"></span>質問：「このプロジェクトから何を学びましたか？次は何をしたいですか？」
+                </div>
+            </div>
+            <div class="script-block">
+                <div class="script-role"><span class="role-dot you"></span>あなたのセリフ</div>
+                <div class="script-text">
+                    このプロジェクトが示したのは、一つの働き方です——<em>Schema を設計するときに Frontend
+                        の消費を念頭に置き、インタラクションを設計するときに計測を同時に定義し、機能を設計するときにビジネスファネル上の位置に対応させる</em>。<br><br>
+                    自分の強みは、デザイン・エンジニアリング・データの 3 層を 1
+                    人の中で繋げられることだと認識しています。これは単に「何でもできる」ということではなく、<em>層をまたぐインターフェースの設計がうまい</em>ということだと思っています。<br><br>
+                    次のステップとして、さらに大きなチームで、データ主導のプロダクト改善サイクルを回す経験を積みたいと考えています。特に、ユーザー行動データとビジネス KPI
+                    を繋げる意思決定のプロセスに、より深く関わりたい。このプロジェクトで基盤を作りましたが、それをより大きなスケールで試したいという気持ちがあります。
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        // Active nav link on scroll
+        const sections = document.querySelectorAll('.section');
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const id = entry.target.id;
+                    navLinks.forEach(link => {
+                        link.classList.toggle('active', link.getAttribute('href') === '#' + id);
+                    });
+                }
+            });
+        }, { rootMargin: '-20% 0px -70% 0px' });
+
+        sections.forEach(s => observer.observe(s));
+    </script>
+
+</body>
+
+</html>
