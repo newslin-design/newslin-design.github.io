@@ -1,0 +1,1068 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="robots" content="noindex, nofollow">
+	<title>ATEN AIVoice VidText（IS4912）— 產品開發歷程</title>
+	<style>
+		:root {
+			--navy: #003366;
+			--navy-2: #2c6184;
+			--blue-bg: #f0f6ff;
+			--blue-bd: #cfe0ee;
+			--amber: #90602a;
+			--amber-bg: #fff8f0;
+			--amber-bd: #f0ddc4;
+			--green: #3f7553;
+			--green-bg: #e8f6ed;
+			--green-bd: #c7e6d3;
+			--red: #b0413e;
+			--ink: #23282d;
+			--gray: #6b7280;
+			--line: #e4e7eb;
+		}
+
+		* {
+			box-sizing: border-box;
+		}
+
+		html {
+			scroll-behavior: smooth;
+		}
+
+		body {
+			margin: 0;
+			color: var(--ink);
+			font-family: "Segoe UI", "Microsoft JhengHei", "PingFang TC", "Noto Sans TC", system-ui, sans-serif;
+			line-height: 1.75;
+			background: #fff;
+			-webkit-font-smoothing: antialiased;
+		}
+
+		.wrap {
+			max-width: 980px;
+			margin: 0 auto;
+			padding: 0 24px 80px;
+		}
+
+		/* ---------- 封面 ---------- */
+		.cover {
+			background: linear-gradient(135deg, #003366 0%, #0a4a7a 100%);
+			color: #fff;
+			padding: 56px 0 44px;
+		}
+
+		.cover .wrap {
+			padding-bottom: 0;
+		}
+
+		.eyebrow {
+			letter-spacing: 3px;
+			font-size: 12px;
+			opacity: .8;
+			text-transform: uppercase;
+			margin: 0 0 12px;
+		}
+
+		.cover h1 {
+			font-size: 34px;
+			line-height: 1.25;
+			margin: 0 0 6px;
+			font-weight: 700;
+		}
+
+		.cover .model {
+			font-size: 16px;
+			font-weight: 400;
+			opacity: .85;
+			margin: 0 0 20px;
+		}
+
+		.cover .lead {
+			font-size: 16px;
+			max-width: 760px;
+			opacity: .95;
+			margin: 0;
+		}
+
+		.meta {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 0;
+			border: 1px solid rgba(255, 255, 255, .25);
+			border-radius: 10px;
+			overflow: hidden;
+			margin-top: 28px;
+		}
+
+		.meta div {
+			flex: 1;
+			min-width: 150px;
+			padding: 12px 16px;
+			border-right: 1px solid rgba(255, 255, 255, .18);
+		}
+
+		.meta div:last-child {
+			border-right: 0;
+		}
+
+		.meta .k {
+			font-size: 11px;
+			letter-spacing: 1px;
+			opacity: .7;
+			margin: 0 0 2px;
+		}
+
+		.meta .v {
+			font-size: 14px;
+			font-weight: 600;
+			margin: 0;
+		}
+
+		/* ---------- 目錄 ---------- */
+		.toc {
+			background: #fafbfc;
+			border: 1px solid var(--line);
+			border-radius: 12px;
+			padding: 20px 24px;
+			margin: 36px 0 8px;
+		}
+
+		.toc h4 {
+			margin: 0 0 12px;
+			font-size: 13px;
+			letter-spacing: 1px;
+			color: var(--gray);
+			text-transform: uppercase;
+		}
+
+		.toc ol {
+			margin: 0;
+			padding: 0;
+			list-style: none;
+			display: grid;
+			grid-template-columns: repeat(2, 1fr);
+			gap: 6px 28px;
+			counter-reset: toc;
+		}
+
+		.toc a {
+			color: var(--navy);
+			text-decoration: none;
+			font-size: 14.5px;
+			display: flex;
+			gap: 10px;
+			padding: 4px 0;
+			border-bottom: 1px solid transparent;
+		}
+
+		.toc a:hover {
+			border-bottom-color: var(--blue-bd);
+		}
+
+		.toc a .n {
+			color: var(--navy-2);
+			font-weight: 700;
+			font-variant-numeric: tabular-nums;
+		}
+
+		/* ---------- 送件重點 ---------- */
+		.brief {
+			background: linear-gradient(135deg, #eef5ff 0%, #fafbff 100%);
+			border: 1px solid var(--blue-bd);
+			border-radius: 14px;
+			padding: 24px 28px 10px;
+			margin: 34px 0 4px;
+		}
+
+		.brief .brief-label {
+			display: inline-block;
+			font-size: 12px;
+			letter-spacing: 1.5px;
+			font-weight: 700;
+			color: var(--navy-2);
+			background: #fff;
+			border: 1px solid var(--blue-bd);
+			border-radius: 20px;
+			padding: 3px 14px;
+			margin-bottom: 6px;
+		}
+
+		.brief h3 {
+			color: var(--navy);
+			font-size: 16.5px;
+			margin: 18px 0 6px;
+		}
+
+		.brief h3:first-of-type {
+			margin-top: 10px;
+		}
+
+		.brief p {
+			font-size: 14.5px;
+			margin-bottom: 14px;
+		}
+
+		/* ---------- 章節 ---------- */
+		section {
+			padding-top: 26px;
+			margin-top: 26px;
+			border-top: 1px solid var(--line);
+		}
+
+		.sec-no {
+			display: inline-block;
+			font-size: 12px;
+			letter-spacing: 2px;
+			color: var(--navy-2);
+			font-weight: 700;
+			background: var(--blue-bg);
+			border: 1px solid var(--blue-bd);
+			border-radius: 20px;
+			padding: 3px 12px;
+			margin-bottom: 10px;
+		}
+
+		h2 {
+			font-size: 24px;
+			line-height: 1.35;
+			margin: 4px 0 14px;
+			color: var(--navy);
+		}
+
+		h3 {
+			font-size: 18px;
+			margin: 28px 0 10px;
+			color: var(--ink);
+		}
+
+		h4 {
+			font-size: 15px;
+			margin: 0 0 6px;
+			color: var(--navy);
+		}
+
+		p {
+			margin: 0 0 14px;
+		}
+
+		.lead-p {
+			font-size: 16.5px;
+			color: #36404a;
+		}
+
+		strong {
+			color: #11151a;
+		}
+
+		.muted {
+			color: var(--gray);
+			font-size: 13.5px;
+		}
+
+		/* 重點框 */
+		.callout {
+			background: var(--blue-bg);
+			border-left: 4px solid var(--navy-2);
+			border-radius: 6px;
+			padding: 14px 18px;
+			margin: 20px 0;
+			font-size: 15px;
+		}
+
+		.note {
+			border: 1px solid var(--line);
+			border-radius: 8px;
+			padding: 12px 16px;
+			margin: 12px 0;
+		}
+
+		.note h4 {
+			margin-bottom: 2px;
+		}
+
+		.note p {
+			margin: 0;
+			font-size: 14px;
+			color: #444;
+		}
+
+		/* 卡片網格 */
+		.grid {
+			display: grid;
+			gap: 16px;
+			margin: 18px 0;
+		}
+
+		.grid.c2 {
+			grid-template-columns: 1fr 1fr;
+		}
+
+		.grid.c3 {
+			grid-template-columns: repeat(3, 1fr);
+		}
+
+		.card {
+			border: 1px solid var(--line);
+			border-radius: 10px;
+			overflow: hidden;
+		}
+
+		.card .hd {
+			padding: 9px 15px;
+			font-weight: 700;
+			font-size: 14px;
+		}
+
+		.card .bd {
+			padding: 12px 15px;
+			font-size: 13.5px;
+			line-height: 1.85;
+		}
+
+		.card.blue .hd {
+			background: var(--blue-bg);
+			color: var(--navy-2);
+		}
+
+		.card.amber .hd {
+			background: var(--amber-bg);
+			color: var(--amber);
+		}
+
+		.card ul {
+			margin: 0;
+			padding-left: 18px;
+		}
+
+		.card ul li {
+			margin: 5px 0;
+		}
+
+		/* 圖片 */
+		figure {
+			margin: 22px 0;
+		}
+
+		figure img {
+			width: 100%;
+			height: auto;
+			display: block;
+			border: 1px solid var(--line);
+			border-radius: 10px;
+			background: #fafafa;
+		}
+
+		figure figcaption {
+			font-size: 13px;
+			color: var(--gray);
+			margin-top: 8px;
+			line-height: 1.7;
+		}
+
+		.imgrow {
+			display: grid;
+			gap: 14px;
+			margin: 20px 0;
+		}
+
+		.imgrow.c2 {
+			grid-template-columns: 1fr 1fr;
+		}
+
+		.imgrow.c3 {
+			grid-template-columns: repeat(3, 1fr);
+		}
+
+		.imgrow figure {
+			margin: 0;
+		}
+
+		.imgrow figcaption {
+			text-align: center;
+		}
+
+		/* 流程鏈 */
+		.flow {
+			display: flex;
+			flex-wrap: wrap;
+			align-items: stretch;
+			justify-content: center;
+			gap: 10px;
+			margin: 22px 0;
+		}
+
+		.chip {
+			display: inline-flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			text-align: center;
+			background: var(--blue-bg);
+			border: 1px solid var(--blue-bd);
+			color: #2c4a5a;
+			border-radius: 8px;
+			padding: 10px 16px;
+			font-size: 13.5px;
+			line-height: 1.5;
+			min-width: 120px;
+		}
+
+		.chip.amber {
+			background: var(--amber-bg);
+			border-color: var(--amber-bd);
+			color: var(--amber);
+		}
+
+		.chip.green {
+			background: var(--green-bg);
+			border-color: var(--green-bd);
+			color: var(--green);
+		}
+
+		.chip small {
+			font-size: 11px;
+			opacity: .8;
+		}
+
+		.arrow {
+			display: flex;
+			align-items: center;
+			color: #9aa1ad;
+			font-size: 18px;
+		}
+
+		.io {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 6px;
+			margin: 14px 0;
+		}
+
+		.tag {
+			background: #f1f4f8;
+			border: 1px solid #dde3ea;
+			border-radius: 6px;
+			padding: 5px 11px;
+			font-size: 12.5px;
+			color: #3a4650;
+		}
+
+		/* 表格 */
+		table {
+			width: 100%;
+			border-collapse: collapse;
+			margin: 18px 0;
+			font-size: 14px;
+		}
+
+		th, td {
+			text-align: left;
+			padding: 10px 14px;
+			border-bottom: 1px solid var(--line);
+			vertical-align: top;
+		}
+
+		th {
+			width: 190px;
+			color: var(--navy);
+			background: #fafbfc;
+			font-weight: 600;
+			white-space: nowrap;
+		}
+
+		.pos {
+			color: var(--green);
+			font-weight: 700;
+		}
+
+		.neg {
+			color: var(--red);
+			font-weight: 700;
+		}
+
+		footer {
+			margin-top: 40px;
+			padding-top: 18px;
+			border-top: 1px solid var(--line);
+			color: var(--gray);
+			font-size: 12.5px;
+		}
+
+		@media (max-width: 720px) {
+
+			.toc ol,
+			.grid.c2,
+			.grid.c3,
+			.imgrow.c2,
+			.imgrow.c3 {
+				grid-template-columns: 1fr;
+			}
+
+			.cover h1 {
+				font-size: 26px;
+			}
+		}
+
+		@media print {
+			.cover {
+				-webkit-print-color-adjust: exact;
+				print-color-adjust: exact;
+			}
+
+			section {
+				break-inside: avoid;
+			}
+
+			figure {
+				break-inside: avoid;
+			}
+		}
+	</style>
+</head>
+
+<body>
+
+	<!-- ========================================
+		封面
+	======================================== -->
+	<header class="cover">
+		<div class="wrap">
+			<p class="eyebrow">Product Development Dossier</p>
+			<h1>ATEN AIVoice VidText</h1>
+			<p class="model">型號 IS4912　·　會議即時翻譯與會議紀錄邊緣運算裝置</p>
+			<p class="lead">
+				一台能直接接入會議室既有影音訊號流的邊緣運算裝置：影音接入後串接微軟 Azure 語音服務完成即時轉錄與翻譯，於現場大畫面疊加雙語字幕輸出，並產出可安全帶走的會議紀錄與總結。
+				本文件彙整本產品自市場研究、競品定位、規格定義、使用情境、介面設計、系統架構到展場驗證的完整開發歷程。
+			</p>
+			<div class="meta">
+				<div>
+					<p class="k">產品 / 型號</p>
+					<p class="v">AIVoice VidText · IS4912</p>
+				</div>
+				<div>
+					<p class="k">產品類型</p>
+					<p class="v">B2B 軟硬整合 · 會議 AI</p>
+				</div>
+				<div>
+					<p class="k">AI 引擎</p>
+					<p class="v">Microsoft Azure 語音服務</p>
+				</div>
+				<div>
+					<p class="k">開發狀態</p>
+					<p class="v">已上線產品（含展場實機驗證）</p>
+				</div>
+			</div>
+		</div>
+	</header>
+
+	<div class="wrap">
+
+		<!-- ========================================
+			設計理念（台灣精品獎送件重點）— 置於最前
+		======================================== -->
+		<div class="brief">
+			<span class="brief-label">設計理念 · 台灣精品獎送件重點</span>
+			<h3>一、洞察市場真實痛點，讓既有會議室「無痛升級」AI</h3>
+			<p>全球化協作下，跨語言會議需要同時做到「當下即時聽懂」與「會後完整留存」。然而市面上的瀏覽器擴充與雲端 SaaS，多半難以接進企業會議室既有的導播、ProAV 與音訊系統，更要求企業把機密會議內容交付陌生的第三方平台——這才是多數企業導入 AI 的真正門檻。我們沒有選擇再做一套更聰明的軟體，而是回到市場現場，找出一條讓既有場域「無痛具備 AI」的路：把 AI 能力做進一台可接入會議室訊號流的裝置。最關鍵的設計創新是「場域情境模板」——把專業客製留給系統整合商、把現場使用變成一鍵：整合商可預先配置語言、版型與字幕路數（如國際會議四路字幕），存成可重複套用的情境，現場人員只需挑選套用即可開會。</p>
+			<h3>二、把客製留給整合商、把使用變成一鍵，從顧客情境出發</h3>
+			<p>產品同時服務兩種顧客。對系統整合商，提供多功能、可自由設定的後台；對現場操作者與與會者，則把專業前置設定收斂為最少步驟：現場可純用前面板 OSD 操作、無須開電腦；大畫面顯示 QR Code，與會者掃碼即能在自己手機選擇語言、觀看即時字幕，並提供字級調整與深色模式，不必擠看大螢幕。面對機密會議，資料可走企業自有信任的雲端服務（如 Microsoft Azure）而非外流第三方；行動端可設密碼、會議紀錄可加密或以專用 USB 帶走、機台不留痕，讓便利與資安兼得。</p>
+			<h3>三、軟硬整合的工程實力，深度接入既有影音體系</h3>
+			<p>裝置於邊緣即時完成語音轉錄、翻譯與雙語字幕疊加，支援多種畫面版型（含子母畫面）與行動端多人同時觀看；完整的影音與控制 I/O（HDMI、UVC、RS232、RJ45 等）使其能乾淨地融入既有 ProAV 與環控訊號流，並與 ATEN 既有的會議系統整合。會議紀錄支援多語逐字稿並列、音檔回放與事後重新翻譯，兼顧即時體驗與會後價值。</p>
+		</div>
+
+		<!-- 目錄 -->
+		<nav class="toc">
+			<h4>開發歷程目錄</h4>
+			<ol>
+				<li><a href="#s1"><span class="n">01</span><span>產品概述與定位</span></a></li>
+				<li><a href="#s2"><span class="n">02</span><span>市場背景與挑戰</span></a></li>
+				<li><a href="#s3"><span class="n">03</span><span>競品分析與市場定位</span></a></li>
+				<li><a href="#s4"><span class="n">04</span><span>產品規格定義（PRD）</span></a></li>
+				<li><a href="#s5"><span class="n">05</span><span>使用情境（Use Case）</span></a></li>
+				<li><a href="#s6"><span class="n">06</span><span>介面設計（UI）</span></a></li>
+				<li><a href="#s7"><span class="n">07</span><span>系統架構與硬體</span></a></li>
+				<li><a href="#s8"><span class="n">08</span><span>展場驗證與實機成果</span></a></li>
+				<li><a href="#s9"><span class="n">09</span><span>技術規格摘要</span></a></li>
+				<li><a href="#s10"><span class="n">10</span><span>技術取捨與已知限制</span></a></li>
+			</ol>
+		</nav>
+
+		<!-- ========================================
+			01 產品概述與定位
+		======================================== -->
+		<section id="s1">
+			<span class="sec-no">01　產品概述</span>
+			<h2>當會議翻譯與紀錄都有雲端 SaaS，為什麼還要做一台裝置？</h2>
+			<p class="lead-p">
+				AIVoice VidText 把會議的「即時字幕翻譯」與「會議紀錄」整合進一台能接入場域的裝置：語音轉錄與翻譯直接串接微軟 Azure 語音服務，裝置本身負責影音接入、雙語字幕疊加輸出，以及會議紀錄與總結的產生。
+			</p>
+			<p>
+				產品定位刻意不正面搶純軟體市場，而是讓系統整合商（SI）能把 AI <strong>無痛導入既有場域</strong>——並與 ATEN 長年經營的環控系統、專案影音（ProAV）設備整合成一套一鍵化的場域服務。
+			</p>
+			<div class="callout">
+				<strong>核心定位：讓既有場域「無痛具備 AI 能力」。</strong>本產品提供系統整合商一台多功能、可自由設定的裝置——依場域需求一鍵導入專屬的 AI 服務，並與 ATEN 既有的環控、專案影音設備串成一體。不打 AI 功能戰，打「整合進既有影音體系」的場域戰。
+			</div>
+		</section>
+
+		<!-- ========================================
+			02 市場背景與挑戰
+		======================================== -->
+		<section id="s2">
+			<span class="sec-no">02　市場背景</span>
+			<h2>跨語言會議的痛點，不只是「翻得準」</h2>
+			<p>
+				跨語言會議要同時解決兩件事：當下聽得懂（即時翻譯字幕），以及會後留得下（逐字稿與總結）。市面上已有不少瀏覽器擴充與雲端 SaaS 在做，但放進企業會議室的真實場域，會遇到幾個結構性問題。
+			</p>
+			<div class="grid c3">
+				<div class="note">
+					<h4>機密會議資料該交給誰</h4>
+					<p>AI 轉錄與翻譯必然經過雲端——問題不在「要不要上雲」，而在「上誰的雲」。把可能含機密的會議內容交給陌生第三方 SaaS，是多數企業的合規與信任門檻。</p>
+				</div>
+				<div class="note">
+					<h4>接不進既有會議室硬體</h4>
+					<p>研討會與活動現場早有導播、ProAV、音訊系統；一個「電腦＋SaaS」的方案，難以乾淨地接進既有訊號流。</p>
+				</div>
+				<div class="note">
+					<h4>場域差異大，一套軟體吃不下</h4>
+					<p>小型會議、中大型研討會、活動導播，對畫面與字幕輸出的需求完全不同，難用單一軟體通包。</p>
+				</div>
+			</div>
+			<div class="callout">
+				<strong>切入角度：</strong>不是再做一個更聰明的 SaaS，而是把 AI 能力放進「裝置」——讓既有的會議室／影音解決方案，直接升級出 AI 翻譯與會議紀錄能力。
+			</div>
+		</section>
+
+		<!-- ========================================
+			03 競品分析與市場定位
+		======================================== -->
+		<section id="s3">
+			<span class="sec-no">03　競品與定位</span>
+			<h2>先看清楚對手，再決定要不要正面打</h2>
+			<p>競品盤點分為兩類：純軟體（瀏覽器擴充／雲端 SaaS），以及有搭配硬體的方案。</p>
+			<div class="grid c2">
+				<div class="card blue">
+					<div class="hd">軟體競品（擴充 / SaaS）</div>
+					<div class="bd">
+						<strong>meetXcc</strong>　Google Meet 擴充：即時轉錄、多發言人、智慧總結、思維導圖、一鍵分享<br>
+						<strong>vocol.ai</strong>　Google Meet 擴充：即時逐字稿與翻譯、潤稿、情境式總結、雙人對話模式<br>
+						<strong>interprefy</strong>　線上 AI Webinar 口譯<br>
+						<strong>Vurbo.ai</strong>　會議轉錄／總結
+					</div>
+				</div>
+				<div class="card amber">
+					<div class="hd">有搭配硬體</div>
+					<div class="bd">
+						<strong>訊飛同傳</strong>　同步口譯軟硬方案<br>
+						<strong>會議狗</strong>　會議錄音／紀錄硬體<br>
+						<strong>透明字幕</strong>　字幕顯示裝置<br>
+						<strong>圖傳</strong>　影像傳輸
+					</div>
+				</div>
+			</div>
+			<div class="note">
+				<h4>關鍵觀察</h4>
+				<p>軟體新創在新功能與 UI 上迭代非常快；若以「一台電腦搭配總結 SaaS」的形態正面對決，硬體廠相對弱勢。因此產品策略選擇避開純功能戰，改以場域整合建立差異化。</p>
+			</div>
+
+			<h3>定位：不打功能戰，打「整合進既有影音體系」的場域戰</h3>
+			<div class="grid c2">
+				<div class="card amber">
+					<div class="hd">純軟體 SaaS 的強項（不硬碰）</div>
+					<div class="bd">
+						<ul>
+							<li>功能與 UI 迭代快</li>
+							<li>免硬體、隨開即用</li>
+							<li>個人 / SOHO 場景方便</li>
+						</ul>
+					</div>
+				</div>
+				<div class="card blue">
+					<div class="hd">AIVoice VidText 的差異化（主戰場）</div>
+					<div class="bd">
+						<ul>
+							<li>資料可走企業<strong>自有的信任供應商</strong>（如 Microsoft / Azure），不外流第三方 SaaS → 隱私可控</li>
+							<li>與 ProAV／RBS 會議系統／環控整合</li>
+							<li>具備實體 Port，可串接 ATEN 既有產品</li>
+							<li>可融入導播：輸出去背／乾淨畫面</li>
+							<li>AI 模型參數可溝通調整</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div class="callout">
+				<strong>定位結論：</strong>不打 AI 功能戰，打「讓場域無痛具備 AI 能力」的整合戰——讓系統整合商用一台可自由設定的裝置，一鍵導入專屬該場域的 AI 服務，並與既有環控、專案影音設備串成一體。資源集中於中大型場域；SOHO／純軟體場景容易被 SaaS 取代，不主打。
+			</div>
+		</section>
+
+		<!-- ========================================
+			04 規格定義
+		======================================== -->
+		<section id="s4">
+			<span class="sec-no">04　規格定義</span>
+			<h2>把模糊需求，收斂成可開發的規格</h2>
+			<p>
+				定位確定後，下一步是把「想做的事」翻成工程能接的規格：誰用、在什麼情境用、每個情境的畫面與聲音從哪進、字幕從哪出。這是整個專案投入最深的一塊。
+			</p>
+
+			<h3>目標客群（TA）與使用情境</h3>
+			<div class="grid c3">
+				<div class="note">
+					<h4>中大型研討會</h4>
+					<p>翻譯與會議紀錄系統；需與現場導播、ProAV、音訊系統整合。</p>
+				</div>
+				<div class="note">
+					<h4>小型會議　<span class="muted">（後續排除）</span></h4>
+					<p>PRD 初期列入，但情境盤點後判定不合理——更適合純翻譯／總結 SaaS，已刻意排除（見 05）。</p>
+				</div>
+				<div class="note">
+					<h4>活動公關公司</h4>
+					<p>可融入既有導播體系；需要可去背／單色畫面，能搭配 OBS 等程式。</p>
+				</div>
+			</div>
+
+			<h3>情境所需功能：輸入到輸出，硬體上要對得起來</h3>
+			<div class="note">
+				<h4>中大型研討會（多語字幕與畫面融合輸出）</h4>
+				<p>Remote Meeting → UVC-out 輸出「畫面＋字幕」給遠端、HDMI-out 輸出控制畫面給主持人；Hybrid Meeting → HDMI-out to ProAV 輸出「畫面＋字幕」（遠端＋現場），另出控制畫面給主持人。</p>
+			</div>
+			<div class="note">
+				<h4>一般會議（使用流程）</h4>
+				<p>開始會議 → 輸入會議設定 → 錄音並顯示雙語字幕 → 會議結束 → 總結＋輸出會議紀錄，並為重點／代辦事項下 Tag；紀錄可存電腦、自動郵寄。</p>
+			</div>
+			<div class="note">
+				<h4>活動 / 導播</h4>
+				<p>輸出可去背或單色畫面，融入既有導播流程、可搭配 OBS。</p>
+			</div>
+
+			<h3>硬體功能（裝置層）</h3>
+			<div class="flow">
+				<span class="chip">Video in</span>
+				<span class="chip">Audio in</span>
+				<span class="arrow">→</span>
+				<span class="chip amber">AI 運算裝置</span>
+				<span class="arrow">→</span>
+				<span class="chip">Video output<small>畫面 + 字幕</small></span>
+				<span class="chip">Control</span>
+			</div>
+			<div class="callout">
+				規格刻意做得「多功能、可自由設定」——目的不是堆功能給終端使用者，而是讓系統整合商依不同場域自由組合、一鍵導入。關鍵是把「每個情境的輸入訊源 → AI 處理 → 字幕／畫面輸出」在硬體介面上對齊，SI 才接得上既有的環控與影音系統。
+			</div>
+		</section>
+
+		<!-- ========================================
+			05 使用情境
+		======================================== -->
+		<section id="s5">
+			<span class="sec-no">05　使用情境</span>
+			<h2>盤點情境：哪些是裝置的主場，哪些該交給軟體</h2>
+			<p>
+				把情境逐一畫出來，不只是展示功能，而是逐一判斷「這個場景，這台裝置到底是不是對的工具」。結論是：研討會與活動是主場，個人／小型會議則該讓給軟體。
+			</p>
+			<div class="flow">
+				<span class="chip">中大型研討會</span>
+				<span class="chip">活動 / 導播</span>
+				<span class="chip">遠端會議</span>
+				<span class="chip" style="background:#f6f6f6;border-color:#e0e0e0;color:#9aa1ad">個人 / 小型會議（評估後排除）</span>
+			</div>
+
+			<h3>研討會：裝置的主場</h3>
+			<p>
+				中大型研討會與活動現場早有導播與音訊系統，需求是把<strong>簡報畫面與多國語字幕乾淨地融合輸出</strong>——這正是裝置接進既有訊號流的價值所在。中大型場域常分開收音，影像與聲音須分開考量。
+			</p>
+			<div class="imgrow c3">
+				<figure>
+					<img src="../../image/meetup/scenario_Large-scale%20seminar%2001.png"
+						alt="大型研討會 01：多螢幕配置，其中一螢幕放大講者頭像，其餘顯示簡報與字幕">
+					<figcaption>大型研討會 01：多螢幕，放大講者頭像</figcaption>
+				</figure>
+				<figure>
+					<img src="../../image/meetup/Large-scale%20seminar%2002.png"
+						alt="大型研討會 02：螢幕僅播放多國語言字幕，搭配簡報畫面">
+					<figcaption>大型研討會 02：僅播放字幕、多國語言</figcaption>
+				</figure>
+				<figure>
+					<img src="../../image/meetup/scenario_Event%20host%20translates%20subtitles.png"
+						alt="主持人翻譯字幕：主持人對觀眾說話，螢幕僅播放翻譯字幕">
+					<figcaption>主持人翻譯字幕：僅播放字幕</figcaption>
+				</figure>
+			</div>
+
+			<h3>個人／小型會議：評估後刻意排除</h3>
+			<p>
+				小型會議在 PRD 初期也被列為 TA，但把情境攤開後判定為<strong>不合理情境</strong>：兩三人的小會議用不上裝置的軟硬整合，反而是<strong>一台電腦配翻譯／總結 SaaS</strong> 更輕、更合適。
+			</p>
+			<div class="imgrow c2">
+				<figure>
+					<img src="../../image/meetup/scenario_Individual%20Small%20Meeting_Using%20AI%20edge%20computing_wrong.png"
+						alt="小型會議用 AI 邊緣運算裝置（不建議）：兩人小桌會議卻搬出 AI Box，畫面上一個紅色問號標示此配置不合理">
+					<figcaption><span class="neg">✗ 用 AI 邊緣運算裝置</span>　把裝置搬進兩人小會議，硬體整合優勢用不上</figcaption>
+				</figure>
+				<figure>
+					<img src="../../image/meetup/scenario_Individual%20Small%20Meeting_Using%20SaaS%20to%20summarize_good.png"
+						alt="小型會議用語音翻譯 SaaS（建議）：一人一台筆電跑 SaaS，配置輕量">
+					<figcaption><span class="pos">✓ 用語音翻譯 SaaS</span>　一台筆電配 SaaS 就搞定，對小型會議更合適</figcaption>
+				</figure>
+			</div>
+			<div class="callout">
+				<strong>規格判斷：</strong>能列出情境不難，難的是誠實判斷「哪些情境不該做」。把小型會議讓給軟體、資源集中在裝置真正有優勢的研討會／導播場域——這也呼應競品分析：純軟體新創在個人／小型場景迭代更快，不該在那裡正面對決。
+			</div>
+
+			<h3>兩條主流程</h3>
+			<div class="grid c2">
+				<div class="card blue">
+					<div class="hd">Use Case A：有主講者研討會</div>
+					<div class="bd">
+						準備 → 開新會議 → 工作人員測試（收音 / 畫面 / 翻譯）→ 等觀眾入場 → 開始<br>
+						・為現場與遠端觀眾翻譯字幕<br>
+						・單一 / 多講者 → 以不同麥克風辨別講者<br>
+						・QA：觀眾持麥克風才收音、翻譯其發言<br>
+						・結束 → 產生逐字稿與翻譯；字幕與現場（或導播）畫面合併為全程字幕影片；依重點 Tag 剪出精華
+					</div>
+				</div>
+				<div class="card blue">
+					<div class="hd">Use Case B：一般會議</div>
+					<div class="bd">
+						進會議室 → 開新會議（可從行事曆 RBS 或上次會議帶入資訊）→ 人員到齊 → 開始<br>
+						・帶出待討論事項、前次摘要與代辦 Check<br>
+						・產生翻譯與字幕，可暫停 / 重開<br>
+						・討論型態：單一報告 / 多人討論 / 多組同時發言<br>
+						・結束 → 檢視修正逐字稿、產出總結 / 重點 / 代辦；輸出帶字幕影音；寄送指定成員或資料夾
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- ========================================
+			06 介面設計
+		======================================== -->
+		<section id="s6">
+			<span class="sec-no">06　介面設計</span>
+			<h2>把規格落地成一整套「網頁後台」</h2>
+			<p class="lead-p">
+				整個 web 介面是一套<strong>網頁後台</strong>，服務三端：<strong>後台</strong>（系統整合商與操作者）、<strong>OSD 螢幕輸出</strong>（現場大畫面）、<strong>手機</strong>（與會者個人裝置）。設計核心是一句話——把「客製」留給 SI、把「使用」變成一鍵。
+			</p>
+
+			<h3>一、網頁後台（控制端）</h3>
+			<div class="callout">
+				<strong>核心概念：場域情境模板。</strong>多功能場域常有固定情境——國際會議要 4 路字幕、單一子公司會議要「對方語言＋多方翻譯」……後台讓系統整合商<strong>預先設計多種「場域情境模板」</strong>，連同畫面客製（只出字幕、簡報走大畫面、或 PIP 子母畫面）一起存起來；現場使用者開會時挑一個套用即可——這就是「一鍵導入專屬該場域 AI 服務」的具體機制。
+			</div>
+
+			<figure>
+				<img src="../../image/meetup/home%20UI.png"
+					alt="首頁主畫面：Start Meeting 大按鈕、攝影機選擇、即時 Ping 連線監控、儲存空間、低儲存空間提醒對話框">
+				<figcaption><strong>首頁 / 開始會議</strong>：一個大按鈕即可開始錄音與即時字幕；下方即時顯示攝影機來源、API 連線 Ping 狀態與儲存空間，低儲存時主動提醒尚可錄製的時間。</figcaption>
+			</figure>
+
+			<div class="imgrow c2">
+				<figure>
+					<img src="../../image/meetup/Settings.png"
+						alt="AI 設定頁：AI Server 為 Microsoft Azure、轉錄穩定度檢查、斷句邏輯與逾時、會議主題關鍵字（醫療／專業影音／KVM）以提升辨識率">
+					<figcaption><strong>AI 設定</strong>：AI 引擎走 Microsoft Azure；可設定轉錄穩定度、斷句邏輯，並針對會議主題輸入專業關鍵字（醫療、專業影音、KVM…）提升專有名詞辨識與翻譯準確度。</figcaption>
+				</figure>
+				<figure>
+					<img src="../../image/meetup/start%20setting.png"
+						alt="會議設定頁：會議名稱、版型 Layout Profile（Original/PIP/分割）、語音語言、主題、HDMI/USB 輸出、字幕語言設定、行動端字幕語言">
+					<figcaption><strong>會議設定</strong>：套用模板後，主題、版型、來源與字幕語言、行動端字幕一次設定到位——把專業前置設定收成清楚的幾步。</figcaption>
+				</figure>
+			</div>
+
+			<figure>
+				<img src="../../image/meetup/Subtitle%20Setting%20Phone.png"
+					alt="場域情境模板與字幕設定：左側為可重複套用的情境清單（國際研討會 純字幕4語言、研討會、對話模式），右側為該模板的 HDMI 字幕與行動端字幕設定，含 IP、QR Code、翻譯語言、密碼與 OSD QR 位置">
+				<figcaption><strong>場域情境模板</strong>：系統整合商把專業設定一次配置好、存成可重複套用的情境（如「國際研討會 純字幕 4 語言」「對話模式」）；每個模板可分別設定 HDMI 字幕與行動端字幕（含 QR、翻譯語言、密碼）。現場使用者不必懂技術，挑模板就能開會。</figcaption>
+			</figure>
+
+			<figure>
+				<img src="../../image/meetup/History@2x.png"
+					alt="會議紀錄頁：左側會議清單，主區為中／英／多語逐字稿並列，含時間軸、音檔回放，以及 Download 選單（編輯原稿、新增/移除語言、重新翻譯）">
+				<figcaption><strong>會議紀錄</strong>：逐字稿與多語翻譯並列、可音檔回放回溯；可事後新增／移除語言、重新翻譯或重生原稿，再輸出帶字幕的影音與紀錄。</figcaption>
+			</figure>
+
+			<h3>二、OSD 螢幕輸出（輸出端）</h3>
+			<p>
+				輸出端是疊在現場大畫面上的 <strong>OSD</strong>，可純用<strong>前面板按鍵</strong>操作、不必碰電腦。除了字幕，畫面上還能顯示一張 QR Code——與會者掃碼就能在自己手機看翻譯。
+			</p>
+			<div class="imgrow c3">
+				<figure>
+					<img src="../../image/meetup/osb_menu.png"
+						alt="OSD 前面板選單：疊在會議室大畫面上，含 Start/End Meeting、Mobile Subtitle、Profile（情境模板切換）、IP Address，可純按鍵操作">
+					<figcaption><strong>OSD 前面板選單</strong>：開始／結束會議、切換情境模板，純按鍵操作。</figcaption>
+				</figure>
+				<figure>
+					<img src="../../image/meetup/osb_qrcode.png"
+						alt="OSD 螢幕輸出：會議室大畫面疊上 Scan to View Captions QR Code，與會者掃碼即可在手機看即時字幕翻譯">
+					<figcaption><strong>掃碼看字幕</strong>：大畫面直接顯示 QR Code，把「個人裝置看翻譯」變成現場一個動作。</figcaption>
+				</figure>
+				<figure>
+					<img src="../../image/meetup/osb_usb%E6%8F%90%E7%A4%BA.png"
+						alt="OSD 提示：畫面右上顯示 USB drive not inserted 安全導出提示">
+					<figcaption><strong>安全導出提示</strong>：紀錄可用專用 USB 帶走、機台不留痕，導出前於現場即時提示。</figcaption>
+				</figure>
+			</div>
+
+			<h3>三、手機（與會者端）</h3>
+			<p>
+				掃碼後進入的手機畫面，是行動端輸出 UI：與會者用自己的裝置選想看的語言、看即時字幕，不必擠著看大螢幕；提供字級調整與深色模式，必要時以密碼保護存取。
+			</p>
+			<div class="imgrow c3">
+				<figure>
+					<img src="../../image/meetup/phone_ui.png"
+						alt="手機與會者端：選定日文，即時字幕逐句更新，含字級放大/縮小與深色模式切換">
+					<figcaption><strong>個人語言字幕</strong>：自選語言、字級可調，即時逐句更新。</figcaption>
+				</figure>
+				<figure>
+					<img src="../../image/meetup/phone_ui_darkmode.png"
+						alt="手機與會者端深色模式：深色背景下顯示即時字幕，降低昏暗會場的眩光">
+					<figcaption><strong>深色模式</strong>：適應昏暗會場、降低眩光。</figcaption>
+				</figure>
+				<figure>
+					<img src="../../image/meetup/phone_password.png"
+						alt="手機與會者端密碼輸入畫面：掃碼後需輸入密碼才能觀看字幕，保護機密會議">
+					<figcaption><strong>密碼保護</strong>：機密會議可設密碼，掃碼後驗證才能觀看。</figcaption>
+				</figure>
+			</div>
+
+			<h3>介面如何反映架構</h3>
+			<div class="callout">
+				<strong>誠實反映「串接外部 API」的現實。</strong>新增／切換語言時，介面會明確提示「需暫停轉譯數秒、API 費用將變動」；首頁也即時顯示與雲端語音服務的連線 Ping 狀態。轉錄與翻譯是串接外部語音／翻譯 API，介面把這個現實如實傳達給操作者，而不是假裝即時零成本——這也是把「上誰的雲」說清楚的一環。
+			</div>
+		</section>
+
+		<!-- ========================================
+			07 系統架構
+		======================================== -->
+		<section id="s7">
+			<span class="sec-no">07　系統架構</span>
+			<h2>Container 與 Component：對外接口與內部模組</h2>
+			<p>
+				架構分兩層看：<strong>Container</strong>（整機對外的訊號與接口）與 <strong>Component</strong>（內部模組）。下圖是訊號從輸入、經 AI 運算、到輸出與控制的整體路徑。
+			</p>
+			<div class="flow">
+				<div class="card blue" style="flex:1;min-width:200px">
+					<div class="hd">輸入 Source</div>
+					<div class="bd">影像（HDMI in / UVC-in）<br>聲音（Audio in）</div>
+				</div>
+				<span class="arrow">→</span>
+				<div class="card amber" style="flex:1;min-width:200px">
+					<div class="hd">AI 裝置 Device</div>
+					<div class="bd">串接 Microsoft Azure 語音服務<br>（即時轉錄＋翻譯）<br>→ 疊加雙語字幕<br>→ 會議紀錄 / 總結</div>
+				</div>
+				<span class="arrow">→</span>
+				<div class="card blue" style="flex:1;min-width:200px">
+					<div class="hd">輸出 Output</div>
+					<div class="bd">字幕 + 影像<br>純字幕<br>影像 + 聲音<br><span class="muted">HDMI out / UAC-in</span></div>
+				</div>
+			</div>
+			<p class="muted" style="text-align:center">控制：前面板 + OSD（鍵盤 / 滑鼠）｜Website from IP（VK）｜RS232</p>
+
+			<h3>實體連接埠</h3>
+			<div class="io" style="justify-content:center">
+				<span class="tag">USB-A</span>
+				<span class="tag">USB-B</span>
+				<span class="tag">USB-C ×2</span>
+				<span class="tag">HDMI ×2</span>
+				<span class="tag">RJ45 ×2</span>
+				<span class="tag">Terminal block</span>
+				<span class="tag">Power</span>
+			</div>
+
+			<h3>裝置系統管理</h3>
+			<figure>
+				<img src="../../image/meetup/Settings-1.png"
+					alt="裝置設定頁：裝置帳號（Admin/改密碼）、裝置時間與時區（GMT+8 台北）、儲存容量 25/500 GB、退出 USB、低儲存門檻、韌體版本 v12.021 升級、重設/重啟裝置">
+				<figcaption><strong>裝置管理（Device 分頁）</strong>：帳號與密碼、裝置時間與時區、儲存容量與 USB、韌體升級與重啟——完整的系統管理介面，顯示本產品為可長期維運的成熟裝置（介面亦含 Security &amp; Access 分頁）。</figcaption>
+			</figure>
+		</section>
+
+		<!-- ========================================
+			08 展場驗證
+		======================================== -->
+		<section id="s8">
+			<span class="sec-no">08　實機驗證</span>
+			<h2>展場 DEMO：一條從開會到送出紀錄的完整動線</h2>
+			<div class="flow">
+				<span class="chip amber">① 開始會議<small>選主題 / 語言 / 字幕模板</small></span>
+				<span class="arrow">→</span>
+				<span class="chip">② 開始錄音<small>翻譯 + 合成字幕</small></span>
+				<span class="arrow">→</span>
+				<span class="chip">③ 會議中<small>主畫面：輸入 + 字幕<br>控制端：字幕 / 時間 Tag / 即時總結</small></span>
+				<span class="arrow">→</span>
+				<span class="chip green">④ 結束<small>總結 → 發送紀錄 → 回播</small></span>
+			</div>
+			<p>展場 DEMO 以人聲與畫面（a Video / UVC-in）演示，控制方式為鍵盤、雙畫面展示。以下為實機於多語會議場景的實拍：</p>
+			<div class="imgrow c3">
+				<figure>
+					<img src="../../image/meetup/demo01.png"
+						alt="實機展示：講者以麥克風演講，後方大螢幕同步顯示簡報與多國語（含韓文）即時字幕">
+					<figcaption>講者演講 ＋ 大螢幕即時多語字幕（含韓文）</figcaption>
+				</figure>
+				<figure>
+					<img src="../../image/meetup/demo02.png"
+						alt="實機展示：實體會議室與遠端視訊混合，大螢幕同時呈現簡報、多國語字幕與遠端與會者">
+					<figcaption>Hybrid 會議：簡報＋多語字幕＋遠端與會者同畫面</figcaption>
+				</figure>
+				<figure>
+					<img src="../../image/meetup/demo03.png"
+						alt="實機展示：會議室大螢幕呈現內容與多國語言（日文、中文等）並列字幕">
+					<figcaption>大螢幕多國語言並列字幕（日／中等）</figcaption>
+				</figure>
+			</div>
+		</section>
+
+		<!-- ========================================
+			09 規格摘要
+		======================================== -->
+		<section id="s9">
+			<span class="sec-no">09　規格摘要</span>
+			<h2>技術規格摘要</h2>
+			<table>
+				<tr><th>產品名稱</th><td>ATEN AIVoice VidText</td></tr>
+				<tr><th>型號</th><td>IS4912</td></tr>
+				<tr><th>產品類型</th><td>會議即時翻譯與會議紀錄邊緣運算裝置（B2B 軟硬整合）</td></tr>
+				<tr><th>AI 引擎</th><td>串接 Microsoft Azure 語音服務（即時轉錄＋翻譯）</td></tr>
+				<tr><th>影像 I/O</th><td>HDMI in／HDMI out、UVC-in</td></tr>
+				<tr><th>音訊 I/O</th><td>UAC-in</td></tr>
+				<tr><th>實體連接埠</th><td>USB-A、USB-B、USB-C ×2、HDMI ×2、RJ45 ×2、Terminal block、Power</td></tr>
+				<tr><th>輸出模式</th><td>字幕＋影像／純字幕／影像＋聲音</td></tr>
+				<tr><th>控制方式</th><td>前面板＋OSD、網頁後台（Website from IP）、RS232</td></tr>
+				<tr><th>字幕語言</th><td>多語並列（原文＋翻譯）；HDMI 字幕可同時多路輸出</td></tr>
+				<tr><th>行動端</th><td>與會者掃 QR 以個人裝置看字幕；最多 50 位同時連線</td></tr>
+				<tr><th>會議紀錄</th><td>逐字稿＋翻譯、音檔回放、重點 Tag、總結；可事後新增語言／重新翻譯</td></tr>
+				<tr><th>安全導出</th><td>密碼保護／專用 USB 帶走、機台不留痕；行動端可設密碼</td></tr>
+				<tr><th>系統管理</th><td>帳號權限、時間／時區同步、儲存與 USB 管理、韌體升級、Security &amp; Access</td></tr>
+			</table>
+			<p class="muted">※ 上表部分數值取自介面截圖示例（如韌體 v12.021、儲存 500 GB、Ping 監控），實際出貨規格以官方規格書為準。</p>
+		</section>
+
+		<!-- ========================================
+			10 取捨與限制
+		======================================== -->
+		<section id="s10">
+			<span class="sec-no">10　取捨與限制</span>
+			<h2>技術取捨與已知限制</h2>
+			<div class="note">
+				<h4>規格的價值在「收斂」，不在「列功能」</h4>
+				<p>難的不是想到功能，而是把不同場域的輸入到輸出在硬體上對齊、決定哪些不做（如 SOHO、遠端字幕交給既有遠端會議工具）。</p>
+			</div>
+			<div class="note">
+				<h4>軟硬整合是定位、也是限制</h4>
+				<p>選擇「裝置」而非 SaaS，換到的是與 ProAV／導播體系整合的護城河；代價是迭代速度不如純軟體新創，必須靠場域整合取勝。</p>
+			</div>
+			<div class="note">
+				<h4>誠實面對待加強處</h4>
+				<p>翻譯精準度仍受即時轉錄與斷句品質影響、且仍需連雲（無完全離線／地端方案）——這些在規格階段即標記為已知限制，而非假裝沒有。</p>
+			</div>
+		</section>
+
+		<footer>
+			ATEN AIVoice VidText（IS4912）產品開發歷程文件　·　內部與獎項送件參考用。內容彙整自產品研究、規格、介面設計與展場實機；介面與場景圖為開發／展示版本，實際出貨內容與規格以官方資料為準。
+		</footer>
+
+	</div>
+
+</body>
+
+</html>

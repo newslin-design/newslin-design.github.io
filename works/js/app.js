@@ -59,6 +59,7 @@ const filterTagMap = {
 	a_builder_llm: ["ai-tool", "frontend"],
 	a_builder_agent: ["ai-agent", "uiux"],
 	a_foodAnimal: ["ai-tool", "frontend"],
+	d_meetup: ["uiux", "product"],
 	d_uc: ["uiux", "ui"],
 	d_tts: ["ai-tool", "uiux"],
 	d_ftr: ["uiux", "ui"],
@@ -172,6 +173,19 @@ const portfolioData = {
 		desc: { en: "UX research, UI, and visual design", zh: "UX 研究、UI 設計與視覺", ja: "UXリサーチ・UIデザイン・ビジュアル" },
 		titleClass: "",
 		cards: [
+			{
+				id: "d_meetup",
+				hasLocalPage: true,
+				langOnly: ["zh"],
+				title: { en: "AI Meeting Edge", zh: "AI Meeting Edge", ja: "AI Meeting Edge" },
+				desc: {
+					en: "An ATEN edge device bringing real-time translation and meeting minutes into existing meeting rooms — owned from competitive research and PRD/spec through system architecture and UI.",
+					zh: "把「即時翻譯 + 會議紀錄」做成一台能融入既有會議室的 ATEN 邊緣運算裝置；從競品研究、PRD/規格到系統架構與 UI 全程主導。",
+					ja: "「リアルタイム翻訳＋議事録」を既存の会議室に組み込むATENのエッジ機器。競合調査・PRD/仕様からシステム設計・UIまで一貫担当。"
+				},
+				tags: ["Competitive Research", "Product Spec", "System Architecture", "UI Design"],
+				cardConfig: { colClass: "col-6 col-md-6 col-xs-12" }
+			},
 			{
 				id: "d_uc",
 				hasLocalPage: true,

@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, maximum-scale=1.5">
+	<meta name="robots" content="noindex, nofollow">
+	<title>設計憲法引擎 - 作品集</title>
+	<script>workName = "a_constitution"; lang = "zh"; basePath = "../";</script>
+	<link rel="stylesheet" href="../style/reset.css">
+	<link rel="stylesheet" href="../style/style_layout.css">
+	<link rel="stylesheet" href="../style/style.css">
+	<link rel="stylesheet" href="../style/article.css">
+	<link rel="icon" type="image/png" href="../web_icon.png" />
+
+	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-114514958-1"></script>
+	<script>
+		(function (w, d, s, l, i) {
+			w[l] = w[l] || []; w[l].push({
+				'gtm.start': new Date().getTime(), event: 'gtm.js'
+			}); var f = d.getElementsByTagName(s)[0],
+				j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+					'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+		})(window, document, 'script', 'dataLayer', 'GTM-PMLJXPC');
+	</script>
+</head>
+
+<body>
+	<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PMLJXPC" height="0" width="0"
+			style="display:none;visibility:hidden"></iframe></noscript>
+
+	<header></header>
+	<div id="sidebar"></div>
+
+	<div class="container mt-xl">
+		<h1>設計憲法引擎</h1>
+		<div class="row mb-lg">
+			<div class="col-6 col-sm-12 pr-md">
+				<p>2026 – 現在（進行中）</p>
+				<h3>讓 AI 產生的程式碼自動符合既有設計系統：<br>把設計規範變成機器可遵循、可驗證的「憲法」</h3>
+				<p>
+					當你用 AI（Claude Code）大量產出 UI 原型與程式碼時，速度變快，但輸出會持續偏離設計系統——
+					硬編色碼、捏造 token 值、重造已有元件、文案前後不一。
+					這個專案是一套「設計憲法引擎」：把設計系統從「給人看的 Figma／PDF 參考」，
+					變成<strong>人與 AI 都必須遵守、而且能被機器檢查</strong>的規範。
+					<br><br>
+					它刻意做成<strong>可攜的工具（engine）</strong>，與某一家公司的內容分離；
+					ATEN 是用它建立的第一個實例，用來實際驗證這套方法走得通。
+				</p>
+
+				<h6 class="mb-xxs">我的角色</h6>
+				<p>個人主導：概念定義、系統架構、設計憲法撰寫、React + AntD 元件實作、AI 工作流（skills）設計<br>
+					<span class="gray">視覺 token、圖示與元件規格沿用 ATEN 既有的 Figma 設計庫；本專案負責把它結構化、工程化、並讓 AI 可遵循，而非重新設計視覺。</span>
+				</p>
+
+				<h6 class="mb-xxs">專案屬性</h6>
+				<p>設計系統 · AI 輔助開發工作流 · Design-to-Code 工具</p>
+			</div>
+			<div class="col-6 col-sm-12">
+				<!-- TODO 截圖：React styleguide 總覽（側欄 + 色彩/字體/元件/icons 分區）存成 constitution/images/01_styleguide.png 後改成 <img>
+				<img class="w-100" src="../../constitution/images/01_styleguide.png"
+					alt="設計憲法引擎產出的 React styleguide：左側錨點導覽，右側依序為色彩、字體、元件與圖示總覽"> -->
+				<div
+					style="border:1px solid #e8e6e1;border-radius:12px;background:#fafafa;padding:22px 20px;font-size:13.5px;line-height:1.8;color:#444">
+					<div class="gray" style="font-size:12px;margin-bottom:12px">核心想法</div>
+					<div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-size:13px">
+						<span style="background:#fff;border:1px solid #e2e2e2;border-radius:6px;padding:8px 12px">Figma
+							設計系統</span>
+						<span class="gray">→</span>
+						<span style="background:#f0f6ff;border:1px solid #cfe0ee;color:#2c6184;border-radius:6px;padding:8px 12px">機器可讀的「憲法」<span
+								class="gray" style="font-size:11.5px"> tokens · 規則</span></span>
+						<span class="gray">→</span>
+						<span style="background:#e8f6ed;border:1px solid #c7e6d3;color:#3f7553;border-radius:6px;padding:8px 12px">AI／工程師<br>產出合規 UI</span>
+					</div>
+					<p style="margin:14px 0 0">
+						規範不再只靠人記憶與自律。設計系統被寫成 AI 與工程師<strong>都得遵守的合約</strong>，
+						違規（硬編、捏造、重造）當場可被指出。
+					</p>
+				</div>
+			</div>
+		</div>
+
+		<!-- 專案導覽 -->
+		<div class="article">
+			<div class="project-nav">
+				<a href="#overview" class="nav-item">
+					<span class="step">01</span>
+					<span class="label">核心命題</span>
+				</a>
+				<a href="#problem" class="nav-item">
+					<span class="step">02</span>
+					<span class="label">問題與動機</span>
+				</a>
+				<a href="#architecture" class="nav-item">
+					<span class="step">03</span>
+					<span class="label">系統架構</span>
+				</a>
+				<a href="#constitution" class="nav-item">
+					<span class="step">04</span>
+					<span class="label">設計憲法</span>
+				</a>
+				<a href="#technical" class="nav-item">
+					<span class="step">05</span>
+					<span class="label">技術實踐</span>
+				</a>
+				<a href="#status" class="nav-item">
+					<span class="step">06</span>
+					<span class="label">現況與展望</span>
+				</a>
+			</div>
+		</div>
+
+		<div class="article">
+
+			<!-- 核心命題 -->
+			<div class="session" id="overview">核心命題</div>
+			<p>三個彼此扣連的決定——<strong>定義問題</strong>、<strong>設計可攜的引擎</strong>、<strong>用真實案例落地驗證</strong>。</p>
+
+			<div class="row mt-md mb-lg" style="width:100%">
+				<div class="col-4 col-sm-12 plr-sm mb-md">
+					<div style="border:1px solid #e8e6e1;border-radius:12px;overflow:hidden;height:100%">
+						<div
+							style="background:#f0f6ff;color:#2c6184;padding:12px 16px;font-weight:700;display:flex;align-items:center;gap:10px">
+							<span
+								style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:6px;background:#fff;border:1px solid currentColor;font-size:12px;font-weight:800;flex:none">01</span>把規範變成可執行的「憲法」
+						</div>
+						<p style="padding:14px 16px;margin:0;font-size:13.5px;line-height:1.75;color:#444">
+							token、元件規則、無障礙、文案——全部寫成 AI 讀得懂、產出時要逐項對照的規範，而不是只放在 Figma 給人參考。</p>
+					</div>
+				</div>
+				<div class="col-4 col-sm-12 plr-sm mb-md">
+					<div style="border:1px solid #e8e6e1;border-radius:12px;overflow:hidden;height:100%">
+						<div
+							style="background:#fff8f0;color:#90602a;padding:12px 16px;font-weight:700;display:flex;align-items:center;gap:10px">
+							<span
+								style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:6px;background:#fff;border:1px solid currentColor;font-size:12px;font-weight:800;flex:none">02</span>設計一套可攜的引擎
+						</div>
+						<p style="padding:14px 16px;margin:0;font-size:13.5px;line-height:1.75;color:#444">
+							工具（engine）與公司內容（instance）嚴格分離。同一套 skills 與模板可導入任何新專案，不綁定單一公司的設計系統。</p>
+					</div>
+				</div>
+				<div class="col-4 col-sm-12 plr-sm mb-md">
+					<div style="border:1px solid #e8e6e1;border-radius:12px;overflow:hidden;height:100%">
+						<div
+							style="background:#e8f6ed;color:#3f7553;padding:12px 16px;font-weight:700;display:flex;align-items:center;gap:10px">
+							<span
+								style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:6px;background:#fff;border:1px solid currentColor;font-size:12px;font-weight:800;flex:none">03</span>用 ATEN 當第一個實例
+						</div>
+						<p style="padding:14px 16px;margin:0;font-size:13.5px;line-height:1.75;color:#444">
+							以 ATEN 真實的 Figma 設計庫為內容來源，建出第一個 instance，把方法跑到能產出可執行元件與原型，驗證它真的成立。</p>
+					</div>
+				</div>
+			</div>
+
+			<!-- 問題與動機 -->
+			<div class="session" id="problem">問題與動機</div>
+			<h2>AI 能很快寫出 UI，但寫不出「符合規範」的 UI</h2>
+			<p>
+				我自己用 AI 開發產品（如 Solution Builder）時很清楚：AI 產出程式碼的速度很快，但它對你的設計系統一無所知。
+				沒有約束時，它會用最「合理」但不合規的方式交差——這些偏離不會當下報錯，而是累積成日後難還的一致性債。
+			</p>
+
+			<!-- 沒有憲法 vs 有憲法 對比 -->
+			<div class="row mt-md mb-md" style="width:100%">
+				<div class="col-6 col-sm-12 plr-sm mb-md">
+					<div style="border:1px solid #f0d6d2;border-radius:12px;overflow:hidden;height:100%">
+						<div style="background:#fbeeec;color:#a8423a;padding:11px 16px;font-weight:700">沒有憲法的 AI 產出</div>
+						<ul style="padding:14px 18px 16px 32px;margin:0;font-size:13.5px;line-height:1.9;color:#555">
+							<li>硬編 <code>#0091ED</code> / <code>16px</code>，不走 token</li>
+							<li>猜一個 token 值（捏造），看起來對、實際錯</li>
+							<li>重造一顆已存在的 Button</li>
+							<li>文案隨手寫，違反語氣與用詞規範</li>
+						</ul>
+					</div>
+				</div>
+				<div class="col-6 col-sm-12 plr-sm mb-md">
+					<div style="border:1px solid #c7e6d3;border-radius:12px;overflow:hidden;height:100%">
+						<div style="background:#e8f6ed;color:#3f7553;padding:11px 16px;font-weight:700">有憲法約束的 AI 產出</div>
+						<ul style="padding:14px 18px 16px 32px;margin:0;font-size:13.5px;line-height:1.9;color:#555">
+							<li>顏色／間距一律走 <code>theme.token</code></li>
+							<li>token 缺值時先讀 Figma 補上，<strong>禁止捏造</strong></li>
+							<li>優先重用既有元件，自刻須登錄</li>
+							<li>文案走 i18n key，附 a11y checklist</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+
+			<h3>策略性問題</h3>
+			<p>
+				<em>「如何讓設計系統不只是給人看的參考，而是 AI 與工程師都必須遵守、且能被機器驗證的規範？」</em>
+				<br><br>
+				答案不是寫更長的規範文件，而是把規範變成<strong>引擎能載入、產出時逐項對照的執行單元</strong>：
+				tokens 用標準格式（從 Figma 匯出），規則寫成 AI 的硬性守則，每次產出都附自我檢查與無障礙清單。
+				這也是我把 Solution Builder 那種「設計＋工程＋AI 在一個人身上」的工作方式，<strong>抽象成一套可重複使用的方法</strong>，而不是每個專案重來一次。
+			</p>
+
+			<!-- 系統架構 -->
+			<div class="session" id="architecture">系統架構</div>
+			<h2>兩層架構：可攜的引擎，與各公司自己的內容</h2>
+			<p>
+				最關鍵的一個決定，是把「工具」和「內容」切開。
+				通用、可被任何專案重用的部分是 <strong>Engine</strong>；某家公司填進去的實際值是 <strong>Instance</strong>。
+				鐵則：<strong>任何公司專屬的東西都不寫進 engine</strong>，這樣同一套引擎才能一再導入新專案。
+				這跟我在 Solution Builder 用分層換取槓桿是同一種思路——把會變的與不變的分開。
+			</p>
+
+			<div style="width:100%;max-width:1000px;margin:24px auto 8px;font-size:14px;line-height:1.7">
+				<div
+					style="border:1px solid #cfe0ee;border-radius:8px;padding:16px 20px;background:#f0f6ff;display:flex;align-items:flex-start;gap:14px">
+					<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#2c6184" stroke-width="1.5"
+						stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:4px" aria-hidden="true">
+						<path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
+					</svg>
+					<div>
+						<strong>Engine（可攜）</strong>— 導入任何新專案都不用改<br>
+						<span class="gray">Skills（slash 指令）· 框架實作規則（React + AntD）· 各種模板（CLAUDE.md／憲法／流程／預覽站）· 方法論</span>
+					</div>
+				</div>
+				<div style="text-align:center;color:#999;padding:4px">▲ 讀取 / 寫入：以「目前作用中的 instance」為根，不硬編公司名</div>
+				<div
+					style="border:1px solid #f0ddc4;border-radius:8px;padding:16px 20px;background:#fff8f0;display:flex;align-items:flex-start;gap:14px">
+					<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#90602a" stroke-width="1.5"
+						stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:4px" aria-hidden="true">
+						<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+						<polyline points="9 22 9 12 15 12 15 22" />
+					</svg>
+					<div>
+						<strong>Instance（各公司一份）</strong>— 某家公司填好的實際內容<br>
+						<span class="gray">constitution（tokens＋規則）· components（真實元件庫）· flows（流程庫）· knowledge（公司／產業知識）· html（HTML 元件庫＋預覽）</span>
+					</div>
+				</div>
+			</div>
+			<p class="gray" style="max-width:1000px;font-size:13px">
+				ATEN 是第一個 instance；換一家公司，只要換掉 instance、引擎照用。
+			</p>
+
+			<h3>五大支柱</h3>
+			<p>引擎要交付的，不只是一份色票，而是讓設計系統能被「用起來」的五個面向。每個支柱由 engine 提供工具、由 instance 產出內容。</p>
+
+			<div class="row mt-md mb-lg" style="width:100%">
+				<div class="col-4 col-sm-12 plr-sm mb-md">
+					<div style="background:#fff;border:1px solid #e8e6e1;border-radius:12px;padding:18px;height:100%">
+						<div style="font-size:15px;font-weight:800;margin-bottom:8px">1 · 視覺設計系統</div>
+						<p style="font-size:13.5px;color:#5a6170;line-height:1.7;margin:0">色彩／字體／元件規格 + HTML／React 雙預覽。</p>
+					</div>
+				</div>
+				<div class="col-4 col-sm-12 plr-sm mb-md">
+					<div style="background:#fff;border:1px solid #e8e6e1;border-radius:12px;padding:18px;height:100%">
+						<div style="font-size:15px;font-weight:800;margin-bottom:8px">2 · 使用流程庫</div>
+						<p style="font-size:13.5px;color:#5a6170;line-height:1.7;margin:0">登入、忘記密碼等標準流程的可重用文件。</p>
+					</div>
+				</div>
+				<div class="col-4 col-sm-12 plr-sm mb-md">
+					<div style="background:#fff;border:1px solid #e8e6e1;border-radius:12px;padding:18px;height:100%">
+						<div style="font-size:15px;font-weight:800;margin-bottom:8px">3 · 真實元件庫</div>
+						<p style="font-size:13.5px;color:#5a6170;line-height:1.7;margin:0">能直接用、也能給 AI 參考的 React 元件程式碼。</p>
+					</div>
+				</div>
+				<div class="col-4 col-sm-12 plr-sm mb-md">
+					<div style="background:#fff;border:1px solid #e8e6e1;border-radius:12px;padding:18px;height:100%">
+						<div style="font-size:15px;font-weight:800;margin-bottom:8px">4 · 專案啟動設定</div>
+						<p style="font-size:13.5px;color:#5a6170;line-height:1.7;margin:0">問卷釐清專案背景 → 自動產出該專案的 CLAUDE.md 與骨架。</p>
+					</div>
+				</div>
+				<div class="col-4 col-sm-12 plr-sm mb-md">
+					<div style="background:#fff;border:1px solid #e8e6e1;border-radius:12px;padding:18px;height:100%">
+						<div style="font-size:15px;font-weight:800;margin-bottom:8px">5 · 公司／產業知識</div>
+						<p style="font-size:13.5px;color:#5a6170;line-height:1.7;margin:0">品牌語氣、產品線、使用者輪廓、術語與法規，供產出時有正確脈絡。</p>
+					</div>
+				</div>
+			</div>
+
+			<!-- 設計憲法 -->
+			<div class="session" id="constitution">設計憲法</div>
+			<h2>憲法是什麼：一組人與機器共用的規則</h2>
+			<p>
+				「憲法」放在每個 instance 的 <code>constitution/</code>，包含四類規則，都寫成 AI 產出時要逐項對照的格式：
+			</p>
+			<div class="line_area">
+				<h6>Tokens（設計變數）</h6>
+				<p>從 Figma Variables 匯出成 W3C DTCG 標準 JSON。兩層（Primitive／Semantic）＋雙模式（ATEN 銳利 radius 2/4、Mono 圓角 8/12）。UI 一律只用 Semantic 層，禁直接用 Primitive。</p>
+			</div>
+			<div class="line_area">
+				<h6>元件規則 component-rules</h6>
+				<p>每個元件對應的 AntD 元件、變體、狀態、a11y 備註與 Figma node ID；自刻元件必須在此登錄，避免重造。</p>
+			</div>
+			<div class="line_area">
+				<h6>無障礙 a11y-rules</h6>
+				<p>以 WCAG 2.1 AA 為基準的 checklist（對比、鍵盤、語意／ARIA、表單、動畫、文案）。每次產出原型都要附上逐項勾選結果。</p>
+			</div>
+			<div class="line_area">
+				<h6>文案 copywriting</h6>
+				<p>語氣、按鈕標籤、錯誤訊息結構、空狀態、日期數字格式、術語表。所有面向使用者的字串走 i18n key，不在程式裡硬編。</p>
+			</div>
+
+			<h3>單一事實來源：Figma，而且禁止捏造</h3>
+			<p>
+				衝突時一律<strong>以 Figma 為準</strong>。token 欄位空白時，引擎的規則是「先透過 Figma MCP 讀檔補上，MCP 不可用就明說『需先補 tokens』」——
+				<strong>不准 AI 自己湊一個值</strong>。這是整套方法最重要的一條紀律：AI 最危險的不是不會，而是「看起來很合理地猜錯」。
+			</p>
+
+			<!-- 憲法產出管線 -->
+			<div style="width:100%;max-width:1000px;margin:20px auto 8px;font-size:13px">
+				<div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px">
+					<span style="background:#fff8f0;border:1px solid #f0ddc4;color:#90602a;border-radius:6px;padding:8px 13px">Figma
+						Variables</span>
+					<span class="gray">→</span>
+					<span style="background:#f0f6ff;border:1px solid #cfe0ee;color:#2c6184;border-radius:6px;padding:8px 13px">DTCG
+						JSON tokens<span class="gray" style="font-size:11.5px"> 兩層＋雙模式</span></span>
+					<span class="gray">→</span>
+					<span style="background:#f0f6ff;border:1px solid #cfe0ee;color:#2c6184;border-radius:6px;padding:8px 13px">theme.ts
+						＋ aten.css</span>
+					<span class="gray">→</span>
+					<span style="background:#e8f6ed;border:1px solid #c7e6d3;color:#3f7553;border-radius:6px;padding:8px 13px">合規的
+						UI／原型</span>
+				</div>
+			</div>
+
+			<h3>連拼字錯誤都保留：尊重來源勝過「自以為的正確」</h3>
+			<p>
+				ATEN 的 Figma 變數有幾個歷史拼字：<code>Boarder</code>（非 Border）、<code>Buttom</code>（非 Button）、<code>Tyoe</code>、<code>Seperator</code>。
+				命名一律<strong>以 Figma 為準、即使拼錯也保留</strong>。因為一旦「順手改對」，token 名稱就和設計來源對不上、同步就斷了——
+				單一事實來源的價值，正是建立在不偷偷改它。
+			</p>
+
+			<!-- 技術實踐 -->
+			<div class="session" id="technical">技術實踐</div>
+			<h2>把方法做成能跑的工具</h2>
+			<p>
+				引擎不是一份方法論文件，而是真的能用 React + AntD + TypeScript + Vite 產出可執行元件與原型的工具鏈。
+				設計師透過 slash 指令操作，AI 在憲法約束下完成產出。
+			</p>
+
+			<h2 class="box mb-0 mt-lg">Skills：操作引擎的介面</h2>
+			<h2 class="hightlight">以 slash 指令驅動，每個對應一個支柱</h2>
+			<div style="width:100%;max-width:1000px;margin:18px 0 8px;border:1px solid #e8e6e1;border-radius:10px;overflow:hidden;font-size:13.5px">
+				<div style="display:flex;background:#fafafa;border-bottom:1px solid #eee;font-weight:700;color:#444">
+					<div style="flex:0 0 180px;padding:10px 14px">指令</div>
+					<div style="flex:1;padding:10px 14px">用途</div>
+				</div>
+				<div style="display:flex;border-bottom:1px solid #f0f0f0">
+					<div style="flex:0 0 180px;padding:10px 14px"><code>/init-project</code></div>
+					<div style="flex:1;padding:10px 14px;color:#555">問卷釐清專案背景 → 產 CLAUDE.md ＋ instance 骨架</div>
+				</div>
+				<div style="display:flex;border-bottom:1px solid #f0f0f0">
+					<div style="flex:0 0 180px;padding:10px 14px"><code>/company-knowledge</code></div>
+					<div style="flex:1;padding:10px 14px;color:#555">載入／維護公司＋產業背景知識</div>
+				</div>
+				<div style="display:flex;border-bottom:1px solid #f0f0f0">
+					<div style="flex:0 0 180px;padding:10px 14px"><code>/new-flow</code></div>
+					<div style="flex:1;padding:10px 14px;color:#555">作者一段使用流程 → flows/</div>
+				</div>
+				<div style="display:flex;border-bottom:1px solid #f0f0f0">
+					<div style="flex:0 0 180px;padding:10px 14px"><code>/add-component</code></div>
+					<div style="flex:1;padding:10px 14px;color:#555">依憲法把元件實作成 code → components/</div>
+				</div>
+				<div style="display:flex">
+					<div style="flex:0 0 180px;padding:10px 14px"><code>/new-prototype</code></div>
+					<div style="flex:1;padding:10px 14px;color:#555">依憲法產出可執行原型 ＋ 規格書 ＋ a11y checklist</div>
+				</div>
+			</div>
+
+			<h2 class="box mb-0 mt-lg">元件庫</h2>
+			<h2 class="hightlight">AntD 原生優先，落差才包一層</h2>
+			<p>
+				選用順序：<strong>antd 原生 → 本地自訂元件 → 最後才自刻</strong>。
+				大部分視覺差異靠 ConfigProvider 的 theme token 解決；只有 AntD 真的沒對應 token 時，才包一層 wrapper（並登錄到憲法）。
+				目前 ATEN instance 已有約 11 個自訂元件（Button、Switch、Tabs、MobileTabs、Pagination、SideMenu、Layout 家族、Dialog、AtenIcon、Progress、Checkbox）。
+			</p>
+			<p>
+				以 Button 為例：ATEN 的 Subtle 按鈕按下要藍底白字，AntD 的 text 按鈕沒有 active 底色 token；Compact 字重要 400 而非 500；帶圖示時左右 padding 不對稱。
+				這些都是「<strong>AntD 差一點點</strong>」的地方，wrapper 的存在理由都在 README 寫清楚——不是為了包而包。
+			</p>
+			<!-- TODO 截圖：Button 48 變體矩陣 / 元件 gallery，存成 constitution/images/02_components.png 後改成 <img>
+			<img class="natural" src="../../constitution/images/02_components.png"
+				alt="ATEN instance 的元件庫：Button 變體矩陣與其他元件以 AntD 原生＋theme 呈現"> -->
+
+			<h3>AtenIcon：一個具體的工程取捨</h3>
+			<p>
+				ATEN 的 532 個 SVG 圖示原檔把 <code>fill</code> 寫死成 <code>#333</code>，用 <code>&lt;img&gt;</code> 無法染色。
+				做法是改用 <strong>CSS mask + currentColor</strong>——圖示顏色直接跟著文字色走，放在白底選單就白、disabled 就自動變灰，不必為每種情境準備一張圖。
+				再加上一個 <code>bleed</code> 留白補償（放大 mask-size，裁掉 40 grid 的內建安全邊距），讓不同來源的圖示視覺大小一致。
+				關鍵決策：<strong>不回頭改 Figma 的 532 顆原檔，補償在載體端做</strong>——把成本留在會被重複利用的那一端。
+			</p>
+
+			<h3>雙預覽 + 吃自己的狗糧</h3>
+			<p>
+				同一套規範有兩種呈現：<strong>HTML 庫</strong>（純 CSS 的 <code>aten.css</code>，當規範手冊）與 <strong>React 庫</strong>（同時是元件庫與 Figma 級 styleguide，內嵌 532 個可搜尋圖示）。
+				而 styleguide 本身就是用它自己文件裡的 SideMenu／Layout 元件搭出來的——<strong>dogfooding</strong>，文件即是元件的實際使用範例。
+			</p>
+
+			<h3>誠實的現況：token 還是手抄三份</h3>
+			<p>
+				目前 tokens JSON → <code>theme.ts</code> → <code>aten.css</code> 是<strong>三份手動同步</strong>的複本，這是已知的技術債。
+				下一步是做 codegen（JSON 一次產出 TS 與 CSS 變數），把單一來源真正收斂。寫在這裡，是因為它正是這套方法接下來要解的問題。
+			</p>
+
+			<!-- 現況與展望 -->
+			<div class="session" id="status">現況與展望</div>
+			<h2>一個進行中的方法，不是已上線的產品</h2>
+			<p>
+				必須誠實標明：這是一個<strong>進行中</strong>的個人方法論／工具專案，不是對外發布的產品。目前的狀態大致如下。
+			</p>
+
+			<div class="row mt-md mb-md" style="width:100%">
+				<div class="col-6 col-sm-12 plr-sm mb-md">
+					<div style="background:#fff;border:1px solid #e8e6e1;border-radius:12px;padding:18px;height:100%">
+						<div style="font-size:15px;font-weight:800;margin-bottom:10px;color:#3f7553">已成形</div>
+						<ul style="padding-left:18px;margin:0;font-size:13.5px;line-height:1.9;color:#555">
+							<li>視覺設計系統（支柱 1）：從 Figma 盤點 13 個元件 spec，HTML／React 雙預覽</li>
+							<li>真實元件庫（支柱 3）：約 11 個自訂 React 元件</li>
+							<li>專案啟動（支柱 4）：<code>/init-project</code> 可執行，憲法／預覽站模板齊全</li>
+							<li>圖示庫：532 icons ＋ 4 logos，整理為 27 個語意分類</li>
+						</ul>
+					</div>
+				</div>
+				<div class="col-6 col-sm-12 plr-sm mb-md">
+					<div style="background:#fff;border:1px solid #e8e6e1;border-radius:12px;padding:18px;height:100%">
+						<div style="font-size:15px;font-weight:800;margin-bottom:10px;color:#90602a">待補 / 進行中</div>
+						<ul style="padding-left:18px;margin:0;font-size:13.5px;line-height:1.9;color:#555">
+							<li>使用流程庫（支柱 2）與公司知識（支柱 5）目前仍是骨架</li>
+							<li>部分元件為參考實作，尚未在正式產品 build 中實跑</li>
+							<li>token 單一來源（codegen）尚未收斂</li>
+							<li>引擎打包成 Claude Code plugin、一鍵導入新專案</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+
+			<p class="highlight">
+				<strong>為什麼做這個：</strong>Solution Builder 證明了「設計＋工程＋AI 在一個人身上」能讓極小團隊長出成熟產品。
+				設計憲法引擎是把那套工作方式<strong>變成基礎建設</strong>的嘗試——讓 AI 產出從一開始就站在設計系統之內，
+				而不是每次都靠人事後校正。它要解的，是「AI 寫得快」之後真正會痛的那個問題：寫得快，但要寫得對。
+			</p>
+
+		</div>
+	</div>
+
+	<footer></footer>
+	<script src="../js/app.js"></script>
+</body>
+
+<!--
+========================================================================
+發佈前待辦（draft，2026-06-15 草擬）
+========================================================================
+1. 作品 id / 標題確認：暫定 workName = "a_constitution"、標題「設計憲法引擎」。
+   若要改 id，需同步改：本檔名、本檔 <script> 的 workName、cover 圖檔名、app.js portfolioData。
+2. 註冊進 works/js/app.js 的 portfolioData（design 類）：
+   - 加入 { id: "a_constitution", hasLocalPage: true, title:{en,zh,ja}, desc:{en,zh,ja}, tags:[...] }
+   - 未註冊前：h1/title 用本頁 fallback、sidebar 不會生成（與 a_builder_llm/agent 現況相同）。
+3. 封面圖：image/cover_a_constitution.png（卡片與側欄縮圖用）。
+4. 內文截圖（可選，皆已留 TODO 註解的 <img> 位置）：
+   - constitution/images/01_styleguide.png（React styleguide 總覽）
+   - constitution/images/02_components.png（元件矩陣 / gallery）
+   建議把圖放 repo 根的姊妹資料夾，路徑用 ../../constitution/images/xxx.png（比照 image/builder）。
+5. 翻譯：完成 en（works/a_constitution.html, lang="en"）與 ja（works/ja/a_constitution.html, lang="ja", basePath="../"）。
+6. 數字均取自 figmaClaude 專案 STATUS.md / CLAUDE.md（532 icons、13 元件 spec、約 11 自訂元件、5 skills）；
+   如有對外揭露限制再調整。
+-->
+
+</html>

@@ -56,7 +56,7 @@
                 <p>B2B AI Agent · LLM ハーネス設計 · 対話 UX · フルスタック実装</p>
             </div>
             <div class="col-6 col-sm-12">
-                <img class="w-100" src="../../builder/images/07_aiAgent01.png"
+                <img class="w-100" src="../../image/builder/07_aiAgent01.png"
                     alt="第一世代 AI Agent の対話 UI：ドロワー型の対話と 3 つの意図入口">
             </div>
         </div>
@@ -158,7 +158,7 @@
             </p>
 
             <!-- result screenshot placeholder -->
-            <img class="natural" src="../../builder/images/07_aiAgent05.png"
+            <img class="natural" src="../../image/builder/07_aiAgent05.png"
                 alt="第三世代 /agent-architect の実出力：シーン／ルールのタグ、全型番検証通過のバッジ、主アーキテクチャ説明、製品リスト表（ロール／型番／数量／理由）、範囲外の宣言、および「リストをコピー」ボタンを含む構成カード">
 
             <!-- usage flow -->
@@ -185,7 +185,7 @@
             </p>
 
             <!-- usage-flow screenshot placeholder -->
-            <img class="natural" src="../../builder/images/07_aiAgent06.png"
+            <img class="natural" src="../../image/builder/07_aiAgent06.png"
                 alt="複数ターンの聞き返しフローの実画面：情報不足のとき AI がタップ可能な選択肢チップ付きで聞き返し、ユーザーのタップで対話が収束していく。右側の「AI 検索ステップ」debug が各ツール呼び出しを同時に表示">
         </div>
 
@@ -336,9 +336,9 @@
                 聞き返し品質の判定 → 純 JS 検索 → 分析と要約。各段で LLM は「穴埋め」だけを行い、
                 フィールド・聞き返し上限・手順はすべてハードコードでした。
             </p>
-            <img class="natural" src="../../builder/images/07_aiAgent01.png"
+            <img class="natural" src="../../image/builder/07_aiAgent01.png"
                 alt="第一世代の対話 UI：3 つの固定の意図入口。空の入力欄を前にした選択の負担を避ける">
-            <img class="natural" src="../../builder/images/07_aiAgent02.png" alt="第一世代の推薦結果：各製品カードはそのままキャンバスに追加できる">
+            <img class="natural" src="../../image/builder/07_aiAgent02.png" alt="第一世代の推薦結果：各製品カードはそのままキャンバスに追加できる">
 
             <h3>なぜ不十分だったか</h3>
             <div class="line_area">
@@ -513,9 +513,9 @@
                 人と AI が同じ知識の上で協働することこそ、このシステムの本当の働き方です。
             </p>
 
-            <img class="natural" src="../../builder/images/07_aiAgent03.png"
+            <img class="natural" src="../../image/builder/07_aiAgent03.png"
                 alt="第二世代 /agent-tag-chat-sim の UI：左の対話がターンごとに構造化タグを蓄積し、タスクボードが収集済み／未取得のパラメータを表示、右の debug ファネルパネルが聞き返しごとに候補プールがどう収束するかを示す">
-            <!-- TODO screenshot (dev-only): /agent-tag-chat-sim conversation + task board + debug funnel panel -> builder/images/07_aiAgent03.png -->
+            <!-- TODO screenshot (dev-only): /agent-tag-chat-sim conversation + task board + debug funnel panel -> image/builder/07_aiAgent03.png -->
 
             <h3>ハルシネーション対策：プロンプトの注意書きではなく、仕組みにする</h3>
             <div class="line_area">
@@ -755,9 +755,9 @@
                 有限のブロックだけを維持し、無限の組合せはモデルにその場で組ませます。
             </p>
 
-            <img class="natural" src="../../builder/images/07_aiAgent04.png"
+            <img class="natural" src="../../image/builder/07_aiAgent04.png"
                 alt="第三世代 /agent-architect の UI：構成カードが主アーキテクチャ・品目・数量・「範囲外」宣言を提示；下に聞き返し選択肢チップ；右の『AI 検索ステップ』debug が function-calling の各ツール呼出と、検証ゲートが実在しない型番を止めて自動で再選定する過程を表示">
-            <!-- TODO screenshot (dev-only): /agent-architect solution card + follow-up chips + AI search steps debug -> builder/images/07_aiAgent04.png -->
+            <!-- TODO screenshot (dev-only): /agent-architect solution card + follow-up chips + AI search steps debug -> image/builder/07_aiAgent04.png -->
 
             <h3>実測結果（3 シーンの headless 検証）</h3>
             <div class="line_area">
@@ -997,7 +997,7 @@
 	⚠️ ドラフト状態のメモ（公開前に対応）：
 	1. js/app.js の portfolioData にエントリーカード未登録（PROGRESS.md の決定：3 ページ完成後に index 入口を追加）。
 	   登録前はこのページに sidebar と前後ナビが無いため、URL で直接アクセスしてプレビュー。
-	2. 画像不足（img プレースホルダー 4 か所。src のファイル名は記入済み。撮影後 repo 直下の builder/images/ へ）：
+	2. 画像不足（img プレースホルダー 4 か所。src のファイル名は記入済み。撮影後 repo 直下の image/builder/ へ）：
 	   - 07_aiAgent05.png 完成品：/agent-architect の実構成カード（結果）
 	   - 07_aiAgent06.png 使用フロー：複数ターンの聞き返し + 選択肢チップ + 検索ステップ debug
 	   - 07_aiAgent03.png 第二世代：/agent-tag-chat-sim 対話 + タスクボード + debug ファネルパネル

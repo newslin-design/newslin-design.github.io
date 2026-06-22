@@ -56,7 +56,7 @@
 				<p>B2B SaaS · ビジュアルエディター · 企業のデジタルトランスフォーメーション</p>
 			</div>
 			<div class="col-6 col-sm-12">
-				<img class="w-100" src="../../builder/images/01_main_editor.png"
+				<img class="w-100" src="../../image/builder/01_main_editor.png"
 					alt="Solution Builder メインエディター：左にデバイスライブラリ、中央にビジュアルキャンバス、右にプロパティパネル">
 			</div>
 		</div>
@@ -416,7 +416,7 @@
 				上部のツールバーには Undo / Redo / Save / Export の 4 つだけを置き、高度な機能は右クリックメニューに収めた。
 				信号カラーコードの凡例（Legend）を右下に常駐させ、初心者でもルールを覚えずに図を読める。
 			</p>
-			<img class="natural" src="../../builder/images/01_main_editor_example.png"
+			<img class="natural" src="../../image/builder/01_main_editor_example.png"
 				alt="実際のソリューション例：Frame による区分け、Group の乗算、7 色の信号接続を組み合わせた完全なシステム図">
 
 			<h3>カスタムノードと動的なポート</h3>
@@ -426,7 +426,7 @@
 				信号タイプ・帯域・解像度などの属性を持ち、接続時の互換性チェックに使われる。
 				ポートは Video / Audio / USB / Control / Network ごとにグループ表示され、「HDMI 出力」を探すときは Video グループだけを見ればよい。
 			</p>
-			<img class="natural" src="../../builder/images/02_node_deviceNodeWithPort_KVMExample.png"
+			<img class="natural" src="../../image/builder/02_node_deviceNodeWithPort_KVMExample.png"
 				alt="KVM デバイスノード：Schema から動的に生成されたグループ化されたポート">
 			<p>
 				ユーザーは <strong>Custom Device</strong> を作成してサードパーティ機器を設計に描き込むこともできる——これらの型番は管理画面に記録され、
@@ -439,7 +439,7 @@
 				Handle・接続・BOM・凡例に行き渡らせることだった）。トポロジーに応じて Bezier / Step / Straight の 3 つのエッジスタイルを提供し、
 				同色の接続が交差するときは半円のホップ記号を自動で描画して、複雑なトポロジーでも絡まないようにする。
 			</p>
-			<img class="natural" src="../../builder/images/01_main_editor_flowType.png"
+			<img class="natural" src="../../image/builder/01_main_editor_flowType.png"
 				alt="3 つの接続スタイル：放射状トポロジーの Bezier、マトリクストポロジーの Step、直結の Straight">
 
 			<h3>複雑さの階層化：強制露出ではなく、自発的な深掘り</h3>
@@ -485,7 +485,7 @@
 					<span>情報密度：低</span><span>自発的な深掘り——各レベルはユーザーが要求する</span><span>情報密度：高</span>
 				</div>
 			</div>
-			<img class="natural" src="../../builder/images/04_portVisibility_KVM.png"
+			<img class="natural" src="../../image/builder/04_portVisibility_KVM.png"
 				alt="Port Visibility の制御：信号タイプごとにポートの表示・非表示を決める">
 
 			<h3>Frame と Group ×N：大規模な設計を整理する</h3>
@@ -495,7 +495,7 @@
 				は SI が代表的な部屋を 1 つ設計すれば、数量の乗算はシステムが処理する——外側 ×4 の会議室、内側 ×2 のスピーカーで、
 				BOM は自動的に 8 個と算出する。設計の責任と数量の責任を分離する。
 			</p>
-			<img class="natural" src="../../builder/images/04_group_nested.png"
+			<img class="natural" src="../../image/builder/04_group_nested.png"
 				alt="ネストした Group ×N：1 つの設計が N セットの機器を表し、BOM が自動的に乗算される">
 
 			<h2 class="box mb-0 mt-lg">機能 2：テンプレートシステム</h2>
@@ -518,7 +518,7 @@
 				入稿に加え、管理画面には運用効率を高める専用ツールも順次備えてきた——操作録画、テンプレートとオプションの組み合わせ管理、バッチ処理——
 				これらの設計と開発により、テンプレート数が増え続けても維持・検証のコストが暴走しないようにした。
 			</p>
-			<img class="natural" src="../../builder/images/03_templateEditor_diaEidtor.png"
+			<img class="natural" src="../../image/builder/03_templateEditor_diaEidtor.png"
 				alt="テンプレートエディターの管理画面：メインエディターのコンポーネントを流用したテンプレート図の編集インターフェース">
 
 			<h2 class="box mb-0 mt-lg">機能 3：ワンクリック納品</h2>
@@ -529,7 +529,7 @@
 				製品リストはキャンバスとともにリアルタイムで更新される：ノードの増減も Group ×N の調整も即座に反映され、
 				ブランドとカテゴリで自動的にグループ化し、非表示ノードを除外する。合計行は、営業がそのままざっくり見積もるのに使える。
 			</p>
-			<img class="natural" src="../../builder/images/04_bom_panel.png"
+			<img class="natural" src="../../image/builder/04_bom_panel.png"
 				alt="BOM パネル：キャンバスとともにリアルタイム更新される製品リスト。グループ乗算とカテゴリ別集計を含む">
 
 			<h3>Excel 見積書と PDF システム図</h3>
@@ -538,7 +538,7 @@
 				表紙・案件情報・信号凡例・透かしを備えた PDF のシステム結線図を出力する——
 				顧客へそのまま渡せ、追加の加工は不要。出力は<strong>純フロントエンドのパイプライン</strong>（html-to-image + jsPDF）を採り、バックエンドに依存しない。
 			</p>
-			<img class="natural" src="../../builder/images/04_export_pdf_output.png"
+			<img class="natural" src="../../image/builder/04_export_pdf_output.png"
 				alt="PDF 出力結果：Frame の区分け、信号カラーコード、Group の表記を保持した完全なソリューション文書">
 
 			<!-- エンジニアリングと技術的貢献 -->
@@ -618,7 +618,7 @@
 				productDatabase.json の Schema に直接対応する——デザインとデータ構造が同時に形になる。クロスフィルタとバッチ更新を備え、
 				製品データの維持は「エンジニアリングの納品物」から「営業のセルフサービス」へ変わる。
 			</p>
-			<img class="natural" src="../../builder/images/05_ProductManager01.png"
+			<img class="natural" src="../../image/builder/05_ProductManager01.png"
 				alt="プロダクトマネージャーの管理画面：数千 SKU の構造化された仕様維持インターフェース">
 
 			<p class="highlight">
@@ -664,7 +664,7 @@
 				内の追跡可能な商談になる——営業が手作業でデータを移す必要はない。</p>
 
 			<!-- スクリーンショット placeholder：自動作成された Salesforce 商談の画面 -->
-			<img class="natural" src="../../builder/images/06_salesforce_opportunity.png"
+			<img class="natural" src="../../image/builder/06_salesforce_opportunity.png"
 				alt="「直接問い合わせ」が自動作成した Salesforce 商談：設計 JSON・BOM・キャンバス画像を伴い、営業は完全な提案文脈とともに開ける">
 
 			<h3>データアーキテクチャ：デザイン段階で Event Schema を定義する</h3>
@@ -726,8 +726,8 @@
 					</div>
 				</div>
 			</div>
-			<!-- TODO：PowerBI のレポート画像（初期の基本利用状況、公開可）を builder/images/06_powerbi_usage.png として保存したら、下の行のコメントを外す
-			<img class="natural" src="../../builder/images/06_powerbi_usage.png"
+			<!-- TODO：PowerBI のレポート画像（初期の基本利用状況、公開可）を image/builder/06_powerbi_usage.png として保存したら、下の行のコメントを外す
+			<img class="natural" src="../../image/builder/06_powerbi_usage.png"
 				alt="PowerBI 利用状況レポート：サービス初期の基本的な利用状況ダッシュボード"> -->
 
 			<h3>実際の 2 つのクローズドループ事例</h3>
