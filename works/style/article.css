@@ -9,8 +9,14 @@
     position: relative;
 }
 
+/* 作品頁：max-width 設在外層容器，內文自然左對齊於置中的 1000px 欄 */
+.container.mt-xl {
+    max-width: 1000px;
+}
+
 .article P {
     max-width: 1000px;
+    line-height: 1.8;
 }
 
 /* 文章內文連結：可辨識的藍色與底線（不影響流程導覽與圖示按鈕） */
@@ -52,9 +58,16 @@
 }
 
 .article .session {
+    box-sizing: border-box;
     color: #5C5C5C;
-    margin: 64px 0 12px 0;
-    background-color: #EBEBEB;
+    margin: 72px 0 16px 0;
+    padding: 10px 16px;
+    background-color: #ffffff;
+    border: 1px #0000003a solid;
+    border-radius: 4px;
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: 0.8px;
 }
 
 .article .icon-btn {
@@ -122,11 +135,13 @@
     gap: 30px;
     width: auto;
     transition: all 1s cubic-bezier(0.165, 0.84, 0.44, 1);
-
 }
 
 .project-nav.moto {
     animation: slideDown01 0.8s ease-out;
+    margin-top: 36px;
+    border: 1px solid #00000027;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
 
 }
 
