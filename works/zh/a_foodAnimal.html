@@ -56,7 +56,7 @@
 				<a href="../../foodan/" class="btn" target="_blank">前往測驗頁面<span class="icon"> ↗</span></a>
 			</div>
 			<div class="col-6 col-sm-12">
-				<img class="w-100" alt="美食動物性格測驗主視覺，展示一系列角落生物風格的動物角色卡片">
+				<img class="w-100" src="../../image/cover_a_foodAnimal.png" alt="美食動物性格測驗主視覺：一隻貓頭鷹面對攤開的菜單與餐點">
 			</div>
 		</div>
 
@@ -81,11 +81,7 @@
 				</a>
 				<a href="#technical" class="nav-item">
 					<span class="step">05</span>
-					<span class="label">全端實踐</span>
-				</a>
-				<a href="#reflection" class="nav-item">
-					<span class="step">06</span>
-					<span class="label">專案反思</span>
+					<span class="label">前端實作</span>
 				</a>
 			</div>
 		</div>
@@ -137,7 +133,7 @@
 					<p><strong>慢熟貓</strong><br><small>宅系味覺療癒師</small></p>
 				</div>
 			</div>
-			<img alt="三大互動策略圖示：動物擬人化、靈魂一句話呈現、社交配對機制（飯友與飯局災難）">
+			<!-- （示意圖移除：上方三項決策與角色卡已充分說明） -->
 
 			<!-- 邏輯建模 -->
 			<div class="session" id="logic">邏輯建模</div>
@@ -180,7 +176,33 @@
 					</p>
 				</div>
 			</div>
-			<img alt="四向度模型圖：感官vs.概念、社交vs.獨處、傳統vs.冒險、結構vs.直覺，搭配題目情境範例">
+			<div style="margin:36px auto 60px; width:100%; max-width:960px;">
+				<svg viewBox="0 0 760 340" role="img" aria-label="飲食人格四向度模型：感官對概念、社交對獨處、傳統對冒險、結構對直覺，四個正負號組成 16 種人格代碼" style="width:100%; height:auto; font-family:inherit;">
+					<g font-size="17" font-weight="700" fill="#5C5C5C">
+						<text x="150" y="70" text-anchor="end">感官</text><text x="610" y="70" text-anchor="start">概念</text>
+						<text x="150" y="138" text-anchor="end">社交</text><text x="610" y="138" text-anchor="start">獨處</text>
+						<text x="150" y="206" text-anchor="end">傳統</text><text x="610" y="206" text-anchor="start">冒險</text>
+						<text x="150" y="274" text-anchor="end">結構</text><text x="610" y="274" text-anchor="start">直覺</text>
+					</g>
+					<g>
+						<rect x="170" y="58" width="420" height="14" rx="7" fill="#ece8e1"/><line x1="380" y1="53" x2="380" y2="77" stroke="#cfc8bb" stroke-width="2"/>
+						<rect x="170" y="126" width="420" height="14" rx="7" fill="#ece8e1"/><line x1="380" y1="121" x2="380" y2="145" stroke="#cfc8bb" stroke-width="2"/>
+						<rect x="170" y="194" width="420" height="14" rx="7" fill="#ece8e1"/><line x1="380" y1="189" x2="380" y2="213" stroke="#cfc8bb" stroke-width="2"/>
+						<rect x="170" y="262" width="420" height="14" rx="7" fill="#ece8e1"/><line x1="380" y1="257" x2="380" y2="281" stroke="#cfc8bb" stroke-width="2"/>
+					</g>
+					<g font-size="13" font-weight="700">
+						<circle cx="200" cy="65" r="14" fill="#fff" stroke="#c98b6b" stroke-width="2"/><text x="200" y="70" text-anchor="middle" fill="#c98b6b">T</text>
+						<circle cx="560" cy="65" r="14" fill="#fff" stroke="#b8b2a7" stroke-width="2"/><text x="560" y="70" text-anchor="middle" fill="#8a8275">I</text>
+						<circle cx="200" cy="133" r="14" fill="#fff" stroke="#c98b6b" stroke-width="2"/><text x="200" y="138" text-anchor="middle" fill="#c98b6b">S</text>
+						<circle cx="560" cy="133" r="14" fill="#fff" stroke="#b8b2a7" stroke-width="2"/><text x="560" y="138" text-anchor="middle" fill="#8a8275">L</text>
+						<circle cx="200" cy="201" r="14" fill="#fff" stroke="#c98b6b" stroke-width="2"/><text x="200" y="206" text-anchor="middle" fill="#c98b6b">D</text>
+						<circle cx="560" cy="201" r="14" fill="#fff" stroke="#b8b2a7" stroke-width="2"/><text x="560" y="206" text-anchor="middle" fill="#8a8275">E</text>
+						<circle cx="200" cy="269" r="14" fill="#fff" stroke="#c98b6b" stroke-width="2"/><text x="200" y="274" text-anchor="middle" fill="#c98b6b">M</text>
+						<circle cx="560" cy="269" r="14" fill="#fff" stroke="#b8b2a7" stroke-width="2"/><text x="560" y="274" text-anchor="middle" fill="#8a8275">F</text>
+					</g>
+					<text x="380" y="324" text-anchor="middle" fill="#8a8275" font-size="14">每題選項在這四條軸上加減分 → 四個正負號組成 16 型代碼（例：T·S·D·M ＝ 格局象）</text>
+				</svg>
+			</div>
 
 			<!-- 內容工程 -->
 			<div class="session" id="content">內容工程</div>
@@ -223,7 +245,7 @@
 					<p>法式料理、米其林套餐、手沖咖啡</p>
 				</div>
 			</div>
-			<img alt="Prompt Chaining 工作流程圖：LLM 扮演幽默美食評論家生成 16 人格初稿，再經人工潤飾的前後對比">
+			<!-- TODO（可補強）：放一組「AI 初稿 → 人工定稿」的真實前後對比文案，會比示意圖更有說服力 -->
 
 			<!-- 視覺系統 -->
 			<div class="session" id="visual">視覺實驗</div>
@@ -240,7 +262,7 @@
 				<br><br>
 				<strong>氛圍：</strong>乾淨的暖色奶油色背景、柔和光線。
 			</p>
-			<img alt="Midjourney Prompt 工程規範：風格錨點參數與多個生成角色的風格一致性樣本展示">
+			<!-- （示意圖移除：下方 16 款角色一覽已展示風格一致性） -->
 
 			<h3>針對性微調</h3>
 			<div class="row mt-md mb-md" style="width:100%">
@@ -323,16 +345,24 @@
 					<small>幻想獨角獸</small>
 				</div>
 			</div>
-			<img alt="角色微調前後對比：慢熟貓加入暖桌與無尾熊圓潤特徵，孤食刺蝟加入實驗室場景與閱讀營養標示">
+			<!-- （示意圖移除：上方兩張微調卡片已說明） -->
 
 			<!-- 全端實踐 -->
-			<div class="session" id="technical">全端實踐</div>
+			<div class="session" id="technical">前端實作</div>
 			<h2>前端開發與 AI 協作</h2>
 			<p>程式部分由我定義架構與邏輯，再透過 AI（Copilot/LLM）協助撰寫實作程式碼。</p>
 
 			<h3>數據結構設計</h3>
 			<p>設計了一套基於權重的計分系統，每一題的選項都會動態影響四個維度的分數。</p>
-			<img alt="JSON Schema 計分結構範例：題目文字、選項文字與對應四維度分數陣列">
+			<pre style="margin:24px auto 12px; max-width:760px; background:#2b2b2b; color:#e8e6e1; padding:20px 22px; border-radius:12px; overflow-x:auto; text-align:left; font-size:13.5px; line-height:1.65; font-family:'SFMono-Regular',Consolas,'Liberation Mono',Menlo,monospace;"><code>{
+  "question": "公司附近的人氣甜點店裡有兩款新品，你選：",
+  "img": "images/0010.png",
+  "options": [
+    { "text": "巧克力甜甜圈，吃過很多次了一定好吃！", "icon": "🍩", "score": [0, 0,  1, 0] },
+    { "text": "辣椒起司泡芙？沒吃過的味道，想試試看",   "icon": "🌶️", "score": [0, 0, -1, 0] }
+  ]
+}</code></pre>
+			<p style="text-align:center; color:#8a8275; font-size:14px; margin-top:0;">每個選項的 <code>score</code> ＝ [感官／概念, 社交／獨處, <strong>傳統／冒險</strong>, 結構／直覺]。此題兩個選項只在第三軸給 +1／−1，把「要熟悉還是嘗鮮」量化成可計分的數字。</p>
 
 			<h3>互動邏輯實作</h3>
 			<div class="line_area">
@@ -340,12 +370,43 @@
 				<p>即時運算陣列分數，最終映射至對應的人格 Key（如 TSDM = 格局象）。</p>
 			</div>
 			<div class="line_area">
-				<h6>社交匹配演算法</h6>
+				<h6>社交配對邏輯</h6>
 				<p>撰寫邏輯判斷「飯友」與「飯局災難」的組合，例如講求邏輯的「儀式天鵝」與憑感覺的「熱情狗」互斥。</p>
 			</div>
 
 			<h3>整體流程</h3>
-			<img alt="三階段 AI 協作流程圖：第一階段邏輯架構、第二階段內容與視覺雙軌並行、第三階段全端整合">
+			<div style="margin:32px auto 48px; width:100%; max-width:960px;">
+				<svg viewBox="0 0 760 280" role="img" aria-label="三階段協作流程：第一階段人類建立邏輯架構，第二階段內容與視覺雙軌並行（AI 生成、人工潤飾），第三階段人與 AI 協作完成前端整合" style="width:100%; height:auto; font-family:inherit;">
+					<defs>
+						<marker id="fa_arrow" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#b8b2a7"/></marker>
+					</defs>
+					<!-- 第一階段 -->
+					<text x="104" y="58" text-anchor="middle" fill="#6b8e7f" font-size="14" font-weight="700">① 邏輯架構</text>
+					<rect x="14" y="70" width="180" height="120" rx="14" fill="#f3f6f4" stroke="#6b8e7f" stroke-width="1.5"/>
+					<text x="104" y="116" text-anchor="middle" fill="#5C5C5C" font-size="14">定義問題</text>
+					<text x="104" y="140" text-anchor="middle" fill="#5C5C5C" font-size="14">四向度模型</text>
+					<text x="104" y="166" text-anchor="middle" fill="#8a8275" font-size="13">→ 16 型骨架</text>
+					<line x1="200" y1="130" x2="266" y2="130" stroke="#b8b2a7" stroke-width="2" marker-end="url(#fa_arrow)"/>
+					<!-- 第二階段：雙軌 -->
+					<text x="380" y="40" text-anchor="middle" fill="#5C5C5C" font-size="14" font-weight="700">② 雙軌並行</text>
+					<rect x="280" y="56" width="200" height="70" rx="12" fill="#fbf2ec" stroke="#c98b6b" stroke-width="1.5"/>
+					<text x="380" y="84" text-anchor="middle" fill="#5C5C5C" font-size="13.5" font-weight="700">軌道 A · 內容</text>
+					<text x="380" y="106" text-anchor="middle" fill="#8a8275" font-size="12.5">AI 生成 → 人工潤飾</text>
+					<rect x="280" y="134" width="200" height="70" rx="12" fill="#fbf2ec" stroke="#c98b6b" stroke-width="1.5"/>
+					<text x="380" y="162" text-anchor="middle" fill="#5C5C5C" font-size="13.5" font-weight="700">軌道 B · 視覺</text>
+					<text x="380" y="184" text-anchor="middle" fill="#8a8275" font-size="12.5">Midjourney → 微調</text>
+					<line x1="486" y1="130" x2="552" y2="130" stroke="#b8b2a7" stroke-width="2" marker-end="url(#fa_arrow)"/>
+					<!-- 第三階段 -->
+					<text x="656" y="58" text-anchor="middle" fill="#6b8e7f" font-size="14" font-weight="700">③ 前端整合</text>
+					<rect x="566" y="70" width="180" height="120" rx="14" fill="#f3f6f4" stroke="#6b8e7f" stroke-width="1.5"/>
+					<text x="656" y="112" text-anchor="middle" fill="#5C5C5C" font-size="13.5">計分／配對（人）</text>
+					<text x="656" y="136" text-anchor="middle" fill="#5C5C5C" font-size="13.5">JS／CSS（AI）</text>
+					<text x="656" y="166" text-anchor="middle" fill="#8a8275" font-size="13">→ RWD 網頁</text>
+					<!-- 圖例 -->
+					<circle cx="250" cy="250" r="6" fill="#6b8e7f"/><text x="264" y="255" fill="#8a8275" font-size="13">人主導</text>
+					<circle cx="372" cy="250" r="6" fill="#c98b6b"/><text x="386" y="255" fill="#8a8275" font-size="13">AI 生成／協助</text>
+				</svg>
+			</div>
 
 			<div class="row mt-md mb-lg" style="width:100%">
 				<div class="col-4 col-sm-12 plr-sm mb-md">
@@ -364,35 +425,24 @@
 					</p>
 				</div>
 				<div class="col-4 col-sm-12 plr-sm mb-md">
-					<h4>第三階段：全端整合</h4>
+					<h4>第三階段：前端整合</h4>
 					<p>
-						<strong>（人類）</strong>設計計分權重系統與社交匹配演算法。
+						<strong>（人類）</strong>設計計分權重系統與社交配對邏輯。
 						<br><br><strong>（AI Copilot）</strong>協助撰寫 JavaScript 邏輯與 CSS。
 						<br><br><strong>（產出）</strong>RWD 互動網頁。
 					</p>
 				</div>
 			</div>
-			<img alt="最終成品 RWD 截圖：手機版測驗題目介面與桌面版結果頁，包含動物角色卡、性格描述與社交配對">
-
-			<!-- 專案反思 -->
-			<div class="session" id="reflection">專案反思</div>
-			<h2>做完之後的想法</h2>
-			<p>
-				這個專案讓我比較具體地感受到，用 AI 協作時，設計師的工作重心會往哪裡移動。
-			</p>
-
-			<div class="line_area">
-				<h6>產出變快，判斷變重要</h6>
-				<p>AI 可以快速生成大量文案和圖片，但「哪些能用、哪些不行」的判斷還是得靠人。篩選和修正佔了不少時間。</p>
+			<div class="row mt-md mb-sm" style="width:100%; align-items:center;">
+				<div class="col-8 col-sm-12 plr-sm mb-sm">
+					<img src="../../image/a_foodAnimal_result.png" alt="桌面版結果頁：左為動物角色插畫，右為人格代碼、代表金句、四維度標籤、推薦美食與飯友／飯局災難配對" style="width:100%; margin:0; border-radius:14px; box-shadow:0 10px 34px rgba(60,50,40,.16);">
+				</div>
+				<div class="col-4 col-sm-12 plr-sm mb-sm" style="text-align:center;">
+					<img src="../../image/a_foodAnimal_quiz.png" alt="手機版作答介面：進度條、情境插畫、題目與兩個選項" style="width:100%; max-width:230px; margin:0; border-radius:14px; box-shadow:0 10px 34px rgba(60,50,40,.16);">
+				</div>
 			</div>
-			<div class="line_area">
-				<h6>開發週期確實縮短了</h6>
-				<p>從企劃到上線大約花了幾天，省下來的時間可以用在調整互動細節和測試體驗。</p>
-			</div>
-			<p>
-				整體來說，這個專案算是一次比較完整的 AI 協作實踐——從邏輯、文案、視覺到前端，
-				一個人跑完全程，過程中也更清楚哪些環節 AI 幫得上忙、哪些還是得自己來。
-			</p>
+			<p style="text-align:center; color:#8a8275; font-size:14px;">實際成品：桌面版結果頁（左）與手機版作答介面（右），同一套響應式頁面。</p>
+
 
 			<div style="text-align:center;margin-top:32px">
 				<a href="../../foodan/" class="btn" target="_blank" style="font-size:1.1em">

@@ -45,8 +45,7 @@ function i18n(value) {
 // filterTagMap : 每個作品對應 1~2 個 tag key
 // 與卡片既有的 tags（hover 浮出的技能標籤）是兩套系統，互不影響
 const filterTagDefs = [
-	{ key: "ai-agent", label: { en: "AI Agent", zh: "AI Agent", ja: "AI Agent" } },
-	{ key: "ai-tool", label: { en: "AI Tool", zh: "AI 工具", ja: "AI ツール" } },
+	{ key: "ai", label: { en: "AI", zh: "AI", ja: "AI" } },
 	{ key: "uiux", label: { en: "UI/UX Design", zh: "UI/UX 設計", ja: "UI/UX デザイン" } },
 	{ key: "ui", label: { en: "UI Design", zh: "UI 設計", ja: "UI デザイン" } },
 	{ key: "frontend", label: { en: "Front-end Dev", zh: "前端開發", ja: "フロントエンド" } },
@@ -55,13 +54,13 @@ const filterTagDefs = [
 ];
 
 const filterTagMap = {
-	a_builder: ["uiux", "frontend"],
-	a_builder_llm: ["ai-tool", "frontend"],
-	a_builder_agent: ["ai-agent", "uiux"],
-	a_foodAnimal: ["ai-tool", "frontend"],
+	a_builder: ["ai", "uiux", "frontend"],
+	a_builder_llm: ["ai", "frontend"],
+	a_builder_agent: ["ai", "uiux"],
+	a_foodAnimal: ["ai", "frontend"],
 	d_meetup: ["uiux", "product"],
 	d_uc: ["uiux", "ui"],
-	d_tts: ["ai-tool", "uiux"],
+	d_tts: ["ai", "uiux"],
 	d_ftr: ["uiux", "ui"],
 	d_uvc: ["ui"],
 	d_ds: ["ui"],
@@ -74,8 +73,8 @@ const filterTagMap = {
 	v_vis: ["visual"],
 	v_ino: ["visual"],
 	v_3d: ["visual"],
-	c_auto_tag: ["ai-tool"],
-	"c_auto-matome": ["ai-tool"],
+	c_auto_tag: ["ai"],
+	"c_auto-matome": ["ai"],
 	c_demo: ["frontend"],
 	c_party: ["frontend"],
 	c_test: ["frontend"],
@@ -155,7 +154,7 @@ const portfolioData = {
 				langOnly: ["zh"],
 				title: {
 					en: "AI Product Advisor Agent",
-					zh: "AI 產品顧問 Agent",
+					zh: "解決方案顧問 AI Agent",
 					ja: "AI製品コンサルタント Agent"
 				},
 				desc: {
@@ -617,8 +616,8 @@ try {
 				sidebar.classList.add("row", "flex-dir-col");
 
 				// Home 連結：非英文時留在當前語言資料夾
-			var homeHref = (lang !== 'en') ? 'index.html' : `${pageBasePath}index.html`;
-			let sidebarHtml = `<div class="row flex-dir-col"><a class="mt-xl" href="${homeHref}">Home</a>`;
+				var homeHref = (lang !== 'en') ? 'index.html' : `${pageBasePath}index.html`;
+				let sidebarHtml = `<div class="row flex-dir-col"><a class="mt-xl" href="${homeHref}">Home</a>`;
 
 				if (nextWork) {
 					// 側邊欄連結：有該語言頁面則留在當前資料夾，否則跳回英文
@@ -781,18 +780,21 @@ try {
                         </ul>
                     </div>`;
 	} else {
+		// 同語言連結：作品集首頁與 Resume 都在「當前頁面所在的語言資料夾」內，
+		// 用相對檔名即可指到同語言版本；不要套 pageBasePath（zh/ja 時會多一層 ../ 跳回英文根）。
+		// Blog 為全站共用的單一部落格，仍需用 pageBasePath 回到網站根目錄。
 		headerHtml = `
                     <div class="container">
-                        <a href="${pageBasePath}index.html">
+                        <a href="index.html">
                             <div class="logo">
                                 <div></div>
                             </div>
                         </a>
                         <ul class="row flex-jus-end">
-                            <li><a href="${pageBasePath}index.html">Design</a></li>
-                            <li><a href="${pageBasePath}index.html#development">Development</a></li>
+                            <li><a href="index.html">Design</a></li>
+                            <li><a href="index.html#development">Development</a></li>
                             <li><a href="${pageBasePath}../index.html">Blog</a></li>
-                            <li><a href="${pageBasePath}about.html">Resume</a></li>
+                            <li><a href="about.html">Resume</a></li>
                             ${langLinks}
                         </ul>
                     </div>`;
@@ -986,6 +988,25 @@ function renderPortfolioCards() {
 	workCardsContainer.innerHTML = filterBarHtml + cardsHtml;
 
 	setupCardFilter();
+	animateCards();
+}
+
+// 首頁卡片進場：依序淡入上浮（stagger）
+// 防護：尊重 prefers-reduced-motion；anime.js 未載入（作品頁）時直接略過，不報錯
+function animateCards() {
+	var prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+	if (prefersReduced || typeof anime === 'undefined' || !anime.animate) return;
+
+	var cards = document.querySelectorAll('#workCardsContainer .workCard');
+	if (!cards.length) return;
+
+	anime.animate(cards, {
+		opacity: [0, 1],
+		translateY: [14, 0],
+		delay: anime.stagger(50),
+		duration: 560,
+		ease: 'out(2)'
+	});
 }
 
 // 篩選互動：點 tag 只顯示符合的卡片，整個分類為空時連標題一起隱藏
@@ -996,7 +1017,9 @@ function setupCardFilter() {
 	const rows = container.querySelectorAll('.workCards');
 
 	function applyFilter(key) {
+		// 篩選時加 .filtering：卡片改統一等寬 + 還原 compact 小卡（樣式在 style_cardbox.css）
 		rows.forEach(row => {
+			row.classList.toggle('filtering', key !== 'all');
 			let visibleCount = 0;
 			row.querySelectorAll(':scope > [data-tags]').forEach(col => {
 				const tags = (col.getAttribute('data-tags') || '').split(' ');

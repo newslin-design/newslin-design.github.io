@@ -370,3 +370,105 @@
 	-webkit-box-orient: vertical;
 	overflow: hidden;
 }
+
+
+/* ============================================================
+	首頁卡片：CSS Grid 排版（解決篩選跑版）
+	- 平時（A）：6 欄基準 + auto-flow dense，col-8/6/4 → span 4/3/2，
+	  維持手排的大小層級；同列自動等高。
+	- 篩選時（B，.workCards.filtering 由 app.js setupCardFilter 切換）：
+	  所有卡片統一 span 2（3 欄等寬），且還原 compact 小卡，幾乎不留洞。
+	用 #workCardsContainer 前綴鎖定首頁，並確保蓋過 .row 的 display:flex。
+	============================================================ */
+#workCardsContainer .workCards {
+	display: grid;
+	grid-template-columns: repeat(6, 1fr);
+	grid-auto-flow: row dense;
+	gap: 2px;
+	padding: 2px;
+	align-items: stretch;
+}
+
+/* 寬度交給 grid span，停用原本的 width 百分比 */
+#workCardsContainer .workCards>[class*="col-"] {
+	width: auto;
+	grid-column: span 2;
+	/* 預設 col-4 → 1/3 寬 */
+}
+
+#workCardsContainer .workCards>.col-6 {
+	grid-column: span 3;
+	/* 1/2 寬 */
+}
+
+#workCardsContainer .workCards>.col-8 {
+	grid-column: span 4;
+	/* 2/3 寬（star project） */
+}
+
+#workCardsContainer .workCards>.col-12 {
+	grid-column: span 6;
+}
+
+/* B：篩選狀態 → 所有卡片統一 1/3 寬 */
+#workCardsContainer .workCards.filtering>[class*="col-"] {
+	grid-column: span 2 !important;
+}
+
+/* 篩選狀態 → 取消 compact「小卡」樣式，回到一般卡大小 */
+#workCardsContainer .workCards.filtering>.col-compact {
+	align-self: stretch;
+}
+
+#workCardsContainer .workCards.filtering .workCard.compact {
+	min-height: 220px;
+}
+
+#workCardsContainer .workCards.filtering .workCard.compact .work-image {
+	flex: 0 0 auto;
+	height: 220px;
+}
+
+#workCardsContainer .workCards.filtering .workCard.compact .textBox {
+	flex: 1 0 auto;
+}
+
+#workCardsContainer .workCards.filtering .workCard.compact h3 {
+	font-size: 17px;
+}
+
+#workCardsContainer .workCards.filtering .workCard.compact .card-desc {
+	-webkit-line-clamp: unset;
+	display: block;
+	overflow: visible;
+}
+
+/* 平板：兩欄等寬 */
+@media (max-width: 1024px) {
+	#workCardsContainer .workCards {
+		grid-template-columns: repeat(2, 1fr);
+	}
+
+	#workCardsContainer .workCards>[class*="col-"],
+	#workCardsContainer .workCards>.col-6,
+	#workCardsContainer .workCards>.col-8 {
+		grid-column: span 1;
+	}
+
+	#workCardsContainer .workCards.filtering>[class*="col-"] {
+		grid-column: span 1 !important;
+	}
+}
+
+/* 手機：單欄 */
+@media (max-width: 480px) {
+	#workCardsContainer .workCards {
+		grid-template-columns: 1fr;
+	}
+
+	#workCardsContainer .workCards>[class*="col-"],
+	#workCardsContainer .workCards>.col-6,
+	#workCardsContainer .workCards>.col-8 {
+		grid-column: span 1;
+	}
+}

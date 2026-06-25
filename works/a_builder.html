@@ -379,59 +379,74 @@
 				wasn't ready yet.
 			</p>
 
-			<div style="width:100%;max-width:1000px;margin:32px auto;font-size:14px;line-height:1.7">
-				<div
-					style="border:1px solid #ccc;border-radius:8px;padding:16px 20px;background:#fafafa;display:flex;align-items:flex-start;gap:14px">
-					<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#5C5C5C" stroke-width="1.5"
-						stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:4px"
-						aria-hidden="true">
-						<rect x="3" y="4" width="18" height="16" rx="2" />
-						<line x1="3" y1="9" x2="21" y2="9" />
-						<line x1="10" y1="9" x2="10" y2="20" />
+			<!-- Self-drawing three-layer architecture diagram (anime.js v4) -->
+				<figure id="arch-figure" style="width:100%;max-width:1000px;margin:36px auto 6px">
+					<svg id="arch-svg" viewBox="0 0 960 540" role="img"
+						aria-label="Three-layer architecture: the Application layer consumes the Core engine layer through node, connection and interaction APIs; the Core engine layer consumes the Data layer through a standardized Product Schema."
+						style="width:100%;height:auto;font-family:inherit;overflow:visible">
+
+						<!-- layer fills (fade in) -->
+						<rect class="box-fill" x="40" y="24" width="880" height="128" rx="10" fill="#f0f6ff" />
+						<rect class="box-fill" x="40" y="208" width="880" height="128" rx="10" fill="#fafafa" />
+						<rect class="box-fill" x="40" y="392" width="880" height="128" rx="10" fill="#fff8f0" />
+
+						<!-- layer outlines (drawn) — order: Application, Engine, Data -->
+						<rect class="draw" x="40" y="24" width="880" height="128" rx="10" fill="none" stroke="#2c6184"
+							stroke-width="1.6" />
+						<rect class="draw" x="40" y="208" width="880" height="128" rx="10" fill="none" stroke="#8a8a8a"
+							stroke-width="1.6" />
+						<rect class="draw" x="40" y="392" width="880" height="128" rx="10" fill="none" stroke="#caa15f"
+							stroke-width="1.6" />
+
+						<!-- connectors (drawn) — upper layer consumes lower via a standard interface -->
+						<line class="draw connector" x1="150" y1="208" x2="150" y2="152" stroke="#9aa1ad"
+							stroke-width="1.6" />
+						<path class="draw connector" d="M144 161 L150 152 L156 161" fill="none" stroke="#9aa1ad"
+							stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+						<line class="draw connector" x1="150" y1="392" x2="150" y2="336" stroke="#9aa1ad"
+							stroke-width="1.6" />
+						<path class="draw connector" d="M144 345 L150 336 L156 345" fill="none" stroke="#9aa1ad"
+							stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+
+						<!-- layer icons (fade in) -->
+						<g class="fade" transform="translate(58,72) scale(1.16)" fill="none" stroke="#2c6184"
+							stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+							<rect x="3" y="4" width="18" height="16" rx="2" />
+							<line x1="3" y1="9" x2="21" y2="9" />
+							<line x1="10" y1="9" x2="10" y2="20" />
+						</g>
+						<g class="fade" transform="translate(58,256) scale(1.16)" fill="none" stroke="#5c5c5c"
+							stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+							<circle cx="5" cy="6" r="2.5" />
+							<circle cx="19" cy="6" r="2.5" />
+							<circle cx="12" cy="18" r="2.5" />
+							<path d="M7.5 6h9M6.3 8.2l4.4 7.6M17.7 8.2l-4.4 7.6" />
+						</g>
+						<g class="fade" transform="translate(58,440) scale(1.16)" fill="none" stroke="#90602a"
+							stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+							<ellipse cx="12" cy="5" rx="8" ry="3" />
+							<path d="M4 5v14c0 1.66 3.58 3 8 3s8-1.34 8-3V5" />
+							<path d="M4 12c0 1.66 3.58 3 8 3s8-1.34 8-3" />
+						</g>
+
+						<!-- text (fade in) -->
+						<text class="fade" x="104" y="70"><tspan font-size="17" font-weight="800" fill="#2c6184">Application layer</tspan><tspan font-size="12.5" fill="#5a6170"> — assembles lower-layer capabilities by “user × scenario”</tspan></text>
+						<text class="fade" x="104" y="106" font-size="11.5" fill="#8a93a3">Product selector · Free canvas · AI product search · AI-generated wiring diagrams · BOM / PDF export · Salesforce integration</text>
+
+						<text class="fade" x="170" y="184" font-size="12.5" fill="#6b7280">consumes: node / connection / interaction APIs</text>
+
+						<text class="fade" x="104" y="254"><tspan font-size="17" font-weight="800" fill="#3a3a3a">Core engine layer</tspan><tspan font-size="12.5" fill="#5a6170"> — AV-aware diagramming capability, with no assumed use case</tspan></text>
+						<text class="fade" x="104" y="290" font-size="11.5" fill="#8a93a3">Deep React Flow customization · Dynamic Handle generation · Compatibility checking · 17 custom Hooks · Pure front-end export pipeline</text>
+
+						<text class="fade" x="170" y="368" font-size="12.5" fill="#6b7280">consumes: standardized Product Schema</text>
+
+						<text class="fade" x="104" y="438"><tspan font-size="17" font-weight="800" fill="#90602a">Data layer</tspan><tspan font-size="12.5" fill="#5a6170"> — lets the upper layers ignore the mess</tspan></text>
+						<text class="fade" x="104" y="474" font-size="11.5" fill="#8a93a3">productDatabase.json single source of truth · LLM structuring pipeline (covered separately) · Product-management back office</text>
 					</svg>
-					<div>
-						<strong>Application layer</strong>— assembles lower-layer capabilities by "user × scenario"<br>
-						<span class="gray">Product selector · Free canvas · AI product search · AI-generated wiring
-							diagrams · BOM / PDF export · Salesforce integration</span>
-					</div>
-				</div>
-				<div style="text-align:center;color:#999;padding:4px">▲ consumes: node / connection / interaction APIs
-				</div>
-				<div
-					style="border:1px solid #ccc;border-radius:8px;padding:16px 20px;background:#fafafa;display:flex;align-items:flex-start;gap:14px">
-					<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#5C5C5C" stroke-width="1.5"
-						stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:4px"
-						aria-hidden="true">
-						<circle cx="5" cy="6" r="2.5" />
-						<circle cx="19" cy="6" r="2.5" />
-						<circle cx="12" cy="18" r="2.5" />
-						<path d="M7.5 6h9M6.3 8.2l4.4 7.6M17.7 8.2l-4.4 7.6" />
-					</svg>
-					<div>
-						<strong>Core engine layer</strong>— AV-aware diagramming capability, with no assumed use
-						case<br>
-						<span class="gray">Deep React Flow customization · Dynamic Handle generation · Compatibility
-							checking · 17 custom Hooks · Pure front-end export pipeline</span>
-					</div>
-				</div>
-				<div style="text-align:center;color:#999;padding:4px">▲ consumes: standardized Product Schema</div>
-				<div
-					style="border:1px solid #ccc;border-radius:8px;padding:16px 20px;background:#fafafa;display:flex;align-items:flex-start;gap:14px">
-					<svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#5C5C5C" stroke-width="1.5"
-						stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:4px"
-						aria-hidden="true">
-						<ellipse cx="12" cy="5" rx="8" ry="3" />
-						<path d="M4 5v14c0 1.66 3.58 3 8 3s8-1.34 8-3V5" />
-						<path d="M4 12c0 1.66 3.58 3 8 3s8-1.34 8-3" />
-					</svg>
-					<div>
-						<strong>Data layer</strong>— lets the upper layers ignore the mess<br>
-						<span class="gray">productDatabase.json single source of truth · LLM structuring pipeline
-							(covered
-							separately) · Product-management back office</span>
-					</div>
-				</div>
-			</div>
+					<figcaption class="gray" style="text-align:center;font-size:12.5px;margin-top:8px">
+						Three layers, one contract — scroll to trace how each layer consumes the one below.
+					</figcaption>
+				</figure>
 
 			<p>
 				Core principle: <strong>lower layers don't know who's above them; upper layers consume lower layers only
@@ -915,7 +930,46 @@
 	</div>
 
 	<footer></footer>
+	<script src="js/anime.min.js"></script>
 	<script src="js/app.js"></script>
+	<script>
+		/* Solution Builder — 三層架構圖滾動自我描繪（anime.js v4） */
+		(function () {
+			var svg = document.getElementById('arch-svg');
+			if (!svg) return;
+			// 沒有 anime / 不支援 / 使用者偏好減少動態 → 保留完整靜態圖，不做任何事
+			if (typeof anime === 'undefined' || !anime.svg || !anime.svg.createDrawable) return;
+			if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+			try {
+				var drawEls = anime.svg.createDrawable('#arch-svg .draw');
+
+				// 設定成功後才隱藏填色與文字，交給 timeline 逐步揭示
+				svg.querySelectorAll('.box-fill, .fade').forEach(function (el) { el.style.opacity = 0; });
+
+				var tl = anime.createTimeline({ autoplay: false });
+				tl
+					.add(drawEls, { draw: ['0 0', '0 1'], ease: 'inOutQuad', duration: 600, delay: anime.stagger(120) })
+					.add('#arch-svg .box-fill', { opacity: [0, 1], duration: 350, delay: anime.stagger(120) }, 260)
+					.add('#arch-svg .fade', { opacity: [0, 1], duration: 320, delay: anime.stagger(40) }, 520);
+
+				// 進入視窗就播一次（標準 IntersectionObserver，不依賴 anime.onScroll）
+				if ('IntersectionObserver' in window) {
+					var io = new IntersectionObserver(function (entries) {
+						entries.forEach(function (en) { if (en.isIntersecting) { tl.play(); io.disconnect(); } });
+					}, { threshold: 0.25 });
+					io.observe(svg);
+				} else {
+					tl.play();
+				}
+			} catch (e) {
+				// 任何失誤都還原成完整靜態圖
+				svg.querySelectorAll('.draw').forEach(function (el) { el.style.strokeDasharray = ''; el.style.strokeDashoffset = ''; });
+				svg.querySelectorAll('.box-fill, .fade').forEach(function (el) { el.style.opacity = ''; });
+				console.log('arch diagram: static fallback —', e);
+			}
+		})();
+	</script>
 </body>
 
 </html>
