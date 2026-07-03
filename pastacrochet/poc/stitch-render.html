@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POC v2 — stitch-path 毛線渲染（蕾絲花片）</title>
+    <style>
+        :root { --bg:#f6efe6; --ink:#4a3b32; --line:#d8c7b4; --accent:#c96a4b; }
+        * { box-sizing:border-box; }
+        body{ margin:0; font-family:"Segoe UI","Noto Sans TC",system-ui,sans-serif;
+            background:radial-gradient(120% 120% at 50% 0%, #fff8ef 0%, var(--bg) 70%);
+            color:var(--ink); min-height:100vh; padding:24px 16px 60px;
+            display:flex; flex-direction:column; align-items:center; }
+        h1{ font-size:20px; margin:0 0 2px; }
+        .sub{ font-size:13px; color:#8a7563; margin:0 0 18px; text-align:center; max-width:680px; line-height:1.6; }
+        .compare{ display:flex; gap:14px; flex-wrap:wrap; justify-content:center; align-items:flex-start; margin-bottom:18px; }
+        figure{ margin:0; background:#fffaf2; border:1px solid var(--line); border-radius:16px; padding:12px; text-align:center;
+            box-shadow:0 12px 30px -18px rgba(90,60,40,.5); }
+        figure img, figure canvas{ display:block; width:300px; height:300px; object-fit:contain; border-radius:10px; background:#fff; }
+        figcaption{ font-size:12px; color:#8a7563; margin-top:8px; font-weight:700; letter-spacing:.03em; }
+        .panel{ width:min(680px,100%); display:grid; gap:12px; }
+        .row{ background:#fffaf2; border:1px solid var(--line); border-radius:14px; padding:12px 14px; }
+        .row h3{ margin:0 0 8px; font-size:13px; color:#8a7563; font-weight:700; }
+        .chips{ display:flex; flex-wrap:wrap; gap:8px; align-items:center; }
+        button{ font:inherit; font-size:13px; border:1px solid var(--line); background:#fff; color:var(--ink);
+            border-radius:999px; padding:7px 14px; cursor:pointer; transition:all .15s; }
+        button:hover{ border-color:var(--accent); }
+        button.on{ background:var(--accent); border-color:var(--accent); color:#fff; }
+        label.swatch{ display:inline-flex; align-items:center; gap:6px; font-size:13px; }
+        input[type=color]{ width:34px; height:26px; border:1px solid var(--line); border-radius:6px; background:#fff; cursor:pointer; }
+        .note{ font-size:12px; color:#a08b78; margin-top:6px; line-height:1.6; }
+    </style>
+</head>
+
+<body>
+    <h1>🧶 POC v2 — stitch-path 毛線渲染</h1>
+    <p class="sub">每一針畫成毛線筆觸、沿著 round 半徑排列（非格子填色）。左為程式渲染、中為你的真實織圖 SVG、右為成品照，直接比對。這是「像真織圖」的方向驗證；忠實還原某張圖需把它轉錄成針目 JSON（見 PLAN）。</p>
+
+    <div class="compare">
+        <figure>
+            <canvas id="cv" width="300" height="300"></canvas>
+            <figcaption>① 程式渲染（procedural）</figcaption>
+        </figure>
+        <figure>
+            <img src="../crochet_library/doily_桜.svg" alt="真實織圖" onerror="this.style.opacity=.3">
+            <figcaption>② 真實織圖 編み図（SVG）</figcaption>
+        </figure>
+        <figure>
+            <img src="../crochet_library/doily_桜_picture.png" alt="成品照" onerror="this.style.opacity=.3">
+            <figcaption>③ 成品照（目標手感）</figcaption>
+        </figure>
+    </div>
+
+    <div class="panel">
+        <div class="row">
+            <h3>毛線顏色</h3>
+            <div class="chips">
+                <label class="swatch">花瓣 <input type="color" id="bodyColor" value="#e58aa8"></label>
+                <label class="swatch">中心 <input type="color" id="coreColor" value="#d06f92"></label>
+                <label class="swatch">邊緣 picot <input type="color" id="edgeColor" value="#fbf6f0"></label>
+                <button id="glossBtn">✨ 光澤線</button>
+            </div>
+        </div>
+        <div class="row">
+            <h3>結構（模擬 round 圈數）</h3>
+            <div class="chips">
+                <button data-petals="5" class="petalBtn on">5 瓣櫻花</button>
+                <button data-petals="6" class="petalBtn">6 瓣</button>
+                <button data-petals="8" class="petalBtn">8 瓣</button>
+                <button id="ringBtn" class="on">中心環</button>
+                <button id="picotBtn" class="on">picot 邊</button>
+            </div>
+            <p class="note">這是程序化生成的櫻花族花片，用來證明「毛線筆觸 + round 排列」渲染成立。要 100% 對上 ② 那張，下一步是把它轉錄成針目 JSON。</p>
+        </div>
+    </div>
+
+    <script>
+    const cv = document.getElementById('cv');
+    const ctx = cv.getContext('2d');
+    const CX = 150, CY = 150;
+
+    const state = {
+        body: '#e58aa8', core: '#d06f92', edge: '#fbf6f0',
+        petals: 5, ring: true, picot: true, gloss: false
+    };
+
+    function shade(hex, amt){
+        const n = parseInt(hex.slice(1),16);
+        let r=(n>>16)+amt, g=((n>>8)&255)+amt, b=(n&255)+amt;
+        const cl=v=>Math.max(0,Math.min(255,v));
+        return `rgb(${cl(r)},${cl(g)},${cl(b)})`;
+    }
+    const P = (r, deg) => [CX + r*Math.cos(deg*Math.PI/180), CY + r*Math.sin(deg*Math.PI/180)];
+
+    // 一段毛線：粗底 + 深色描邊 + 撚線斜紋（讀作毛線）
+    function yarn(pts, color, w){
+        ctx.lineCap='round'; ctx.lineJoin='round';
+        // 描邊（深）
+        ctx.strokeStyle = shade(color,-50); ctx.lineWidth = w+2.5;
+        stroke(pts);
+        // 本體
+        ctx.strokeStyle = color; ctx.lineWidth = w;
+        stroke(pts);
+        // 撚線斜紋
+        ctx.strokeStyle = shade(color,-28); ctx.lineWidth = 1;
+        for(let i=0;i<pts.length-1;i++){
+            const [x1,y1]=pts[i], [x2,y2]=pts[i+1];
+            const steps=Math.max(2,Math.hypot(x2-x1,y2-y1)/5);
+            for(let s=0;s<steps;s++){
+                const t=s/steps, x=x1+(x2-x1)*t, y=y1+(y2-y1)*t;
+                const a=Math.atan2(y2-y1,x2-x1)+Math.PI/3;
+                ctx.beginPath();
+                ctx.moveTo(x-Math.cos(a)*w*0.35, y-Math.sin(a)*w*0.35);
+                ctx.lineTo(x+Math.cos(a)*w*0.35, y+Math.sin(a)*w*0.35);
+                ctx.stroke();
+            }
+        }
+        if(state.gloss){
+            ctx.strokeStyle='rgba(255,255,255,.5)'; ctx.lineWidth=w*0.3;
+            ctx.save(); ctx.translate(-w*0.18,-w*0.18); stroke(pts); ctx.restore();
+        }
+    }
+    function stroke(pts){
+        ctx.beginPath(); ctx.moveTo(pts[0][0],pts[0][1]);
+        for(let i=1;i<pts.length;i++) ctx.lineTo(pts[i][0],pts[i][1]);
+        ctx.stroke();
+    }
+    // 沿半徑帶點弧度的「柱」（長針）
+    function post(r0, r1, deg, bow){
+        const mid=(r0+r1)/2;
+        return [ P(r0,deg), P(mid,deg+bow), P(r1,deg) ];
+    }
+
+    function render(){
+        ctx.clearRect(0,0,cv.width,cv.height);
+        const n = state.petals;
+        const step = 360/n;
+
+        // Round 2：外圈大花瓣（每瓣一把 5 根長針扇形 + 尖端 picot）
+        for(let k=0;k<n;k++){
+            const a = -90 + k*step;
+            const fan = 5, spread = step*0.42;
+            for(let f=0; f<fan; f++){
+                const off = -spread/2 + spread*(f/(fan-1));
+                const bow = off*0.15;
+                yarn(post(34, 108 - Math.abs(off)*0.9, a+off, bow), state.body, 6);
+            }
+            // 花瓣尖鎖針弧（連相鄰瓣）
+            const tip=108;
+            yarn([P(tip-6,a-spread*0.5), P(tip+4,a), P(tip-6,a+spread*0.5)], state.body, 4);
+        }
+
+        // Round 1：內圈小花瓣（錯開半格）
+        for(let k=0;k<n;k++){
+            const a = -90 + k*step + step/2;
+            for(let f=-1; f<=1; f++){
+                yarn(post(20, 46, a+f*step*0.16, f*3), state.core, 5);
+            }
+        }
+
+        // 中心環
+        if(state.ring){
+            ctx.lineCap='round';
+            ctx.strokeStyle=shade(state.core,-50); ctx.lineWidth=10;
+            ctx.beginPath(); ctx.arc(CX,CY,17,0,Math.PI*2); ctx.stroke();
+            ctx.strokeStyle=state.core; ctx.lineWidth=7.5;
+            ctx.beginPath(); ctx.arc(CX,CY,17,0,Math.PI*2); ctx.stroke();
+        }
+
+        // picot 邊：花瓣尖端白色小結
+        if(state.picot){
+            for(let k=0;k<n;k++){
+                const a=-90+k*step; const [x,y]=P(112,a);
+                ctx.fillStyle=state.edge; ctx.strokeStyle=shade(state.edge,-30); ctx.lineWidth=1;
+                ctx.beginPath(); ctx.arc(x,y,5,0,Math.PI*2); ctx.fill(); ctx.stroke();
+            }
+        }
+    }
+
+    // roundRect polyfill 不需要；綁定 UI
+    document.getElementById('bodyColor').oninput = e=>{ state.body=e.target.value; render(); };
+    document.getElementById('coreColor').oninput = e=>{ state.core=e.target.value; render(); };
+    document.getElementById('edgeColor').oninput = e=>{ state.edge=e.target.value; render(); };
+    document.getElementById('glossBtn').onclick = e=>{ state.gloss=!state.gloss; e.target.classList.toggle('on',state.gloss); render(); };
+    document.getElementById('ringBtn').onclick = e=>{ state.ring=!state.ring; e.target.classList.toggle('on',state.ring); render(); };
+    document.getElementById('picotBtn').onclick = e=>{ state.picot=!state.picot; e.target.classList.toggle('on',state.picot); render(); };
+    document.querySelectorAll('.petalBtn').forEach(b=>{
+        b.onclick = ()=>{
+            state.petals = +b.dataset.petals;
+            document.querySelectorAll('.petalBtn').forEach(x=>x.classList.remove('on'));
+            b.classList.add('on'); render();
+        };
+    });
+
+    render();
+    </script>
+</body>
+
+</html>

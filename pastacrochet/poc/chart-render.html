@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POC — 織譜 → 毛線麵渲染</title>
+    <style>
+        :root {
+            --bg: #f6efe6;
+            --ink: #4a3b32;
+            --line: #d8c7b4;
+            --accent: #c96a4b;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            font-family: "Segoe UI", "Noto Sans TC", system-ui, sans-serif;
+            background: radial-gradient(120% 120% at 50% 0%, #fff8ef 0%, var(--bg) 70%);
+            color: var(--ink);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 24px 16px 60px;
+        }
+
+        h1 { font-size: 20px; margin: 0 0 2px; }
+        .sub { font-size: 13px; color: #8a7563; margin: 0 0 20px; text-align: center; max-width: 640px; line-height: 1.6; }
+
+        .stage {
+            perspective: 900px;
+            margin-bottom: 20px;
+        }
+
+        #plate {
+            border-radius: 24px;
+            background: #fffaf2;
+            box-shadow: 0 18px 40px -18px rgba(90, 60, 40, .5), inset 0 0 0 10px #fff;
+            padding: 18px;
+            transition: transform .8s cubic-bezier(.2, .8, .2, 1);
+            transform-style: preserve-3d;
+        }
+        #plate.served {
+            transform: rotateX(52deg) rotateZ(-6deg) translateY(-6px);
+        }
+
+        canvas { display: block; border-radius: 12px; }
+
+        .panel {
+            width: min(680px, 100%);
+            display: grid;
+            gap: 14px;
+        }
+        .row {
+            background: #fffaf2;
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            padding: 12px 14px;
+        }
+        .row h3 { margin: 0 0 8px; font-size: 13px; letter-spacing: .04em; color: #8a7563; font-weight: 700; }
+        .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+
+        button {
+            font: inherit;
+            font-size: 13px;
+            border: 1px solid var(--line);
+            background: #fff;
+            color: var(--ink);
+            border-radius: 999px;
+            padding: 7px 14px;
+            cursor: pointer;
+            transition: all .15s;
+        }
+        button:hover { border-color: var(--accent); }
+        button.on {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #fff;
+            box-shadow: 0 4px 12px -4px var(--accent);
+        }
+        .swatch { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; box-shadow: inset 0 0 0 1px rgba(0,0,0,.15); }
+
+        .note { font-size: 12px; color: #a08b78; margin-top: 4px; line-height: 1.6; }
+        code { background: #efe4d5; padding: 1px 5px; border-radius: 4px; font-size: 12px; }
+    </style>
+</head>
+
+<body>
+    <h1>🧶 POC：織譜 → 毛線麵渲染</h1>
+    <p class="sub">
+        測試核心假設：畫面**完全由織譜格子算出**（非套照片）。改配方就即時重繪 —— 同時驗證「區域換色 = 配料」在勾針上成立，並附「織譜 ↔ 成品」切換，直接對應學習者痛點。
+    </p>
+
+    <div class="stage">
+        <div id="plate">
+            <canvas id="cv" width="440" height="440"></canvas>
+        </div>
+    </div>
+
+    <div class="panel">
+        <div class="row">
+            <h3>醬料 = 整體毛線顏色</h3>
+            <div class="chips" id="sauceChips"></div>
+        </div>
+        <div class="row">
+            <h3>配料 = 區域換色（tapestry crochet，真實技法）</h3>
+            <div class="chips" id="toppingChips"></div>
+            <p class="note">配料在織譜上就是一塊不同色的格子；移除就露出底下麵色。這在現實勾針＝在某幾針換線，完全可織。</p>
+        </div>
+        <div class="row">
+            <h3>線材質感 / 檢視</h3>
+            <div class="chips">
+                <button id="glossBtn">✨ 光澤線（清炒感）</button>
+                <button id="chartBtn">🔳 顯示織譜格線</button>
+                <button id="serveBtn">🍽️ Serve：膨脹 45°</button>
+            </div>
+            <p class="note">「光澤/霧面」對應真實不同線材（絲光棉 vs 純棉）；Serve 只是 CSS 傾斜示意，真正的 2D→3D 膨脹留給 Three.js 階段。</p>
+        </div>
+    </div>
+
+    <script>
+        // ---- 織譜資料模型：一格 = 一針 ----
+        const N = 22;                 // 22 x 22 格
+        const CELL = 20;              // px / 格
+        const cv = document.getElementById('cv');
+        const ctx = cv.getContext('2d');
+
+        // 產生織譜：底盤(麵) + 番茄/起司/羅勒 三個配料區
+        function inDisc(x, y, cx, cy, r) {
+            const dx = x - cx, dy = y - cy;
+            return dx * dx + dy * dy <= r * r;
+        }
+        // grid[y][x] = null | { region }
+        const grid = [];
+        for (let y = 0; y < N; y++) {
+            grid[y] = [];
+            for (let x = 0; x < N; x++) {
+                let region = null;
+                if (inDisc(x, y, 10.5, 11, 9.2)) region = 'base';   // 麵盤
+                if (region && inDisc(x, y, 7, 8, 3)) region = 'tomato';
+                if (region && inDisc(x, y, 15, 14.5, 2.4)) region = 'basil';
+                if (region === 'base' && inDisc(x, y, 13, 7, 1.6)) region = 'cheese';
+                grid[y][x] = region;
+            }
+        }
+
+        // ---- 狀態 ----
+        const sauces = {
+            '紅醬': '#e08a5f', '白醬': '#efe3cf', '青醬': '#93a86a', '清炒': '#f0d29a'
+        };
+        const toppingColor = { tomato: '#cf4630', basil: '#4f7c39', cheese: '#f2cf72' };
+        let state = {
+            sauce: '紅醬',
+            toppings: { tomato: true, basil: true, cheese: true },
+            gloss: false,
+            chart: false
+        };
+
+        // ---- 逐格畫一個 crochet 針目（讀作毛線凸起）----
+        function shade(hex, amt) {
+            const n = parseInt(hex.slice(1), 16);
+            let r = (n >> 16) + amt, g = ((n >> 8) & 255) + amt, b = (n & 255) + amt;
+            r = Math.max(0, Math.min(255, r)); g = Math.max(0, Math.min(255, g)); b = Math.max(0, Math.min(255, b));
+            return `rgb(${r},${g},${b})`;
+        }
+
+        function drawStitch(px, py, color) {
+            const s = CELL;
+            // 底：一個圓角色塊 = 這一針的毛線
+            ctx.fillStyle = color;
+            ctx.beginPath();
+            const r = 4;
+            ctx.roundRect(px + 1, py + 1, s - 2, s - 2, r);
+            ctx.fill();
+
+            // V 形溝槽（單針的兩條腿）＝ 深色，讓它讀成勾針
+            ctx.lineWidth = 2.4;
+            ctx.lineCap = 'round';
+            ctx.strokeStyle = shade(color, -46);
+            ctx.beginPath();
+            ctx.moveTo(px + 4, py + 4);
+            ctx.lineTo(px + s / 2, py + s - 5);
+            ctx.moveTo(px + s - 4, py + 4);
+            ctx.lineTo(px + s / 2, py + s - 5);
+            ctx.stroke();
+
+            // 頂邊一條淺色線 = 上緣的鎖鏈
+            ctx.strokeStyle = shade(color, 30);
+            ctx.lineWidth = 1.6;
+            ctx.beginPath();
+            ctx.moveTo(px + 4, py + 4.5);
+            ctx.lineTo(px + s - 4, py + 4.5);
+            ctx.stroke();
+
+            // 光澤：左上高光點（線材為絲光時才有）
+            if (state.gloss) {
+                const g = ctx.createRadialGradient(px + 6, py + 6, 1, px + 6, py + 6, 8);
+                g.addColorStop(0, 'rgba(255,255,255,.55)');
+                g.addColorStop(1, 'rgba(255,255,255,0)');
+                ctx.fillStyle = g;
+                ctx.beginPath();
+                ctx.arc(px + 7, py + 6, 7, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function colorFor(region) {
+            if (region === 'base') return sauces[state.sauce];
+            if (state.toppings[region]) return toppingColor[region];
+            return sauces[state.sauce];        // 配料關掉 → 露出麵色
+        }
+
+        function render() {
+            ctx.clearRect(0, 0, cv.width, cv.height);
+            const ox = (cv.width - N * CELL) / 2, oy = (cv.height - N * CELL) / 2;
+
+            for (let y = 0; y < N; y++) {
+                for (let x = 0; x < N; x++) {
+                    const region = grid[y][x];
+                    if (!region) continue;
+                    const px = ox + x * CELL, py = oy + y * CELL;
+                    if (state.chart) {
+                        // 織譜檢視：格線 + 該格顏色小方塊 + 針法記號
+                        ctx.strokeStyle = '#c9b8a4';
+                        ctx.lineWidth = 1;
+                        ctx.strokeRect(px + .5, py + .5, CELL - 1, CELL - 1);
+                        ctx.fillStyle = colorFor(region);
+                        ctx.fillRect(px + 3, py + 3, CELL - 6, CELL - 6);
+                        ctx.fillStyle = 'rgba(0,0,0,.45)';
+                        ctx.font = '10px monospace';
+                        ctx.textAlign = 'center';
+                        ctx.fillText('×', px + CELL / 2, py + CELL / 2 + 3.5); // 單針記號
+                    } else {
+                        drawStitch(px, py, colorFor(region));
+                    }
+                }
+            }
+        }
+
+        // ---- UI ----
+        const sauceChips = document.getElementById('sauceChips');
+        Object.keys(sauces).forEach(name => {
+            const b = document.createElement('button');
+            b.innerHTML = `<span class="swatch" style="background:${sauces[name]}"></span>${name}`;
+            if (name === state.sauce) b.classList.add('on');
+            b.onclick = () => {
+                state.sauce = name;
+                [...sauceChips.children].forEach(c => c.classList.remove('on'));
+                b.classList.add('on');
+                render();
+            };
+            sauceChips.appendChild(b);
+        });
+
+        const toppingChips = document.getElementById('toppingChips');
+        const toppingLabel = { tomato: '🍅 番茄', basil: '🌿 羅勒', cheese: '🧀 起司' };
+        Object.keys(state.toppings).forEach(key => {
+            const b = document.createElement('button');
+            b.innerHTML = `<span class="swatch" style="background:${toppingColor[key]}"></span>${toppingLabel[key]}`;
+            if (state.toppings[key]) b.classList.add('on');
+            b.onclick = () => {
+                state.toppings[key] = !state.toppings[key];
+                b.classList.toggle('on', state.toppings[key]);
+                render();
+            };
+            toppingChips.appendChild(b);
+        });
+
+        const glossBtn = document.getElementById('glossBtn');
+        glossBtn.onclick = () => { state.gloss = !state.gloss; glossBtn.classList.toggle('on', state.gloss); render(); };
+        const chartBtn = document.getElementById('chartBtn');
+        chartBtn.onclick = () => { state.chart = !state.chart; chartBtn.classList.toggle('on', state.chart); render(); };
+        const serveBtn = document.getElementById('serveBtn');
+        const plate = document.getElementById('plate');
+        serveBtn.onclick = () => {
+            plate.classList.toggle('served');
+            serveBtn.classList.toggle('on', plate.classList.contains('served'));
+        };
+
+        // polyfill roundRect（舊瀏覽器）
+        if (!ctx.roundRect) {
+            CanvasRenderingContext2D.prototype.roundRect = function (x, y, w, h, r) {
+                this.beginPath();
+                this.moveTo(x + r, y);
+                this.arcTo(x + w, y, x + w, y + h, r);
+                this.arcTo(x + w, y + h, x, y + h, r);
+                this.arcTo(x, y + h, x, y, r);
+                this.arcTo(x, y, x + w, y, r);
+                this.closePath();
+                return this;
+            };
+        }
+
+        render();
+    </script>
+</body>
+
+</html>

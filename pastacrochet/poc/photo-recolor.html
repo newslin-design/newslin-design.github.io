@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POC v3 — 照片重上色（photo recolor）</title>
+    <style>
+        :root { --bg:#f6efe6; --ink:#4a3b32; --line:#d8c7b4; --accent:#c96a4b; }
+        * { box-sizing:border-box; }
+        body{ margin:0; font-family:"Segoe UI","Noto Sans TC",system-ui,sans-serif;
+            background:radial-gradient(120% 120% at 50% 0%, #fff8ef 0%, var(--bg) 70%);
+            color:var(--ink); min-height:100vh; padding:24px 16px 60px;
+            display:flex; flex-direction:column; align-items:center; }
+        h1{ font-size:20px; margin:0 0 2px; }
+        .sub{ font-size:13px; color:#8a7563; margin:0 0 18px; text-align:center; max-width:680px; line-height:1.6; }
+        .compare{ display:flex; gap:14px; flex-wrap:wrap; justify-content:center; margin-bottom:18px; }
+        figure{ margin:0; background:#fffaf2; border:1px solid var(--line); border-radius:16px; padding:12px; text-align:center;
+            box-shadow:0 12px 30px -18px rgba(90,60,40,.5); }
+        canvas{ display:block; width:320px; border-radius:10px; image-rendering:auto; }
+        figcaption{ font-size:12px; color:#8a7563; margin-top:8px; font-weight:700; }
+        .panel{ width:min(680px,100%); display:grid; gap:12px; }
+        .row{ background:#fffaf2; border:1px solid var(--line); border-radius:14px; padding:12px 14px; }
+        .row h3{ margin:0 0 8px; font-size:13px; color:#8a7563; font-weight:700; }
+        .chips{ display:flex; flex-wrap:wrap; gap:8px; align-items:center; }
+        button{ font:inherit; font-size:13px; border:1px solid var(--line); background:#fff; color:var(--ink);
+            border-radius:999px; padding:7px 14px; cursor:pointer; transition:all .15s; }
+        button:hover{ border-color:var(--accent); }
+        button.on{ background:var(--accent); border-color:var(--accent); color:#fff; }
+        .sw{ display:inline-block; width:12px; height:12px; border-radius:3px; margin-right:6px; vertical-align:-1px; box-shadow:inset 0 0 0 1px rgba(0,0,0,.15); }
+        label.pick{ display:inline-flex; align-items:center; gap:6px; font-size:13px; }
+        input[type=color]{ width:34px; height:26px; border:1px solid var(--line); border-radius:6px; background:#fff; cursor:pointer; }
+        .note{ font-size:12px; color:#a08b78; margin-top:6px; line-height:1.6; }
+    </style>
+</head>
+
+<body>
+    <h1>📷 POC v3 — 照片重上色</h1>
+    <p class="sub">右邊不是畫的——就是你的成品照本人，程式只做「保留明暗、替換色相」。毛線細節、陰影、鏤空全是真的，所以「跟照片一樣」是天生保證。醬料 = 花瓣毛線換色；滾邊可獨立換色；鏤空透出的桌面不動。</p>
+
+    <div class="compare">
+        <figure>
+            <canvas id="orig" width="320" height="292"></canvas>
+            <figcaption>① 原照（裁切）</figcaption>
+        </figure>
+        <figure>
+            <canvas id="out" width="320" height="292"></canvas>
+            <figcaption>② 即時重上色（醬料換色）</figcaption>
+        </figure>
+    </div>
+
+    <div class="panel">
+        <div class="row">
+            <h3>醬料 = 花瓣毛線色</h3>
+            <div class="chips" id="sauceChips"></div>
+        </div>
+        <div class="row">
+            <h3>自訂</h3>
+            <div class="chips">
+                <label class="pick">花瓣 <input type="color" id="bodyPick" value="#d96b47"></label>
+                <label class="pick">滾邊 <input type="color" id="edgePick" value="#fbf6f0"></label>
+                <button id="resetBtn">↺ 還原原照</button>
+            </div>
+            <p class="note">分類：粉色毛線 / 白色滾邊 / 背景木紋（HSV 自動分割，每張圖轉錄時校準一次）。配料＝下一步：區域遮罩（局部重上色）＋ 疊加配料 sprite。</p>
+        </div>
+    </div>
+
+    <script>
+    // 裁切框：由照片分析求得（粉色最大連通區 + 滾邊 margin）
+    const CROP = { x:54, y:206, w:320, h:292 };
+
+    const orig = document.getElementById('orig'), out = document.getElementById('out');
+    const octx = orig.getContext('2d'), ctx = out.getContext('2d');
+
+    // HSV helpers
+    function rgb2hsv(r,g,b){
+        r/=255; g/=255; b/=255;
+        const mx=Math.max(r,g,b), mn=Math.min(r,g,b), d=mx-mn;
+        let h=0;
+        if(d){ if(mx===r) h=((g-b)/d)%6; else if(mx===g) h=(b-r)/d+2; else h=(r-g)/d+4; h*=60; if(h<0)h+=360; }
+        return [h, mx? d/mx : 0, mx];
+    }
+    function hsv2rgb(h,s,v){
+        const c=v*s, x=c*(1-Math.abs((h/60)%2-1)), m=v-c;
+        let r,g,b;
+        if(h<60)[r,g,b]=[c,x,0]; else if(h<120)[r,g,b]=[x,c,0]; else if(h<180)[r,g,b]=[0,c,x];
+        else if(h<240)[r,g,b]=[0,x,c]; else if(h<300)[r,g,b]=[x,0,c]; else [r,g,b]=[c,0,x];
+        return [(r+m)*255, (g+m)*255, (b+m)*255];
+    }
+    function hex2hsv(hex){
+        const n=parseInt(hex.slice(1),16);
+        return rgb2hsv(n>>16, (n>>8)&255, n&255);
+    }
+
+    // 快取：原始像素 HSV + 分類（0 背景 / 1 粉色毛線 / 2 白色滾邊）
+    let base=null, cls=null, hsv=null;
+
+    const img = new Image();
+    img.src = '../crochet_library/doily_桜_picture.png';
+    img.onload = () => {
+        octx.drawImage(img, CROP.x, CROP.y, CROP.w, CROP.h, 0, 0, CROP.w, CROP.h);
+        base = octx.getImageData(0,0,CROP.w,CROP.h);
+        const n = CROP.w*CROP.h;
+        cls = new Uint8Array(n);
+        hsv = new Float32Array(n*3);
+        const d = base.data;
+        for(let i=0;i<n;i++){
+            const [h,s,v] = rgb2hsv(d[i*4],d[i*4+1],d[i*4+2]);
+            hsv[i*3]=h; hsv[i*3+1]=s; hsv[i*3+2]=v;
+            if(s>0.18 && v>0.25 && (h>=300||h<=20)) cls[i]=1;        // 粉色毛線本體
+            else if(s<=0.22 && v>0.62) cls[i]=2;                       // 白色滾邊
+        }
+        window.__stats = {
+            body: cls.filter?undefined:0,
+        };
+        // 統計供驗證
+        let c0=0,c1=0,c2=0;
+        for(let i=0;i<n;i++){ if(cls[i]===1)c1++; else if(cls[i]===2)c2++; else c0++; }
+        window.__cls = {bg:c0, body:c1, edge:c2};
+        recolor(document.getElementById('bodyPick').value, document.getElementById('edgePick').value);
+    };
+
+    function recolor(bodyHex, edgeHex){
+        if(!base) return;
+        const [bh,bs,bv] = hex2hsv(bodyHex);
+        const [eh,es,ev] = hex2hsv(edgeHex);
+        const n = CROP.w*CROP.h;
+        const outData = ctx.createImageData(CROP.w, CROP.h);
+        const src = base.data, dst = outData.data;
+        let hueSum=0, hueN=0, vSum=0;
+        for(let i=0;i<n;i++){
+            const i4=i*4;
+            if(cls[i]===0){
+                dst[i4]=src[i4]; dst[i4+1]=src[i4+1]; dst[i4+2]=src[i4+2];
+            } else {
+                const s0=hsv[i*3+1], v0=hsv[i*3+2];
+                let r,g,b;
+                if(cls[i]===1){
+                    // 花瓣：色相取目標、飽和度按原比例縮放、明度保留（乘目標明度的一半權重）
+                    const s = Math.min(1, bs * (s0/0.45));
+                    const v = Math.min(1, v0 * (0.5 + 0.5*(bv/0.85)));
+                    [r,g,b] = hsv2rgb(bh, s, v);
+                    hueSum+=bh; hueN++; vSum+=v;
+                } else {
+                    const s = Math.min(1, es * 0.9);
+                    const v = Math.min(1, v0 * (0.5 + 0.5*(ev/0.95)));
+                    [r,g,b] = hsv2rgb(eh, s, v);
+                }
+                dst[i4]=r; dst[i4+1]=g; dst[i4+2]=b;
+            }
+            dst[i4+3]=255;
+        }
+        ctx.putImageData(outData,0,0);
+        window.__recolor = { bodyHue: hueN? hueSum/hueN : null, meanV: hueN? vSum/hueN : null };
+    }
+
+    // ---- UI ----
+    const sauces = {
+        '紅醬':'#d96b47', '白醬':'#efe3cf', '青醬':'#8ba05e', '清炒':'#e8c987', '墨魚':'#4a4550'
+    };
+    const chips = document.getElementById('sauceChips');
+    const bodyPick = document.getElementById('bodyPick');
+    const edgePick = document.getElementById('edgePick');
+    Object.entries(sauces).forEach(([name,hex],idx)=>{
+        const b=document.createElement('button');
+        b.innerHTML = `<span class="sw" style="background:${hex}"></span>${name}`;
+        if(idx===0) b.classList.add('on');
+        b.onclick = ()=>{
+            [...chips.children].forEach(c=>c.classList.remove('on'));
+            b.classList.add('on');
+            bodyPick.value = hex;
+            recolor(hex, edgePick.value);
+        };
+        chips.appendChild(b);
+    });
+    bodyPick.oninput = ()=> recolor(bodyPick.value, edgePick.value);
+    edgePick.oninput = ()=> recolor(bodyPick.value, edgePick.value);
+    document.getElementById('resetBtn').onclick = ()=>{
+        if(!base) return;
+        ctx.putImageData(base,0,0);
+        [...chips.children].forEach(c=>c.classList.remove('on'));
+    };
+    </script>
+</body>
+
+</html>

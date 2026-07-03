@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POC v5.3 — 訂單流程＋雙織圖</title>
+    <style>
+        :root { --ink:#4a3b32; --line:#d8c7b4; --accent:#c96a4b; --card:rgba(255,250,242,.82); }
+        * { box-sizing:border-box; }
+        html,body{ margin:0; height:100%; overflow:hidden; font-family:"Segoe UI","Noto Sans TC",system-ui,sans-serif; color:var(--ink); }
+        #stage{ position:fixed; inset:0; }
+        #stage canvas{ display:block; }
+
+        .card{ position:fixed; background:var(--card); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
+            border:1px solid rgba(216,199,180,.7); border-radius:16px;
+            box-shadow:0 14px 40px -16px rgba(90,60,40,.45); }
+
+        #titleCard{ top:16px; left:16px; padding:10px 16px; }
+        #titleCard b{ font-size:15px; }
+        #titleCard span{ font-size:11.5px; color:#8a7563; display:block; }
+
+        /* 菜譜卡 */
+        #recipeCard{ top:16px; right:16px; width:238px; padding:12px; }
+        #recipeCard h3{ margin:0 0 6px; font-size:12.5px; color:#8a7563; }
+        #chartBox{ position:relative; background:#fff; border-radius:10px; overflow:hidden; min-height:60px; }
+        #chartBox svg{ display:block; width:100%; height:auto; }
+        #chartNote{ font-size:11px; color:#a08b78; margin:8px 0 0; line-height:1.5; }
+        .chips{ display:flex; flex-wrap:wrap; gap:6px; margin-top:8px; }
+        .chips button{ font:inherit; font-size:12px; border:1px solid var(--line); background:#fff; color:var(--ink);
+            border-radius:999px; padding:5px 10px; cursor:pointer; }
+        .chips button.on{ background:var(--accent); border-color:var(--accent); color:#fff; }
+        .sw{ display:inline-block; width:10px; height:10px; border-radius:3px; margin-right:4px; vertical-align:-1px; box-shadow:inset 0 0 0 1px rgba(0,0,0,.15); }
+
+        /* 訂單視窗 */
+        #orderModal{ position:fixed; inset:0; z-index:100; display:flex; align-items:center; justify-content:center;
+            background:rgba(74,59,50,.28); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px); }
+        #orderModal.hide{ display:none; }
+        .modalCard{ width:min(430px, 92vw); background:rgba(255,250,242,.94); border-radius:20px; padding:22px 24px;
+            border:1px solid rgba(216,199,180,.8); box-shadow:0 24px 60px -20px rgba(60,40,25,.6); }
+        .modalCard h2{ margin:0 0 4px; font-size:19px; }
+        .modalCard .lead{ font-size:12.5px; color:#8a7563; margin:0 0 12px; line-height:1.6; }
+        .secTitle{ font-size:12px; font-weight:700; color:#8a7563; margin:12px 0 2px; letter-spacing:.04em; }
+        #startWeaveBtn{ display:block; width:100%; margin-top:18px; font:inherit; font-weight:700; font-size:16px;
+            color:#fff; background:var(--accent); border:none; border-radius:999px; padding:13px;
+            cursor:pointer; box-shadow:0 10px 26px -10px var(--accent); transition:transform .15s; }
+        #startWeaveBtn:hover{ transform:translateY(-2px); }
+
+        /* 底部烹飪控制 */
+        #cookCard{ bottom:18px; left:50%; transform:translateX(-50%); padding:12px 18px; width:min(500px, 92vw); text-align:center; }
+        #cookHint{ font-size:12px; color:#8a7563; margin:0 0 8px; line-height:1.5; }
+        #cookBtn{ font:inherit; font-weight:700; font-size:15px; color:#fff; background:var(--accent); border:none;
+            border-radius:999px; padding:11px 30px; cursor:pointer; box-shadow:0 8px 22px -8px var(--accent); transition:all .15s; }
+        #cookBtn:disabled{ background:#cbb9a6; box-shadow:none; cursor:not-allowed; }
+        #timeBar{ position:relative; height:12px; border-radius:999px; margin:12px 4px 2px; overflow:visible; display:none;
+            background:linear-gradient(90deg, #b9cf95 0 62%, #7fae5e 62% 78%, #b8743f 78% 92%, #55402e 92%); }
+        #needle{ position:absolute; top:-4px; width:4px; height:20px; border-radius:2px; background:#4a3b32; left:0; }
+        #zoneLabel{ display:none; font-size:11px; color:#8a7563; margin-top:6px; }
+        #verdict{ display:none; font-weight:700; font-size:15px; margin-top:8px; }
+
+        /* 右下工具 */
+        #toolCard{ bottom:18px; right:16px; padding:8px; display:flex; gap:6px; }
+        #toolCard button{ font:inherit; font-size:13px; border:1px solid var(--line); background:#fff; color:var(--ink);
+            border-radius:10px; padding:8px 10px; cursor:pointer; }
+        #toolCard button.on{ background:var(--accent); border-color:var(--accent); color:#fff; }
+
+        #hint{ position:fixed; bottom:18px; left:16px; font-size:11.5px; color:#8a7563;
+            background:var(--card); border-radius:10px; padding:6px 10px; }
+
+        .fx{ position:fixed; pointer-events:none; font-size:14px; font-weight:700; color:var(--accent);
+            text-shadow:0 1px 4px rgba(255,250,242,.9); animation:fxUp .7s ease-out forwards; z-index:50; }
+        @keyframes fxUp{ from{ opacity:1; transform:translate(-50%,-50%); } to{ opacity:0; transform:translate(-50%,-160%); } }
+    </style>
+</head>
+
+<body>
+    <div id="stage"></div>
+
+    <div class="card" id="titleCard">
+        <b>🧶 毛線麵餐廳</b>
+        <span>POC v5.4 — 分區上色（織譜↔麵條）</span>
+    </div>
+
+    <div class="card" id="recipeCard">
+        <h3>📜 今日菜譜（織圖即時上色）</h3>
+        <div id="chartBox"><em style="font-size:12px;color:#a08b78">織圖載入中…</em></div>
+        <div class="chips" id="sauceChips"></div>
+        <div class="chips" id="topChips"></div>
+        <p id="chartNote">換織圖請開「下一份訂單」。</p>
+    </div>
+
+    <div class="card" id="cookCard">
+        <p id="cookHint">👆 點<b>亮起的 🧶 針目</b>織麵（難度 2 → 共 <b>5</b> 點）、<b>第一針開始計時</b>；織完後在<b>綠色區</b>起鍋最完美——太快麵芯不熟、太慢會焦。</p>
+        <button id="cookBtn" disabled>👆 點亮起的針目開始</button>
+        <div id="timeBar"><div id="needle"></div></div>
+        <div id="zoneLabel">織麵中 ─ 完美區（綠）─ 漸焦 ─ 燒焦</div>
+        <div id="verdict"></div>
+    </div>
+
+    <div class="card" id="toolCard">
+        <button id="spinBtn" class="on" title="自動旋轉">🔄</button>
+        <button id="shotBtn" title="下載美照">📷</button>
+        <button id="resetBtn" title="同配方重來">↺</button>
+    </div>
+
+    <div id="hint">拖曳旋轉視角 · 點亮起的針目織麵</div>
+
+    <!-- 訂單視窗：選織圖 / 醬料 / 食材 → 開始編織 -->
+    <div id="orderModal">
+        <div class="modalCard">
+            <h2>📋 今日訂單</h2>
+            <p class="lead">先幫客人配好這一盤——選織圖（麵形）、醬料與食材，配好後開始編織。背後的 3D 麵與菜譜會即時預覽你的選擇。</p>
+            <div class="secTitle">織圖（麵形）</div>
+            <div class="chips" id="mPatternChips"></div>
+            <div class="secTitle">醬料</div>
+            <div class="chips" id="mSauceChips"></div>
+            <div class="secTitle">食材</div>
+            <div class="chips" id="mTopChips"></div>
+            <button id="startWeaveBtn">🧶 開始編織</button>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+    <script>
+    // ================= 3D 場景 =================
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color('#f3e6d5');
+    scene.fog = new THREE.Fog('#f3e6d5', 85, 150);   // 相機拉遠到 58，霧同步外推
+
+    const camera = new THREE.PerspectiveCamera(40, innerWidth/innerHeight, 0.1, 200);
+    const renderer = new THREE.WebGLRenderer({ antialias:true, preserveDrawingBuffer:true });
+    renderer.setSize(innerWidth, innerHeight);
+    renderer.setPixelRatio(Math.min(2, devicePixelRatio));
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.08;
+    document.getElementById('stage').appendChild(renderer.domElement);
+
+    scene.add(new THREE.HemisphereLight('#fff4e0', '#a8896b', 0.85));
+    const sun = new THREE.DirectionalLight('#fff5e8', 2.2);
+    sun.position.set(-14, 26, 12);
+    sun.castShadow = true;
+    sun.shadow.mapSize.set(1024, 1024);
+    Object.assign(sun.shadow.camera, { left:-20, right:20, top:20, bottom:-20, near:5, far:60 });
+    scene.add(sun);
+    const fill = new THREE.DirectionalLight('#ffe9d0', 0.5);
+    fill.position.set(14, 10, -12);
+    scene.add(fill);
+
+    function woodTexture(){
+        const c = document.createElement('canvas'); c.width = c.height = 256;
+        const g = c.getContext('2d');
+        g.fillStyle = '#c9ab89'; g.fillRect(0,0,256,256);
+        for(let i=0;i<9;i++){
+            g.fillStyle = `rgba(${150+Math.random()*40|0},${110+Math.random()*30|0},${75+Math.random()*20|0},.35)`;
+            g.fillRect(i*30, 0, 26, 256);
+        }
+        g.strokeStyle = 'rgba(120,85,55,.25)'; g.lineWidth = 1.2;
+        for(let i=0;i<14;i++){
+            g.beginPath(); g.moveTo(Math.random()*256, 0);
+            g.bezierCurveTo(Math.random()*256,90, Math.random()*256,170, Math.random()*256,256); g.stroke();
+        }
+        const t = new THREE.CanvasTexture(c);
+        t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(3,3);
+        return t;
+    }
+    const table = new THREE.Mesh(
+        new THREE.CylinderGeometry(70, 70, 1, 48),
+        new THREE.MeshStandardMaterial({ map:woodTexture(), roughness:.9 })
+    );
+    table.position.y = -0.9; table.receiveShadow = true;
+    scene.add(table);
+
+    const plateProfile = [
+        new THREE.Vector2(0, 0.15), new THREE.Vector2(9.5, 0.35),
+        new THREE.Vector2(12.2, 0.9), new THREE.Vector2(13.6, 1.5), new THREE.Vector2(13.9, 1.45)
+    ];
+    const plate = new THREE.Mesh(
+        new THREE.LatheGeometry(plateProfile, 64),
+        new THREE.MeshStandardMaterial({ color:'#fffaf0', roughness:.45, side:THREE.DoubleSide })
+    );
+    plate.receiveShadow = true;
+    scene.add(plate);
+
+    (function(){
+        const c = document.createElement('canvas'); c.width = c.height = 128;
+        const g = c.getContext('2d');
+        const rg = g.createRadialGradient(64,64,8, 64,64,62);
+        rg.addColorStop(0,'rgba(60,40,25,.5)'); rg.addColorStop(1,'rgba(60,40,25,0)');
+        g.fillStyle = rg; g.fillRect(0,0,128,128);
+        const m = new THREE.Mesh(new THREE.PlaneGeometry(22,22),
+            new THREE.MeshBasicMaterial({ map:new THREE.CanvasTexture(c), transparent:true, opacity:.5, depthWrite:false }));
+        m.rotation.x = -Math.PI/2; m.position.y = 0.42;
+        scene.add(m);
+    })();
+
+    // ============ 毛線 ============
+    // 程序化撚線貼圖（v5.6 升級：兩股斜紋＋纖維髮絲）。之後若使用者提供真實毛線特寫照，
+    // 直接替換為 TextureLoader 載入的 color map + bump map（見 PLAN §材質）。
+    function yarnTexture(){
+        const c = document.createElement('canvas'); c.width = 128; c.height = 128;
+        const g = c.getContext('2d');
+        g.fillStyle = '#ffffff'; g.fillRect(0,0,128,128);
+        g.lineCap = 'round';
+        for(const [y0, dir] of [[0,1],[64,-1]]){
+            for(let i=-2;i<8;i++){
+                g.strokeStyle = 'rgba(80,52,34,.38)'; g.lineWidth = 13;   // 股溝
+                g.beginPath(); g.moveTo(i*22 - 12*dir, y0+70); g.lineTo(i*22 + 26 + 12*dir, y0-6); g.stroke();
+                g.strokeStyle = 'rgba(255,255,255,.6)'; g.lineWidth = 6;  // 股面高光
+                g.beginPath(); g.moveTo(i*22 - 4*dir, y0+70); g.lineTo(i*22 + 34 + 4*dir, y0-6); g.stroke();
+            }
+            // 纖維髮絲
+            for(let f=0; f<46; f++){
+                const x0 = Math.random()*150 - 10, y1 = y0 + Math.random()*64;
+                const len = 8 + Math.random()*18;
+                g.strokeStyle = Math.random()<.5 ? 'rgba(90,60,40,.18)' : 'rgba(255,255,255,.25)';
+                g.lineWidth = .8;
+                g.beginPath(); g.moveTo(x0, y1 + len*.55);
+                g.lineTo(x0 + len*.5*dir, y1 - len*.55); g.stroke();
+            }
+        }
+        const t = new THREE.CanvasTexture(c);
+        t.wrapS = t.wrapT = THREE.RepeatWrapping;
+        t.repeat.set(300, 1);   // 線徑 0.26、17 圈的路徑長約 520 單位 → 每格約近方形
+        return t;
+    }
+    const twist = yarnTexture();
+    const YARN_R = 0.26;
+    const TUBE_SEGS = 5200;   // 每拱 ~10 管段，拱形才不會有稜角
+
+    // ============ 織圖庫（pattern = 織圖 SVG + 3D 麵形參數）============
+    // 麵形規則：r(θ) = 螺旋基徑 × 輪廓(φ) + 花瓣調變(φ)
+    // 花瓣調變為「有正有負」：瓣尖外凸、瓣間內凹（dipRatio 控制內凹比例）
+    const patterns = {
+        sakura: { label:'🌸 櫻花五瓣', file:'doily_桜.svg',
+            shape:{ rounds:17, sym:5, outline:'circle', petalAmp:3.1, dipRatio:.55, petalFrom:.42, rMax:7.2 } },
+        d012:   { label:'🌼 012 蕾絲圓盤', file:'doily_012p.svg',
+            shape:{ rounds:17, sym:12, outline:'circle', petalAmp:1.0, dipRatio:.35, petalFrom:.55, rMax:7.6 } }
+    };
+    function buildPath(sh){
+        const pts = [];
+        const STEPS = 5600;   // 17 圈 × 30 拱 → 每拱 ~11 個取樣點才夠圓滑
+        for(let i=0;i<=STEPS;i++){
+            const t = i/STEPS;
+            const theta = t * sh.rounds * Math.PI * 2;
+            const to = sh.petalTo ?? 1;
+            const band = t < sh.petalFrom ? 0 : (t > to ? Math.max(0, 1-(t-to)/0.12) : Math.pow((t-sh.petalFrom)/(to-sh.petalFrom), 1.2));
+            // 有號花瓣調變：cos>0 外凸（瓣尖）、cos<0 內凹（瓣間）
+            const s = Math.cos(sh.sym*theta);
+            const lobe = s >= 0 ? Math.pow(s, 1.3) : -(sh.dipRatio ?? .5) * Math.pow(-s, 1.3);
+            const petal = lobe * sh.petalAmp * band;
+            let m = 1;
+            if(sh.outline === 'square'){
+                const p = 4, cs = Math.abs(Math.cos(theta)), sn = Math.abs(Math.sin(theta));
+                const sq = Math.pow(Math.pow(cs,p)+Math.pow(sn,p), -1/p);
+                m = 1 + (sq-1) * Math.min(1, Math.max(0, (t-0.5)/0.35));
+                m *= 0.92;
+            }
+            // 針目拱形（v5.8）：每圈固定針數、拱形沿角度對齊 → 放射狀針目柱（整齊）；
+            // 拱底沉入前一圈、每針微幅內外擺 → 環環相扣（編織品感 > 麵感）
+            const ARCH_N = 30;
+            const arch = Math.abs(Math.sin(ARCH_N/2 * theta));
+            const r = (1.4 + sh.rMax*t) * m + petal + 0.10*Math.sin(ARCH_N*theta);
+            const y = 0.80 + 0.55*Math.pow(arch, 1.3);
+            pts.push(new THREE.Vector3(r*Math.cos(theta), y, r*Math.sin(theta)));
+        }
+        return new THREE.CatmullRomCurve3(pts);
+    }
+
+    const sauces = {
+        '紅醬': { color:'#d96b47', rough:.78 },
+        '白醬': { color:'#f0e6d2', rough:.95 },
+        '青醬': { color:'#8ba05e', rough:.78 },
+        '清炒': { color:'#e8c987', rough:.3 },
+        '墨魚': { color:'#55505c', rough:.72 },
+        '彈珠汽水': { color:'#6fc3e0', rough:.3 },
+        '粉紅醬': { color:'#e89bab', rough:.85 }
+    };
+    // 麵條材質：頂點色分區（內外圈跟著織譜色帶）；material.color 留白，燒焦時乘暗整盤
+    const yarnMat = new THREE.MeshStandardMaterial({
+        color:'#ffffff', roughness: sauces['紅醬'].rough,
+        map: twist, bumpMap: twist, bumpScale: .5, vertexColors: true
+    });
+    const tipMat = new THREE.MeshStandardMaterial({
+        color: sauces['紅醬'].color, roughness: sauces['紅醬'].rough,
+        map: twist, bumpMap: twist, bumpScale: .5
+    });
+    // 真實毛線材質（crochet_library/yarn_closeup.jpg → 無縫 tile，assets/）；載入後替換程序化貼圖
+    const YARN_TEX_REPEAT = 90;   // tile 408×112（沿線×繞管），依路徑長估算近方形貼圖密度
+    (function(){
+        const ld = new THREE.TextureLoader();
+        ld.load('../assets/yarn_color.png', tex=>{
+            tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
+            tex.colorSpace = THREE.SRGBColorSpace;
+            tex.repeat.set(YARN_TEX_REPEAT, 1);
+            yarnMat.map = tipMat.map = tex;
+            yarnMat.needsUpdate = tipMat.needsUpdate = true;
+        });
+        ld.load('../assets/yarn_bump.png', tex=>{
+            tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
+            tex.repeat.set(YARN_TEX_REPEAT, 1);
+            yarnMat.bumpMap = tipMat.bumpMap = tex;
+            yarnMat.bumpScale = tipMat.bumpScale = .35;
+            yarnMat.needsUpdate = tipMat.needsUpdate = true;
+        });
+    })();
+
+    let curPattern = 'sakura';
+    let ringRadii = [], zoneMap = [];
+    let curve = buildPath(patterns[curPattern].shape);
+    let tubeGeo = new THREE.TubeGeometry(curve, TUBE_SEGS, YARN_R, 10, false);
+    let totalIndex = tubeGeo.index.count;
+    const noodle = new THREE.Mesh(tubeGeo, yarnMat);
+    noodle.castShadow = true;
+    scene.add(noodle);
+    const tip = new THREE.Mesh(new THREE.SphereGeometry(YARN_R, 12, 10), tipMat);
+    tip.castShadow = true;
+    scene.add(tip);
+
+    function setShape(key){
+        curPattern = key;
+        curve = buildPath(patterns[key].shape);
+        const g = new THREE.TubeGeometry(curve, TUBE_SEGS, YARN_R, 10, false);
+        noodle.geometry.dispose();
+        noodle.geometry = g;
+        tubeGeo = g;
+        totalIndex = g.index.count;
+        buildRingRadii();
+        rebuildNoodleColors();
+        resetAll();
+    }
+
+    // 勾針
+    const hook = new THREE.Group();
+    const metal = new THREE.MeshStandardMaterial({ color:'#d8ccc0', roughness:.25, metalness:.85 });
+    const hShaft = new THREE.Mesh(new THREE.CylinderGeometry(.16,.19,5.2,12), metal);
+    hShaft.position.y = 3;
+    const hHead = new THREE.Mesh(new THREE.TorusGeometry(.5,.16,10,16,Math.PI*1.3), metal);
+    hHead.position.y = .35;
+    const hGrip = new THREE.Mesh(new THREE.CapsuleGeometry(.42,2.4,6,12),
+        new THREE.MeshStandardMaterial({ color:'#9a6a48', roughness:.55 }));
+    hGrip.position.y = 6.6;
+    hook.add(hShaft, hHead, hGrip);
+    hook.traverse(o=>o.castShadow = true);
+    hook.rotation.z = -0.45;
+    scene.add(hook);
+
+    // 配料
+    const topDefs = {
+        tomato: { label:'🍅 番茄', color:'#cf4630', make(){
+            const grp = new THREE.Group();
+            const body = new THREE.Mesh(new THREE.SphereGeometry(1,16,14),
+                new THREE.MeshStandardMaterial({ color:'#cf4630', roughness:.45 }));
+            body.scale.y = .78;
+            const stem = new THREE.Mesh(new THREE.CylinderGeometry(.09,.13,.4,6),
+                new THREE.MeshStandardMaterial({ color:'#4f7c39', roughness:.7 }));
+            stem.position.y = .82;
+            grp.add(body, stem); return grp;
+        }, n:3 },
+        cheese: { label:'🧀 起司', color:'#f2cf72', make(){
+            return new THREE.Mesh(new THREE.BoxGeometry(1.2,.45,1.2),
+                new THREE.MeshStandardMaterial({ color:'#f2cf72', roughness:.8 }));
+        }, n:3 },
+        basil: { label:'🌿 羅勒', color:'#4f7c39', make(){
+            const grp = new THREE.Group();
+            for(const dx of [-.3,.3]){
+                const leaf = new THREE.Mesh(new THREE.SphereGeometry(.55,10,8),
+                    new THREE.MeshStandardMaterial({ color:'#4f7c39', roughness:.6 }));
+                leaf.scale.set(1,.28,.62); leaf.position.x = dx; leaf.rotation.y = dx;
+                grp.add(leaf);
+            }
+            return grp;
+        }, n:4 }
+    };
+    const topGroup = new THREE.Group();
+    scene.add(topGroup);
+    let seed = 11;
+    const rnd = ()=> (seed = (seed*16807)%2147483647) / 2147483647;
+    const toppings = [];
+    const activeTops = { tomato:true, cheese:true, basil:true };
+    Object.entries(topDefs).forEach(([key, def])=>{
+        for(let i=0;i<def.n;i++){
+            const m = def.make();
+            const a = rnd()*Math.PI*2, r = 2.4 + rnd()*6.2;
+            m.position.set(r*Math.cos(a), 9, r*Math.sin(a));
+            m.rotation.y = rnd()*3;
+            m.scale.setScalar(0.001);
+            m.traverse(o=>o.castShadow = true);
+            m.userData = { key, targetY: 2.35 + rnd()*.4, delay: rnd()*.5, t:-1 };
+            topGroup.add(m); toppings.push(m);
+        }
+    });
+
+    // ============ 相機 ============
+    let azim = .65, elev = 1.22, dragging = false, moved = 0, px0=0, py0=0, spinning = true;   // 預設上視角
+    function updateCamera(){
+        const R = 58;   // 拉遠
+        camera.position.set(R*Math.cos(elev)*Math.cos(azim), R*Math.sin(elev), R*Math.cos(elev)*Math.sin(azim));
+        camera.lookAt(0, 1.6, 0);
+    }
+    updateCamera();
+    const cvs = renderer.domElement;
+    cvs.addEventListener('pointerdown', e=>{ dragging=true; moved=0; px0=e.clientX; py0=e.clientY; });
+    addEventListener('pointermove', e=>{
+        if(!dragging) return;
+        moved += Math.abs(e.clientX-px0) + Math.abs(e.clientY-py0);
+        azim += (e.clientX-px0)*0.008;
+        elev = Math.min(1.35, Math.max(0.22, elev + (e.clientY-py0)*0.005));
+        px0=e.clientX; py0=e.clientY; updateCamera();
+    });
+    addEventListener('pointerup', e=>{
+        const wasCanvas = dragging;
+        dragging = false;
+        if(wasCanvas && moved < 8) tryPoint(e.clientX, e.clientY);
+    });
+    addEventListener('resize', ()=>{
+        camera.aspect = innerWidth/innerHeight; camera.updateProjectionMatrix();
+        renderer.setSize(innerWidth, innerHeight);
+    });
+
+    // ============ 指定針目點（難度 × 2 + 1）============
+    const DIFFICULTY = 2;
+    const N_POINTS = DIFFICULTY * 2 + 1;
+    const stitchTargets = Array.from({ length: N_POINTS }, (_, i) => 0.02 + 0.98 * (i + 1) / N_POINTS);
+    let pointIdx = 0;
+
+    const marker = new THREE.Group();
+    const mkRing = new THREE.Mesh(new THREE.TorusGeometry(.85, .12, 8, 24),
+        new THREE.MeshBasicMaterial({ color:'#c96a4b' }));
+    mkRing.rotation.x = -Math.PI/2;
+    const mkDot = new THREE.Mesh(new THREE.SphereGeometry(.26, 10, 10),
+        new THREE.MeshBasicMaterial({ color:'#fffaf2' }));
+    const mkHit = new THREE.Mesh(new THREE.SphereGeometry(1.7, 8, 8),
+        new THREE.MeshBasicMaterial({ visible:false }));
+    marker.add(mkRing, mkDot, mkHit);
+    scene.add(marker);
+
+    function showMarker(){
+        if(pointIdx >= N_POINTS){ marker.visible = false; return; }
+        const pt = curve.getPointAt(stitchTargets[pointIdx]);
+        marker.position.copy(pt);
+        marker.position.y += .55;
+        marker.visible = true;
+    }
+
+    const ray = new THREE.Raycaster(), ndc = new THREE.Vector2();
+    function hitMarker(x, y){
+        if(!marker.visible) return false;
+        ndc.x = (x/innerWidth)*2 - 1;
+        ndc.y = -(y/innerHeight)*2 + 1;
+        ray.setFromCamera(ndc, camera);
+        return ray.intersectObject(mkHit, false).length > 0;
+    }
+    function tryPoint(x, y){
+        if(phase === 'served') return;
+        if(!orderModal.classList.contains('hide')) return;   // 訂單視窗開著不算
+        if(!hitMarker(x, y)) return;
+        if(phase === 'idle') startCook();
+        targetProgress = stitchTargets[pointIdx];
+        pointIdx++;
+        showMarker();
+        const fx = document.createElement('div');
+        fx.className = 'fx'; fx.textContent = '🧶+1針';
+        fx.style.left = x+'px'; fx.style.top = y+'px';
+        document.body.appendChild(fx);
+        setTimeout(()=>fx.remove(), 720);
+    }
+
+    // ============ 烹飪狀態機 ============
+    const PERFECT_MIN = 8.4, PERFECT_T = 10.5, BURN_T = 13.5, GROW_SPEED = 0.6;
+    let phase = 'idle', clock = 0, progress = 0.02, targetProgress = 0.02, served = false, verdictText = '';
+    const burnColor = new THREE.Color('#4a3226');
+
+    function applyProgress(p){
+        progress = Math.min(1, Math.max(0.02, p));
+        tubeGeo.setDrawRange(0, Math.floor(totalIndex*progress/6)*6);
+        const pt = curve.getPointAt(progress);
+        tip.position.copy(pt);
+        hook.position.copy(pt); hook.position.y += .1;
+        if(ringRadii.length)
+            tipMat.color.copy(colorAtFrac(ringRadii[Math.min(ringRadii.length-1, Math.floor(progress*(ringRadii.length-1)))]));
+    }
+    applyProgress(progress);
+
+    function startCook(){
+        if(phase !== 'idle') return;
+        phase = 'cooking'; clock = 0; served = false;
+        cookBtn.textContent = '🍽️ 起鍋！';
+        cookBtn.disabled = false;
+        timeBar.style.display = 'block'; zoneLabel.style.display = 'block';
+        verdict.style.display = 'none';
+    }
+    function serve(){
+        if(phase !== 'cooking') return;
+        phase = 'served'; served = true;
+        toppings.forEach(m=>{ if(activeTops[m.userData.key]) m.userData.t = -m.userData.delay; });
+        if(targetProgress < 0.99) verdictText = '😅 針目沒點完，麵還沒織好！';
+        else if(clock < PERFECT_MIN) verdictText = '⏱️ 太快了，麵芯還沒熟透！';
+        else if(clock <= PERFECT_T) verdictText = '✨ 完美起鍋！al dente！';
+        else if(clock <= BURN_T - .1) verdictText = '😬 有點焦了…';
+        else verdictText = '🔥 燒焦啦！';
+        verdict.textContent = verdictText;
+        verdict.style.display = 'block';
+        cookBtn.textContent = '📋 下一份訂單';
+        cookBtn.disabled = false;
+        marker.visible = false;
+    }
+    function resetAll(){
+        phase = 'idle'; clock = 0; served = false;
+        targetProgress = 0.02;
+        applyProgress(0.02);
+        yarnMat.color.set('#ffffff');
+        toppings.forEach(m=>{ m.userData.t=-1; m.scale.setScalar(.001); m.position.y=9; });
+        timeBar.style.display='none'; zoneLabel.style.display='none'; verdict.style.display='none';
+        cookBtn.textContent = '👆 點亮起的針目開始'; cookBtn.disabled = true;
+        pointIdx = 0;
+        showMarker();
+    }
+
+    // ============ 浮動 UI ============
+    const cookBtn = document.getElementById('cookBtn');
+    const timeBar = document.getElementById('timeBar');
+    const needle = document.getElementById('needle');
+    const zoneLabel = document.getElementById('zoneLabel');
+    const verdict = document.getElementById('verdict');
+    const orderModal = document.getElementById('orderModal');
+    cookBtn.onclick = ()=>{
+        if(phase === 'cooking') serve();
+        else if(phase === 'served') openOrder();
+    };
+    document.getElementById('resetBtn').onclick = resetAll;
+    const spinBtn = document.getElementById('spinBtn');
+    spinBtn.onclick = ()=>{ spinning=!spinning; spinBtn.classList.toggle('on',spinning); };
+    document.getElementById('shotBtn').onclick = ()=>{
+        const a = document.createElement('a');
+        a.href = renderer.domElement.toDataURL('image/png');
+        a.download = 'pastacrochet.png'; a.click();
+    };
+
+    function openOrder(){ orderModal.classList.remove('hide'); resetAll(); }
+    document.getElementById('startWeaveBtn').onclick = ()=>{
+        orderModal.classList.add('hide');
+        resetAll();
+    };
+
+    // ---- 織圖載入＋面積規則自動歸帶（v5.4 使用者規則）----
+    // 大色塊：面積最大的色系＝醬料；其餘＝派料（面積排序取前兩個）。
+    // 小色塊＝針目線，不重上色。面積＝像素數（把原始 SVG 畫到 256² canvas 統計）。
+    // 同時建「半徑 → 色帶」zoneMap，讓 3D 麵條由內圈到外圈跟著織譜換色。
+    const chartCache = {};
+    let chartGroups = { sauce:[], top0:[], top1:[] };
+    let curSauce = '紅醬';
+    function hsvOf(r, g, b){
+        const mx=Math.max(r,g,b), mn=Math.min(r,g,b), d=mx-mn;
+        let h=0;
+        if(d){ if(mx===r) h=((g-b)/d)%6; else if(mx===g) h=(b-r)/d+2; else h=(r-g)/d+4; h*=60; if(h<0)h+=360; }
+        return { h, s: mx? d/mx : 0, v: mx };
+    }
+    function lighten(hex, k){
+        return '#' + new THREE.Color(hex).lerp(new THREE.Color('#ffffff'), k).getHexString();
+    }
+    function roleColor(role){
+        if(role === 'sauce') return sauces[curSauce].color;
+        // 派料槽沒有對應的已選派料 → 用當前醬料的淡色版（不再是固定灰）
+        const act = Object.keys(topDefs).filter(k=>activeTops[k]);
+        const fallback = lighten(sauces[curSauce].color, .45);
+        if(role === 'top0') return act[0] ? topDefs[act[0]].color : fallback;
+        return act[1] ? topDefs[act[1]].color : fallback;
+    }
+    function recolorChart(){
+        chartGroups.sauce.forEach(p=> p.setAttribute('fill', roleColor('sauce')));
+        chartGroups.top0.forEach(p=> p.setAttribute('fill', roleColor('top0')));
+        chartGroups.top1.forEach(p=> p.setAttribute('fill', roleColor('top1')));
+    }
+    function analyzeChart(txt, key, svgEl){
+        // 統一邏輯（v5.5，每張譜一樣）：一切由「底色塊」驅動 ——
+        // 大色塊依 RGB 色系併家族、按總面積排序：最大＝醬料、第 2/3 ＝派料；小色塊＝線，不動。
+        // zoneMap：像素比對家族顏色（色塊＋同色墨線都算票），每個半徑環決定角色 → 麵條同步分區換色。
+        const vb = svgEl.viewBox.baseVal;
+        const minArea = vb.width * vb.height * 0.0025;
+        const blocks = [];
+        svgEl.querySelectorAll('path, circle, ellipse').forEach(p=>{
+            const fl = p.getAttribute('fill')||'';
+            if(!/^#[0-9A-Fa-f]{6}$/.test(fl)) return;
+            const n = parseInt(fl.slice(1), 16);
+            const rgb = [(n>>16)&255, (n>>8)&255, n&255];
+            const { s, v } = hsvOf(rgb[0]/255, rgb[1]/255, rgb[2]/255);
+            if(s <= 0.10 || v <= 0.2) return;               // 白/灰底、黑線不是色塊
+            const bb = p.getBBox();
+            if(bb.width * bb.height < minArea) return;      // 小色塊＝線
+            blocks.push({ p, rgb, area: bb.width * bb.height });
+        });
+        blocks.sort((a,b)=> b.area - a.area);
+        const rgbDist = (a,b)=> Math.hypot(a[0]-b[0], a[1]-b[1], a[2]-b[2]);
+        // 依 RGB 距離併家族（同色系；淡粉與深橘因 RGB 距離大會分開）
+        const families = [];
+        blocks.forEach(b=>{
+            let fam = families.find(f=> f.colors.some(cc=> rgbDist(cc, b.rgb) < 60));
+            if(!fam){ fam = { colors:[], area:0, paths:[] }; families.push(fam); }
+            if(!fam.colors.some(cc=> rgbDist(cc, b.rgb) < 8)) fam.colors.push(b.rgb);
+            fam.area += b.area;
+            fam.paths.push(b.p);
+        });
+        families.sort((a,b)=> b.area - a.area);
+        const roleOrder = ['sauce', 'top0', 'top1'];
+        chartGroups = { sauce:[], top0:[], top1:[] };
+        const famRoles = [];
+        families.slice(0, 3).forEach((f, i)=>{
+            famRoles.push({ role: roleOrder[i], colors: f.colors });
+            chartGroups[roleOrder[i]] = f.paths;
+        });
+
+        // 像素 → 家族投票 → 48 環 zoneMap
+        const img = new Image();
+        img.onload = ()=>{
+            const S = 384, NZ = 48;
+            const c = document.createElement('canvas'); c.width = c.height = S;
+            const g = c.getContext('2d');
+            g.drawImage(img, 0, 0, S, S);
+            const d = g.getImageData(0, 0, S, S).data;
+            const zoneCnt = Array.from({length:NZ}, ()=> new Array(famRoles.length).fill(0));
+            for(let y=0;y<S;y++) for(let x=0;x<S;x++){
+                const i = (y*S+x)*4;
+                const px = [d[i], d[i+1], d[i+2]];
+                let fi = -1;
+                for(let k=0;k<famRoles.length;k++){
+                    if(famRoles[k].colors.some(cc=> rgbDist(cc, px) < 70)){ fi = k; break; }
+                }
+                if(fi < 0) continue;
+                const f = Math.hypot(x-S/2, y-S/2)/(S/2);
+                if(f < 1) zoneCnt[Math.floor(f*NZ)][fi]++;
+            }
+            // 每環決定角色：醬料底塊通常鋪滿全盤，所以「派料夠顯著就贏」（也支援未來的中間點綴）
+            zoneMap = zoneCnt.map(cnts=>{
+                const total = cnts.reduce((a,b)=>a+b, 0);
+                if(!total) return null;
+                let ti=-1, tn=0;
+                for(let k=1;k<cnts.length;k++){ if(cnts[k]>tn){ tn=cnts[k]; ti=k; } }
+                // 門檻放很低：點綴型色塊（如櫻花藍塊）每環最多只佔 ~14%，夠顯著就算派料帶
+                if(ti>0 && tn >= Math.max(5, total*0.06)) return famRoles[ti].role;
+                return cnts[0] >= 4 ? famRoles[0].role : null;
+            });
+            // 補洞（同角色夾空段）＋去孤島（單環雜訊）
+            for(let i=0;i<NZ;i++){
+                if(zoneMap[i]!==null) continue;
+                let l=i-1; while(l>=0 && zoneMap[l]===null) l--;
+                let r=i+1; while(r<NZ && zoneMap[r]===null) r++;
+                if(l>=0 && r<NZ && zoneMap[l]===zoneMap[r]) zoneMap[i]=zoneMap[l];
+            }
+            for(let i=1;i<NZ-1;i++){
+                if(zoneMap[i-1]===zoneMap[i+1] && zoneMap[i]!==zoneMap[i-1]) zoneMap[i]=zoneMap[i-1];
+            }
+            recolorChart();
+            rebuildNoodleColors();
+            window.__chartReady = { pattern:key,
+                blocks: { sauce:chartGroups.sauce.length, top0:chartGroups.top0.length, top1:chartGroups.top1.length },
+                famAreas: families.slice(0,3).map((f,i)=>({ role:roleOrder[i], area:Math.round(f.area), colors:f.colors.length })),
+                zones: zoneMap.map(z=> z===null?'.':(z==='sauce'?'S':(z==='top0'?'a':'b'))).join('') };
+            URL.revokeObjectURL(img.src);
+        };
+        img.src = URL.createObjectURL(new Blob([txt], { type:'image/svg+xml' }));
+    }
+    function loadChart(key){
+        const box = document.getElementById('chartBox');
+        const inject = txt=>{
+            box.innerHTML = txt;
+            const svg = box.querySelector('svg');
+            svg.removeAttribute('width'); svg.removeAttribute('height');
+            svg.querySelectorAll('rect').forEach(r=> r.setAttribute('fill', '#ffffff'));
+            analyzeChart(txt, key, svg);
+        };
+        if(chartCache[key]) return inject(chartCache[key]);
+        fetch('../crochet_library/' + patterns[key].file)
+            .then(r=>r.text())
+            .then(txt=>{ chartCache[key] = txt; if(curPattern === key) inject(txt); })
+            .catch(()=>{ box.innerHTML = '<em style="font-size:12px;color:#a08b78;padding:8px;display:block">織圖載入失敗（需 http 服務）</em>'; });
+    }
+
+    // ---- 3D 麵條分區上色（內圈到外圈跟著織譜色帶）----
+    function buildRingRadii(){
+        const segs = TUBE_SEGS;
+        let mn = Infinity, mx = 0;
+        const raw = [];
+        for(let i=0;i<=segs;i++){
+            const p = curve.getPointAt(i/segs);
+            const r = Math.hypot(p.x, p.z);
+            raw.push(r); mn = Math.min(mn, r); mx = Math.max(mx, r);
+        }
+        ringRadii = raw.map(r=> (r-mn)/(mx-mn));
+    }
+    function colorAtFrac(f){
+        let role = null;
+        if(zoneMap.length) role = zoneMap[Math.min(zoneMap.length-1, Math.floor(f*zoneMap.length))];
+        return new THREE.Color(roleColor(role || 'sauce'));
+    }
+    function rebuildNoodleColors(){
+        if(!ringRadii.length) return;
+        const geo = tubeGeo;
+        const count = geo.attributes.position.count;
+        const rings = ringRadii.length;
+        const perRing = count / rings;
+        let colors = geo.attributes.color;
+        if(!colors || colors.count !== count){
+            colors = new THREE.BufferAttribute(new Float32Array(count*3), 3);
+            geo.setAttribute('color', colors);
+        }
+        for(let i=0;i<rings;i++){
+            const cc = colorAtFrac(ringRadii[i]);
+            for(let j=0;j<perRing;j++) colors.setXYZ(i*perRing+j, cc.r, cc.g, cc.b);
+        }
+        colors.needsUpdate = true;
+        tipMat.color.copy(colorAtFrac(ringRadii[Math.min(rings-1, Math.floor(progress*(rings-1)))]));
+    }
+
+    // ---- 選擇邏輯（訂單視窗與菜譜卡共用）----
+    function selectPattern(key){
+        if(key === curPattern) return;
+        setShape(key);
+        loadChart(key);
+        syncChips();
+    }
+    function selectSauce(name){
+        curSauce = name;
+        yarnMat.roughness = sauces[name].rough;
+        tipMat.roughness = sauces[name].rough;
+        recolorChart();
+        rebuildNoodleColors();
+        syncChips();
+    }
+    function toggleTop(key){
+        activeTops[key] = !activeTops[key];
+        recolorChart();
+        rebuildNoodleColors();
+        syncChips();
+    }
+    function syncChips(){
+        document.querySelectorAll('[data-pattern]').forEach(b=> b.classList.toggle('on', b.dataset.pattern === curPattern));
+        document.querySelectorAll('[data-sauce]').forEach(b=> b.classList.toggle('on', b.dataset.sauce === curSauce));
+        document.querySelectorAll('[data-top]').forEach(b=> b.classList.toggle('on', !!activeTops[b.dataset.top]));
+    }
+    function buildChips(){
+        const mk = (html, attrs, fn)=>{
+            const b = document.createElement('button');
+            b.innerHTML = html;
+            Object.entries(attrs).forEach(([k,v])=> b.dataset[k] = v);
+            b.onclick = fn;
+            return b;
+        };
+        for(const id of ['mPatternChips']){
+            const box = document.getElementById(id);
+            Object.entries(patterns).forEach(([key, p])=>
+                box.appendChild(mk(p.label, { pattern:key }, ()=>selectPattern(key))));
+        }
+        for(const id of ['mSauceChips', 'sauceChips']){
+            const box = document.getElementById(id);
+            Object.entries(sauces).forEach(([name, s])=>
+                box.appendChild(mk(`<span class="sw" style="background:${s.color}"></span>${name}`, { sauce:name }, ()=>selectSauce(name))));
+        }
+        for(const id of ['mTopChips', 'topChips']){
+            const box = document.getElementById(id);
+            Object.entries(topDefs).forEach(([key, def])=>
+                box.appendChild(mk(`<span class="sw" style="background:${def.color}"></span>${def.label}`, { top:key }, ()=>toggleTop(key))));
+        }
+        syncChips();
+    }
+    buildChips();
+    loadChart(curPattern);
+    buildRingRadii();
+    rebuildNoodleColors();
+
+    // ============ 動畫迴圈 ============
+    function updateToppings(dt){
+        toppings.forEach(m=>{
+            const u = m.userData;
+            if(!served || !activeTops[u.key]) return;
+            if(u.t < 0){ u.t += dt; return; }
+            u.t = Math.min(1, u.t + dt*2.2);
+            const e = 1 - Math.pow(1-u.t, 3);
+            m.position.y = 9 + (u.targetY-9)*e;
+            m.scale.setScalar(Math.max(.001,e));
+        });
+    }
+    function updateCook(dt){
+        if(phase !== 'cooking') return;
+        clock += dt;
+        if(progress < targetProgress)
+            applyProgress(Math.min(targetProgress, progress + dt*GROW_SPEED));
+        if(clock > PERFECT_T){
+            const k = Math.min(1, (clock-PERFECT_T)/(BURN_T-PERFECT_T));
+            yarnMat.color.set('#ffffff').lerp(burnColor, k*.85);   // 乘在頂點色上 → 整盤漸焦
+            if(ringRadii.length){
+                const f = ringRadii[Math.min(ringRadii.length-1, Math.floor(progress*(ringRadii.length-1)))];
+                tipMat.color.copy(colorAtFrac(f)).lerp(burnColor, k*.85);
+            }
+        }
+        needle.style.left = `calc(${Math.min(100, clock/BURN_T*100)}% - 2px)`;
+        if(clock >= BURN_T) serve();
+    }
+    let last = performance.now();
+    function loop(now){
+        const dt = Math.min(.05, (now-last)/1000); last = now;
+        updateCook(dt);
+        updateToppings(dt);
+        if(marker.visible){
+            mkRing.scale.setScalar(1 + 0.18*Math.sin(now*0.006));
+            mkDot.position.y = 0.12*Math.sin(now*0.004);
+        }
+        if(spinning && !dragging){ azim += dt*.22; updateCamera(); }
+        renderer.render(scene, camera);
+        requestAnimationFrame(loop);
+    }
+    requestAnimationFrame(loop);
+    showMarker();
+
+    // 驗證掛鉤
+    window.__poc = {
+        startCook, serve, resetAll, selectPattern, selectSauce, toggleTop, openOrder,
+        confirmOrder: ()=> document.getElementById('startWeaveBtn').click(),
+        state: ()=>({ phase, clock, progress, targetProgress, served, verdictText,
+            pattern:curPattern, sauce:curSauce, pointIdx, nPoints:N_POINTS,
+            modalOpen: !orderModal.classList.contains('hide') }),
+        clickPoints: n=>{ for(let i=0;i<n && pointIdx<N_POINTS;i++){ if(phase==='idle') startCook(); targetProgress = stitchTargets[pointIdx]; pointIdx++; showMarker(); } },
+        hitMarker,
+        markerScreen: ()=>{ const v = marker.position.clone().project(camera);
+            return { x:(v.x+1)/2*innerWidth, y:(1-v.y)/2*innerHeight, visible:marker.visible }; },
+        stepCook: s=>{ for(let i=0;i<s*60;i++){ updateCook(1/60); updateToppings(1/60); } },
+        renderOnce: ()=> renderer.render(scene, camera),
+        chartZones: ()=> zoneMap.slice(),
+        ringColorAt: f=> '#'+colorAtFrac(f).getHexString(),
+        vertexColorAt: f=>{
+            const rings = ringRadii.length;
+            const i = Math.min(rings-1, Math.floor(f*(rings-1)));
+            const a = tubeGeo.attributes.color;
+            const perRing = tubeGeo.attributes.position.count / rings;
+            return [a.getX(i*perRing), a.getY(i*perRing), a.getZ(i*perRing)].map(v=>Math.round(v*255));
+        },
+        renderer, scene, camera, curveSample: t=> curve.getPointAt(t)
+    };
+    </script>
+</body>
+
+</html>

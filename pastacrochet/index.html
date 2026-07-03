@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>毛線義大利麵餐廳（規劃中）</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: "Segoe UI", "Noto Sans TC", system-ui, sans-serif;
+            background: radial-gradient(120% 120% at 50% 0%, #fff8ef 0%, #f6efe6 70%);
+            color: #4a3b32;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            text-align: center;
+        }
+        h1 { font-size: 28px; margin: 0 0 6px; }
+        p { color: #8a7563; line-height: 1.7; max-width: 460px; }
+        .tag { display: inline-block; background: #efe4d5; color: #a0724e; font-size: 12px; padding: 3px 10px; border-radius: 999px; margin-bottom: 18px; letter-spacing: .05em; }
+        .links { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; margin-top: 24px; }
+        a.btn {
+            text-decoration: none;
+            background: #c96a4b;
+            color: #fff;
+            padding: 12px 22px;
+            border-radius: 999px;
+            font-weight: 600;
+            box-shadow: 0 8px 20px -8px #c96a4b;
+            transition: transform .15s;
+        }
+        a.btn.ghost { background: #fff; color: #4a3b32; box-shadow: inset 0 0 0 1px #d8c7b4; }
+        a.btn:hover { transform: translateY(-2px); }
+    </style>
+</head>
+
+<body>
+    <div class="tag">🧶 規劃中 · PLANNING</div>
+    <h1>毛線義大利麵餐廳</h1>
+    <p>心情解謎 × 料理調配 × 療癒編織的網頁小遊戲。目前處於企劃與核心技術驗證階段。</p>
+    <div class="links">
+        <a class="btn" href="poc/game-stage.html">▶ POC v5：遊戲舞台（3D 全螢幕＋菜譜卡＋限時烹飪）</a>
+        <a class="btn ghost" href="poc/yarn3d.html">POC v4：3D 毛線麵</a>
+        <a class="btn ghost" href="poc/photo-recolor.html">POC v3：照片重上色（現實版產出）</a>
+        <a class="btn ghost" href="poc/stitch-render.html">POC v2：stitch-path 毛線渲染</a>
+        <a class="btn ghost" href="poc/chart-render.html">POC v1：grid 織譜渲染</a>
+        <a class="btn ghost" href="PLAN.md">📋 企劃與技術評估</a>
+    </div>
+</body>
+
+</html>
