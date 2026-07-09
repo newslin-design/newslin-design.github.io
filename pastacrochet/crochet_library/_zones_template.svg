@@ -1,0 +1,28 @@
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+  <!-- ===== 角色色塊層（哨兵色平塗，同心環帶；置中 512,512）=====
+       用堆疊實心圓做環帶（由大到小疊）：程式只認 fill 命中哨兵色的形狀。
+       半徑分布：430-480 醬料 / 340-430 配料1 / 300-340 醬料 / 170-300 配料2 / 0-170 醬料 -->
+  <circle cx="512" cy="512" r="480" fill="#E9E4DB"/>  <!-- 醬料 底 -->
+  <circle cx="512" cy="512" r="430" fill="#F3E9E9"/>  <!-- 配料1 外環 -->
+  <circle cx="512" cy="512" r="340" fill="#E9E4DB"/>  <!-- 醬料 隔帶 -->
+  <circle cx="512" cy="512" r="300" fill="#FFFEFE"/>  <!-- 配料2 內環 -->
+  <circle cx="512" cy="512" r="170" fill="#E9E4DB"/>  <!-- 醬料 圓心 -->
+
+  <!-- ===== 針目／線稿層（背景透明、疊在色塊上；非哨兵色＝原樣顯示）=====
+       這裡只是示意的鉤織針目；正式織圖把你 Figma 的線稿放這層即可。 -->
+  <g fill="none" stroke="#4a3524" stroke-width="3" opacity="0.55">
+    <circle cx="512" cy="512" r="480" stroke-dasharray="6 10"/>
+    <circle cx="512" cy="512" r="430" stroke-dasharray="6 10"/>
+    <circle cx="512" cy="512" r="340" stroke-dasharray="6 10"/>
+    <circle cx="512" cy="512" r="300" stroke-dasharray="6 10"/>
+    <circle cx="512" cy="512" r="170" stroke-dasharray="6 10"/>
+  </g>
+  <g fill="#4a3524" opacity="0.5">
+    <!-- 一圈小針目點（純示意，正式織圖用你的線稿取代整個 <g>）-->
+    <circle cx="512" cy="107" r="6"/><circle cx="705" cy="145" r="6"/><circle cx="865" cy="257" r="6"/>
+    <circle cx="964" cy="428" r="6"/><circle cx="964" cy="596" r="6"/><circle cx="865" cy="767" r="6"/>
+    <circle cx="705" cy="879" r="6"/><circle cx="512" cy="917" r="6"/><circle cx="319" cy="879" r="6"/>
+    <circle cx="159" cy="767" r="6"/><circle cx="60" cy="596" r="6"/><circle cx="60" cy="428" r="6"/>
+    <circle cx="159" cy="257" r="6"/><circle cx="319" cy="145" r="6"/>
+  </g>
+</svg>

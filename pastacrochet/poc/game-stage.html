@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>POC v5.3 — 訂單流程＋雙織圖</title>
+    <title>POC v5.9 — 訂單流程＋鉤織配料</title>
     <style>
         :root { --ink:#4a3b32; --line:#d8c7b4; --accent:#c96a4b; --card:rgba(255,250,242,.82); }
         * { box-sizing:border-box; }
@@ -78,7 +78,7 @@
 
     <div class="card" id="titleCard">
         <b>🧶 毛線麵餐廳</b>
-        <span>POC v5.4 — 分區上色（織譜↔麵條）</span>
+        <span>POC v5.9 — 鉤織配料（毛線 play food）</span>
     </div>
 
     <div class="card" id="recipeCard">
@@ -288,6 +288,8 @@
     });
     // 真實毛線材質（crochet_library/yarn_closeup.jpg → 無縫 tile，assets/）；載入後替換程序化貼圖
     const YARN_TEX_REPEAT = 90;   // tile 408×112（沿線×繞管），依路徑長估算近方形貼圖密度
+    const YARN_TILE_ASPECT = 408/112;   // 真實貼圖沿線長 = 繞管周長 × 此比值（換算配料 repeat 用）
+    const topYarnMats = [];   // 配料毛線材質（見下方配料段）；載入真實貼圖後一併替換
     (function(){
         const ld = new THREE.TextureLoader();
         ld.load('../assets/yarn_color.png', tex=>{
@@ -296,6 +298,11 @@
             tex.repeat.set(YARN_TEX_REPEAT, 1);
             yarnMat.map = tipMat.map = tex;
             yarnMat.needsUpdate = tipMat.needsUpdate = true;
+            topYarnMats.forEach(u=>{
+                const t = tex.clone(); t.needsUpdate = true;
+                t.repeat.set(Math.max(2, Math.round(u.rep/YARN_TILE_ASPECT)), 1);
+                u.mat.map = t; u.mat.needsUpdate = true;
+            });
         });
         ld.load('../assets/yarn_bump.png', tex=>{
             tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
@@ -303,6 +310,11 @@
             yarnMat.bumpMap = tipMat.bumpMap = tex;
             yarnMat.bumpScale = tipMat.bumpScale = .35;
             yarnMat.needsUpdate = tipMat.needsUpdate = true;
+            topYarnMats.forEach(u=>{
+                const t = tex.clone(); t.needsUpdate = true;
+                t.repeat.set(Math.max(2, Math.round(u.rep/YARN_TILE_ASPECT)), 1);
+                u.mat.bumpMap = t; u.mat.bumpScale = .35; u.mat.needsUpdate = true;
+            });
         });
     })();
 
@@ -331,63 +343,197 @@
         resetAll();
     }
 
-    // 勾針
+    // 勾針（人體工學紡錘造型：木紋勾針端 → 薄荷綠握把；圓柱包覆貼圖）
     const hook = new THREE.Group();
-    const metal = new THREE.MeshStandardMaterial({ color:'#d8ccc0', roughness:.25, metalness:.85 });
-    const hShaft = new THREE.Mesh(new THREE.CylinderGeometry(.16,.19,5.2,12), metal);
-    hShaft.position.y = 3;
-    const hHead = new THREE.Mesh(new THREE.TorusGeometry(.5,.16,10,16,Math.PI*1.3), metal);
-    hHead.position.y = .35;
-    const hGrip = new THREE.Mesh(new THREE.CapsuleGeometry(.42,2.4,6,12),
-        new THREE.MeshStandardMaterial({ color:'#9a6a48', roughness:.55 }));
-    hGrip.position.y = 6.6;
-    hook.add(hShaft, hHead, hGrip);
+    const hookTex = new THREE.TextureLoader().load('../assets/hook_wrap.png', t=>{
+        t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 4;
+        t.flipY = false;                     // V=0 對到貼圖頂端(木紋)＝勾針端(y=0)
+        t.wrapS = THREE.RepeatWrapping; t.needsUpdate = true;
+    });
+    // 側面輪廓 (半徑, 沿長 y)；y=0 勾針工作端(貼近麵) → y≈9.4 握把尾端；中段鼓成握把肚
+    // 下段(木紋)較多控制點 → 木頭工作桿佔更長，符合實物比例
+    const hookProfile = [
+        [.05,0],[.10,.35],[.13,.8],[.16,1.4],[.19,2.0],[.23,2.7],[.28,3.4],[.36,4.1],
+        [.46,4.9],[.54,5.7],[.57,6.3],[.54,7.0],[.45,7.7],[.33,8.3],[.20,8.8],[.08,9.2],[.02,9.4]
+    ].map(p => new THREE.Vector2(p[0], p[1]));
+    const hookBody = new THREE.Mesh(
+        new THREE.LatheGeometry(hookProfile, 28),
+        new THREE.MeshStandardMaterial({ map: hookTex, roughness:.5 }));
+    hook.add(hookBody);
+    // 木頭勾針頭（貼近實物：細長桿頂 → 尖喙彎回蓋住深喉槽）
+    const woodMat = new THREE.MeshStandardMaterial({ color:'#c69f6d', roughness:.5 });
+    // 桿直下→頭部窄、往 +x 彎成尖喙、喙尖回收貼近桿身，喙與桿之間即深喉槽
+    const hookPath = new THREE.CatmullRomCurve3([
+        [0,.55,0],[0,.1,0],[0,-.16,0],[.055,-.34,0],[.185,-.32,0],[.245,-.15,0],[.185,-.005,0],[.12,.045,0]
+    ].map(a=>new THREE.Vector3(...a)));
+    const barb = new THREE.Mesh(new THREE.TubeGeometry(hookPath, 56, .072, 14), woodMat);
+    // 喙尖收成尖角：沿路徑末端切線接一個小圓錐
+    const tEnd = hookPath.getTangentAt(1), pEnd = hookPath.getPointAt(1);
+    const beak = new THREE.Mesh(new THREE.ConeGeometry(.072, .17, 12), woodMat);
+    beak.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0), tEnd);
+    beak.position.copy(pEnd).addScaledVector(tEnd, .075);
+    hook.add(barb, beak);
     hook.traverse(o=>o.castShadow = true);
     hook.rotation.z = -0.45;
+    hook.scale.setScalar(1.18);   // 大一點點
     scene.add(hook);
 
-    // 配料
+    // ============ 配料（鉤織玩具版 v5.9）============
+    // 插畫貼圖片在毛線世界裡像貼紙 → 全面改為程序化毛線模型（appliqué 世界觀，見 PLAN §Q）：
+    // 與麵條同一套毛線貼圖（真實貼圖載入後經 topYarnMats 統一替換），只換線色；
+    // 番茄/羅勒＝杯墊式螺旋盤、起司＝方形螺旋＋雙洞、蘑菇＝切片剪影同心圈、花椰菜＝amigurumi 球簇側躺、培根＝並排波浪條紋
+    function topYarnMat(color, len, r){
+        const map = twist.clone(); map.needsUpdate = true;
+        const rep = Math.max(3, Math.round(len/(Math.PI*2*r)));   // 沿線 repeat ≈ 路徑長/繞管周長 → 貼圖近方形
+        map.repeat.set(rep, 1);
+        const mat = new THREE.MeshStandardMaterial({ color, map, bumpMap:map, bumpScale:.4, roughness:.82 });
+        topYarnMats.push({ mat, rep });
+        return mat;
+    }
+    function yarnTube(pts, r, color, closed=false){
+        const cv = new THREE.CatmullRomCurve3(pts, closed);
+        const len = cv.getLength();
+        const m = new THREE.Mesh(
+            new THREE.TubeGeometry(cv, Math.max(24, Math.round(len*10)), r, 8, closed),
+            topYarnMat(color, len, r));
+        m.castShadow = true;
+        return m;
+    }
+    // 平面螺旋（杯墊織法）：t0~t1 取段方便分圈換色；y 微波＝針目起伏；ellip 壓成橢圓（葉形）
+    function spiralPts(R, rounds, t0, t1, ellip=1){
+        const pts = [], n = Math.max(10, Math.round((t1-t0)*rounds*44));
+        for(let i=0;i<=n;i++){
+            const t = t0+(t1-t0)*i/n, th = t*rounds*Math.PI*2;
+            const rad = R*(.07+.93*t);
+            pts.push(new THREE.Vector3(rad*Math.cos(th), .05*Math.abs(Math.sin(th*7)), rad*Math.sin(th)*ellip));
+        }
+        return pts;
+    }
+    // 球面螺旋（amigurumi 織法）：極角 a0→a1、squash 縱向壓扁
+    function ballPts(R, turns, a0, a1, squash=1){
+        const pts = [], n = Math.round(turns*26);
+        for(let i=0;i<=n;i++){
+            const t = i/n, a = a0+(a1-a0)*t, th = t*turns*Math.PI*2;
+            pts.push(new THREE.Vector3(R*Math.sin(a)*Math.cos(th), R*Math.cos(a)*squash, R*Math.sin(a)*Math.sin(th)));
+        }
+        return pts;
+    }
+    function ringPts(R){ const p=[]; for(let i=0;i<14;i++){ const a=i/14*Math.PI*2; p.push(new THREE.Vector3(R*Math.cos(a),0,R*Math.sin(a))); } return p; }
+    function coilPts(R, h, turns){
+        const p=[], n=Math.round(turns*22);
+        for(let i=0;i<=n;i++){ const t=i/n, a=t*turns*Math.PI*2; p.push(new THREE.Vector3(R*Math.cos(a), t*h, R*Math.sin(a))); }
+        return p;
+    }
+    const TOP_R = .095;   // 配料統一線徑（同一顆線球鉤出來的世界觀；使用者定案）
+    // 番茄切片＝三圈色螺旋盤（淺橘芯 → 果肉紅 → 深紅皮邊）
+    function croTomato(){
+        const g = new THREE.Group(), R=1.05, N=5;
+        g.add(yarnTube(spiralPts(R,N,0,.4), TOP_R, '#f0956a'),
+              yarnTube(spiralPts(R,N,.4,.87), TOP_R, '#dd5138'),
+              yarnTube(spiralPts(R,N,.87,1), TOP_R, '#a93524'));
+        return g;
+    }
+    // 起司＝方形螺旋盤（granny square 式圓角方）＋中間縫兩個深黃線圈洞
+    function squarePts(R, rounds){
+        const pts = [], n = Math.round(rounds*60);
+        for(let i=0;i<=n;i++){
+            const t = i/n, th = t*rounds*Math.PI*2;
+            const sq = Math.pow(Math.pow(Math.abs(Math.cos(th)),5)+Math.pow(Math.abs(Math.sin(th)),5), -1/5);   // p-norm 圓角方
+            const rad = R*(.08+.92*t)*sq;
+            pts.push(new THREE.Vector3(rad*Math.cos(th), .05*Math.abs(Math.sin(th*7)), rad*Math.sin(th)));
+        }
+        return pts;
+    }
+    function croCheese(){
+        const g = new THREE.Group();
+        g.add(yarnTube(squarePts(.82, 4), TOP_R, '#f2cf72'));
+        [-.32, .32].forEach(x=>{
+            const h = yarnTube(ringPts(.22), TOP_R, '#d3a441', true);
+            h.position.set(x, .12, 0); g.add(h);
+        });
+        return g;
+    }
+    // 羅勒＝橢圓小葉螺旋（多圈）＋短梗
+    function croBasil(){
+        const g = new THREE.Group();
+        const leaf = yarnTube(spiralPts(.85,5,0,1,.68), TOP_R, '#55823c');
+        leaf.rotation.z = .18;   // 微翹葉尖
+        const stem = yarnTube([new THREE.Vector3(.8,0,0), new THREE.Vector3(1.1,.06,.1), new THREE.Vector3(1.3,.02,.22)], TOP_R, '#3f6a2e');
+        g.add(leaf, stem);
+        return g;
+    }
+    // 培根＝五行並排波浪（深紅｜紅｜奶油白｜紅｜深紅，經典鉤織培根配色）
+    function croBacon(){
+        const g = new THREE.Group(), colors=['#9c4038','#bd5347','#f4e4cc','#bd5347','#9c4038'];
+        colors.forEach((c,row)=>{
+            const pts=[]; for(let i=0;i<=48;i++){ const x=-2.3+4.6*i/48;
+                pts.push(new THREE.Vector3(x, .32+.3*Math.sin(x*1.9), (row-2)*.2)); }
+            g.add(yarnTube(pts, TOP_R, c));
+        });
+        return g;
+    }
+    // 蘑菇＝切片剪影（帽半圓＋內縮腰身＋柄）：外圈帽緣奶茶＋柄緣奶白、內圈奶白同心縮小
+    const MUSH_CAP = [];   // 帽緣半圓（右緣→左緣）
+    for(let i=0;i<=10;i++){ const a=Math.PI*i/10; MUSH_CAP.push([Math.cos(a)*1.02, Math.sin(a)*.95+.12]); }
+    const MUSH_STEM = [[-1.02,.12],[-.58,.04],[-.4,-.3],[-.5,-.62],[0,-.76],[.5,-.62],[.4,-.3],[.58,.04],[1.02,.12]];   // 左帽緣→帽底→柄→右帽緣
+    const mushV = (p,s)=> new THREE.Vector3(p[0]*s, 0, (p[1]-.14)*s);   // 平躺 XZ、重心置中
+    function croMushroom(){
+        const g = new THREE.Group();
+        g.add(yarnTube(MUSH_CAP.map(p=>mushV(p,1)), TOP_R, '#c99e6f'));    // 帽緣（奶茶）
+        g.add(yarnTube(MUSH_STEM.map(p=>mushV(p,1)), TOP_R, '#f3e6d0'));   // 帽底＋柄緣（奶白）
+        const full = MUSH_CAP.concat(MUSH_STEM.slice(1,-1));               // 完整輪廓（去掉共用端點）
+        [.85,.7,.55,.4,.25].forEach(s=> g.add(yarnTube(full.map(p=>mushV(p,s)), TOP_R, '#f3e6d0', true)));   // 內圈同心縮小（加密）
+        return g;
+    }
+    // 花椰菜＝三顆深綠 amigurumi 球簇＋淺綠粗柄（放大 2 倍、側躺）
+    function croBroccoli(){
+        const inner = new THREE.Group();
+        const BR = .07;   // 花椰菜線再細一階：球體大、等徑線貼球面會顯粗（使用者回饋）
+        inner.add(yarnTube(coilPts(.44,1.0,6), BR, '#a9bf76'));
+        [[0,1.9,0,1.1,'#57843a'],[1.0,1.4,.56,.9,'#4f7c35'],[-.92,1.36,-.6,.84,'#619340']].forEach(([x,y,z,R,c])=>{
+            const tn = Math.round(Math.PI*R/(BR*2.1));   // 圈距≈線徑 → 細線也繞滿不漏縫
+            const b = yarnTube(ballPts(R,tn,.25,2.85), BR, c);
+            b.position.set(x,y,z); inner.add(b);
+        });
+        inner.rotation.x = Math.PI/2;   // 側躺（柄轉水平）
+        const g = new THREE.Group(); g.add(inner);
+        g.updateMatrixWorld(true);      // 算包圍盒前先更新矩陣 → 置中貼地
+        const bb = new THREE.Box3().setFromObject(inner);
+        inner.position.set(-(bb.min.x+bb.max.x)/2, -bb.min.y, -(bb.min.z+bb.max.z)/2);
+        return g;
+    }
+    // 大小差異：base ＝各配料基準尺寸；每份再乘 0.85~1.15 隨機（見創建迴圈 u.size）
     const topDefs = {
-        tomato: { label:'🍅 番茄', color:'#cf4630', make(){
-            const grp = new THREE.Group();
-            const body = new THREE.Mesh(new THREE.SphereGeometry(1,16,14),
-                new THREE.MeshStandardMaterial({ color:'#cf4630', roughness:.45 }));
-            body.scale.y = .78;
-            const stem = new THREE.Mesh(new THREE.CylinderGeometry(.09,.13,.4,6),
-                new THREE.MeshStandardMaterial({ color:'#4f7c39', roughness:.7 }));
-            stem.position.y = .82;
-            grp.add(body, stem); return grp;
-        }, n:3 },
-        cheese: { label:'🧀 起司', color:'#f2cf72', make(){
-            return new THREE.Mesh(new THREE.BoxGeometry(1.2,.45,1.2),
-                new THREE.MeshStandardMaterial({ color:'#f2cf72', roughness:.8 }));
-        }, n:3 },
-        basil: { label:'🌿 羅勒', color:'#4f7c39', make(){
-            const grp = new THREE.Group();
-            for(const dx of [-.3,.3]){
-                const leaf = new THREE.Mesh(new THREE.SphereGeometry(.55,10,8),
-                    new THREE.MeshStandardMaterial({ color:'#4f7c39', roughness:.6 }));
-                leaf.scale.set(1,.28,.62); leaf.position.x = dx; leaf.rotation.y = dx;
-                grp.add(leaf);
-            }
-            return grp;
-        }, n:4 }
+        tomato:   { label:'🍅 番茄', color:'#cf4630', n:5, make: croTomato },
+        bacon:    { label:'🥓 培根', color:'#b5514a', n:3, make: croBacon },
+        mushroom: { label:'🍄 蘑菇', color:'#cdbb98', n:5, make: croMushroom },
+        broccoli: { label:'🥦 花椰菜', color:'#5c8b3a', n:3, make: croBroccoli },
+        cheese:   { label:'🧀 起司', color:'#f2cf72', n:5, make: croCheese },
+        basil:    { label:'🌿 羅勒', color:'#4f7c39', n:8, make: croBasil }
     };
+    // 每片隨機尺寸倍率：羅勒葉片大小差異刻意拉大，其餘配料維持 ±15%
+    function randTopSize(key){
+        return key === 'basil' ? .55 + Math.random()*1.0 : .85 + Math.random()*.3;
+    }
     const topGroup = new THREE.Group();
     scene.add(topGroup);
-    let seed = 11;
-    const rnd = ()=> (seed = (seed*16807)%2147483647) / 2147483647;
     const toppings = [];
-    const activeTops = { tomato:true, cheese:true, basil:true };
+    const activeTops = { tomato:true, bacon:true, mushroom:true, broccoli:true, cheese:true, basil:true };
+    // 每次灑下重新隨機分布：角度、半徑、朝向、平面內微傾
+    function scatter(m){
+        const a = Math.random()*Math.PI*2, r = 1.2 + Math.random()*6.4;
+        m.position.set(r*Math.cos(a), 9, r*Math.sin(a));
+        m.rotation.y = Math.random()*Math.PI*2;
+        if(m.userData.flat && m.children[0]) m.children[0].rotation.z = (Math.random()-.5)*.5;
+    }
     Object.entries(topDefs).forEach(([key, def])=>{
         for(let i=0;i<def.n;i++){
             const m = def.make();
-            const a = rnd()*Math.PI*2, r = 2.4 + rnd()*6.2;
-            m.position.set(r*Math.cos(a), 9, r*Math.sin(a));
-            m.rotation.y = rnd()*3;
+            const flat = !!m.userData.flat;
             m.scale.setScalar(0.001);
-            m.traverse(o=>o.castShadow = true);
-            m.userData = { key, targetY: 2.35 + rnd()*.4, delay: rnd()*.5, t:-1 };
+            if(!flat) m.traverse(o=>o.castShadow = true);   // 片狀薄片不投方形陰影
+            m.userData = { key, flat, size: randTopSize(key), targetY: (flat?1.82:1.6) + Math.random()*.2, delay: Math.random()*.5, t:-1 };   // 片狀抬高，避免薄片穿進麵體
+            scatter(m);
             topGroup.add(m); toppings.push(m);
         }
     });
@@ -486,6 +632,7 @@
     function startCook(){
         if(phase !== 'idle') return;
         phase = 'cooking'; clock = 0; served = false;
+        noodle.visible = true; tip.visible = true;   // 開始編織才長出麵體
         cookBtn.textContent = '🍽️ 起鍋！';
         cookBtn.disabled = false;
         timeBar.style.display = 'block'; zoneLabel.style.display = 'block';
@@ -510,8 +657,10 @@
         phase = 'idle'; clock = 0; served = false;
         targetProgress = 0.02;
         applyProgress(0.02);
+        noodle.visible = false; tip.visible = false;   // 起手式：只留勾針＋毛線球
+        updateYarnBalls();
         yarnMat.color.set('#ffffff');
-        toppings.forEach(m=>{ m.userData.t=-1; m.scale.setScalar(.001); m.position.y=9; });
+        toppings.forEach(m=>{ const u=m.userData; u.t=-1; u.size=randTopSize(u.key); u.targetY=(u.flat?1.82:1.6)+Math.random()*.2; u.delay=Math.random()*.5; m.scale.setScalar(.001); scatter(m); });   // 下一份訂單重新隨機分布＋大小
         timeBar.style.display='none'; zoneLabel.style.display='none'; verdict.style.display='none';
         cookBtn.textContent = '👆 點亮起的針目開始'; cookBtn.disabled = true;
         pointIdx = 0;
@@ -567,6 +716,52 @@
         const fallback = lighten(sauces[curSauce].color, .45);
         if(role === 'top0') return act[0] ? topDefs[act[0]].color : fallback;
         return act[1] ? topDefs[act[1]].color : fallback;
+    }
+    // 起手式毛線球：用毛線球貼圖做「面向鏡頭 billboard（impostor）」——從任何角度都像立體毛球
+    // 球0=醬料色，球1/2=配菜1/2 色（白色貼圖 × material.color 染色）
+    // 圓柱毛線蛋糕（收納捲）：白色收納本體 + 真實毛線（yarn_color/bump）交叉螺旋繞滿側面
+    const cakeCoreMat = new THREE.MeshStandardMaterial({ color:'#efe9dd', roughness:.92 });
+    const cakeLd = new THREE.TextureLoader();
+    const cakeCol = cakeLd.load('../assets/yarn_color.png', t=>{ t.colorSpace = THREE.SRGBColorSpace; });
+    const cakeBmp = cakeLd.load('../assets/yarn_bump.png');
+    [cakeCol, cakeBmp].forEach(t=>{ t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(1100, 1); });
+    const CAKE_R = 2.5, CAKE_H = 7.2, WIND_R = YARN_R;   // 高度 3 倍、線徑對齊麵條
+    function makeYarnCake(){
+        const grp = new THREE.Group();
+        grp.add(new THREE.Mesh(new THREE.CylinderGeometry(CAKE_R*0.9, CAKE_R*0.9, CAKE_H, 40), cakeCoreMat));   // 白色收納本體（頂面留白，不加線）
+        const mat = new THREE.MeshStandardMaterial({ color:'#ffffff', roughness:.85, map:cakeCol, bumpMap:cakeBmp, bumpScale:.5 });
+        // 側面：兩條反向緊密螺旋（間距 < 線徑）交叉 → 真正繞滿、又有毛線捲交叉紋
+        const Hh = CAKE_H/2 - WIND_R;
+        const mkHelix = dir=>{
+            const pts = [], wraps = 19, N = 1600;
+            for(let i=0;i<=N;i++){
+                const t = i/N, a = dir*t*wraps*Math.PI*2, y = -Hh + 2*Hh*t;
+                pts.push(new THREE.Vector3(CAKE_R*Math.cos(a), y, CAKE_R*Math.sin(a)));
+            }
+            return new THREE.CatmullRomCurve3(pts);
+        };
+        const h1 = mkHelix(1), h2 = mkHelix(-1);
+        const rep = Math.max(1, Math.round(YARN_TEX_REPEAT * h1.getLength() / curve.getLength()));   // 撚線密度對齊麵條
+        cakeCol.repeat.set(rep, 1); cakeBmp.repeat.set(rep, 1);
+        grp.add(new THREE.Mesh(new THREE.TubeGeometry(h1, 1600, WIND_R, 7, false), mat));
+        grp.add(new THREE.Mesh(new THREE.TubeGeometry(h2, 1600, WIND_R, 7, false), mat));
+        grp.userData.mat = mat;
+        grp.traverse(o=>o.castShadow = true);
+        return grp;
+    }
+    const yarnBalls = [];
+    const ballSpots = [[14,3.6,15],[19.5,3.6,11],[11.5,3.6,19.5]];   // 站立於桌面、盤外
+    for(let i=0;i<3;i++){
+        const m = makeYarnCake();
+        m.position.set(...ballSpots[i]);
+        m.rotation.y = Math.random()*Math.PI*2;
+        scene.add(m); yarnBalls.push(m);
+    }
+    function updateYarnBalls(){
+        const act = Object.keys(topDefs).filter(k=>activeTops[k]);
+        yarnBalls[0].userData.mat.color.set(roleColor('sauce'));
+        yarnBalls[1].visible = !!act[0]; if(act[0]) yarnBalls[1].userData.mat.color.set(topDefs[act[0]].color);
+        yarnBalls[2].visible = !!act[1]; if(act[1]) yarnBalls[2].userData.mat.color.set(topDefs[act[1]].color);
     }
     function recolorChart(){
         chartGroups.sauce.forEach(p=> p.setAttribute('fill', roleColor('sauce')));
@@ -726,12 +921,14 @@
         tipMat.roughness = sauces[name].rough;
         recolorChart();
         rebuildNoodleColors();
+        updateYarnBalls();
         syncChips();
     }
     function toggleTop(key){
         activeTops[key] = !activeTops[key];
         recolorChart();
         rebuildNoodleColors();
+        updateYarnBalls();
         syncChips();
     }
     function syncChips(){
@@ -778,7 +975,7 @@
             u.t = Math.min(1, u.t + dt*2.2);
             const e = 1 - Math.pow(1-u.t, 3);
             m.position.y = 9 + (u.targetY-9)*e;
-            m.scale.setScalar(Math.max(.001,e));
+            m.scale.setScalar(Math.max(.001, e*u.size));
         });
     }
     function updateCook(dt){
@@ -802,6 +999,13 @@
         const dt = Math.min(.05, (now-last)/1000); last = now;
         updateCook(dt);
         updateToppings(dt);
+        if(phase === 'cooking'){                       // 編織上下擺動（模擬下針手感）
+            const b = curve.getPointAt(progress);
+            hook.position.set(b.x, b.y + .1 + .5*Math.sin(now*.009), b.z);
+            hook.rotation.z = -0.45 + .09*Math.sin(now*.009 + 1);
+        } else {
+            hook.rotation.z = -0.45;
+        }
         if(marker.visible){
             mkRing.scale.setScalar(1 + 0.18*Math.sin(now*0.006));
             mkDot.position.y = 0.12*Math.sin(now*0.004);

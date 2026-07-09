@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🧶 毛線麵餐廳 — 節奏編織料理</title>
+    <link rel="stylesheet" href="css/game.css">
+</head>
+
+<body>
+    <div id="stage"></div>
+
+    <div class="card" id="titleCard">
+        <b>🧶 毛線麵餐廳</b>
+        <span id="titleInfo">載入中…</span>
+    </div>
+
+    <div class="card hide" id="recipeCard">
+        <h3><span class="mi">menu_book</span> 本盤菜譜</h3>
+        <div id="chartBox"><em style="font-size:12px;color:#a08b78">織圖載入中…</em></div>
+        <div id="recipeChips"></div>
+        <div id="recipeGuide"></div>
+    </div>
+
+    <div id="hudWrap" class="hide"></div>
+
+    <div class="card hide" id="tally"></div>
+
+    <button id="peekRestore"><span class="mi">visibility</span> 顯示分數</button>
+
+    <div class="card" id="toolCard">
+        <button id="spinBtn" class="on" title="自動旋轉"><span class="mi">autorenew</span></button>
+        <button id="shotBtn" title="下載美照"><span class="mi">photo_camera</span></button>
+        <button id="muteBtn" title="音效開關"><span class="mi">volume_up</span></button>
+        <button id="homeBtn" title="回主選單"><span class="mi">home</span></button>
+    </div>
+
+    <div id="overlay" class="hide"></div>
+    <div id="countdown" class="hide"></div>
+    <div id="fxLayer"></div>
+
+    <script src="js/vendor/three.min.js"></script>
+    <script src="js/vendor/qrcode.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/audio.js"></script>
+    <script src="js/charts.js"></script>
+    <script src="js/scene.js"></script>
+    <script src="js/cooking.js"></script>
+    <script src="js/flow.js"></script>
+    <script src="js/ui.js"></script>
+    <script>
+        const flow = new PC.GameFlow();
+        flow.boot();
+
+        // ---- 驗證掛鉤（自動測試用；不影響遊戲）----
+        window.__game = {
+            flow,
+            mgr: flow.mgr,
+            state: () => ({
+                phase: flow.phase,
+                storeMode: flow.storeMode,
+                chefMode: flow.chefMode,
+                roundIdx: flow.roundIdx,
+                storeIdx: flow.storeIdx,
+                stores: flow.stores.map(s => ({ name: s.name, total: s.total, results: s.results.map(r => r && r.score) })),
+                sessions: flow.sessions.map(s => ({
+                    input: s.input, clock: +s.clock.toFixed(2), idx: s.idx, N: s.N,
+                    score: +s.scoreDots.toFixed(2), combo: s.combo, served: s.served,
+                    grades: s.grades, result: s.result && { total: s.result.total, doneness: s.result.doneness.key }
+                }))
+            }),
+            // 直接以偏移（秒，相對窗中心）命中目前點：0=完美、0.4=不完美、99=超糟
+            hitAt: (side, offset) => flow.sessions[side] && flow.sessions[side].debugHitAt(offset),
+            // 把所有點以完美時機打完
+            perfectAll: side => { const s = flow.sessions[side]; while (s && s.idx < s.N) s.debugHitAt(0); },
+            setClock: (side, t) => { const s = flow.sessions[side]; if (s) s.clock = t; },
+            serve: side => flow.sessions[side] && flow.sessions[side].serve(),
+            step: (dt, n = 1) => { for (let i = 0; i < n; i++) flow._tick(dt); },
+            renderOnce: () => flow.mgr.renderOnce()
+        };
+    </script>
+</body>
+
+</html>

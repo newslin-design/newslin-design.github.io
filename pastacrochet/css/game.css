@@ -1,0 +1,542 @@
+/* ============================================================
+   毛線麵餐廳 — 正式版樣式
+   視覺語言沿用 POC：3D 全螢幕主體＋浮動玻璃卡片（backdrop blur）
+   ============================================================ */
+:root {
+    --ink: #4a3b32;
+    --line: #e3d0b6;
+    --accent: #c96a4b;
+    --green: #7fae5e;
+    --card: rgba(255, 249, 238, .92);
+    --muted: #8a7563;
+
+    /* 木質框 + 糖果按鈕（casual game 視覺系統） */
+    --panel: #fff6e6;         /* 面板底（不透明奶油） */
+    --panel-2: #fdeecf;       /* 內層卡片底 */
+    --wood: #d79a5b;          /* 木框亮 */
+    --wood-dark: #a86a37;     /* 木框暗（外描邊） */
+    --frame-in: #fff3dd;      /* 內側高光描邊 */
+    --awn-a: #78c04d;         /* 遮陽棚綠 */
+    --awn-b: #f7edd6;         /* 遮陽棚白 */
+    --btn-red: #e0714a;       /* 主要 CTA 上緣 */
+    --btn-red-d: #b34e2c;     /* 主要 CTA 下緣（立體唇） */
+    --btn-green: #7cc250;
+    --btn-green-d: #4f9130;
+    --btn-yellow: #ffcb45;
+    --btn-yellow-d: #e29a1f;
+}
+/* 本地圖示字體（Material Icons Round）——離線可用、圓潤風貼合遊戲 */
+@font-face {
+    font-family: 'Material Icons Round';
+    font-style: normal; font-weight: 400; font-display: block;
+    src: url(../fonts/MaterialIconsRound.woff2) format('woff2');
+}
+.mi {
+    font-family: 'Material Icons Round';
+    font-weight: normal; font-style: normal;
+    font-size: 1.15em; line-height: 1; letter-spacing: normal; text-transform: none;
+    display: inline-block; white-space: nowrap; word-wrap: normal; direction: ltr;
+    vertical-align: -.16em; font-feature-settings: 'liga';
+    -webkit-font-smoothing: antialiased;
+}
+/* 遊戲風圖示（assets/*.png，可退回 emoji）*/
+.gi { display: inline-block; height: 1.5em; width: auto; vertical-align: -.32em; }
+.giInline { height: 1.35em; vertical-align: -.28em; }
+.giBtn { height: 1.5em; vertical-align: -.35em; margin-right: 2px; }
+.giCombo { height: 1.1em; vertical-align: -.12em; }
+.giHero { height: 68px; }
+.giCrown { height: 1.2em; vertical-align: -.24em; }
+* { box-sizing: border-box; }
+html, body {
+    margin: 0; height: 100%; overflow: hidden;
+    font-family: "Segoe UI", "Noto Sans TC", system-ui, sans-serif;
+    color: var(--ink);
+}
+#stage { position: fixed; inset: 0; }
+#stage canvas { display: block; }
+.hide { display: none !important; }
+
+.card {
+    position: fixed; background: var(--card);
+    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    border: 2.5px solid var(--wood-dark); border-radius: 18px;
+    box-shadow:
+        0 14px 30px -14px rgba(90, 60, 40, .5),
+        inset 0 0 0 2px var(--frame-in),
+        inset 0 2px 0 rgba(255, 255, 255, .6);
+}
+
+/* ---- 左上標題 ---- */
+#titleCard { top: 16px; left: 16px; padding: 11px 18px; z-index: 20;
+    background: linear-gradient(180deg, #fff8ea, #ffedcf); }
+#titleCard b { font-size: 15px; }
+#titleCard span { font-size: 11.5px; color: var(--muted); display: block; max-width: 300px; }
+
+/* ---- 右上菜譜卡 ---- */
+#recipeCard { top: 16px; right: 16px; width: 250px; padding: 12px; z-index: 20; }
+#recipeCard h3 { margin: 0 0 6px; font-size: 12.5px; color: var(--muted); }
+#chartBox { position: relative; background: transparent; border-radius: 10px; overflow: hidden; min-height: 60px; }
+#chartBox svg { display: block; width: 100%; height: auto; }
+#recipeChips { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; }
+
+/* ---- 織圖織法卡（QRcode + 中文說明；菜譜卡與得分卡共用） ---- */
+.crochetGuide {
+    display: flex; gap: 10px; margin-top: 10px; padding-top: 10px;
+    border-top: 1px dashed var(--line);
+}
+.crochetGuide .cgQr {
+    flex: 0 0 auto; width: 62px; text-decoration: none;
+    display: flex; flex-direction: column; align-items: center; gap: 3px;
+}
+.crochetGuide .cgQr svg {
+    display: block; width: 62px; height: 62px;
+    background: #fff; padding: 4px; border-radius: 8px;
+    box-shadow: inset 0 0 0 1px var(--line);
+}
+.crochetGuide .cgScan { font-size: 9px; color: var(--muted); white-space: nowrap; }
+.crochetGuide .cgBody { flex: 1 1 auto; min-width: 0; }
+.crochetGuide .cgMeta { font-size: 10px; line-height: 1.55; color: var(--muted); margin-bottom: 5px; }
+.crochetGuide .cgSteps {
+    margin: 0; padding-left: 15px; font-size: 10.5px; line-height: 1.5; color: var(--ink);
+}
+.crochetGuide .cgSteps li { margin-bottom: 2px; }
+/* 得分卡較寬：織法字大一些、QR 再大一點 */
+.vDetail .crochetGuide { gap: 14px; }
+.vDetail .crochetGuide .cgQr, .vDetail .crochetGuide .cgQr svg { width: 78px; }
+.vDetail .crochetGuide .cgQr svg { height: 78px; }
+.vDetail .crochetGuide .cgMeta { font-size: 11px; }
+.vDetail .crochetGuide .cgSteps { font-size: 11.5px; }
+
+/* ---- 通用 chips ---- */
+.chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0 2px; }
+.chip {
+    font: inherit; font-size: 12.5px; border: 1px solid var(--line); background: #fff; color: var(--ink);
+    border-radius: 999px; padding: 5px 11px; cursor: pointer; transition: transform .1s;
+}
+.chip:hover { transform: translateY(-1px); }
+.chip.on { background: var(--accent); border-color: var(--accent); color: #fff; }
+.chip.mini { font-size: 11px; padding: 3px 8px; cursor: default; background: #fff; color: var(--ink); }
+.sw { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 4px; vertical-align: -1px; box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .15); }
+.slotTag { font-weight: 700; margin-right: 3px; }
+
+/* ---- 品項難度火焰徽章（難度綁在料本身：🔥難、🔥🔥超難） ---- */
+.fireTag {
+    font-style: normal; font-size: 13px; letter-spacing: -3px;
+    position: absolute; top: 3px; right: 6px;
+    filter: drop-shadow(0 1px 1px rgba(60, 40, 25, .35));
+}
+
+/* ---- 點菜單：滿版雙欄＋圖片卡 ---- */
+.orderCols { display: flex; gap: 20px; align-items: flex-start; }
+.orderMain { flex: 1; min-width: 0; }
+.orderSide { width: 250px; flex: none; }
+#mChartSlot #chartBox { border: 1px solid var(--line); border-radius: 10px; }
+
+/* ---- 點菜單頭：吉祥物探頭 + 木牌標題（往上超出約 40%，副標在牌外下方）---- */
+.modalCard.orderModal { margin-top: 64px; }     /* 預留招牌／吉祥物往上探出的空間 */
+.orderModal > .lead { text-align: center; font-size: 15px; }
+.orderHead { position: relative; display: flex; justify-content: center; margin: 0 0 10px; }
+.orderMascot {
+    position: absolute; left: -64px; top: -104px; width: 190px; height: 190px;
+    object-fit: contain; pointer-events: none; z-index: 3;
+    filter: drop-shadow(0 7px 9px rgba(90, 60, 40, .32));
+}
+.orderTitleSign { position: relative; height: 132px; margin-top: -80px; }  /* 上緣超出對話框約 40% */
+.orderTitleSign img { display: block; height: 100%; width: auto; }
+.orderTitleText {
+    position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+    font-weight: 900; font-size: clamp(20px, 2.6vw, 30px); color: #5c3b22; letter-spacing: 2px;
+    text-align: center; padding-bottom: 6%; text-shadow: 0 1px 0 rgba(255, 255, 255, .45);
+}
+.itemGrid { display: flex; flex-wrap: wrap; gap: 9px; margin: 4px 0 10px; }
+.itemCard {
+    font: inherit; color: var(--ink); width: 104px; padding: 9px 6px 9px;
+    background: var(--panel-2); border: 2.5px solid transparent; border-radius: 16px;
+    cursor: pointer; transition: transform .14s, box-shadow .14s, border-color .14s; text-align: center; position: relative;
+    box-shadow: 0 2px 6px -3px rgba(90, 60, 40, .22), inset 0 2px 0 rgba(255, 255, 255, .45);
+}
+/* hover：淡淡的木框提示 + 微升 */
+.itemCard:hover { transform: translateY(-2px); border-color: rgba(215, 154, 91, .5); }
+/* 選取：顯示橘框、陰影放大變糊（升起感），不用橘色陰影 */
+.itemCard.on {
+    border-color: #bab099; background: #fff4ea; transform: translateY(-4px); z-index: 2;
+    box-shadow: 0 12px 18px -6px rgba(74, 59, 50, .5), 0 22px 34px -10px rgba(74, 59, 50, .38), inset 0 2px 0 rgba(255, 255, 255, .6);
+}
+.itemThumb { height: 64px; display: flex; align-items: center; justify-content: center; }
+.itemThumb img { max-width: 100%; max-height: 64px; border-radius: 8px; object-fit: contain; }
+.itemGrid.pat .itemCard { width: 148px; }
+.itemGrid.pat .itemThumb { height: 108px; }
+.itemGrid.pat .itemThumb img { max-height: 108px; }
+.bigSwatch { width: 48px; height: 48px; border-radius: 50%; display: inline-block; box-shadow: inset 0 0 0 2px rgba(0, 0, 0, .12); }
+.bigEmoji { font-size: 42px; }
+.itemName { display: block; font-size: 12px; margin-top: 5px; line-height: 1.35; }
+.diceBtn {
+    display: block; width: 100%; margin-top: 14px; font: inherit; font-weight: 700; font-size: 14px;
+    color: var(--accent); background: #fff; border: 2px dashed var(--accent); border-radius: 999px;
+    padding: 10px; cursor: pointer; transition: transform .12s;
+}
+.diceBtn:hover { transform: translateY(-1px); }
+
+/* ---- 起鍋提示：進完美熟度區時按鈕發光脈動 ---- */
+.serveBtn.glow { background: #5f9440; animation: serveGlow 1s ease-in-out infinite, serveJump .6s ease-in-out infinite; }
+@keyframes serveGlow {
+    0% { box-shadow: 0 0 0 0 rgba(127, 174, 94, .65); }
+    70% { box-shadow: 0 0 0 14px rgba(127, 174, 94, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(127, 174, 94, 0); }
+}
+@keyframes serveJump {
+    0%, 100% { transform: translateY(0) scale(1); }
+    30% { transform: translateY(-8px) scale(1.05); }
+    50% { transform: translateY(0) scale(1); }
+    65% { transform: translateY(-4px) scale(1.02); }
+}
+
+/* ---- 訂單摘要 ---- */
+.orderSummary, .cardBody { text-align: left; }
+.sumLine {
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 13px; padding: 5px 2px; border-bottom: 1px dashed rgba(216, 199, 180, .6);
+}
+.sumLine em { font-style: normal; font-size: 11.5px; color: var(--muted); }
+.sumStats { font-size: 11.5px; color: var(--muted); margin-top: 8px; line-height: 1.6; }
+.sumStats b { color: var(--accent); font-size: 13px; }
+
+/* ---- 全螢幕 overlay ---- */
+#overlay {
+    position: fixed; inset: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(74, 59, 50, .28);
+    backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+    overflow-y: auto; padding: 20px 0;
+}
+/* 設定流程（選模式→掌廚→隊伍）專屬餐廳背景；圖片缺席時自動退回原本的毛玻璃 */
+body.setup #overlay {
+    background:
+        linear-gradient(rgba(74, 59, 50, .32), rgba(74, 59, 50, .5)),
+        url(../assets/menu_bg.png) center / cover no-repeat,
+        var(--panel-2);
+    backdrop-filter: none; -webkit-backdrop-filter: none;
+}
+.modalCard {
+    width: min(470px, 94vw); background: var(--panel); border-radius: 24px;
+    padding: 24px 26px; margin: auto; position: relative;
+    border: 3px solid var(--wood-dark);
+    box-shadow:
+        0 26px 60px -22px rgba(60, 40, 25, .65),
+        inset 0 0 0 3px var(--frame-in),
+        inset 0 3px 0 rgba(255, 255, 255, .65);
+    text-align: center;
+}
+.modalCard.orderModal { width: 85vw; max-width: 1400px; text-align: left; }
+.modalCard.orderModal h2 { text-align: left; }
+.modalCard h1 { margin: 4px 0 6px; font-size: 26px; }
+.modalCard h2 { margin: 0 0 4px; font-size: 19px; }
+.modalCard .lead { font-size: 12.5px; color: var(--muted); margin: 4px 0 12px; line-height: 1.7; }
+.secTitle { font-size: 12px; font-weight: 700; color: var(--muted); margin: 12px 0 2px; letter-spacing: .04em; }
+.cardIcon { font-size: 44px; line-height: 1; margin-bottom: 4px; }
+.cardBody { font-size: 13px; line-height: 1.7; margin: 8px 0 4px; }
+.tinyNote { font-size: 11px; color: var(--muted); margin: 14px 0 0; }
+.menuLogo { font-size: 52px; line-height: 1; }
+
+/* ---- 選單遮陽棚（開店招牌感；只掛在 menuCard：主選單/選廚/最終）---- */
+.menuCard { overflow: hidden; padding-top: 52px; }
+.menuCard::before {
+    content: ""; position: absolute; top: 0; left: 0; right: 0; height: 42px;
+    background: repeating-linear-gradient(90deg, var(--awn-a) 0 24px, var(--awn-b) 24px 48px);
+    -webkit-mask: radial-gradient(circle at 12px 100%, transparent 11px, #000 12px) repeat-x bottom / 24px 15px;
+    mask: radial-gradient(circle at 12px 100%, transparent 11px, #000 12px) repeat-x bottom / 24px 15px;
+}
+
+.bigBtn {
+    display: block; width: 100%; margin-top: 18px; font: inherit; font-weight: 800; font-size: 17px;
+    color: #fff; border: none; border-radius: 999px; padding: 14px;
+    background: linear-gradient(180deg, var(--btn-red) 0%, var(--btn-red-d) 100%);
+    text-shadow: 0 1.5px 0 rgba(120, 45, 25, .5);
+    cursor: pointer; transition: transform .09s, box-shadow .09s, filter .09s;
+    box-shadow:
+        0 6px 0 var(--btn-red-d),
+        0 14px 22px -8px rgba(179, 78, 44, .6),
+        inset 0 2px 0 rgba(255, 255, 255, .45);
+}
+.bigBtn:hover:not(:disabled) { transform: translateY(-1px); filter: brightness(1.04); }
+.bigBtn:active:not(:disabled) {
+    transform: translateY(5px);
+    box-shadow: 0 1px 0 var(--btn-red-d), 0 4px 10px -6px rgba(179, 78, 44, .6), inset 0 2px 0 rgba(255, 255, 255, .35);
+}
+.bigBtn:disabled { background: #cbb9a6; color: #f3ece2; box-shadow: 0 5px 0 #a89684; cursor: not-allowed; }
+
+.bigChoices { display: flex; gap: 12px; margin-top: 14px; }
+.choice {
+    flex: 1; font: inherit; background: var(--panel-2); border: 2.5px solid var(--wood); border-radius: 18px;
+    padding: 18px 12px; cursor: pointer; transition: transform .12s, box-shadow .12s, border-color .12s; color: var(--ink);
+    box-shadow: 0 4px 0 rgba(168, 106, 55, .35), inset 0 2px 0 rgba(255, 255, 255, .6);
+}
+.choice:hover { border-color: var(--accent); transform: translateY(-3px); box-shadow: 0 10px 22px -10px var(--accent), inset 0 2px 0 rgba(255, 255, 255, .6); }
+.choice b { display: block; font-size: 16px; margin-bottom: 6px; }
+.choice span { font-size: 11.5px; color: var(--muted); line-height: 1.6; display: block; }
+
+/* 練習模式：主選單頂端的整排快速入口（在單店/雙店卡片之上，作為最好上手的入口） */
+.practiceChoice {
+    display: block; width: 100%; margin-top: 14px; text-align: left;
+    border-color: var(--accent); border-style: dashed;
+    background: linear-gradient(180deg, var(--panel-2) 0%, rgba(179, 78, 44, .06) 100%);
+}
+.practiceChoice b { display: inline; margin-right: 8px; }
+.practiceChoice span { display: inline; }
+
+/* ---- 選廚師 ---- */
+.chefGrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 12px; }
+.chefCard {
+    font: inherit; background: var(--panel-2); border: 2.5px solid var(--wood); border-radius: 16px;
+    padding: 12px 8px 10px; cursor: pointer; transition: transform .12s, box-shadow .12s, border-color .12s; color: var(--ink); position: relative;
+    box-shadow: 0 3px 0 rgba(168, 106, 55, .3), inset 0 2px 0 rgba(255, 255, 255, .55);
+}
+.chefCard:hover { transform: translateY(-2px); }
+.chefCard.on { border-color: var(--accent); transform: translateY(-1px); box-shadow: 0 4px 0 var(--btn-red-d), 0 10px 20px -12px var(--accent), inset 0 2px 0 rgba(255, 255, 255, .6); }
+.chefFaceBig { font-size: 34px; display: block; line-height: 1.2; }
+.chefCard b { font-size: 13px; display: block; margin: 4px 0 2px; }
+.chefQuote { font-size: 10.5px; color: var(--muted); display: block; line-height: 1.4; }
+.chefSlot { position: absolute; top: 6px; right: 8px; font-size: 10.5px; font-weight: 700; color: var(--accent); }
+
+/* ---- 廚師立繪（有圖用圖、無圖退回 emoji）---- */
+.chefImg { object-fit: contain; vertical-align: middle; }
+.chefFace.chefImg { width: 30px; height: 30px; }
+.plateChefFace.chefImg { width: 36px; height: 36px; }
+
+/* ---- 兩隊固定・出場提醒 ---- */
+.teamGrid { display: flex; justify-content: center; align-items: center; gap: 14px; margin: 16px 0 4px; }
+.teamCard {
+    flex: 1; max-width: 210px; background: var(--panel-2); border: 2.5px solid var(--wood); border-radius: 18px;
+    padding: 14px 10px 12px; text-align: center;
+    box-shadow: 0 4px 0 rgba(168, 106, 55, .35), inset 0 2px 0 rgba(255, 255, 255, .6);
+}
+.teamArt { width: 128px; height: 128px; object-fit: contain; display: block; margin: 0 auto 6px; }
+.teamArtEmoji { font-size: 96px; line-height: 1.1; display: block; margin-bottom: 2px; }
+.teamName { font-size: 17px; display: block; }
+.teamTag { font-size: 11.5px; color: var(--muted); }
+.vsBadge { flex: none; font-weight: 900; font-size: 24px; color: var(--accent); text-shadow: 0 2px 0 #fff; }
+
+/* ---- 主選單木牌 logo ---- */
+.menuSign { position: relative; width: min(360px, 80%); margin: 2px auto 8px; }
+.menuSign img { display: block; width: 100%; height: auto; }
+.menuSignText {
+    position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+    font-weight: 900; font-size: clamp(22px, 7vw, 34px); color: #5c3b22; letter-spacing: 3px;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, .45); padding-bottom: 6%;
+}
+
+/* ---- 顧客卡 ---- */
+.custHead { display: flex; gap: 12px; align-items: center; text-align: left; margin-bottom: 6px; }
+.custFace { font-size: 40px; }
+.custHead b { font-size: 15px; }
+.custLine { margin: 2px 0 0; font-size: 12.5px; color: var(--muted); }
+
+/* ---- 烹飪 HUD ---- */
+#hudWrap {
+    position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%);
+    display: flex; gap: 14px; z-index: 30; width: min(96vw, 1080px); justify-content: center;
+}
+#hudWrap.duo .cookCard { flex: 1; max-width: 500px; }
+.cookCard { position: relative; padding: 12px 16px; width: min(480px, 92vw); text-align: center; }
+.chefLine { font-size: 13px; display: flex; align-items: center; gap: 6px; justify-content: center; }
+.chefFace { font-size: 20px; }
+.inputTag { font-size: 10.5px; background: var(--ink); color: #fff; border-radius: 999px; padding: 2px 8px; }
+.phaseLine { font-size: 12.5px; color: var(--muted); margin: 6px 0 2px; min-height: 17px; }
+.keyHint { font-size: 13px; margin: 2px 0; }
+.keyHint b {
+    display: inline-block; background: var(--ink); color: #fff; border-radius: 8px;
+    min-width: 30px; padding: 4px 6px; font-size: 17px; margin-left: 4px;
+}
+.scoreLine { font-size: 13px; margin: 4px 0 2px; }
+.scoreLine b { font-size: 19px; color: var(--accent); }
+.comboTag { margin-left: 8px; font-size: 12.5px; font-weight: 700; color: #d17f2a; }
+.timeBar { position: relative; height: 12px; border-radius: 999px; margin: 10px 4px 2px; }
+.needle { position: absolute; top: -4px; width: 4px; height: 20px; border-radius: 2px; background: var(--ink); left: 0; }
+.zoneLabel { font-size: 10.5px; color: var(--muted); margin-top: 5px; }
+.serveBtn {
+    font: inherit; font-weight: 800; font-size: 15px; color: #fff; border: none;
+    border-radius: 999px; padding: 11px 28px; cursor: pointer; margin-top: 8px;
+    background: linear-gradient(180deg, var(--btn-red) 0%, var(--btn-red-d) 100%);
+    text-shadow: 0 1.5px 0 rgba(120, 45, 25, .5);
+    box-shadow: 0 5px 0 var(--btn-red-d), 0 12px 18px -8px rgba(179, 78, 44, .55), inset 0 2px 0 rgba(255, 255, 255, .4);
+    transition: transform .09s, box-shadow .09s, filter .09s, background .2s;
+}
+.serveBtn:hover:not(:disabled) { transform: translateY(-1px); filter: brightness(1.04); }
+.serveBtn:active:not(:disabled) { transform: translateY(4px); box-shadow: 0 1px 0 var(--btn-red-d), inset 0 2px 0 rgba(255, 255, 255, .3); }
+.serveBtn:disabled { background: #cbb9a6; box-shadow: 0 4px 0 #a89684; cursor: not-allowed; }
+.plateVerdict { font-size: 13px; margin-top: 8px; line-height: 1.5; }
+.plateVerdict b { color: var(--accent); font-size: 15px; }
+.cookCard.shake { animation: shake .3s; }
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-7px); } 75% { transform: translateX(7px); }
+}
+
+/* ---- FX 浮字 ---- */
+#fxLayer { position: fixed; inset: 0; pointer-events: none; z-index: 60; }
+.fx {
+    position: fixed; font-size: 15px; font-weight: 700; color: var(--accent);
+    text-shadow: 0 1px 4px rgba(255, 250, 242, .95);
+    animation: fxUp .8s ease-out forwards; white-space: nowrap;
+}
+.fx small { font-size: 11px; }
+.fxPerfect { color: #4d8a2e; font-size: 17px; }
+.fxOk { color: #b98a2c; }
+.fxBad { color: #a05545; }
+@keyframes fxUp {
+    from { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+    30% { transform: translate(-50%, -90%) scale(1.15); }
+    to { opacity: 0; transform: translate(-50%, -170%) scale(1); }
+}
+.comboSplash {
+    position: fixed; left: 50%; top: 34%; transform: translate(-50%, -50%);
+    font-size: 42px; font-weight: 900; color: #d17f2a;
+    text-shadow: 0 2px 0 #fff, 0 6px 22px rgba(209, 127, 42, .5);
+    animation: splash 1.2s ease-out forwards;
+}
+@keyframes splash {
+    0% { opacity: 0; transform: translate(-50%, -50%) scale(.4); }
+    18% { opacity: 1; transform: translate(-50%, -50%) scale(1.18); }
+    30% { transform: translate(-50%, -50%) scale(1); }
+    80% { opacity: 1; }
+    100% { opacity: 0; transform: translate(-50%, -90%) scale(1); }
+}
+
+/* ---- 倒數 ---- */
+#countdown {
+    position: fixed; inset: 0; z-index: 90; display: flex; align-items: center; justify-content: center;
+    font-size: 110px; font-weight: 900; color: var(--accent);
+    text-shadow: 0 4px 0 #fff, 0 14px 40px rgba(201, 106, 75, .45);
+    pointer-events: none;
+}
+#countdown.pop { animation: cdPop .5s ease-out; }
+@keyframes cdPop { from { transform: scale(1.6); opacity: .2; } to { transform: scale(1); opacity: 1; } }
+
+/* ---- 結算（非阻擋式：看得到成品）---- */
+/* verdict 模式下 overlay 不再是全螢幕毛玻璃遮罩，而是讓出中央給 3D 成品 */
+#overlay.verdictLayer {
+    background: none; backdrop-filter: none; -webkit-backdrop-filter: none;
+    pointer-events: none; display: block; padding: 0; overflow: visible;
+}
+#overlay.verdictLayer > * { pointer-events: auto; position: fixed; }
+
+/* 1) 分數在中間上面 */
+.vScoreTop {
+    top: 14px; left: 50%; transform: translateX(-50%); text-align: center; z-index: 110;
+    animation: vTopIn .4s cubic-bezier(.2, 1.2, .4, 1) both;
+}
+@keyframes vTopIn { from { transform: translate(-50%, -14px); opacity: 0; } to { transform: translate(-50%, 0); opacity: 1; } }
+.vScoreTop .turnScore { font-size: 104px; margin: 4px 0 0; }
+.vScoreTop .turnScore small { font-size: 30px; }
+
+/* 2) 分數細節卡片：靠右，不擋中央主體 */
+.vDetail {
+    top: 92px; right: 16px; width: min(340px, 40vw); max-height: 74vh; overflow-y: auto;
+    padding: 12px 14px; z-index: 110;
+    animation: vSideIn .45s cubic-bezier(.2, 1.1, .4, 1) both;
+}
+@keyframes vSideIn { from { transform: translateX(18px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+.vDetail .plateResult:first-child { margin-top: 0; }
+
+/* 3) 下一步：底部置中、清楚 */
+.vFoot {
+    bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 110;
+    display: flex; gap: 12px; align-items: center;
+}
+.vFoot .bigBtn { margin-top: 0; width: auto; padding: 14px 46px; }
+.ghostBtn {
+    font: inherit; font-weight: 700; font-size: 14px; color: var(--ink);
+    background: var(--card); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    border: 2px solid var(--wood); border-radius: 999px; padding: 12px 20px; cursor: pointer;
+    box-shadow: 0 3px 0 rgba(168, 106, 55, .35), inset 0 1px 0 rgba(255, 255, 255, .7);
+    transition: transform .1s, box-shadow .1s;
+}
+.ghostBtn:active { transform: translateY(2px); box-shadow: 0 1px 0 rgba(168, 106, 55, .35); }
+
+/* 只看成品：一鍵關閉所有 UI，只留成品與還原鈕 */
+#peekRestore {
+    position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 120;
+    display: none; font: inherit; font-weight: 800; font-size: 15px; color: #fff;
+    border: none; border-radius: 999px; padding: 13px 26px; cursor: pointer;
+    background: linear-gradient(180deg, var(--btn-red), var(--btn-red-d));
+    box-shadow: 0 5px 0 var(--btn-red-d), 0 12px 22px -8px rgba(179, 78, 44, .6);
+}
+body.peek #overlay.verdictLayer,
+body.peek #tally,
+body.peek #titleCard,
+body.peek #recipeCard,
+body.peek #toolCard { display: none !important; }
+body.peek #peekRestore { display: block; }
+
+/* 左側累積比分（雙方三場一起看）*/
+#tally { top: 74px; left: 16px; width: 182px; padding: 11px 13px 12px; z-index: 30; }
+.tallyHead { font-size: 12.5px; font-weight: 800; color: var(--muted); letter-spacing: .04em; margin-bottom: 6px; }
+.tallyTable { width: 100%; border-collapse: collapse; font-size: 13px; }
+.tallyTable th { font-size: 10px; color: var(--muted); font-weight: 600; padding: 2px 3px; }
+.tallyTable td { padding: 5px 3px; border-top: 1px solid rgba(216, 199, 180, .55); text-align: center; }
+.tallyTable .tName { text-align: left; font-weight: 700; font-size: 12.5px; white-space: nowrap; }
+.tallyTable .tTot { font-weight: 900; color: var(--accent); }
+.tallyTable .curCol { background: rgba(255, 203, 69, .28); border-radius: 5px; font-weight: 800; }
+
+.verdictEyebrow { font-size: 14px; font-weight: 700; color: var(--muted); letter-spacing: .04em;
+    background: var(--card); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+    display: inline-block; padding: 4px 14px; border-radius: 999px; border: 1.5px solid var(--wood); }
+.turnScore {
+    font-size: 84px; font-weight: 900; line-height: 1.1; color: var(--accent);
+    text-shadow: 0 3px 0 #fff, 0 12px 36px rgba(201, 106, 75, .4);
+    margin: 0 0 4px; animation: scorePop .5s cubic-bezier(.2, 1.5, .4, 1) both;
+}
+.turnScore small { font-size: 24px; font-weight: 800; margin-left: 5px; }
+@keyframes scorePop { from { transform: scale(.3); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+.plateResult { text-align: left; background: #fff; border-radius: 14px; padding: 12px 16px 14px; margin-top: 10px; border: 1px solid var(--line); }
+.plateHead { display: flex; align-items: center; gap: 8px; font-size: 18px; font-weight: 800; margin-bottom: 7px; }
+.plateChefFace { font-size: 28px; line-height: 1; }
+.plateTag { margin-left: auto; font-size: 11.5px; font-weight: 700; color: var(--muted); background: rgba(216, 199, 180, .35); border-radius: 999px; padding: 3px 10px; }
+/* 得分細節：一行一個資訊 */
+.plateStats { display: flex; flex-direction: column; gap: 3px; }
+.stat { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; font-size: 15px; }
+.stat b { font-size: 17px; white-space: nowrap; }
+.stat.sub { font-size: 12.5px; color: var(--muted); padding-left: 2px; }
+.stat.sub b { font-size: 13.5px; }
+.stat.totalRow { font-weight: 800; border-top: 1px dashed var(--line); margin-top: 4px; padding-top: 6px; font-size: 16px; }
+.stat.totalRow b { font-size: 18px; color: var(--accent); }
+
+/* 得分卡裡的織圖 */
+#vChartSlot { margin: 0 auto 10px; max-width: 190px; }
+.vRecipeChips { display: flex; flex-wrap: wrap; justify-content: center; gap: 5px; margin: 0 0 10px; }
+/* 組合菜名（菜譜卡＋結算卡共用）*/
+.dishName { font-weight: 800; color: var(--ink); font-size: 13.5px; line-height: 1.35; margin: 6px 0 5px; }
+.vDishName { text-align: center; font-size: 16px; margin: 2px 0 8px; }
+#vChartSlot svg { width: 100%; height: auto; display: block; }
+#vChartSlot:empty { display: none; }
+
+.scoreTable { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 13px; }
+.scoreTable th { font-size: 11px; color: var(--muted); font-weight: 600; padding: 5px 4px; }
+.scoreTable td { padding: 7px 4px; border-top: 1px solid rgba(216, 199, 180, .5); text-align: center; }
+.scoreTable td:first-child { text-align: left; font-weight: 700; }
+.totCell { font-weight: 900; color: var(--accent); font-size: 15px; }
+
+/* ---- 右下工具 ---- */
+#toolCard { bottom: 18px; right: 16px; padding: 8px; display: flex; gap: 6px; z-index: 40; }
+#toolCard button {
+    font: inherit; font-size: 15px; border: 2px solid var(--wood); color: var(--ink);
+    background: linear-gradient(180deg, #fff8ea, #ffe9c9);
+    border-radius: 12px; padding: 8px 11px; cursor: pointer; transition: transform .1s, box-shadow .1s;
+    box-shadow: 0 3px 0 rgba(168, 106, 55, .35), inset 0 1px 0 rgba(255, 255, 255, .7);
+}
+#toolCard button:active { transform: translateY(2px); box-shadow: 0 1px 0 rgba(168, 106, 55, .35); }
+#toolCard button.on {
+    background: linear-gradient(180deg, var(--btn-red), var(--btn-red-d)); border-color: var(--btn-red-d); color: #fff;
+    box-shadow: 0 3px 0 var(--btn-red-d), inset 0 1px 0 rgba(255, 255, 255, .4);
+}
+
+/* 窄螢幕（活動現場多半橫式大螢幕，直式僅保底不破版） */
+@media (max-width: 760px) {
+    #hudWrap { flex-direction: column; align-items: center; gap: 8px; }
+    .bigChoices { flex-direction: column; }
+    .chefGrid { grid-template-columns: repeat(2, 1fr); }
+    #recipeCard { width: 150px; }
+    .orderCols { flex-direction: column-reverse; }
+    .orderSide { width: 100%; }
+    .orderSide #chartBox { max-width: 220px; }
+}
