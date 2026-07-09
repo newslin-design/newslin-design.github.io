@@ -1,9 +1,10 @@
 /* ============================================================
    GameFlow：遊戲流程狀態機
-   選單 → 單店/雙店 → 單廚/雙廚＋選助理 → 3 場
-   （自家招牌→顧客點單→對手指定）× 每店 → 結算
-   雙店：同一場內一號店做完 → 二號店做
-   雙廚：同配方兩盤同時做（左盤滑鼠、右盤鍵盤 1/2/3、Enter 起鍋）
+   選單 → 單店/雙店 → 單廚/雙廚 → 選場數(1~4) → N 場
+   每場都一樣：自己配料 或 讓當場客人隨機點（客人立繪 cust_*.png）→ 結算
+   雙店＋雙廚：同一場內一號店做完 → 二號店做
+   雙店＋單廚＝「對戰」：兩店同題兩盤同時做、直接比三場（省時間）
+   雙廚／對戰：同配方兩盤同時做（左盤滑鼠、右盤鍵盤 1/2/3/4、Enter 起鍋）
    ============================================================ */
 window.PC = window.PC || {};
 
@@ -18,6 +19,7 @@ PC.GameFlow = class {
         this.chefMode = null;     // 'solo' | 'duo'
         this.practice = false;    // 練習模式：直接選料製作、做完看結果、可再一盤或回首頁
         this.stores = [];
+        this.roundCount = PC.config.ROUND_DEFAULT;   // 要比幾場（1~4，設定階段可選）
         this.roundIdx = 0;
         this.storeIdx = 0;
         this.sessions = [];
@@ -25,7 +27,7 @@ PC.GameFlow = class {
 
         addEventListener('keydown', e => {
             if (this.phase !== 'cooking') return;
-            if (e.key >= '1' && e.key <= '3')
+            if (e.key >= '1' && e.key <= '4')
                 this.sessions.forEach(s => s.tryKey(+e.key));
             else if (e.key === 'Enter')
                 this.sessions.filter(s => s.input === 'keys').forEach(s => s.serve());
@@ -61,6 +63,11 @@ PC.GameFlow = class {
         // 兩隊角色固定（第一隊無尾熊、第二隊貓）；每隊人數＝單廚 1／雙廚 2，兩盤都用該隊角色。
         const n = mode === 'duo' ? 2 : 1;
         this.stores.forEach(st => { st.chefs = Array.from({ length: n }, () => st.chef); });
+        // 接著選要比幾場
+        PC.ui.showRoundCount(this.roundCount);
+    }
+    selectRoundCount(n) {
+        this.roundCount = Math.max(PC.config.ROUND_MIN, Math.min(PC.config.ROUND_MAX, n));
         // 「選隊友」只是提醒、不用真的選——現場自己喬
         PC.ui.showTeamIntro(this.stores, this.chefMode, () => this._startRounds());
     }
@@ -125,85 +132,39 @@ PC.GameFlow = class {
     }
     _beginTurn() {
         this.phase = 'order';
-        const store = this.stores[this.storeIdx];
-        const round = PC.config.ROUNDS[this.roundIdx];
-        // 佈局重設（相機回標準位、盤面清空）
-        const rigs = this.mgr.layout(this.chefMode === 'duo' ? 'duo' : 'solo');
+        const duel = this._isDuel();
+        // 佈局重設（相機回標準位、盤面清空）；對戰與雙廚都用兩盤佈局
+        const rigs = this.mgr.layout((duel || this.chefMode === 'duo') ? 'duo' : 'solo');
         rigs.forEach(r => r.reset());
         this.mgr.spinning = true;
-        PC.ui.setTitleInfo(`第 ${this.roundIdx + 1} 場｜${round.label} · ${store.name} ${store.emoji}`);
-
-        PC.ui.showCard({
-            icon: store.emoji,
-            title: `第 ${this.roundIdx + 1} 場｜${round.label}`,
-            sub: `${store.name}，準備上工！`,
-            body: round.desc,
-            btn: '開始備料 <span class="mi">assignment</span>',
-            onBtn: () => this._orderPhase()
-        });
+        // 每場先抽一位客人（立繪＋隨機點）——所有模式、每場都一樣
+        this._roundCustomer = this._pick(PC.config.CUSTOMERS);
+        const tag = `第 ${this.roundIdx + 1}/${this.roundCount} 場`;
+        if (duel) {
+            const [a, b] = this.stores;
+            PC.ui.setTitleInfo(`${tag} · ${a.name} ⚔️ ${b.name}`);
+        } else {
+            const store = this.stores[this.storeIdx];
+            PC.ui.setTitleInfo(`${tag} · ${store.name} ${store.emoji}`);
+        }
+        this._orderPhase();
     }
 
+    // 每場統一：自己配一盤，或按 🎲 讓當場客人隨機點（客人立繪＝mascot）
     _orderPhase() {
+        const duel = this._isDuel();
         const store = this.stores[this.storeIdx];
-        const round = PC.config.ROUNDS[this.roundIdx];
-        const type = round.key;
-
-        if (type === 'self') {
-            PC.ui.openOrderModal({
-                title: round.label,
-                mascot: store.chef.img,
-                sub: '自己出題——難度看食材：超難的料（墨魚、培根、花椰菜…）加分更高，但點點更多更密！',
-                order: JSON.parse(JSON.stringify(PC.config.DEFAULT_ORDER)),
-                confirmText: '🧶 開始編織',
-                onChange: o => this._previewOrder(o),
-                onConfirm: o => this._startCook(o)
-            });
-        } else if (type === 'customer') {
-            // 預設自己選、保留 🎲 讓顧客隨機點
-            const cust = this._pick(PC.config.CUSTOMERS);
-            PC.ui.openOrderModal({
-                title: round.label,
-                mascot: store.chef.img,
-                sub: `${cust.emoji} ${cust.name}：「${cust.line}」——自己配一盤，或按 🎲 讓顧客隨機點！`,
-                order: JSON.parse(JSON.stringify(PC.config.DEFAULT_ORDER)),
-                confirmText: '🔥 接單開做',
-                dice: { label: `🎲 讓 ${cust.name} 隨機點`, gen: () => this._genOrder('customer') },
-                onChange: o => this._previewOrder(o),
-                onConfirm: o => this._startCook(o)
-            });
-        } else {  // rival 對手指定
-            if (this.storeMode === 'versus') {
-                const rivalStore = this.stores[1 - this.storeIdx];
-                PC.ui.openOrderModal({
-                    title: round.label,
-                    mascot: store.chef.img,
-                    sub: `請 ${rivalStore.name} 的老闆來選——競品研究，別客氣！（難度越高，對方能拿的分也越高喔）`,
-                    order: JSON.parse(JSON.stringify(PC.config.DEFAULT_ORDER)),
-                    confirmText: '😏 就這道了',
-                    onChange: o => this._previewOrder(o),
-                    onConfirm: o => {
-                        PC.ui.showCard({
-                            icon: store.emoji,
-                            title: `${store.name}，接招！`,
-                            sub: `${rivalStore.name} 指定的難題來了`,
-                            body: PC.ui.orderSummaryHTML(o),
-                            btn: '🔥 接下戰帖',
-                            onBtn: () => this._startCook(o)
-                        });
-                    }
-                });
-            } else {
-                const rival = PC.config.RIVAL_STORE;
-                const order = this._genOrder('rival');
-                this._previewOrder(order);
-                PC.ui.showOrderCard({
-                    who: { ...rival, line: '哼，做得出這道再說吧。' },
-                    order,
-                    note: '競品研究——對手名店的指定菜！',
-                    onConfirm: () => this._startCook(order)
-                });
-            }
-        }
+        const cust = this._roundCustomer || (this._roundCustomer = this._pick(PC.config.CUSTOMERS));
+        PC.ui.openOrderModal({
+            title: `第 ${this.roundIdx + 1} 場`,
+            mascot: cust.img || store.chef.img,
+            sub: `${cust.emoji} ${cust.name}：「${cust.line}」——${duel ? '兩隊接同一張單' : '自己配一盤'}，或按 🎲 讓 ${cust.name} 隨機點！`,
+            order: JSON.parse(JSON.stringify(PC.config.DEFAULT_ORDER)),
+            confirmText: '🔥 接單開做',
+            dice: { label: `🎲 讓 ${cust.name} 隨機點`, gen: () => this._genOrder('customer') },
+            onChange: o => this._previewOrder(o),
+            onConfirm: o => this._startCook(o)
+        });
     }
 
     _previewOrder(order) {
@@ -214,8 +175,10 @@ PC.GameFlow = class {
     }
 
     _startCook(order) {
-        const store = this.stores[this.storeIdx];
-        store.currentOrder = order;
+        const duel = this._isDuel();
+        // 對戰：兩盤各屬一隊；一般：整盤都屬當前店
+        const owners = duel ? this.stores : [this.stores[this.storeIdx]];
+        owners.forEach(st => st.currentOrder = order);
         PC.ui.hideOverlays();
         const rigs = this.mgr.activeRigs();
         rigs.forEach(r => { r.setPattern(order.pattern); r.setOrder(order); });
@@ -226,16 +189,18 @@ PC.GameFlow = class {
             this.mgr.spinning = false;
             this.mgr.updateCamera();
             this.sessions = rigs.map((rig, i) => {
+                const store = duel ? this.stores[i] : this.stores[this.storeIdx];
+                const chef = duel ? store.chef : (store.chefs[i] || store.chefs[0]);
                 const s = new PC.CookSession({
                     mgr: this.mgr, rig, order,
-                    input: (this.chefMode === 'duo' && i === 1) ? 'keys' : 'mouse',
+                    input: (i === 1) ? 'keys' : 'mouse',   // 第二盤永遠鍵盤（雙廚／對戰皆然）
                     sideIdx: i,
-                    chef: store.chefs[i] || store.chefs[0]
+                    chef
                 });
                 s.onServed = () => this._onServed();
                 return s;
             });
-            PC.ui.showHud(store, this.sessions, order);
+            PC.ui.showHud(this.stores[this.storeIdx], this.sessions, order);
             PC.ui.countdown(() => {
                 this.phase = 'cooking';
                 this.sessions.forEach(s => s.start());
@@ -260,7 +225,31 @@ PC.GameFlow = class {
         PC.ui.updateHud(this.sessions);
         if (this.sessions.some(s => !s.served)) return;
         this.phase = 'verdict';
-        setTimeout(() => this._turnDone(), 1100);   // 讓配料掉完、鏡頭喘口氣
+        setTimeout(() => this._isDuel() ? this._duelDone() : this._turnDone(), 1100);   // 讓配料掉完、鏡頭喘口氣
+    }
+
+    // 對戰（雙店＋單廚）：兩盤同題同時做完 → 各盤分數記到各自的店、一畫面比出本場勝方
+    _duelDone() {
+        const plates = this.sessions.map(s => s.result);
+        const order = this.stores[0].currentOrder;
+        this.stores.forEach((st, i) => {
+            st.results[this.roundIdx] = { score: plates[i].total, plates: [plates[i]] };
+            st.total += plates[i].total;
+        });
+        this.mgr.spinning = true;
+        PC.audio.bgm('bgm_menu');
+        PC.audio.play('sfx_result');
+        const last = this.roundIdx + 1 >= this.roundCount;
+        PC.ui.showDuelVerdict({
+            roundLabel: `第 ${this.roundIdx + 1} 場`,
+            stores: this.stores,
+            chefs: this.sessions.map(s => s.chef),
+            plates,
+            order,
+            pattern: order && order.pattern,
+            nextLabel: last ? `看最終結果 <span class="mi">sports_score</span>` : `下一場 <span class="mi">play_arrow</span>`,
+            onNext: () => this._nextRound()
+        });
     }
 
     _turnDone() {
@@ -274,7 +263,7 @@ PC.GameFlow = class {
         PC.audio.play('sfx_result');
         PC.ui.showVerdict({
             store,
-            roundLabel: `第 ${this.roundIdx + 1} 場｜${PC.config.ROUNDS[this.roundIdx].label}`,
+            roundLabel: `第 ${this.roundIdx + 1} 場`,
             eyebrow: this.practice ? '🧶 練習模式' : null,
             plates,
             chefs: this.sessions.map(s => s.chef),
@@ -298,7 +287,7 @@ PC.GameFlow = class {
     }
     _nextRound() {
         this.roundIdx++;
-        if (this.roundIdx < PC.config.ROUNDS.length) return this._beginRound();
+        if (this.roundIdx < this.roundCount) return this._beginRound();
         this._finale();
     }
     _finale() {
@@ -308,6 +297,8 @@ PC.GameFlow = class {
     }
 
     // ---------- 工具 ----------
+    // 對戰模式＝雙店競賽＋單廚：兩店的主廚兩盤同時對決（左盤滑鼠、右盤鍵盤），直接比三場
+    _isDuel() { return this.storeMode === 'versus' && this.chefMode === 'solo'; }
     _pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
     // 難度綁在品項本身 → 依難度權重挑「品項」（顧客偏溫和、對手偏兇）
     _genOrder(kind) {

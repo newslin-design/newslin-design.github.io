@@ -4,7 +4,7 @@
      完美＝窗中間 w/2（滿分）、不完美＝前後各 w/4（80%）、
      超級不完美＝窗外（60%）——對應規格 10/8/6 分例
    - 熟度：看「起鍋時刻」落在哪個帶（完美 16~23s），扣總分
-   - input: 'mouse'（點針目）或 'keys'（按 1/2/3）
+   - input: 'mouse'（點針目）或 'keys'（按 1/2/3/4）
    ============================================================ */
 window.PC = window.PC || {};
 
@@ -56,7 +56,7 @@ PC.CookSession = class {
         this.dotW = C.DOT_SPAN / list.length;
         list.forEach((d, i) => {
             d.i = i;
-            d.key = 1 + Math.floor(Math.random() * 3);   // 鍵盤模式提示 1/2/3
+            d.key = 1 + Math.floor(Math.random() * 4);   // 鍵盤模式提示 1/2/3/4
         });
         return list;
     }

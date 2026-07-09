@@ -9,6 +9,8 @@ PC.ui = (function () {
     let flow = null;
     let ov, hudWrap, fxLayer, cdEl, titleInfo, recipeCard, recipeChips, recipeGuide, tally;
     const hudRefs = [];   // 每盤 HUD 元素快取
+    // 游標起鍋鈕：滑鼠盤點點做完後貼著游標，就地起鍋
+    let cursorServe = null, mouseServeSide = -1, csFrozen = false, csX = -100, csY = -100;
 
     const $ = (sel, root) => (root || document).querySelector(sel);
     const el = (html) => { const d = document.createElement('div'); d.innerHTML = html.trim(); return d.firstChild; };
@@ -37,6 +39,12 @@ PC.ui = (function () {
         const c = chef || { emoji: '👨‍🍳' };
         return c.img ? `<img class="${cls} chefImg" src="${c.img}" alt="">`
                      : `<span class="${cls}">${c.emoji}</span>`;
+    };
+    // 熟度圖示（assets/done_*.png，燒焦無圖退回 emoji）＋文字，例：「(icon) 完美」
+    const DONE_ICON = { raw: 'done_raw', almost: 'done_almost', perfect: 'done_perfect', over: 'done_over' };
+    const donenessHTML = (d) => {
+        const name = DONE_ICON[d.key];
+        return `${name ? gicon(name, d.emoji, 'giDone') : d.emoji} ${d.label}`;
     };
 
     // 織圖織法卡（QRcode + 中文說明）：菜譜卡與得分卡共用
@@ -162,6 +170,48 @@ PC.ui = (function () {
             e.currentTarget.innerHTML = mi(m ? 'volume_off' : 'volume_up');
         };
         $('#homeBtn').onclick = () => { if (confirm('回到主選單？本局進度會消失。')) location.reload(); };
+
+        // 游標起鍋鈕：建一次，之後靠 show/hide 控制
+        cursorServe = el(`<button id="cursorServe" class="hide" title="起鍋！">${gicon('serve', '🍽️', 'giCursor')}</button>`);
+        document.body.appendChild(cursorServe);
+        // 滑到鈕上時凍結位置，否則游標一靠近鈕就被推走 → 永遠點不到
+        cursorServe.addEventListener('pointerenter', () => csFrozen = true);
+        cursorServe.addEventListener('pointerleave', () => csFrozen = false);
+        cursorServe.onclick = () => {
+            if (mouseServeSide < 0) return;
+            clickSfx();
+            hideCursorServe();
+            flow.serveFromButton(mouseServeSide);
+        };
+        // 隱藏時仍記錄游標位置，讓下次現身直接出現在游標旁（不閃 0,0）
+        addEventListener('pointermove', e => {
+            csX = e.clientX; csY = e.clientY;
+            if (csFrozen || cursorServe.classList.contains('hide')) return;
+            cursorServe.style.left = csX + 'px';
+            cursorServe.style.top = csY + 'px';
+            aimCursorArrow();
+        });
+    }
+
+    function showCursorServe(ready) {
+        if (!cursorServe) return;
+        cursorServe.style.left = csX + 'px';
+        cursorServe.style.top = csY + 'px';
+        cursorServe.classList.remove('hide');
+        cursorServe.classList.toggle('ready', !!ready);
+        aimCursorArrow();
+    }
+    // 讓箭頭指向該盤底部的 HUD 起鍋鈕（游標在畫面任何位置都指得準）
+    function aimCursorArrow() {
+        if (!cursorServe || mouseServeSide < 0) return;
+        const r = hudRefs[mouseServeSide]; if (!r || !r.serve) return;
+        const t = r.serve.getBoundingClientRect();
+        const cx = csX + 37, cy = csY + 35;   // 鈕心＝游標＋margin(14,12)＋半徑23
+        const ang = Math.atan2((t.top + t.height / 2) - cy, (t.left + t.width / 2) - cx) * 180 / Math.PI;
+        cursorServe.style.setProperty('--arrowAngle', ang.toFixed(1) + 'deg');
+    }
+    function hideCursorServe() {
+        if (cursorServe) { cursorServe.classList.add('hide'); csFrozen = false; }
     }
 
     function setTitleInfo(t) { titleInfo.textContent = t; }
@@ -193,16 +243,15 @@ PC.ui = (function () {
         tally.classList.add('hide');
         setTitleInfo(`遊戲本體 ${PC.config.VERSION} — 節奏編織料理`);
         showOverlay(`
-        <div class="modalCard menuCard">
+        <div class="modalCard menuCard menuHome">
             <div class="menuSign">
-                <img src="assets/logo_signboard.png" alt="">
-                <span class="menuSignText">毛線麵餐廳</span>
+                <img src="assets/logo.png" alt="毛線麵餐廳">
             </div>
             <p class="lead">照織圖節奏下針、上醬、擺料——在完美熟度起鍋！</p>
             <button class="choice practiceChoice" data-m="practice"><b>🧶 練習模式</b><span>直接選料開做，做完看結果——隨時上手、想做幾盤都行</span></button>
             <div class="bigChoices">
                 <button class="choice" data-m="single"><b>🏪 單店營業</b><span>一間店做 3 場菜，挑戰高分</span></button>
-                <button class="choice" data-m="versus"><b>${gicon('versus', '⚔️', 'giInline')} 雙店競賽</b><span>兩間店輪流做菜拚總分<br>第 3 場互相出題！</span></button>
+                <button class="choice" data-m="versus"><b>${gicon('versus', '⚔️', 'giInline')} 雙店競賽</b><span>兩間店比總分，高分者勝<br>單廚同時對決、雙廚協力賽</span></button>
             </div>
             <p class="tinyNote">${mi('mouse')} 拖曳可旋轉視角</p>
         </div>`);
@@ -216,13 +265,18 @@ PC.ui = (function () {
     }
 
     function showChefMode() {
+        const vs = flow.storeMode === 'versus';
         showOverlay(`
         <div class="modalCard menuCard">
             <h2>每隊幾人掌廚？</h2>
-            <p class="lead">雙廚一次做兩盤（分數相加），一位滑鼠一位鍵盤，考驗默契！</p>
+            <p class="lead">${vs
+                ? '單廚＝兩店同時對決；雙廚＝每隊 2 人協力（一滑鼠一鍵盤，分數相加）。'
+                : '雙廚一次做兩盤（分數相加），一位滑鼠一位鍵盤，考驗默契！'}</p>
             <div class="bigChoices">
-                <button class="choice" data-m="solo"><b>👨‍🍳 單廚</b><span>每隊 1 人，滑鼠點針目</span></button>
-                <button class="choice" data-m="duo"><b>👩‍🍳👨‍🍳 雙廚</b><span>每隊 2 人！左盤滑鼠、右盤鍵盤 1·2·3<br>（雙人協力）</span></button>
+                <button class="choice" data-m="solo"><b>👨‍🍳 單廚${vs ? '對決' : ''}</b><span>${vs
+                    ? '每隊 1 人，兩店<b>同時開做</b>直接對決<br>左盤滑鼠、右盤鍵盤 1·2·3·4'
+                    : '每隊 1 人，滑鼠點針目'}</span></button>
+                <button class="choice" data-m="duo"><b>👩‍🍳👨‍🍳 雙廚</b><span>每隊 2 人！左盤滑鼠、右盤鍵盤 1·2·3·4<br>（雙人協力${vs ? '，兩隊輪流' : ''}）</span></button>
             </div>
         </div>`);
         ov.querySelectorAll('.choice').forEach(b =>
@@ -230,13 +284,33 @@ PC.ui = (function () {
         document.body.classList.add('setup');
     }
 
+    // 選場數：要比幾場（1~4）。點數字即開賽。
+    function showRoundCount(current) {
+        const C = PC.config, def = current || C.ROUND_DEFAULT;
+        const btns = [];
+        for (let n = C.ROUND_MIN; n <= C.ROUND_MAX; n++)
+            btns.push(`<button class="choice countChoice${n === def ? ' on' : ''}" data-n="${n}"><b>${n}</b><span>場</span></button>`);
+        showOverlay(`
+        <div class="modalCard menuCard">
+            <h2>要比幾場？</h2>
+            <p class="lead">每場都是一道菜——自己配料，或讓當場客人隨機點。想比幾場自己決定！</p>
+            <div class="countChoices">${btns.join('')}</div>
+        </div>`);
+        ov.querySelectorAll('.countChoice').forEach(b =>
+            b.onclick = () => { clickSfx(); flow.selectRoundCount(+b.dataset.n); });
+        document.body.classList.add('setup');
+    }
+
     // 兩隊固定・出場提醒（不用真的選，隊友現場自己喬）
     function showTeamIntro(stores, chefMode, onDone) {
         const duo = chefMode === 'duo';
         const vs = stores.length > 1;
+        const duel = vs && !duo;   // 雙店＋單廚＝對戰
         const roleHint = duo
-            ? `每隊 <b>2 人</b>：一位掌 ${mi('mouse')} 滑鼠盤、一位掌 ${mi('keyboard')} 鍵盤盤（1·2·3、Enter 起鍋）`
-            : '每隊 <b>1 人</b> 掌廚：滑鼠點針目';
+            ? `每隊 <b>2 人</b>：一位掌 ${mi('mouse')} 滑鼠盤、一位掌 ${mi('keyboard')} 鍵盤盤（1·2·3·4、Enter 起鍋）`
+            : duel
+                ? `兩隊<b>同時對決</b>：${stores[0].name} 掌 ${mi('mouse')} 滑鼠盤、${stores[1].name} 掌 ${mi('keyboard')} 鍵盤盤（1·2·3·4、Enter 起鍋）`
+                : '每隊 <b>1 人</b> 掌廚：滑鼠點針目';
         const teamCard = (st, i) => `
             <div class="teamCard">
                 ${st.chef.img ? `<img class="teamArt" src="${st.chef.img}" alt="">`
@@ -419,15 +493,21 @@ PC.ui = (function () {
 
     function showHud(store, sessions, order) {
         hudRefs.length = 0;
+        mouseServeSide = sessions.findIndex(s => s.input === 'mouse');
+        hideCursorServe();
         hudWrap.classList.remove('hide');
         hudWrap.innerHTML = '';
         hudWrap.classList.toggle('duo', sessions.length > 1);
-        sessions.forEach((s, i) => {
+        // 底下起鍋卡左右反轉，讓卡片與上方兩盤對齊（使用者回饋：原本鍵盤/滑鼠與起鍋鈕左右相反）
+        const domOrder = sessions.map((_, i) => i);
+        if (sessions.length > 1) domOrder.reverse();
+        domOrder.forEach(i => {
+            const s = sessions[i];
             const chef = s.chef || { emoji: '👨‍🍳', name: '主廚' };
             const card = el(`
             <div class="card cookCard">
                 <div class="chefLine">${chefFaceHTML(chef, 'chefFace')}<b>${chef.name}</b>
-                    <span class="inputTag">${s.input === 'keys' ? mi('keyboard') + ' 鍵盤 1·2·3' : mi('mouse') + ' 滑鼠'}</span></div>
+                    <span class="inputTag">${s.input === 'keys' ? mi('keyboard') + ' 鍵盤 1·2·3·4' : mi('mouse') + ' 滑鼠'}</span></div>
                 <div class="phaseLine" data-f="phase">準備中…</div>
                 <div class="keyHint hide" data-f="keyhint">按 <b data-f="keynum">1</b></div>
                 <div class="scoreLine">分數 <b data-f="score">0</b><span class="comboTag" data-f="combo"></span></div>
@@ -438,7 +518,7 @@ PC.ui = (function () {
             </div>`);
             $('[data-f=serve]', card).onclick = e => { e.currentTarget.blur(); flow.serveFromButton(i); };
             hudWrap.appendChild(card);
-            hudRefs.push({
+            hudRefs[i] = {
                 card,
                 phase: $('[data-f=phase]', card),
                 keyhint: $('[data-f=keyhint]', card),
@@ -448,7 +528,7 @@ PC.ui = (function () {
                 needle: $('[data-f=needle]', card),
                 serve: $('[data-f=serve]', card),
                 verdict: $('[data-f=verdict]', card)
-            });
+            };
         });
         updateTally();
     }
@@ -457,6 +537,11 @@ PC.ui = (function () {
         sessions.forEach((s, i) => {
             const r = hudRefs[i]; if (!r) return;
             const snap = s.snapshot();
+            // 滑鼠盤點點做完、還沒起鍋 → 游標旁冒出起鍋 icon（完美熟度區時轉綠脈動）
+            if (i === mouseServeSide) {
+                if (snap.doneDots && !snap.served) showCursorServe(snap.serveNow);
+                else hideCursorServe();
+            }
             r.phase.textContent = snap.phase;
             r.score.textContent = Math.round(snap.score);
             r.combo.textContent = snap.combo >= 2 ? `🔥x${snap.combo}` : '';
@@ -521,26 +606,33 @@ PC.ui = (function () {
     }
 
     // ---------- 結算 ----------
+    // 單盤得分明細（showVerdict／showDuelVerdict 共用）
+    function plateStatsHTML(r, showTotal) {
+        return `<div class="plateStats">
+            <div class="stat"><span>針目得分（滿分 ${r.baseTotal}）</span><b>+${Math.round(r.scoreDots)}</b></div>
+            <div class="stat sub"><span>${gicon('grade_perfect', '✨', 'giInline')} 完美</span><b>${r.grades.perfect}</b></div>
+            <div class="stat sub"><span>${gicon('grade_ok', '👌', 'giInline')} 不錯</span><b>${r.grades.ok}</b></div>
+            <div class="stat sub"><span>${gicon('grade_bad', '💦', 'giInline')} 超糟</span><b>${r.grades.bad}</b></div>
+            ${r.missing ? `<div class="stat sub"><span>${gicon('grade_miss', '❌', 'giInline')} 漏針</span><b>${r.missing}</b></div>` : ''}
+            <div class="stat sub"><span>🔥 最高連擊</span><b>${r.maxCombo}</b></div>
+            <div class="stat"><span>熟度 ${donenessHTML(r.doneness)}（${r.serveSec.toFixed(1)}s 起鍋${r.forced ? '・強制' : ''}）</span><b>${r.penalty || '±0'}</b></div>
+            ${showTotal ? `<div class="stat totalRow"><span>本盤得分</span><b>${r.total}</b></div>` : ''}
+        </div>`;
+    }
+
     function showVerdict({ store, roundLabel, plates, chefs, score, onNext, eyebrow, nextLabel, onHome, pattern, order }) {
         const plateHTML = plates.map((r, i) => {
             const chef = chefs[i] || { emoji: '👨‍🍳', name: '主廚' };
+            const tag = plates.length > 1 ? `<span class="plateTag">${i === 0 ? mi('mouse') + ' 滑鼠盤' : mi('keyboard') + ' 鍵盤盤'}</span>` : '';
             return `
             <div class="plateResult">
-                <div class="plateHead">${chefFaceHTML(chef, 'plateChefFace')}${chef.name}${plates.length > 1 ? `<span class="plateTag">${i === 0 ? mi('mouse') + ' 滑鼠盤' : mi('keyboard') + ' 鍵盤盤'}</span>` : ''}</div>
-                <div class="plateStats">
-                    <div class="stat"><span>針目得分（滿分 ${r.baseTotal}）</span><b>+${Math.round(r.scoreDots)}</b></div>
-                    <div class="stat sub"><span>${gicon('grade_perfect', '✨', 'giInline')} 完美</span><b>${r.grades.perfect}</b></div>
-                    <div class="stat sub"><span>${gicon('grade_ok', '👌', 'giInline')} 不錯</span><b>${r.grades.ok}</b></div>
-                    <div class="stat sub"><span>${gicon('grade_bad', '💦', 'giInline')} 超糟</span><b>${r.grades.bad}</b></div>
-                    ${r.missing ? `<div class="stat sub"><span>${gicon('grade_miss', '❌', 'giInline')} 漏針</span><b>${r.missing}</b></div>` : ''}
-                    <div class="stat sub"><span>🔥 最高連擊</span><b>${r.maxCombo}</b></div>
-                    <div class="stat"><span>熟度 ${r.doneness.emoji} ${r.doneness.label}（${r.serveSec.toFixed(1)}s 起鍋${r.forced ? '・強制' : ''}）</span><b>${r.penalty || '±0'}</b></div>
-                    ${plates.length > 1 ? `<div class="stat totalRow"><span>本盤得分</span><b>${r.total}</b></div>` : ''}
-                </div>
+                <div class="plateHead">${chefFaceHTML(chef, 'plateChefFace')}${chef.name}${tag}</div>
+                ${plateStatsHTML(r, plates.length > 1)}
             </div>`;
         }).join('');
         // 非阻擋式結算：不蓋住 3D 成品。分數置中上方、細節靠右、下一步置中下方
         restoreChart();
+        hideCursorServe();
         recipeCard.classList.add('hide');
         hudWrap.classList.add('hide');
         document.body.classList.remove('peek', 'setup');
@@ -575,37 +667,113 @@ PC.ui = (function () {
         $('#vNext').onclick = () => { clickSfx(); document.body.classList.remove('peek'); onNext(); };
     }
 
-    // 左側累積比分：雙方每場分數＋合計一起看，方便追累積戰況
+    // ---------- 對戰結算（雙店＋單廚）----------
+    // 兩隊同題＝同一張比較表（列＝項目、欄＝隊伍；重複標籤只出現一次），標出本場勝方
+    function showDuelVerdict({ roundLabel, stores, chefs, plates, order, pattern, nextLabel, onNext }) {
+        restoreChart();
+        hideCursorServe();
+        recipeCard.classList.add('hide');
+        hudWrap.classList.add('hide');
+        document.body.classList.remove('peek', 'setup');
+        ov.classList.remove('hide');
+        ov.classList.add('verdictLayer');
+
+        const [pa, pb] = plates;
+        const winIdx = pa.total === pb.total ? -1 : (pa.total > pb.total ? 0 : 1);
+        const resultLine = winIdx < 0
+            ? `${gicon('result_tie', '🤝', 'giInline')} 這場平手！`
+            : `${stores[winIdx].emoji} ${stores[winIdx].name} 這場勝出！`;
+
+        const winCls = i => winIdx === i ? ' win' : '';
+        // 表頭：隊伍（立繪＋操作方式＋勝方皇冠）
+        const headCell = i => {
+            const st = stores[i], chef = chefs[i] || st.chef;
+            return `<th class="dtTeam${winCls(i)}">
+                <span class="dtTeamName">${chefFaceHTML(chef, 'dtFace')}${st.name}${winIdx === i ? ' ' + gicon('lead_crown', '👑', 'giCrown') : ''}</span>
+                <span class="dtTag">${i === 0 ? mi('mouse') + ' 滑鼠' : mi('keyboard') + ' 鍵盤'}</span></th>`;
+        };
+        // 一列＝一個項目，標籤只出現一次（左欄）
+        const row = (label, fn, cls = '') =>
+            `<tr class="${cls}"><th class="dtLabel">${label}</th>${plates.map((p, i) => `<td class="${winCls(i).trim()}">${fn(p, i)}</td>`).join('')}</tr>`;
+
+        const anyMissing = plates.some(p => p.missing);
+        const anyPenalty = plates.some(p => p.penalty);
+        const rows = [
+            row('針目得分', p => `+${Math.round(p.scoreDots)}`),
+            row(`${gicon('grade_perfect', '✨', 'giInline')} 完美`, p => p.grades.perfect, 'sub'),
+            row(`${gicon('grade_ok', '👌', 'giInline')} 不錯`, p => p.grades.ok, 'sub'),
+            row(`${gicon('grade_bad', '💦', 'giInline')} 超糟`, p => p.grades.bad, 'sub'),
+            anyMissing ? row(`${gicon('grade_miss', '❌', 'giInline')} 漏針`, p => p.missing || 0, 'sub') : '',
+            row('🔥 最高連擊', p => p.maxCombo, 'sub'),
+            row('熟度', p => `${donenessHTML(p.doneness)}<small class="dtSub">${p.serveSec.toFixed(1)}s${p.forced ? '・強制' : ''}</small>`),
+            anyPenalty ? row('熟度扣分', p => p.penalty || '±0', 'sub') : '',
+            row('本盤得分', p => p.total, 'dtTotal')
+        ].join('');
+
+        ov.innerHTML = `
+            <div class="vScoreTop">
+                <div class="verdictEyebrow">⚔️ ${roundLabel}</div>
+                <div class="duelResultLine">${resultLine}</div>
+            </div>
+            <div class="card vDetail duelDetail">
+                ${order ? `<div class="ddDishBar">
+                    <div class="dishName vDishName">${PC.dishName(order)}</div>
+                    <div class="vFullMark">滿分 ${plates[0].baseTotal}</div>
+                    <div class="vRecipeChips">${recipeChipsHTML(order)}</div>
+                </div>` : ''}
+                <div class="ddTop">
+                    <div class="ddChart"><div id="vChartSlot"></div></div>
+                    <div class="ddInfo">${crochetGuideHTML(pattern)}</div>
+                </div>
+                <table class="duelTable">
+                    <tr><th class="dtLabel"></th>${headCell(0)}${headCell(1)}</tr>
+                    ${rows}
+                </table>
+            </div>
+            <div class="vFoot">
+                <button class="ghostBtn" id="vPeek">${mi('visibility')} 只看成品</button>
+                <button class="bigBtn" id="vNext">${nextLabel || `繼續 ${mi('play_arrow')}`}</button>
+            </div>`;
+        const cb = document.getElementById('chartBox');
+        if (cb) document.getElementById('vChartSlot').appendChild(cb);
+        updateTally();
+        $('#vPeek').onclick = () => document.body.classList.add('peek');
+        $('#vNext').onclick = () => { clickSfx(); document.body.classList.remove('peek'); onNext(); };
+    }
+
+    // 左側累積比分：場次由上而下、隊伍分左右欄；底部合計，領先隊標皇冠
     function updateTally() {
         const stores = flow.stores;
         if (flow.practice || !stores || !stores.length) { tally.classList.add('hide'); return; }
-        const rounds = PC.config.ROUNDS;
+        const n = flow.roundCount || PC.config.ROUND_DEFAULT;
         const lead = stores.length > 1 ? Math.max(...stores.map(s => s.total)) : -1;
-        const rows = stores.map(s => {
-            const cells = rounds.map((_, i) => {
+        const header = `<tr><th class="tCorner">場次</th>${stores.map(s =>
+            `<th class="tTeam">${s.emoji}<span>${s.name.replace('隊', '')}</span></th>`).join('')}</tr>`;
+        let body = '';
+        for (let i = 0; i < n; i++) {
+            const cur = i === flow.roundIdx && flow.phase !== 'final';
+            body += `<tr class="${cur ? 'curRow' : ''}"><td class="tRound">第 ${i + 1} 場</td>${stores.map(s => {
                 const r = s.results[i];
-                const cur = i === flow.roundIdx && flow.phase !== 'final';
-                return `<td class="${cur ? 'curCol' : ''}">${r ? r.score : '·'}</td>`;
-            }).join('');
+                return `<td>${r ? r.score : '·'}</td>`;
+            }).join('')}</tr>`;
+        }
+        const foot = `<tr class="tFoot"><td class="tRound">總分</td>${stores.map(s => {
             const isLead = stores.length > 1 && lead > 0 && s.total === lead;
-            return `<tr class="${isLead ? 'leadRow' : ''}">
-                <td class="tName">${s.emoji} ${s.name.replace('隊', '')}${isLead ? ' ' + gicon('lead_crown', '👑', 'giCrown') : ''}</td>${cells}
-                <td class="tTot">${s.total}</td></tr>`;
-        }).join('');
+            return `<td class="tTot">${s.total}${isLead ? '<br>' + gicon('lead_crown', '👑', 'giCrown') : ''}</td>`;
+        }).join('')}</tr>`;
         tally.innerHTML = `
             <div class="tallyHead">${mi('leaderboard')} 累積比分</div>
-            <table class="tallyTable">
-                <tr><th></th>${rounds.map((_, i) => `<th>${i + 1}</th>`).join('')}<th>總</th></tr>
-                ${rows}
-            </table>`;
+            <table class="tallyTable">${header}${body}${foot}</table>`;
         tally.classList.remove('hide');
     }
 
     function showScoreboard(stores, roundIdx, onNext) {
-        const head = PC.config.ROUNDS.map((r, i) => `<th>${i + 1}｜${r.label}</th>`).join('');
+        const n = flow.roundCount || PC.config.ROUND_DEFAULT;
+        const cols = Array.from({ length: n }, (_, i) => i);
+        const head = cols.map(i => `<th>${i + 1}</th>`).join('');
         const rows = stores.map(s => `
             <tr><td>${s.emoji} ${s.name}</td>
-            ${PC.config.ROUNDS.map((_, i) => `<td>${s.results[i] ? s.results[i].score : '—'}</td>`).join('')}
+            ${cols.map(i => `<td>${s.results[i] ? s.results[i].score : '—'}</td>`).join('')}
             <td class="totCell">${s.total}</td></tr>`).join('');
         const lead = stores[0].total === stores[1].total ? '平手！'
             : `${(stores[0].total > stores[1].total ? stores[0] : stores[1]).name} 領先！`;
@@ -616,7 +784,7 @@ PC.ui = (function () {
             <table class="scoreTable">
                 <tr><th></th>${head}<th>合計</th></tr>${rows}
             </table>
-            <button class="bigBtn" id="bNext">${roundIdx + 1 < PC.config.ROUNDS.length ? '下一場 ' + mi('play_arrow') : '看最終結果 ' + mi('sports_score')}</button>
+            <button class="bigBtn" id="bNext">${roundIdx + 1 < n ? '下一場 ' + mi('play_arrow') : '看最終結果 ' + mi('sports_score')}</button>
         </div>`);
         $('#bNext').onclick = () => { clickSfx(); onNext(); };
     }
@@ -642,15 +810,17 @@ PC.ui = (function () {
             headHTML = `<div class="cardIcon">${gicon(tier.img, tier.emoji, 'giHero')}</div><h1>${tier.label}</h1>
                 <p class="lead">達成率 ${Math.floor(ratio * 100)}%</p>`;
         }
+        const n = flow.roundCount || PC.config.ROUND_DEFAULT;
+        const cols = Array.from({ length: n }, (_, i) => i);
         const rows = stores.map(s => `
             <tr><td>${s.emoji} ${s.name}</td>
-            ${PC.config.ROUNDS.map((_, i) => `<td>${s.results[i] ? s.results[i].score : '—'}</td>`).join('')}
+            ${cols.map(i => `<td>${s.results[i] ? s.results[i].score : '—'}</td>`).join('')}
             <td class="totCell">${s.total}</td></tr>`).join('');
         showOverlay(`
         <div class="modalCard menuCard">
             ${headHTML}
             <table class="scoreTable">
-                <tr><th></th>${PC.config.ROUNDS.map((r, i) => `<th>${i + 1}</th>`).join('')}<th>合計</th></tr>${rows}
+                <tr><th></th>${cols.map(i => `<th>${i + 1}</th>`).join('')}<th>合計</th></tr>${rows}
             </table>
             <button class="bigBtn" id="againBtn">${mi('replay')} 再玩一次</button>
         </div>`);
@@ -658,10 +828,10 @@ PC.ui = (function () {
     }
 
     return {
-        init, showMenu, showChefMode, showTeamIntro, showCard,
+        init, showMenu, showChefMode, showRoundCount, showTeamIntro, showCard,
         openOrderModal, showOrderCard, orderSummaryHTML, setRecipe,
         showHud, updateHud, hitFx, comboSplash, wrongKeyFx,
-        countdown, showVerdict, showScoreboard, showFinal, updateTally,
+        countdown, showVerdict, showDuelVerdict, showScoreboard, showFinal, updateTally,
         hideOverlays, setTitleInfo, _iconFail
     };
 })();

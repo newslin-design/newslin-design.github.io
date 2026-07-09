@@ -59,10 +59,10 @@ html, body {
 .card {
     position: fixed; background: var(--card);
     backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-    border: 2.5px solid var(--wood-dark); border-radius: 18px;
+    border: 3.5px solid var(--wood-dark); border-radius: 18px;
     box-shadow:
         0 14px 30px -14px rgba(90, 60, 40, .5),
-        inset 0 0 0 2px var(--frame-in),
+        inset 0 0 0 3px var(--frame-in),
         inset 0 2px 0 rgba(255, 255, 255, .6);
 }
 
@@ -82,7 +82,7 @@ html, body {
 /* ---- 織圖織法卡（QRcode + 中文說明；菜譜卡與得分卡共用） ---- */
 .crochetGuide {
     display: flex; gap: 10px; margin-top: 10px; padding-top: 10px;
-    border-top: 1px dashed var(--line);
+    border-top: 2px dashed var(--line);
 }
 .crochetGuide .cgQr {
     flex: 0 0 auto; width: 62px; text-decoration: none;
@@ -110,7 +110,7 @@ html, body {
 /* ---- 通用 chips ---- */
 .chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0 2px; }
 .chip {
-    font: inherit; font-size: 12.5px; border: 1px solid var(--line); background: #fff; color: var(--ink);
+    font: inherit; font-size: 12.5px; border: 2px solid var(--line); background: #fff; color: var(--ink);
     border-radius: 999px; padding: 5px 11px; cursor: pointer; transition: transform .1s;
 }
 .chip:hover { transform: translateY(-1px); }
@@ -130,7 +130,7 @@ html, body {
 .orderCols { display: flex; gap: 20px; align-items: flex-start; }
 .orderMain { flex: 1; min-width: 0; }
 .orderSide { width: 250px; flex: none; }
-#mChartSlot #chartBox { border: 1px solid var(--line); border-radius: 10px; }
+#mChartSlot #chartBox { border: 2px solid var(--line); border-radius: 10px; }
 
 /* ---- 點菜單頭：吉祥物探頭 + 木牌標題（往上超出約 40%，副標在牌外下方）---- */
 .modalCard.orderModal { margin-top: 64px; }     /* 預留招牌／吉祥物往上探出的空間 */
@@ -151,7 +151,7 @@ html, body {
 .itemGrid { display: flex; flex-wrap: wrap; gap: 9px; margin: 4px 0 10px; }
 .itemCard {
     font: inherit; color: var(--ink); width: 104px; padding: 9px 6px 9px;
-    background: var(--panel-2); border: 2.5px solid transparent; border-radius: 16px;
+    background: var(--panel-2); border: 3.5px solid transparent; border-radius: 16px;
     cursor: pointer; transition: transform .14s, box-shadow .14s, border-color .14s; text-align: center; position: relative;
     box-shadow: 0 2px 6px -3px rgba(90, 60, 40, .22), inset 0 2px 0 rgba(255, 255, 255, .45);
 }
@@ -172,7 +172,7 @@ html, body {
 .itemName { display: block; font-size: 12px; margin-top: 5px; line-height: 1.35; }
 .diceBtn {
     display: block; width: 100%; margin-top: 14px; font: inherit; font-weight: 700; font-size: 14px;
-    color: var(--accent); background: #fff; border: 2px dashed var(--accent); border-radius: 999px;
+    color: var(--accent); background: #fff; border: 3px dashed var(--accent); border-radius: 999px;
     padding: 10px; cursor: pointer; transition: transform .12s;
 }
 .diceBtn:hover { transform: translateY(-1px); }
@@ -189,6 +189,53 @@ html, body {
     30% { transform: translateY(-8px) scale(1.05); }
     50% { transform: translateY(0) scale(1); }
     65% { transform: translateY(-4px) scale(1.02); }
+}
+
+/* ---- 游標起鍋鈕：滑鼠盤點點做完後，起鍋 icon 貼著游標，就地一點即起鍋 ---- */
+#cursorServe {
+    position: fixed; left: 0; top: 0; z-index: 70;
+    width: 46px; height: 46px; padding: 0;
+    display: grid; place-items: center;
+    border: none; border-radius: 50%; cursor: pointer;
+    background: linear-gradient(180deg, var(--btn-red) 0%, var(--btn-red-d) 100%);
+    box-shadow: 0 4px 0 var(--btn-red-d), 0 10px 16px -6px rgba(179, 78, 44, .5), inset 0 2px 0 rgba(255, 255, 255, .4);
+    /* 錨在游標右下，避免蓋住針目 */
+    margin: 12px 0 0 14px;
+    animation: cursorServeIn .18s ease-out;
+}
+/* 指向箭頭：繞著鈕心旋轉，永遠戳向畫面下方該盤的 HUD 起鍋鈕（角度由 JS 設 --arrowAngle） */
+#cursorServe::before {
+    content: ""; position: absolute; top: 50%; left: 50%;
+    width: 0; height: 0;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-bottom: 12px solid var(--btn-red);
+    transform: translate(-50%, -50%) rotate(calc(var(--arrowAngle, 90deg) + 90deg)) translateY(-30px);
+    filter: drop-shadow(0 1px 1px rgba(120, 45, 25, .35));
+    animation: cursorArrowNudge 1s ease-in-out infinite;
+}
+#cursorServe.ready::before { border-bottom-color: var(--btn-green); }
+#cursorServe.hide { display: none; }
+#cursorServe .gi, #cursorServe .giFallback { height: 26px; width: auto; }
+#cursorServe .giFallback { font-size: 24px; line-height: 1; }
+#cursorServe:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--btn-red-d), inset 0 2px 0 rgba(255, 255, 255, .3); }
+#cursorServe.ready {
+    background: linear-gradient(180deg, var(--btn-green) 0%, var(--btn-green-d) 100%);
+    animation: cursorServeReady 1s ease-in-out infinite;
+}
+@keyframes cursorServeIn { from { opacity: 0; transform: scale(.4); } to { opacity: 1; transform: scale(1); } }
+/* 箭頭沿指向來回戳動，暗示「往這邊＝起鍋鈕」 */
+@keyframes cursorArrowNudge {
+    0%, 100% { transform: translate(-50%, -50%) rotate(calc(var(--arrowAngle, 90deg) + 90deg)) translateY(-30px); }
+    50%      { transform: translate(-50%, -50%) rotate(calc(var(--arrowAngle, 90deg) + 90deg)) translateY(-35px); }
+}
+@keyframes cursorServeReady {
+    0% { box-shadow: 0 4px 0 var(--btn-green-d), 0 0 0 0 rgba(124, 194, 80, .6); }
+    70% { box-shadow: 0 4px 0 var(--btn-green-d), 0 0 0 12px rgba(124, 194, 80, 0); }
+    100% { box-shadow: 0 4px 0 var(--btn-green-d), 0 0 0 0 rgba(124, 194, 80, 0); }
+}
+@media (prefers-reduced-motion: reduce) {
+    #cursorServe, #cursorServe.ready, #cursorServe::before { animation: none; }
 }
 
 /* ---- 訂單摘要 ---- */
@@ -220,10 +267,10 @@ body.setup #overlay {
 .modalCard {
     width: min(470px, 94vw); background: var(--panel); border-radius: 24px;
     padding: 24px 26px; margin: auto; position: relative;
-    border: 3px solid var(--wood-dark);
+    border: 4px solid var(--wood-dark);
     box-shadow:
         0 26px 60px -22px rgba(60, 40, 25, .65),
-        inset 0 0 0 3px var(--frame-in),
+        inset 0 0 0 4px var(--frame-in),
         inset 0 3px 0 rgba(255, 255, 255, .65);
     text-align: center;
 }
@@ -246,6 +293,9 @@ body.setup #overlay {
     -webkit-mask: radial-gradient(circle at 12px 100%, transparent 11px, #000 12px) repeat-x bottom / 24px 15px;
     mask: radial-gradient(circle at 12px 100%, transparent 11px, #000 12px) repeat-x bottom / 24px 15px;
 }
+/* 首頁：讓 logo 徽章能往上探出卡片（不裁切）；補回圓角避免招牌方角外露 */
+.menuHome { overflow: visible; }
+.menuHome::before { border-top-left-radius: 21px; border-top-right-radius: 21px; }
 
 .bigBtn {
     display: block; width: 100%; margin-top: 18px; font: inherit; font-weight: 800; font-size: 17px;
@@ -267,7 +317,7 @@ body.setup #overlay {
 
 .bigChoices { display: flex; gap: 12px; margin-top: 14px; }
 .choice {
-    flex: 1; font: inherit; background: var(--panel-2); border: 2.5px solid var(--wood); border-radius: 18px;
+    flex: 1; font: inherit; background: var(--panel-2); border: 3.5px solid var(--wood); border-radius: 18px;
     padding: 18px 12px; cursor: pointer; transition: transform .12s, box-shadow .12s, border-color .12s; color: var(--ink);
     box-shadow: 0 4px 0 rgba(168, 106, 55, .35), inset 0 2px 0 rgba(255, 255, 255, .6);
 }
@@ -287,7 +337,7 @@ body.setup #overlay {
 /* ---- 選廚師 ---- */
 .chefGrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 12px; }
 .chefCard {
-    font: inherit; background: var(--panel-2); border: 2.5px solid var(--wood); border-radius: 16px;
+    font: inherit; background: var(--panel-2); border: 3.5px solid var(--wood); border-radius: 16px;
     padding: 12px 8px 10px; cursor: pointer; transition: transform .12s, box-shadow .12s, border-color .12s; color: var(--ink); position: relative;
     box-shadow: 0 3px 0 rgba(168, 106, 55, .3), inset 0 2px 0 rgba(255, 255, 255, .55);
 }
@@ -306,7 +356,7 @@ body.setup #overlay {
 /* ---- 兩隊固定・出場提醒 ---- */
 .teamGrid { display: flex; justify-content: center; align-items: center; gap: 14px; margin: 16px 0 4px; }
 .teamCard {
-    flex: 1; max-width: 210px; background: var(--panel-2); border: 2.5px solid var(--wood); border-radius: 18px;
+    flex: 1; max-width: 210px; background: var(--panel-2); border: 3.5px solid var(--wood); border-radius: 18px;
     padding: 14px 10px 12px; text-align: center;
     box-shadow: 0 4px 0 rgba(168, 106, 55, .35), inset 0 2px 0 rgba(255, 255, 255, .6);
 }
@@ -317,13 +367,9 @@ body.setup #overlay {
 .vsBadge { flex: none; font-weight: 900; font-size: 24px; color: var(--accent); text-shadow: 0 2px 0 #fff; }
 
 /* ---- 主選單木牌 logo ---- */
-.menuSign { position: relative; width: min(360px, 80%); margin: 2px auto 8px; }
+/* logo 往上探出約自身高度 55%（徽章壓在招牌上緣）；-120px≈220px 高的 55% */
+.menuSign { position: relative; z-index: 1; width: min(220px, 60%); margin: -120px auto 6px; }
 .menuSign img { display: block; width: 100%; height: auto; }
-.menuSignText {
-    position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
-    font-weight: 900; font-size: clamp(22px, 7vw, 34px); color: #5c3b22; letter-spacing: 3px;
-    text-shadow: 0 1px 0 rgba(255, 255, 255, .45); padding-bottom: 6%;
-}
 
 /* ---- 顧客卡 ---- */
 .custHead { display: flex; gap: 12px; align-items: center; text-align: left; margin-bottom: 6px; }
@@ -447,7 +493,7 @@ body.setup #overlay {
 .ghostBtn {
     font: inherit; font-weight: 700; font-size: 14px; color: var(--ink);
     background: var(--card); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-    border: 2px solid var(--wood); border-radius: 999px; padding: 12px 20px; cursor: pointer;
+    border: 3px solid var(--wood); border-radius: 999px; padding: 12px 20px; cursor: pointer;
     box-shadow: 0 3px 0 rgba(168, 106, 55, .35), inset 0 1px 0 rgba(255, 255, 255, .7);
     transition: transform .1s, box-shadow .1s;
 }
@@ -468,19 +514,24 @@ body.peek #recipeCard,
 body.peek #toolCard { display: none !important; }
 body.peek #peekRestore { display: block; }
 
-/* 左側累積比分（雙方三場一起看）*/
-#tally { top: 74px; left: 16px; width: 182px; padding: 11px 13px 12px; z-index: 30; }
-.tallyHead { font-size: 12.5px; font-weight: 800; color: var(--muted); letter-spacing: .04em; margin-bottom: 6px; }
-.tallyTable { width: 100%; border-collapse: collapse; font-size: 13px; }
-.tallyTable th { font-size: 10px; color: var(--muted); font-weight: 600; padding: 2px 3px; }
-.tallyTable td { padding: 5px 3px; border-top: 1px solid rgba(216, 199, 180, .55); text-align: center; }
-.tallyTable .tName { text-align: left; font-weight: 700; font-size: 12.5px; white-space: nowrap; }
-.tallyTable .tTot { font-weight: 900; color: var(--accent); }
-.tallyTable .curCol { background: rgba(255, 203, 69, .28); border-radius: 5px; font-weight: 800; }
+/* 左側累積比分：場次由上而下、隊伍分左右欄（放得下更多場次）*/
+#tally { top: 96px; left: 16px; width: 236px; padding: 13px 15px 14px; z-index: 30; }
+.tallyHead { font-size: 14px; font-weight: 800; color: var(--muted); letter-spacing: .04em; margin-bottom: 9px; }
+.tallyTable { width: 100%; border-collapse: collapse; font-size: 16px; }
+.tallyTable th, .tallyTable td { padding: 8px 6px; text-align: center; border-bottom: 2px solid rgba(216, 199, 180, .6); }
+.tallyTable .tCorner { font-size: 12px; color: var(--muted); font-weight: 700; text-align: left; }
+.tallyTable .tTeam { font-size: 15px; font-weight: 800; color: var(--ink); line-height: 1.15; }
+.tallyTable .tTeam span { display: block; font-size: 12.5px; font-weight: 700; }
+.tallyTable .tRound { text-align: left; font-weight: 700; font-size: 14.5px; color: var(--muted); white-space: nowrap; }
+.tallyTable tr.curRow td { background: rgba(255, 203, 69, .34); font-weight: 900; color: var(--ink); }
+.tallyTable tr.curRow .tRound { color: var(--ink); }
+.tallyTable .tFoot td { border-bottom: none; border-top: 3px solid var(--wood); padding-top: 10px; }
+.tallyTable .tTot { font-weight: 900; color: var(--accent); font-size: 22px; line-height: 1.1; }
+.tallyTable .tTot .giCrown { height: 1em; vertical-align: -.15em; }
 
 .verdictEyebrow { font-size: 14px; font-weight: 700; color: var(--muted); letter-spacing: .04em;
     background: var(--card); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-    display: inline-block; padding: 4px 14px; border-radius: 999px; border: 1.5px solid var(--wood); }
+    display: inline-block; padding: 4px 14px; border-radius: 999px; border: 2.5px solid var(--wood); }
 .turnScore {
     font-size: 84px; font-weight: 900; line-height: 1.1; color: var(--accent);
     text-shadow: 0 3px 0 #fff, 0 12px 36px rgba(201, 106, 75, .4);
@@ -488,7 +539,7 @@ body.peek #peekRestore { display: block; }
 }
 .turnScore small { font-size: 24px; font-weight: 800; margin-left: 5px; }
 @keyframes scorePop { from { transform: scale(.3); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-.plateResult { text-align: left; background: #fff; border-radius: 14px; padding: 12px 16px 14px; margin-top: 10px; border: 1px solid var(--line); }
+.plateResult { text-align: left; background: #fff; border-radius: 14px; padding: 12px 16px 14px; margin-top: 10px; border: 2px solid var(--line); }
 .plateHead { display: flex; align-items: center; gap: 8px; font-size: 18px; font-weight: 800; margin-bottom: 7px; }
 .plateChefFace { font-size: 28px; line-height: 1; }
 .plateTag { margin-left: auto; font-size: 11.5px; font-weight: 700; color: var(--muted); background: rgba(216, 199, 180, .35); border-radius: 999px; padding: 3px 10px; }
@@ -498,8 +549,65 @@ body.peek #peekRestore { display: block; }
 .stat b { font-size: 17px; white-space: nowrap; }
 .stat.sub { font-size: 12.5px; color: var(--muted); padding-left: 2px; }
 .stat.sub b { font-size: 13.5px; }
-.stat.totalRow { font-weight: 800; border-top: 1px dashed var(--line); margin-top: 4px; padding-top: 6px; font-size: 16px; }
+.stat.totalRow { font-weight: 800; border-top: 2px dashed var(--line); margin-top: 4px; padding-top: 6px; font-size: 16px; }
 .stat.totalRow b { font-size: 18px; color: var(--accent); }
+
+/* 對戰結算：本場勝方橫幅 */
+.duelResultLine {
+    font-size: 30px; font-weight: 900; color: var(--accent); margin-top: 6px;
+    text-shadow: 0 3px 0 #fff, 0 12px 36px rgba(201, 106, 75, .4);
+    animation: scorePop .5s cubic-bezier(.2, 1.5, .4, 1) both;
+}
+.duelResultLine .giInline { height: 1.1em; vertical-align: -.18em; }
+
+/* 得分卡（結算卡）背景：半透明＋毛玻璃，透出後方成品 */
+.vDetail { background: rgba(255, 249, 238, .78); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
+
+/* 對戰比較表：頂部＝菜名／滿分／配料一欄，中段＝織圖(左)＋QRcode/織法(右)，下方＝比較表全寬 */
+.vDetail.duelDetail { width: min(406px, 45vw); }
+/* 頂部整欄：菜名＋滿分＋配料 */
+.ddDishBar { text-align: center; margin-bottom: 9px; }
+.ddDishBar .vDishName { text-align: center; font-size: 15px; margin: 0 0 3px; }
+.ddDishBar .vFullMark { text-align: center; margin: 0 0 6px; }
+.ddDishBar .vRecipeChips { justify-content: center; margin: 0; }
+.ddTop { display: flex; gap: 14px; align-items: flex-start; margin-bottom: 10px; }
+/* 左欄：織圖縮小 */
+.ddChart { width: 120px; flex: none; text-align: center; }
+.duelDetail #vChartSlot { margin: 0 auto; max-width: 120px; }
+/* 右欄：QRcode＋織法資訊（沿用橫排：QR 左、說明右）*/
+.ddInfo { flex: 1; min-width: 0; }
+.ddInfo .crochetGuide { margin: 0; padding: 0; border-top: none; }
+.vDetail.duelDetail .crochetGuide .cgQr, .vDetail.duelDetail .crochetGuide .cgQr svg { width: 72px; }
+.vDetail.duelDetail .crochetGuide .cgQr svg { height: 72px; }
+.ddInfo .cgMeta { font-size: 10px; }
+.ddInfo .cgSteps { font-size: 10.5px; padding-left: 14px; }
+.vFullMark { text-align: center; font-size: 13px; font-weight: 700; color: var(--muted); margin: -2px 0 8px; }
+.duelTable { width: 100%; border-collapse: collapse; margin-top: 4px; }
+.duelTable th, .duelTable td { padding: 6px 5px; text-align: center; border-bottom: 2px solid var(--line); }
+/* 針目得分那欄（左側項目欄）窄一點 */
+.duelTable .dtLabel { text-align: left; font-weight: 700; font-size: 12.5px; color: var(--ink); white-space: nowrap; width: 1px; padding-right: 6px; }
+.duelTable td { font-size: 16px; font-weight: 800; }
+.duelTable tr.sub .dtLabel { font-weight: 600; font-size: 12.5px; color: var(--muted); }
+.duelTable tr.sub td { font-size: 13.5px; font-weight: 700; color: var(--muted); }
+.duelTable .dtTeam { vertical-align: bottom; padding-bottom: 8px; border-bottom-width: 3px; }
+.duelTable .dtTeamName { display: flex; align-items: center; justify-content: center; gap: 5px; font-size: 15px; font-weight: 900; }
+.duelTable .dtTag { display: block; font-size: 10.5px; font-weight: 700; color: var(--muted); margin-top: 3px; }
+.dtFace { font-size: 20px; line-height: 1; }
+.dtFace.chefImg { width: 26px; height: 26px; vertical-align: middle; }
+.duelTable td.win { background: #fff3e2; }
+.duelTable th.dtTeam.win { background: #fff3e2; }
+.duelTable .dtTeam.win .dtTeamName { color: var(--accent); }
+.duelTable .dtSub { display: block; font-size: 10.5px; font-weight: 600; color: var(--muted); }
+.duelTable tr.dtTotal .dtLabel { font-size: 15px; font-weight: 900; }
+.duelTable tr.dtTotal td { font-size: 24px; font-weight: 900; color: var(--accent); border-bottom: none; border-top: 3px solid var(--wood); }
+.giDone { height: 1.35em; vertical-align: -.3em; }
+
+/* 選場數 */
+.countChoices { display: flex; gap: 12px; margin-top: 16px; }
+.countChoice { flex: 1; padding: 16px 6px; }
+.countChoice b { font-size: 34px; margin-bottom: 0; }
+.countChoice span { font-size: 12px; }
+.countChoice.on { border-color: var(--accent); background: #fff4ea; box-shadow: 0 4px 0 var(--btn-red-d), inset 0 2px 0 rgba(255, 255, 255, .6); }
 
 /* 得分卡裡的織圖 */
 #vChartSlot { margin: 0 auto 10px; max-width: 190px; }
@@ -512,14 +620,14 @@ body.peek #peekRestore { display: block; }
 
 .scoreTable { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 13px; }
 .scoreTable th { font-size: 11px; color: var(--muted); font-weight: 600; padding: 5px 4px; }
-.scoreTable td { padding: 7px 4px; border-top: 1px solid rgba(216, 199, 180, .5); text-align: center; }
+.scoreTable td { padding: 7px 4px; border-top: 2px solid rgba(216, 199, 180, .6); text-align: center; }
 .scoreTable td:first-child { text-align: left; font-weight: 700; }
 .totCell { font-weight: 900; color: var(--accent); font-size: 15px; }
 
 /* ---- 右下工具 ---- */
 #toolCard { bottom: 18px; right: 16px; padding: 8px; display: flex; gap: 6px; z-index: 40; }
 #toolCard button {
-    font: inherit; font-size: 15px; border: 2px solid var(--wood); color: var(--ink);
+    font: inherit; font-size: 15px; border: 3px solid var(--wood); color: var(--ink);
     background: linear-gradient(180deg, #fff8ea, #ffe9c9);
     border-radius: 12px; padding: 8px 11px; cursor: pointer; transition: transform .1s, box-shadow .1s;
     box-shadow: 0 3px 0 rgba(168, 106, 55, .35), inset 0 1px 0 rgba(255, 255, 255, .7);

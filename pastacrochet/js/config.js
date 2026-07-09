@@ -113,12 +113,10 @@ PC.config = {
     },
     DEFAULT_ORDER: { pattern: 'sakura', sauce: '白醬', tops: ['squid', 'squid'] },
 
-    // ===== 三回合流程 =====
-    ROUNDS: [
-        { key: 'self',     label: '自家招牌', desc: '自己出題，先給自己吃——想拚多難自己決定。' },
-        { key: 'customer', label: '顧客點單', desc: '顧客出題，照單全收！' },
-        { key: 'rival',    label: '對手指定', desc: '競品研究——對手出題，通常不會客氣。' }
-    ],
+    // ===== 回合流程（每場都一樣：自己配料，或讓客人隨機點；場數可選 1~4）=====
+    ROUND_DEFAULT: 3,
+    ROUND_MIN: 1,
+    ROUND_MAX: 4,
 
     // ===== 兩隊固定角色（第一隊 無尾熊、第二隊 貓）=====
     // 隊友現場自己喬，選角只做 UI 提醒、不真的選。每隊角色綁在 store.chef 上。
@@ -128,11 +126,11 @@ PC.config = {
     ],
     RIVAL_STORE: { name: '毛線之家', emoji: '🏯' },   // 單店模式第 3 場的 AI 對手
     CUSTOMERS: [
-        { emoji: '🧸', name: '泰迪',   line: '今天想吃有嚼勁的！' },
-        { emoji: '🐑', name: '綿綿',   line: '心情不好，來點療癒的〜' },
-        { emoji: '🦉', name: '夜貓子', line: '聽說你們家的麵會發光？' },
-        { emoji: '🐢', name: '慢慢',   line: '不急，但要好吃。' },
-        { emoji: '🦄', name: '夢夢',   line: '要夢幻！要閃亮亮！' }
+        { emoji: '🧸', name: '泰迪',   line: '今天想吃有嚼勁的！',     img: 'assets/cust_teddy.png' },
+        { emoji: '🐑', name: '綿綿',   line: '心情不好，來點療癒的〜',  img: 'assets/cust_sheep.png' },
+        { emoji: '🦉', name: '夜貓子', line: '聽說你們家的麵會發光？',  img: 'assets/cust_owl.png' },
+        { emoji: '🐢', name: '慢慢',   line: '不急，但要好吃。',        img: 'assets/cust_turtle.png' },
+        { emoji: '🦄', name: '夢夢',   line: '要夢幻！要閃亮亮！',      img: 'assets/cust_unicorn.png' }
     ],
     // 出題難度權重 [一般, 難, 超難]
     ORDER_WEIGHTS: {

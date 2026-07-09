@@ -362,7 +362,7 @@ window.PC = window.PC || {};
         return grp;
     }
 
-    // ---------- 鍵盤數字徽章貼圖（1/2/3 快取）----------
+    // ---------- 鍵盤數字徽章貼圖（1/2/3/4 快取）----------
     const badgeTexCache = {};
     function badgeTex(num) {
         if (badgeTexCache[num]) return badgeTexCache[num];
