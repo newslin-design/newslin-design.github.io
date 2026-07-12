@@ -100,14 +100,15 @@ PC.config = {
     },
     // 依難度排序（一般 → 難 → 超難），魷魚圈固定放第一個；菜單直接照此物件順序渲染
     TOPPINGS: {
-        squid:    { label: '🦑 魷魚圈', color: '#efe7d8', n: 3, diff: 'normal', img: 'assets/topping_Calamari.png' },
         tomato:   { label: '🍅 番茄',   color: '#cf4630', n: 5, diff: 'normal', img: 'assets/topping_tomato.png' },
+        squid:    { label: '🦑 魷魚圈', color: '#efe7d8', n: 3, diff: 'normal', img: 'assets/topping_Calamari.png' },
+        
         basil:    { label: '🌿 羅勒',   color: '#4f7c39', n: 8, diff: 'normal', img: 'assets/topping_basil.png' },
-        cheese:   { label: '🧀 起司',   color: '#f2cf72', n: 5, diff: 'hard',   img: 'assets/topping_cheese.png' },
+        cheese:   { label: '🧀 起司',   color: '#fedf8b', n: 5, diff: 'hard',   img: 'assets/topping_cheese.png' },
         mushroom: { label: '🍄 蘑菇',   color: '#cdbb98', n: 5, diff: 'hard',   img: 'assets/topping_mushroom.png' },
         // 新配料（2026-07-08）：3D 模型顏色直接讀本 color（單一旋鈕，改這裡即同步 3D）
         blueberry:{ label: '🫐 藍莓',   color: '#4e5da6', n: 5, diff: 'hard',   img: 'assets/topping_blueberry.png' },
-        bacon:    { label: '🥓 培根',   color: '#b5514a', n: 3, diff: 'expert', img: 'assets/topping_bacon.png' },
+        bacon:    { label: '🥓 培根',   color: '#823a35', n: 3, diff: 'expert', img: 'assets/topping_bacon.png' },
         broccoli: { label: '🥦 花椰菜', color: '#5c8b3a', n: 3, diff: 'expert', img: 'assets/topping_broccoli.png' },
         caviar:   { label: '🖤 魚子醬', color: '#2a2730', n: 3, diff: 'expert', img: 'assets/topping_caviari.png' }
     },
@@ -143,14 +144,14 @@ PC.config = {
         bgm_menu:        { file: 'bgm_menu.mp3',        loop: true,  vol: .35, desc: '選單／準備畫面 BGM（循環）' },
         bgm_cooking:     { file: 'bgm_cooking.mp3',     loop: true,  vol: .3,  desc: '烹飪中 BGM（循環、輕快）' },
         sfx_ui_click:    { file: 'sfx_ui_click.mp3',    loop: false, vol: .7,  desc: '介面按鈕點擊' },
-        sfx_order_open:  { file: 'sfx_order_open.mp3',  loop: false, vol: .8,  desc: '訂單／翻卡出現' },
+        sfx_order_open:  { file: 'sfx_order_open.wav',  loop: false, vol: .8,  desc: '訂單／翻卡出現' },
         sfx_countdown:   { file: 'sfx_countdown.mp3',   loop: false, vol: .9,  desc: '倒數 3-2-1（每聲）' },
         sfx_go:          { file: 'sfx_go.mp3',          loop: false, vol: .9,  desc: '開始！' },
         sfx_hit_perfect: { file: 'sfx_hit_perfect.mp3', loop: false, vol: 1,   desc: '完美點擊（清脆「啵」）' },
-        sfx_hit_ok:      { file: 'sfx_hit_ok.mp3',      loop: false, vol: .9,  desc: '不完美點擊（普通）' },
+        sfx_hit_ok:      { file: 'sfx_hit_ok.wav',      loop: false, vol: .9,  desc: '不完美點擊（普通）' },
         sfx_hit_bad:     { file: 'sfx_hit_bad.mp3',     loop: false, vol: .9,  desc: '超級不完美（悶悶的）' },
-        sfx_hit_wrong:   { file: 'sfx_hit_wrong.mp3',   loop: false, vol: .8,  desc: '按錯鍵' },
-        sfx_combo:       { file: 'sfx_combo.mp3',       loop: false, vol: 1,   desc: '三連完美歡呼' },
+        sfx_hit_wrong:   { file: 'sfx_hit_wrong.aac',   loop: false, vol: .8,  desc: '按錯鍵' },
+        sfx_combo:       { file: 'sfx_combo.aac',       loop: false, vol: 1,   desc: '三連完美歡呼' },
         sfx_serve:       { file: 'sfx_serve.mp3',       loop: false, vol: .9,  desc: '起鍋／上菜' },
         sfx_topping_drop:{ file: 'sfx_topping_drop.mp3',loop: false, vol: .8,  desc: '配料落盤（咚）' },
         sfx_burnt:       { file: 'sfx_burnt.mp3',       loop: false, vol: .9,  desc: '燒焦警報' },

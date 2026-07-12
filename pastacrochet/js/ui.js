@@ -140,11 +140,15 @@ PC.ui = (function () {
         const g = PC.config.GUIDES && PC.config.GUIDES[patternKey];
         if (!g) return '';
         return `<div class="crochetGuide">
-            <a class="cgQr" href="${g.url}" target="_blank" rel="noopener" title="掃碼或點擊看織圖">
-                ${qrSvg(g.url)}<span class="cgScan">掃碼看織圖</span>
-            </a>
-            <div class="cgBody">
+            <div class="flex">
+                <a class="cgQr" href="${g.url}" target="_blank" rel="noopener" >
+                ${qrSvg(g.url)}
+                </a>
                 <div class="cgMeta">🪡 ${g.needle}<br>🧵 ${g.yarn}<br>📐 ${g.size}</div>
+            </div>
+     
+            <div class="cgBody">
+                
                 <ol class="cgSteps">${g.steps.map(s => `<li>${s}</li>`).join('')}</ol>
             </div>
         </div>`;
@@ -247,13 +251,13 @@ PC.ui = (function () {
             <div class="menuSign">
                 <img src="assets/logo.png" alt="毛線麵餐廳">
             </div>
-            <p class="lead">照織圖節奏下針、上醬、擺料——在完美熟度起鍋！</p>
-            <button class="choice practiceChoice" data-m="practice"><b>🧶 練習模式</b><span>直接選料開做，做完看結果——隨時上手、想做幾盤都行</span></button>
+            
             <div class="bigChoices">
-                <button class="choice" data-m="single"><b>🏪 單店營業</b><span>一間店做 3 場菜，挑戰高分</span></button>
-                <button class="choice" data-m="versus"><b>${gicon('versus', '⚔️', 'giInline')} 雙店競賽</b><span>兩間店比總分，高分者勝<br>單廚同時對決、雙廚協力賽</span></button>
+                <button class="choice" data-m="single"><b>${gicon('rank_rookie', '⚔️', 'giHero')}</b> <b>單店營業</b><span>經營你的勾針義大利麵店</span></button>
+                <button class="choice" data-m="versus"><b>${gicon('versus', '⚔️', 'giHero ')}</b> <b>雙店競賽</b><span>跟朋友一起開店，一起競爭</span></button>
             </div>
-            <p class="tinyNote">${mi('mouse')} 拖曳可旋轉視角</p>
+            <button class="choice practiceChoice"  data-m="practice"><b>${gicon('mascot_yarn', '⚔️', 'giInlineLg')}</b><b>居家練習</b><span>隨時上手、想做幾盤都行</span></button>
+
         </div>`);
         ov.querySelectorAll('.choice').forEach(b =>
             b.onclick = () => {
@@ -274,9 +278,9 @@ PC.ui = (function () {
                 : '雙廚一次做兩盤（分數相加），一位滑鼠一位鍵盤，考驗默契！'}</p>
             <div class="bigChoices">
                 <button class="choice" data-m="solo"><b>👨‍🍳 單廚${vs ? '對決' : ''}</b><span>${vs
-                    ? '每隊 1 人，兩店<b>同時開做</b>直接對決<br>左盤滑鼠、右盤鍵盤 1·2·3·4'
-                    : '每隊 1 人，滑鼠點針目'}</span></button>
-                <button class="choice" data-m="duo"><b>👩‍🍳👨‍🍳 雙廚</b><span>每隊 2 人！左盤滑鼠、右盤鍵盤 1·2·3·4<br>（雙人協力${vs ? '，兩隊輪流' : ''}）</span></button>
+                    ? '兩店同時開做直接對決'
+                    : '滑鼠點針目'}</span></button>
+                <button class="choice" data-m="duo"><b>👩‍🍳👨‍🍳 雙廚</b><span><br>雙人協力${vs ? '，兩隊輪流' : ''}</span></button>
             </div>
         </div>`);
         ov.querySelectorAll('.choice').forEach(b =>
@@ -375,11 +379,10 @@ PC.ui = (function () {
             <div class="orderCols">
                 <div class="orderMain">
                     <div class="itemGrid pat" id="mPat"></div>
-                    <div class="secTitle">醬料</div>
+                    <div class="secTitle">醬料 - 醬料是你會用最多的毛線顏色</div>
                     <div class="itemGrid" id="mSauce"></div>
-                    <div class="secTitle">配料一</div>
+                    <div class="secTitle">配料 - 可以選兩個配料，點綴你的編織義大利麵</div>
                     <div class="itemGrid" id="mTop0"></div>
-                    <div class="secTitle">配料二</div>
                     <div class="itemGrid" id="mTop1"></div>
                 </div>
                 <div class="orderSide">
@@ -759,7 +762,7 @@ PC.ui = (function () {
         }
         const foot = `<tr class="tFoot"><td class="tRound">總分</td>${stores.map(s => {
             const isLead = stores.length > 1 && lead > 0 && s.total === lead;
-            return `<td class="tTot">${s.total}${isLead ? '<br>' + gicon('lead_crown', '👑', 'giCrown') : ''}</td>`;
+            return `<td class="tTot">${isLead ?  '👑</br>': '😒</br>'}${s.total}</td>`;
         }).join('')}</tr>`;
         tally.innerHTML = `
             <div class="tallyHead">${mi('leaderboard')} 累積比分</div>

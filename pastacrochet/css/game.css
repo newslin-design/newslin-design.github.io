@@ -41,7 +41,8 @@
 }
 /* 遊戲風圖示（assets/*.png，可退回 emoji）*/
 .gi { display: inline-block; height: 1.5em; width: auto; vertical-align: -.32em; }
-.giInline { height: 1.35em; vertical-align: -.28em; }
+.giInline { height: 1.5em; vertical-align: -.28em; }
+.giInlineLg { height: 2.4em; vertical-align: -.28em; }
 .giBtn { height: 1.5em; vertical-align: -.35em; margin-right: 2px; }
 .giCombo { height: 1.1em; vertical-align: -.12em; }
 .giHero { height: 68px; }
@@ -81,8 +82,12 @@ html, body {
 
 /* ---- 織圖織法卡（QRcode + 中文說明；菜譜卡與得分卡共用） ---- */
 .crochetGuide {
-    display: flex; gap: 10px; margin-top: 10px; padding-top: 10px;
+    display: flex; gap: 4px; margin-top: 10px; padding-top: 10px;
+    flex-direction: column;
     border-top: 2px dashed var(--line);
+}
+.crochetGuide .flex {
+    display: flex; gap: 8px;
 }
 .crochetGuide .cgQr {
     flex: 0 0 auto; width: 62px; text-decoration: none;
@@ -95,17 +100,15 @@ html, body {
 }
 .crochetGuide .cgScan { font-size: 9px; color: var(--muted); white-space: nowrap; }
 .crochetGuide .cgBody { flex: 1 1 auto; min-width: 0; }
-.crochetGuide .cgMeta { font-size: 10px; line-height: 1.55; color: var(--muted); margin-bottom: 5px; }
+.crochetGuide .cgMeta { font-size: 10px; line-height: 1.55; color: #000; margin-bottom: 5px; }
 .crochetGuide .cgSteps {
     margin: 0; padding-left: 15px; font-size: 10.5px; line-height: 1.5; color: var(--ink);
 }
 .crochetGuide .cgSteps li { margin-bottom: 2px; }
-/* 得分卡較寬：織法字大一些、QR 再大一點 */
-.vDetail .crochetGuide { gap: 14px; }
 .vDetail .crochetGuide .cgQr, .vDetail .crochetGuide .cgQr svg { width: 78px; }
 .vDetail .crochetGuide .cgQr svg { height: 78px; }
 .vDetail .crochetGuide .cgMeta { font-size: 11px; }
-.vDetail .crochetGuide .cgSteps { font-size: 11.5px; }
+.vDetail .crochetGuide .cgSteps { font-size: 12px; }
 
 /* ---- 通用 chips ---- */
 .chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0 2px; }
@@ -259,7 +262,7 @@ html, body {
 /* 設定流程（選模式→掌廚→隊伍）專屬餐廳背景；圖片缺席時自動退回原本的毛玻璃 */
 body.setup #overlay {
     background:
-        linear-gradient(rgba(74, 59, 50, .32), rgba(74, 59, 50, .5)),
+        /* linear-gradient(rgba(74, 59, 50, .32), rgba(74, 59, 50, .5)), */
         url(../assets/menu_bg.png) center / cover no-repeat,
         var(--panel-2);
     backdrop-filter: none; -webkit-backdrop-filter: none;
@@ -278,8 +281,8 @@ body.setup #overlay {
 .modalCard.orderModal h2 { text-align: left; }
 .modalCard h1 { margin: 4px 0 6px; font-size: 26px; }
 .modalCard h2 { margin: 0 0 4px; font-size: 19px; }
-.modalCard .lead { font-size: 12.5px; color: var(--muted); margin: 4px 0 12px; line-height: 1.7; }
-.secTitle { font-size: 12px; font-weight: 700; color: var(--muted); margin: 12px 0 2px; letter-spacing: .04em; }
+.modalCard .lead { font-size: 14px; color: var(--muted); margin: 4px 0 12px; line-height: 1.7; }
+.secTitle { font-size: 13px; font-weight: 700; color: var(--muted); margin: 8px 0 6px; letter-spacing: .04em;display: inline-block; }
 .cardIcon { font-size: 44px; line-height: 1; margin-bottom: 4px; }
 .cardBody { font-size: 13px; line-height: 1.7; margin: 8px 0 4px; }
 .tinyNote { font-size: 11px; color: var(--muted); margin: 14px 0 0; }
@@ -290,12 +293,18 @@ body.setup #overlay {
 .menuCard::before {
     content: ""; position: absolute; top: 0; left: 0; right: 0; height: 42px;
     background: repeating-linear-gradient(90deg, var(--awn-a) 0 24px, var(--awn-b) 24px 48px);
-    -webkit-mask: radial-gradient(circle at 12px 100%, transparent 11px, #000 12px) repeat-x bottom / 24px 15px;
-    mask: radial-gradient(circle at 12px 100%, transparent 11px, #000 12px) repeat-x bottom / 24px 15px;
+    /* -webkit-mask: radial-gradient(circle at 12px 100%, transparent 11px, #000 12px) repeat-x bottom / 24px 15px; */
+    /* mask: radial-gradient(circle at 12px 100%, transparent 11px, #000 12px) repeat-x bottom / 24px 15px; */
 }
 /* 首頁：讓 logo 徽章能往上探出卡片（不裁切）；補回圓角避免招牌方角外露 */
-.menuHome { overflow: visible; }
-.menuHome::before { border-top-left-radius: 21px; border-top-right-radius: 21px; }
+.menuHome { overflow: visible; 
+    position: absolute; left: 2%; right: 0; margin:12px;
+    /* box-shadow: 0 0 0 4px #ffffff9e; */
+    box-shadow: none;
+    background-color: #ffffff00;
+    border:0px
+}
+.menuHome::before { border-top-left-radius: 21px; border-top-right-radius: 21px;display:none }
 
 .bigBtn {
     display: block; width: 100%; margin-top: 18px; font: inherit; font-weight: 800; font-size: 17px;
@@ -368,7 +377,7 @@ body.setup #overlay {
 
 /* ---- 主選單木牌 logo ---- */
 /* logo 往上探出約自身高度 55%（徽章壓在招牌上緣）；-120px≈220px 高的 55% */
-.menuSign { position: relative; z-index: 1; width: min(220px, 60%); margin: -120px auto 6px; }
+.menuSign { position: relative; z-index: 1; width: min(500px, 80%); margin: -200px auto 6px; }
 .menuSign img { display: block; width: 100%; height: auto; }
 
 /* ---- 顧客卡 ---- */
@@ -477,7 +486,7 @@ body.setup #overlay {
 
 /* 2) 分數細節卡片：靠右，不擋中央主體 */
 .vDetail {
-    top: 92px; right: 16px; width: min(340px, 40vw); max-height: 74vh; overflow-y: auto;
+    top: 5vh; right: 16px; width: min(340px, 40vw); max-height: 80vh; overflow-y: auto;
     padding: 12px 14px; z-index: 110;
     animation: vSideIn .45s cubic-bezier(.2, 1.1, .4, 1) both;
 }
@@ -561,13 +570,14 @@ body.peek #peekRestore { display: block; }
 .duelResultLine .giInline { height: 1.1em; vertical-align: -.18em; }
 
 /* 得分卡（結算卡）背景：半透明＋毛玻璃，透出後方成品 */
-.vDetail { background: rgba(255, 249, 238, .78); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
+.vDetail { background: rgba(118, 117, 115, 0.2); 
+    backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(14px); }
 
 /* 對戰比較表：頂部＝菜名／滿分／配料一欄，中段＝織圖(左)＋QRcode/織法(右)，下方＝比較表全寬 */
 .vDetail.duelDetail { width: min(406px, 45vw); }
 /* 頂部整欄：菜名＋滿分＋配料 */
 .ddDishBar { text-align: center; margin-bottom: 9px; }
-.ddDishBar .vDishName { text-align: center; font-size: 15px; margin: 0 0 3px; }
+.ddDishBar .vDishName { text-align: center; font-size: 18px; margin: 0 0 3px; }
 .ddDishBar .vFullMark { text-align: center; margin: 0 0 6px; }
 .ddDishBar .vRecipeChips { justify-content: center; margin: 0; }
 .ddTop { display: flex; gap: 14px; align-items: flex-start; margin-bottom: 10px; }
@@ -583,7 +593,8 @@ body.peek #peekRestore { display: block; }
 .ddInfo .cgSteps { font-size: 10.5px; padding-left: 14px; }
 .vFullMark { text-align: center; font-size: 13px; font-weight: 700; color: var(--muted); margin: -2px 0 8px; }
 .duelTable { width: 100%; border-collapse: collapse; margin-top: 4px; }
-.duelTable th, .duelTable td { padding: 6px 5px; text-align: center; border-bottom: 2px solid var(--line); }
+.duelTable th, .duelTable td { padding: 6px 5px; text-align: center; 
+    border-bottom: 1px solid #ffffff8f; }
 /* 針目得分那欄（左側項目欄）窄一點 */
 .duelTable .dtLabel { text-align: left; font-weight: 700; font-size: 12.5px; color: var(--ink); white-space: nowrap; width: 1px; padding-right: 6px; }
 .duelTable td { font-size: 16px; font-weight: 800; }
@@ -594,7 +605,7 @@ body.peek #peekRestore { display: block; }
 .duelTable .dtTag { display: block; font-size: 10.5px; font-weight: 700; color: var(--muted); margin-top: 3px; }
 .dtFace { font-size: 20px; line-height: 1; }
 .dtFace.chefImg { width: 26px; height: 26px; vertical-align: middle; }
-.duelTable td.win { background: #fff3e2; }
+.duelTable td.win { background: #fff3e2bd; }
 .duelTable th.dtTeam.win { background: #fff3e2; }
 .duelTable .dtTeam.win .dtTeamName { color: var(--accent); }
 .duelTable .dtSub { display: block; font-size: 10.5px; font-weight: 600; color: var(--muted); }
@@ -614,7 +625,7 @@ body.peek #peekRestore { display: block; }
 .vRecipeChips { display: flex; flex-wrap: wrap; justify-content: center; gap: 5px; margin: 0 0 10px; }
 /* 組合菜名（菜譜卡＋結算卡共用）*/
 .dishName { font-weight: 800; color: var(--ink); font-size: 13.5px; line-height: 1.35; margin: 6px 0 5px; }
-.vDishName { text-align: center; font-size: 16px; margin: 2px 0 8px; }
+.vDishName { text-align: center; font-size: 18px; margin: 2px 0 8px; }
 #vChartSlot svg { width: 100%; height: auto; display: block; }
 #vChartSlot:empty { display: none; }
 
