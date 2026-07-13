@@ -100,8 +100,10 @@ window.PC = window.PC || {};
             const to = sh.petalTo ?? 1;
             const band = t < sh.petalFrom ? 0 : (t > to ? Math.max(0, 1 - (t - to) / 0.12) : Math.pow((t - sh.petalFrom) / (to - sh.petalFrom), 1.2));
             const s = Math.cos(sh.sym * theta);
-            const lobe = s >= 0 ? Math.pow(s, 1.3) : -(sh.dipRatio ?? .5) * Math.pow(-s, 1.3);
-            const petal = lobe * sh.petalAmp * band;
+            // lobePow <1 瓣頭越圓潤；notch = 瓣尖中央小缺口深度（櫻花分叉），notchPow 控制缺口寬窄
+            const lobe = s >= 0 ? Math.pow(s, sh.lobePow ?? 1.3) : -(sh.dipRatio ?? .5) * Math.pow(-s, 1.3);
+            const notch = (sh.notch ?? 0) * Math.pow(Math.max(0, s), sh.notchPow ?? 22);
+            const petal = (lobe - notch) * sh.petalAmp * band;
             // 輪廓倍率 m(θ)：只依角度，每圈同角度一致 → 不會圈交叉。從外圈漸入（中心維持圓）。
             let m = 1;
             const blend = Math.min(1, Math.max(0, (t - (sh.outlineFrom ?? 0.45)) / 0.35));
@@ -362,7 +364,7 @@ window.PC = window.PC || {};
         return grp;
     }
 
-    // ---------- 鍵盤數字徽章貼圖（1/2/3/4 快取）----------
+    // ---------- 鍵盤數字徽章貼圖（1~5 快取）----------
     const badgeTexCache = {};
     function badgeTex(num) {
         if (badgeTexCache[num]) return badgeTexCache[num];
@@ -863,6 +865,7 @@ window.PC = window.PC || {};
             this.azim = PC.config.SCENE.SOLO.azim;
             this.elev = PC.config.SCENE.SOLO.elev;
             this.spinning = true;
+            this.rotateLocked = false;      // 烹飪中鎖拖曳旋轉，維持起鍋卡對位
             this.dragging = false; this._moved = 0; this._px = 0; this._py = 0;
             this.onCanvasClick = null;      // (x, y) 由 flow 接針目點擊
             this.onTick = null;             // (dt, now)
@@ -873,9 +876,12 @@ window.PC = window.PC || {};
             addEventListener('pointermove', e => {
                 if (!this.dragging) return;
                 this._moved += Math.abs(e.clientX - this._px) + Math.abs(e.clientY - this._py);
-                this.azim += (e.clientX - this._px) * 0.008;
-                this.elev = Math.min(1.35, Math.max(0.22, this.elev + (e.clientY - this._py) * 0.005));
-                this._px = e.clientX; this._py = e.clientY; this.updateCamera();
+                if (!this.rotateLocked) {
+                    this.azim += (e.clientX - this._px) * 0.008;
+                    this.elev = Math.min(1.35, Math.max(0.22, this.elev + (e.clientY - this._py) * 0.005));
+                    this.updateCamera();
+                }
+                this._px = e.clientX; this._py = e.clientY;
             });
             addEventListener('pointerup', e => {
                 const was = this.dragging;
@@ -914,6 +920,27 @@ window.PC = window.PC || {};
             this.camera.lookAt(0, 1.6, 0);
             this.scene.fog.near = R + 27;
             this.scene.fog.far = R + 92;
+        }
+
+        /** 烹飪視角：關自動旋轉、鎖拖曳，鏡頭回本佈局標準機位（兩盤才對得上各自的起鍋卡） */
+        lockView() {
+            const cfg = this.layoutMode === 'duo' ? PC.config.SCENE.DUO : PC.config.SCENE.SOLO;
+            this.spinning = false;
+            this.rotateLocked = true;
+            this.camR = cfg.camR;
+            this.azim = cfg.azim; this.elev = cfg.elev;
+            this.updateCamera();
+        }
+        /** 展示視角：恢復自動旋轉與拖曳（選單／點餐／結算用） */
+        freeView() {
+            this.spinning = true;
+            this.rotateLocked = false;
+        }
+
+        /** 世界座標 → 螢幕像素（盤面歸屬標籤等 HUD 對位用） */
+        toScreen(x, y, z) {
+            const v = new THREE.Vector3(x, y, z).project(this.camera);
+            return { x: (v.x + 1) / 2 * innerWidth, y: (1 - v.y) / 2 * innerHeight };
         }
 
         /** 佈局：'solo' 一盤置中、'duo' 兩盤並排（相機拉遠、霧外推） */

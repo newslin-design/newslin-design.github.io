@@ -7,7 +7,7 @@ window.PC = window.PC || {};
 
 PC.ui = (function () {
     let flow = null;
-    let ov, hudWrap, fxLayer, cdEl, titleInfo, recipeCard, recipeChips, recipeGuide, tally;
+    let ov, hudWrap, fxLayer, cdEl, titleInfo, recipeCard, recipeChips, recipeGuide, tally, storyLayer;
     const hudRefs = [];   // 每盤 HUD 元素快取
     // 游標起鍋鈕：滑鼠盤點點做完後貼著游標，就地起鍋
     let cursorServe = null, mouseServeSide = -1, csFrozen = false, csX = -100, csY = -100;
@@ -25,6 +25,13 @@ PC.ui = (function () {
         s.textContent = img.dataset.emoji;
         img.replaceWith(s);
     }
+    // 點菜單角色頭像缺圖 → 退回 emoji（換劇本角色、圖還沒放時不破圖）
+    function _faceFail(img) {
+        const s = document.createElement('span');
+        s.className = 'dialogFace dialogFaceEmoji';
+        s.textContent = img.dataset.emoji || '🍽️';
+        img.replaceWith(s);
+    }
     // 難度統一用火焰表示（一般不顯示火）
     const DIFF_LABEL = (cat, key) => {
         const d = PC.config.DIFF[cat][key];
@@ -38,7 +45,7 @@ PC.ui = (function () {
     const chefFaceHTML = (chef, cls) => {
         const c = chef || { emoji: '👨‍🍳' };
         return c.img ? `<img class="${cls} chefImg" src="${c.img}" alt="">`
-                     : `<span class="${cls}">${c.emoji}</span>`;
+            : `<span class="${cls}">${c.emoji}</span>`;
     };
     // 熟度圖示（assets/done_*.png，燒焦無圖退回 emoji）＋文字，例：「(icon) 完美」
     const DONE_ICON = { raw: 'done_raw', almost: 'done_almost', perfect: 'done_perfect', over: 'done_over' };
@@ -98,7 +105,7 @@ PC.ui = (function () {
             for (let c = 0; c < n; c++)
                 if (qr.isDark(r, c))
                     ctx.fillRect(Math.round(x0 + (c + quiet) * cell), Math.round(y0 + (r + quiet) * cell),
-                                 Math.ceil(cell), Math.ceil(cell));
+                        Math.ceil(cell), Math.ceil(cell));
     }
     async function downloadKeepsake() {
         const box = document.getElementById('chartBox');
@@ -161,8 +168,19 @@ PC.ui = (function () {
         recipeCard = $('#recipeCard'); recipeChips = $('#recipeChips');
         recipeGuide = $('#recipeGuide');
         tally = $('#tally');
+        storyLayer = $('#storyLayer');
 
-        $('#peekRestore').onclick = () => document.body.classList.remove('peek');
+        $('#peekRestore').onclick = () => {
+            document.body.classList.remove('peek', 'peekUi');
+            // 最終結果卡自帶總分表，回到卡片時把「關閉」時叫出來的左側累積比分收回去
+            if (flow && flow.phase === 'final') tally.classList.add('hide');
+        };
+
+        // 視窗縮放時盤面標籤跟著重新對位（倒數等沒有 tick 的期間也要即時跟上）
+        // 註：scene 的 resize 監聽先註冊、先更新相機，這裡再投影才會拿到新座標
+        addEventListener('resize', () => {
+            if (flow && flow.sessions && flow.sessions.length) placePlateBadges(flow.sessions);
+        });
 
         $('#spinBtn').onclick = e => {
             flow.mgr.spinning = !flow.mgr.spinning;
@@ -231,13 +249,13 @@ PC.ui = (function () {
         restoreChart();
         hudWrap.classList.add('hide');
         ov.classList.remove('hide', 'verdictLayer');
-        document.body.classList.remove('peek', 'setup');
+        document.body.classList.remove('peek', 'peekUi', 'setup', 'order');
         ov.innerHTML = html;
     }
     function hideOverlays() {
         restoreChart();
         ov.classList.add('hide'); ov.classList.remove('verdictLayer'); ov.innerHTML = '';
-        document.body.classList.remove('peek', 'setup');
+        document.body.classList.remove('peek', 'peekUi', 'setup', 'order');
     }
     function clickSfx() { PC.audio.play('sfx_ui_click'); }
 
@@ -249,20 +267,24 @@ PC.ui = (function () {
         showOverlay(`
         <div class="modalCard menuCard menuHome">
             <div class="menuSign">
-                <img src="assets/logo.png" alt="毛線麵餐廳">
+                <img src="assets/logo.png" alt="編織義大利麵">
             </div>
             
             <div class="bigChoices">
                 <button class="choice" data-m="single"><b>${gicon('rank_rookie', '⚔️', 'giHero')}</b> <b>單店營業</b><span>經營你的勾針義大利麵店</span></button>
                 <button class="choice" data-m="versus"><b>${gicon('versus', '⚔️', 'giHero ')}</b> <b>雙店競賽</b><span>跟朋友一起開店，一起競爭</span></button>
             </div>
-            <button class="choice practiceChoice"  data-m="practice"><b>${gicon('mascot_yarn', '⚔️', 'giInlineLg')}</b><b>居家練習</b><span>隨時上手、想做幾盤都行</span></button>
+            <div class="menuRow2">
+                <button class="choice practiceChoice" data-m="practice"><b>${gicon('mascot_yarn', '⚔️', 'giInlineLg')}</b><b>居家練習</b><span>隨時上手、想做幾盤都行</span></button>
+                <button class="choice storyChoice" data-m="story"><b>📖</b><span>餐廳的故事</span></button>
+            </div>
 
         </div>`);
         ov.querySelectorAll('.choice').forEach(b =>
             b.onclick = () => {
                 clickSfx();
                 if (b.dataset.m === 'practice') flow.startPractice();
+                else if (b.dataset.m === 'story') showStory();
                 else flow.selectStoreMode(b.dataset.m);
             });
         document.body.classList.add('setup');
@@ -278,8 +300,8 @@ PC.ui = (function () {
                 : '雙廚一次做兩盤（分數相加），一位滑鼠一位鍵盤，考驗默契！'}</p>
             <div class="bigChoices">
                 <button class="choice" data-m="solo"><b>👨‍🍳 單廚${vs ? '對決' : ''}</b><span>${vs
-                    ? '兩店同時開做直接對決'
-                    : '滑鼠點針目'}</span></button>
+                ? '兩店同時開做直接對決'
+                : '滑鼠點針目'}</span></button>
                 <button class="choice" data-m="duo"><b>👩‍🍳👨‍🍳 雙廚</b><span><br>雙人協力${vs ? '，兩隊輪流' : ''}</span></button>
             </div>
         </div>`);
@@ -291,13 +313,16 @@ PC.ui = (function () {
     // 選場數：要比幾場（1~4）。點數字即開賽。
     function showRoundCount(current) {
         const C = PC.config, def = current || C.ROUND_DEFAULT;
+        const storyN = C.STORY_SCRIPT && C.STORY_SCRIPT.rounds;
         const btns = [];
-        for (let n = C.ROUND_MIN; n <= C.ROUND_MAX; n++)
-            btns.push(`<button class="choice countChoice${n === def ? ' on' : ''}" data-n="${n}"><b>${n}</b><span>場</span></button>`);
+        for (let n = C.ROUND_MIN; n <= C.ROUND_MAX; n++) {
+            const isStory = n === storyN;
+            btns.push(`<button class="choice countChoice${n === def ? ' on' : ''}${isStory ? ' storyRound' : ''}" data-n="${n}">${isStory ? '<i class="roundTag">劇情</i>' : ''}<b>${n}</b><span>場</span></button>`);
+        }
         showOverlay(`
         <div class="modalCard menuCard">
             <h2>要比幾場？</h2>
-            <p class="lead">每場都是一道菜——自己配料，或讓當場客人隨機點。想比幾場自己決定！</p>
+            <p class="lead">每場都是一道菜——自己配料，或讓當場客人隨機點。${storyN ? `選 <b>${storyN} 場</b> 會進入<b>劇情關卡</b>：四道固定考題，對話與難度都不一樣！` : '想比幾場自己決定！'}</p>
             <div class="countChoices">${btns.join('')}</div>
         </div>`);
         ov.querySelectorAll('.countChoice').forEach(b =>
@@ -311,14 +336,14 @@ PC.ui = (function () {
         const vs = stores.length > 1;
         const duel = vs && !duo;   // 雙店＋單廚＝對戰
         const roleHint = duo
-            ? `每隊 <b>2 人</b>：一位掌 ${mi('mouse')} 滑鼠盤、一位掌 ${mi('keyboard')} 鍵盤盤（1·2·3·4、Enter 起鍋）`
+            ? `每隊 <b>2 人</b>：一位掌 ${mi('mouse')} 滑鼠盤、一位掌 ${mi('keyboard')} 鍵盤盤（1·2·3·4·5、Enter 起鍋）`
             : duel
-                ? `兩隊<b>同時對決</b>：${stores[0].name} 掌 ${mi('mouse')} 滑鼠盤、${stores[1].name} 掌 ${mi('keyboard')} 鍵盤盤（1·2·3·4、Enter 起鍋）`
+                ? `兩隊<b>同時對決</b>：${stores[0].name} 掌 ${mi('mouse')} 滑鼠盤、${stores[1].name} 掌 ${mi('keyboard')} 鍵盤盤（1·2·3·4·5、Enter 起鍋）`
                 : '每隊 <b>1 人</b> 掌廚：滑鼠點針目';
         const teamCard = (st, i) => `
             <div class="teamCard">
                 ${st.chef.img ? `<img class="teamArt" src="${st.chef.img}" alt="">`
-                              : `<span class="teamArtEmoji">${st.chef.emoji}</span>`}
+                : `<span class="teamArtEmoji">${st.chef.emoji}</span>`}
                 <b class="teamName">${st.name}</b>
                 <span class="teamTag">${vs ? (i === 0 ? '第一隊' : '第二隊') : '你們這隊'}</span>
             </div>`;
@@ -333,6 +358,173 @@ PC.ui = (function () {
         </div>`);
         $('#teamOk').onclick = () => { clickSfx(); onDone(); };
         document.body.classList.add('setup');
+    }
+
+    // ---------- 首頁「餐廳的故事」：滿版背景圖 + 打字機對話框 ----------
+    // 選單覆蓋層（#overlay）留在底下不動，故事層蓋在最上面；關閉後直接露出原本的首頁。
+    // 資料來源＝PC.config.STORY：物件（含 script）→ 對話框劇情；純圖陣列 → 退回舊版投影片。
+    let storyKey = null;
+    function showStory(onDone) {
+        const S = PC.config.STORY;
+        const hasScript = S && !Array.isArray(S) && Array.isArray(S.script) && S.script.length;
+        if (hasScript) return storyDialogue(S, onDone);
+        const imgs = Array.isArray(S) && S.length ? S : ['assets/story1.png', 'assets/story2.png', 'assets/story3.png'];
+        return storySlides(imgs, onDone);
+    }
+
+    // 打字機對話框版：背景圖 + 三段式對話框（下左 bl／下右 br／中上 tc）。
+    // 一個 script 物件＝一格對話框（原文案的 ---）；框內第一行立即打字、之後每行要點一下才揭曉（原文案的 >）。
+    function storyDialogue(S, onDone) {
+        const script = S.script;
+        const images = S.images || [];
+        const typeSpeed = S.typeSpeed || 45;
+        const reduce = matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        storyLayer.innerHTML = `
+            ${images.map((src, idx) => `
+                <div class="storySlide${idx === 0 ? ' on' : ''}">
+                    <img src="${src}" alt="" onerror="this.classList.add('imgFail')">
+                </div>`).join('')}
+            <div class="storyTop">
+                <div class="storyDots">${images.map((_, idx) => `<i class="${idx === 0 ? 'on' : ''}"></i>`).join('')}</div>
+                <button class="storySkip">✕ 跳過</button>
+            </div>
+            <div class="storyDialog" id="storyDialog"><div class="sdBody"></div><span class="sdNext">▼</span></div>`;
+        storyLayer.classList.remove('hide');
+
+        const slides = [...storyLayer.querySelectorAll('.storySlide')];
+        const dots = [...storyLayer.querySelectorAll('.storyDots i')];
+        const dlg = storyLayer.querySelector('#storyDialog');
+        const body = dlg.querySelector('.sdBody');
+        const nextIcon = dlg.querySelector('.sdNext');
+
+        let bi = -1;         // 目前對話框 index
+        let li = 0;          // 框內已顯示到第幾行
+        let typing = false, timer = null, done = false, imgIdx = 0;
+        let lineEl = null, full = '';
+
+        // 一行可為字串，或 { text, img }（img＝揭曉此行時要切到的背景圖 index）
+        const lineText = ln => typeof ln === 'string' ? ln : (ln.text || '');
+        const lineImg = ln => typeof ln === 'string' ? null : ln.img;
+        const setNext = show => nextIcon.classList.toggle('show', !!show);
+        const showImage = n => {
+            if (n == null || n === imgIdx) return;
+            imgIdx = n;
+            slides.forEach((s, k) => s.classList.toggle('on', k === n));
+            dots.forEach((d, k) => d.classList.toggle('on', k === n));
+        };
+
+        function finishLine() {
+            if (timer) { clearTimeout(timer); timer = null; }
+            typing = false;
+            if (lineEl) { lineEl.textContent = full; lineEl.classList.remove('typing'); }
+            const box = script[bi];
+            setNext(li + 1 < box.lines.length || bi + 1 < script.length);   // 還有下一行或下一格 → 顯示繼續指示
+        }
+        function typeLine(ln) {
+            showImage(lineImg(ln));                 // 此行帶 img → 先切背景
+            full = lineText(ln);
+            lineEl = document.createElement('p');
+            lineEl.className = 'sdLine typing';
+            body.appendChild(lineEl);
+            setNext(false);
+            if (reduce) return finishLine();        // 減少動態：整行直接出現
+            typing = true;
+            let i = 0;
+            const step = () => {
+                if (!typing) return;                // 被點擊打斷（已由 finishLine 補完）
+                i++;
+                lineEl.textContent = full.slice(0, i);
+                if (i >= full.length) return finishLine();
+                const ch = full[i - 1];
+                const pause = '。！？…—、，「」'.includes(ch) ? typeSpeed * 6 : typeSpeed;
+                timer = setTimeout(step, pause);
+            };
+            timer = setTimeout(step, typeSpeed);
+        }
+        function showBox(n) {
+            bi = n; li = 0;
+            const box = script[n];
+            showImage(box.img);
+            dlg.className = 'storyDialog pos-' + (box.pos || 'br') + ' show';
+            body.innerHTML = '';
+            lineEl = null;
+            typeLine(box.lines[0]);
+        }
+        function advance() {
+            if (typing) return finishLine();        // 打字中 → 先把整行補完
+            const box = script[bi];
+            if (li + 1 < box.lines.length) {         // 同框下一行（原文案的 >）
+                li++; PC.audio.play('sfx_ui_click'); typeLine(box.lines[li]);
+            } else if (bi + 1 < script.length) {      // 換下一格（原文案的 ---）
+                PC.audio.play('sfx_ui_click'); showBox(bi + 1);
+            } else finish();                          // 全部講完 → 回首頁
+        }
+        const finish = () => {
+            if (done) return; done = true;
+            if (timer) clearTimeout(timer);
+            removeEventListener('keydown', storyKey); storyKey = null;
+            storyLayer.classList.add('hide');
+            storyLayer.innerHTML = '';
+            onDone && onDone();
+        };
+
+        storyLayer.onclick = e => {
+            if (e.target.closest('.storySkip')) { PC.audio.play('sfx_ui_click'); return finish(); }
+            advance();
+        };
+        storyKey = e => {
+            if (e.key === 'Escape') finish();
+            else if (e.key === ' ' || e.key === 'Enter' || e.key === 'ArrowRight') { e.preventDefault(); advance(); }
+        };
+        addEventListener('keydown', storyKey);
+        showBox(0);
+    }
+
+    // 舊版純投影片：滿版三張圖，點畫面換下一張（無對話框；把 STORY 設成字串陣列時走這條）
+    function storySlides(imgs, onDone) {
+        let i = 0, done = false;
+        const last = imgs.length - 1;
+        storyLayer.innerHTML = `
+            ${imgs.map((src, idx) => `
+                <div class="storySlide${idx === 0 ? ' on' : ''}">
+                    <img src="${src}" alt="" onerror="this.classList.add('imgFail')">
+                </div>`).join('')}
+            <div class="storyTop">
+                <div class="storyDots">${imgs.map((_, idx) => `<i class="${idx === 0 ? 'on' : ''}"></i>`).join('')}</div>
+                <button class="storySkip">✕ 跳過</button>
+            </div>
+            <div class="storyHint">點畫面繼續 ›</div>`;
+        storyLayer.classList.remove('hide');
+        const slides = [...storyLayer.querySelectorAll('.storySlide')];
+        const dots = [...storyLayer.querySelectorAll('.storyDots i')];
+        const hint = storyLayer.querySelector('.storyHint');
+
+        const goTo = n => {
+            slides.forEach((s, k) => s.classList.toggle('on', k === n));
+            dots.forEach((d, k) => d.classList.toggle('on', k === n));
+            if (hint) hint.textContent = n >= last ? '點一下回首頁 ↩' : '點畫面繼續 ›';
+        };
+        const finish = () => {
+            if (done) return; done = true;
+            removeEventListener('keydown', storyKey); storyKey = null;
+            storyLayer.classList.add('hide');
+            storyLayer.innerHTML = '';
+            onDone && onDone();
+        };
+        const next = () => {
+            if (i >= last) return finish();     // 最後一張再點 → 回首頁
+            i++; PC.audio.play('sfx_ui_click'); goTo(i);
+        };
+        storyLayer.onclick = e => {
+            if (e.target.closest('.storySkip')) { PC.audio.play('sfx_ui_click'); return finish(); }
+            next();
+        };
+        storyKey = e => {
+            if (e.key === 'Escape') finish();
+            else if (e.key === ' ' || e.key === 'Enter' || e.key === 'ArrowRight') { e.preventDefault(); next(); }
+        };
+        addEventListener('keydown', storyKey);
     }
 
     // ---------- 通用卡片 ----------
@@ -363,36 +555,44 @@ PC.ui = (function () {
     }
 
     // ---------- 點菜單（圖片卡＋配料一/二＋織圖即時上色預覽＋可選 🎲 隨機）----------
-    function openOrderModal({ title, sub, mascot, order, confirmText, dice, onChange, onConfirm }) {
+    function openOrderModal({ title, sub, mascot, mascotEmoji, order, confirmText, dice, inputChoice, onChange, onConfirm }) {
         PC.audio.play('sfx_order_open');
         const C = PC.config;
         showOverlay(`
         <div class="modalCard orderModal">
-            <div class="orderHead">
-                ${mascot ? `<img class="orderMascot" src="${mascot}" alt="">` : ''}
-                <div class="orderTitleSign">
-                    <img src="assets/logo_signboard.png" alt="">
-                    <span class="orderTitleText">${title}</span>
+            <div class="dialogSay">
+                ${mascot ? `<img class="dialogFace" src="${mascot}" alt="" data-emoji="${mascotEmoji || '🍽️'}" onerror="PC.ui._faceFail(this)">` : ''}
+                <div class="dialogText">
+                    <b class="dialogTitle">${title}</b>
+                    <span class="dialogLine">${sub}</span>
                 </div>
             </div>
-            <p class="lead">${sub}</p>
             <div class="orderCols">
                 <div class="orderMain">
                     <div class="itemGrid pat" id="mPat"></div>
-                    <div class="secTitle">醬料 - 醬料是你會用最多的毛線顏色</div>
-                    <div class="itemGrid" id="mSauce"></div>
-                    <div class="secTitle">配料 - 可以選兩個配料，點綴你的編織義大利麵</div>
-                    <div class="itemGrid" id="mTop0"></div>
-                    <div class="itemGrid" id="mTop1"></div>
+                    <div class="secRow">
+                        <span class="secTitle" title="醬料是你會用最多的毛線顏色">醬料</span>
+                        <div class="itemGrid" id="mSauce"></div>
+                    </div>
+                    <div class="secRow">
+                        <span class="secTitle" title="可以選兩個配料，點綴你的編織義大利麵">配料</span>
+                        <div class="secGrids">
+                            <div class="itemGrid" id="mTop0"></div>
+                            <div class="itemGrid" id="mTop1"></div>
+                        </div>
+                    </div>
                 </div>
                 <div class="orderSide">
                     <div id="mChartSlot"></div>
                     <div class="orderSummary" id="mSum"></div>
                     ${dice ? `<button class="diceBtn" id="mDice">${dice.label || '🎲 隨機點餐'}</button>` : ''}
+                    ${inputChoice ? `<div class="inputAssign" id="mInput"></div>` : ''}
                     <button class="bigBtn" id="mOk">${confirmText || '🧶 開始編織'}</button>
                 </div>
             </div>
         </div>`);
+        // 點菜單專屬滿版手繪背景（dialogBg）；換畫面時 showOverlay/hideOverlays 會拿掉
+        document.body.classList.add('order');
         // 可即時上色的織圖預覽搬進點菜單（關閉／換畫面時 restoreChart 會搬回菜譜卡）
         $('#mChartSlot').appendChild(document.getElementById('chartBox'));
         recipeCard.classList.add('hide');
@@ -400,7 +600,7 @@ PC.ui = (function () {
         const itemCard = ({ img, swatch, emoji, name, tier, on, fn }) => {
             const thumb = img ? `<img src="${img}" alt="" loading="lazy">`
                 : swatch ? `<i class="bigSwatch" style="background:${swatch}"></i>`
-                : `<span class="bigEmoji">${emoji || '🧶'}</span>`;
+                    : `<span class="bigEmoji">${emoji || '🧶'}</span>`;
             const b = el(`<button class="itemCard${on ? ' on' : ''}">
                 ${tierTag(tier)}
                 <span class="itemThumb">${thumb}</span>
@@ -415,11 +615,11 @@ PC.ui = (function () {
             Object.entries(C.PATTERNS)
                 .sort(([, a], [, b]) => (diffRank[a.diff] ?? 9) - (diffRank[b.diff] ?? 9))
                 .forEach(([k, p]) =>
-                pat.appendChild(itemCard({
-                    img: (p.img || '').replace(/\.svg$/i, '.png'), tier: p.diff,
-                    on: order.pattern === k,
-                    fn: () => { clickSfx(); order.pattern = k; render(); }
-                })));
+                    pat.appendChild(itemCard({
+                        img: (p.img || '').replace(/\.svg$/i, '.png'), tier: p.diff,
+                        on: order.pattern === k,
+                        fn: () => { clickSfx(); order.pattern = k; render(); }
+                    })));
             const sau = $('#mSauce'); sau.innerHTML = '';
             Object.entries(C.SAUCES).forEach(([name, s]) =>
                 sau.appendChild(itemCard({
@@ -441,6 +641,33 @@ PC.ui = (function () {
             if (onChange) onChange(order);
         };
         render();
+
+        // 雙盤：操作分配（誰滑鼠誰鍵盤）。點座位卡即把滑鼠指到該盤，另一盤自動轉鍵盤。
+        // 與選料無關，只需渲染一次（render() 不會動到 #mInput）。
+        function renderInputAssign() {
+            const box = $('#mInput'); if (!box || !inputChoice) return;
+            const seatBtn = (seat, i) => {
+                const mouse = inputChoice.mouseSide === i;
+                return `<button class="seatCard ${mouse ? 'mouse' : 'keys'}" data-side="${i}" title="${mouse ? '這盤用滑鼠' : '點一下改用滑鼠'}">
+                    ${chefFaceHTML(seat.face, 'seatFace')}
+                    <span class="seatWho"><b>${seat.name}</b>${seat.sub ? `<small>${seat.sub}</small>` : ''}</span>
+                    <span class="seatDev">${mouse ? mi('mouse') + ' 滑鼠' : mi('keyboard') + ' 鍵盤'}</span>
+                </button>`;
+            };
+            box.innerHTML = `
+                <div class="iaHead">${mi('sports_esports')} 這場的操作 <small>點頭像交換</small></div>
+                <div class="seatRow">${inputChoice.seats.map(seatBtn).join('<span class="iaVs">⇄</span>')}</div>`;
+            box.querySelectorAll('.seatCard').forEach(b => b.onclick = () => {
+                const side = +b.dataset.side;
+                if (inputChoice.mouseSide === side) return;   // 已是滑鼠盤，不動作
+                clickSfx();
+                inputChoice.mouseSide = side;
+                if (inputChoice.onPick) inputChoice.onPick(side);
+                renderInputAssign();
+            });
+        }
+        renderInputAssign();
+
         if (dice) $('#mDice').onclick = () => {
             clickSfx();
             Object.assign(order, dice.gen());
@@ -501,16 +728,14 @@ PC.ui = (function () {
         hudWrap.classList.remove('hide');
         hudWrap.innerHTML = '';
         hudWrap.classList.toggle('duo', sessions.length > 1);
-        // 底下起鍋卡左右反轉，讓卡片與上方兩盤對齊（使用者回饋：原本鍵盤/滑鼠與起鍋鈕左右相反）
-        const domOrder = sessions.map((_, i) => i);
-        if (sessions.length > 1) domOrder.reverse();
-        domOrder.forEach(i => {
-            const s = sessions[i];
+        // 烹飪視角已鎖定標準機位（scene.lockView）：盤 0 固定在畫面左、盤 1 在右，
+        // 起鍋卡照 session 順序排即與上方盤面對齊（舊的左右反轉是鏡頭隨機角度時代的補救，反而必錯邊）
+        sessions.forEach((s, i) => {
             const chef = s.chef || { emoji: '👨‍🍳', name: '主廚' };
             const card = el(`
             <div class="card cookCard">
                 <div class="chefLine">${chefFaceHTML(chef, 'chefFace')}<b>${chef.name}</b>
-                    <span class="inputTag">${s.input === 'keys' ? mi('keyboard') + ' 鍵盤 1·2·3·4' : mi('mouse') + ' 滑鼠'}</span></div>
+                    <span class="inputTag ${s.input}">${s.input === 'keys' ? mi('keyboard') + ' 鍵盤 1·2·3·4·5' : mi('mouse') + ' 滑鼠'}</span></div>
                 <div class="phaseLine" data-f="phase">準備中…</div>
                 <div class="keyHint hide" data-f="keyhint">按 <b data-f="keynum">1</b></div>
                 <div class="scoreLine">分數 <b data-f="score">0</b><span class="comboTag" data-f="combo"></span></div>
@@ -533,7 +758,30 @@ PC.ui = (function () {
                 verdict: $('[data-f=verdict]', card)
             };
         });
+        // 盤面歸屬標籤：掛在各盤正上方（誰的盤、用什麼操作，抬頭就看得到）；單盤不需要
+        if (sessions.length > 1) sessions.forEach((s, i) => {
+            const chef = s.chef || { emoji: '👨‍🍳', name: '主廚' };
+            const b = el(`<div class="plateBadge">
+                ${chefFaceHTML(chef, 'plateFace')}<b>${chef.name}</b>
+                <span class="inputTag ${s.input}">${s.input === 'keys' ? mi('keyboard') + ' 鍵盤' : mi('mouse') + ' 滑鼠'}</span>
+            </div>`);
+            hudWrap.appendChild(b);
+            hudRefs[i].badge = b;
+        });
+        placePlateBadges(sessions);
         updateTally();
+    }
+
+    // 盤面標籤對位：把 3D 盤位投影成螢幕座標，貼在盤子上緣外側。
+    // hudWrap 有 transform（成為 fixed/absolute 子元素的包含塊），所以扣掉 hudWrap 自身的螢幕位置
+    function placePlateBadges(sessions) {
+        const base = hudWrap.getBoundingClientRect();
+        sessions.forEach((s, i) => {
+            const b = hudRefs[i] && hudRefs[i].badge; if (!b) return;
+            const p = flow.mgr.toScreen(s.rig.root.position.x, 2, -19);   // 盤緣（半徑 13.9）再往後一點
+            b.style.left = (p.x - base.left) + 'px';
+            b.style.top = (p.y - base.top) + 'px';
+        });
     }
 
     function updateHud(sessions) {
@@ -563,13 +811,16 @@ PC.ui = (function () {
                     → <b>${res.total} 分</b>`;
             }
         });
+        // 盤面標籤對位放在最後：keyHint 顯示/隱藏會改變卡片高度 → hudWrap（貼底）往上長，
+        // 先量再改 DOM 會拿到舊基準，倒數期間標籤就飄掉（跑版）；改完 DOM 再量才準
+        placePlateBadges(sessions);
     }
 
     // ---------- 回饋 FX ----------
     const GRADE_FX = {
         perfect: { cls: 'fxPerfect', text: g => `✨完美 +${g.toFixed(1)}` },
-        ok:      { cls: 'fxOk',      text: g => `👌不錯 +${g.toFixed(1)}` },
-        bad:     { cls: 'fxBad',     text: g => `+${g.toFixed(1)}` }
+        ok: { cls: 'fxOk', text: g => `👌不錯 +${g.toFixed(1)}` },
+        bad: { cls: 'fxBad', text: g => `+${g.toFixed(1)}` }
     };
     function hitFx(pos, grade, gain, combo, lateText) {
         const f = GRADE_FX[grade];
@@ -594,6 +845,8 @@ PC.ui = (function () {
     function countdown(onGo) {
         hideOverlays();
         hudWrap.classList.remove('hide');
+        // 倒數整段 3-2-1 是一個音檔：countdown 一開始（＝開始前約 3 秒）播一次
+        PC.audio.play('sfx_count');
         const seq = ['3', '2', '1', '開始🍳'];
         cdEl.classList.remove('hide');
         let i = 0;
@@ -601,7 +854,7 @@ PC.ui = (function () {
             if (i >= seq.length) { cdEl.classList.add('hide'); onGo(); return; }
             cdEl.textContent = seq[i];
             cdEl.classList.remove('pop'); void cdEl.offsetWidth; cdEl.classList.add('pop');
-            PC.audio.play(i === seq.length - 1 ? 'sfx_go' : 'sfx_countdown');
+            if (i === seq.length - 1) PC.audio.play('sfx_go');   // 只有「開始」那拍再補一聲
             i++;
             setTimeout(step, i === seq.length ? 650 : 800);
         };
@@ -623,10 +876,10 @@ PC.ui = (function () {
         </div>`;
     }
 
-    function showVerdict({ store, roundLabel, plates, chefs, score, onNext, eyebrow, nextLabel, onHome, pattern, order }) {
+    function showVerdict({ store, roundLabel, plates, chefs, inputs, score, onNext, eyebrow, nextLabel, onHome, pattern, order }) {
         const plateHTML = plates.map((r, i) => {
             const chef = chefs[i] || { emoji: '👨‍🍳', name: '主廚' };
-            const tag = plates.length > 1 ? `<span class="plateTag">${i === 0 ? mi('mouse') + ' 滑鼠盤' : mi('keyboard') + ' 鍵盤盤'}</span>` : '';
+            const tag = plates.length > 1 ? `<span class="plateTag">${inputs && inputs[i] === 'keys' ? mi('keyboard') + ' 鍵盤盤' : mi('mouse') + ' 滑鼠盤'}</span>` : '';
             return `
             <div class="plateResult">
                 <div class="plateHead">${chefFaceHTML(chef, 'plateChefFace')}${chef.name}${tag}</div>
@@ -638,7 +891,7 @@ PC.ui = (function () {
         hideCursorServe();
         recipeCard.classList.add('hide');
         hudWrap.classList.add('hide');
-        document.body.classList.remove('peek', 'setup');
+        document.body.classList.remove('peek', 'peekUi', 'setup', 'order');
         ov.classList.remove('hide');
         ov.classList.add('verdictLayer');
         ov.innerHTML = `
@@ -672,12 +925,12 @@ PC.ui = (function () {
 
     // ---------- 對戰結算（雙店＋單廚）----------
     // 兩隊同題＝同一張比較表（列＝項目、欄＝隊伍；重複標籤只出現一次），標出本場勝方
-    function showDuelVerdict({ roundLabel, stores, chefs, plates, order, pattern, nextLabel, onNext }) {
+    function showDuelVerdict({ roundLabel, stores, chefs, inputs, plates, order, pattern, nextLabel, onNext }) {
         restoreChart();
         hideCursorServe();
         recipeCard.classList.add('hide');
         hudWrap.classList.add('hide');
-        document.body.classList.remove('peek', 'setup');
+        document.body.classList.remove('peek', 'peekUi', 'setup', 'order');
         ov.classList.remove('hide');
         ov.classList.add('verdictLayer');
 
@@ -693,7 +946,7 @@ PC.ui = (function () {
             const st = stores[i], chef = chefs[i] || st.chef;
             return `<th class="dtTeam${winCls(i)}">
                 <span class="dtTeamName">${chefFaceHTML(chef, 'dtFace')}${st.name}${winIdx === i ? ' ' + gicon('lead_crown', '👑', 'giCrown') : ''}</span>
-                <span class="dtTag">${i === 0 ? mi('mouse') + ' 滑鼠' : mi('keyboard') + ' 鍵盤'}</span></th>`;
+                <span class="dtTag">${inputs && inputs[i] === 'keys' ? mi('keyboard') + ' 鍵盤' : mi('mouse') + ' 滑鼠'}</span></th>`;
         };
         // 一列＝一個項目，標籤只出現一次（左欄）
         const row = (label, fn, cls = '') =>
@@ -762,7 +1015,7 @@ PC.ui = (function () {
         }
         const foot = `<tr class="tFoot"><td class="tRound">總分</td>${stores.map(s => {
             const isLead = stores.length > 1 && lead > 0 && s.total === lead;
-            return `<td class="tTot">${isLead ?  '👑</br>': '😒</br>'}${s.total}</td>`;
+            return `<td class="tTot">${isLead ? '👑</br>' : '😒</br>'}${s.total}</td>`;
         }).join('')}</tr>`;
         tally.innerHTML = `
             <div class="tallyHead">${mi('leaderboard')} 累積比分</div>
@@ -807,9 +1060,9 @@ PC.ui = (function () {
             const ratio = possible ? s.total / possible : 0;
             const tier = ratio >= .92 ? { img: 'rank_legend', emoji: '🌟', label: '傳說主廚' }
                 : ratio >= .8 ? { img: 'rank_gold', emoji: '🥇', label: '金牌主廚' }
-                : ratio >= .65 ? { img: 'rank_silver', emoji: '🥈', label: '銀牌主廚' }
-                : ratio >= .45 ? { img: 'rank_bronze', emoji: '🥉', label: '銅牌主廚' }
-                : { img: 'rank_rookie', emoji: '🍳', label: '見習廚師' };
+                    : ratio >= .65 ? { img: 'rank_silver', emoji: '🥈', label: '銀牌主廚' }
+                        : ratio >= .45 ? { img: 'rank_bronze', emoji: '🥉', label: '銅牌主廚' }
+                            : { img: 'rank_rookie', emoji: '🍳', label: '見習廚師' };
             headHTML = `<div class="cardIcon">${gicon(tier.img, tier.emoji, 'giHero')}</div><h1>${tier.label}</h1>
                 <p class="lead">達成率 ${Math.floor(ratio * 100)}%</p>`;
         }
@@ -825,16 +1078,25 @@ PC.ui = (function () {
             <table class="scoreTable">
                 <tr><th></th>${cols.map(i => `<th>${i + 1}</th>`).join('')}<th>合計</th></tr>${rows}
             </table>
-            <button class="bigBtn" id="againBtn">${mi('replay')} 再玩一次</button>
+            <div class="finalBtns">
+                <button class="ghostBtn" id="fPeek">${mi('visibility')} 只看成品</button>
+                <button class="ghostBtn" id="fClose">${mi('close')} 關閉</button>
+                <button class="bigBtn" id="againBtn">${mi('replay')} 再玩一次</button>
+            </div>
         </div>`);
+        $('#fPeek').onclick = () => document.body.classList.add('peek');     // 全收：只留成品（拍乾淨畫面用）
+        $('#fClose').onclick = () => {
+            document.body.classList.add('peekUi');   // 只收結果卡：保留工具列（旋轉/拍照/回首頁）
+            updateTally();                           // 累積比分也要回來（對決模式看兩隊總分）
+        };
         $('#againBtn').onclick = () => location.reload();
     }
 
     return {
-        init, showMenu, showChefMode, showRoundCount, showTeamIntro, showCard,
+        init, showMenu, showChefMode, showRoundCount, showTeamIntro, showStory, showCard,
         openOrderModal, showOrderCard, orderSummaryHTML, setRecipe,
         showHud, updateHud, hitFx, comboSplash, wrongKeyFx,
         countdown, showVerdict, showDuelVerdict, showScoreboard, showFinal, updateTally,
-        hideOverlays, setTitleInfo, _iconFail
+        hideOverlays, setTitleInfo, _iconFail, _faceFail
     };
 })();

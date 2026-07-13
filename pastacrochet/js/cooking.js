@@ -4,7 +4,7 @@
      完美＝窗中間 w/2（滿分）、不完美＝前後各 w/4（80%）、
      超級不完美＝窗外（60%）——對應規格 10/8/6 分例
    - 熟度：看「起鍋時刻」落在哪個帶（完美 16~23s），扣總分
-   - input: 'mouse'（點針目）或 'keys'（按 1/2/3/4）
+   - input: 'mouse'（點針目）或 'keys'（按 1~5）
    ============================================================ */
 window.PC = window.PC || {};
 
@@ -56,7 +56,7 @@ PC.CookSession = class {
         this.dotW = C.DOT_SPAN / list.length;
         list.forEach((d, i) => {
             d.i = i;
-            d.key = 1 + Math.floor(Math.random() * 4);   // 鍵盤模式提示 1/2/3/4
+            d.key = 1 + Math.floor(Math.random() * 5);   // 鍵盤模式提示 1~5
         });
         return list;
     }
@@ -65,6 +65,12 @@ PC.CookSession = class {
         this.running = true;
         this.clock = 0;
         this.rig.beginCook();
+        this._showCurrentMarker();
+    }
+
+    /** 倒數前預告：先亮出第一針標記（鍵盤盤含數字徽章），玩家倒數時就能找到自己的目標。
+        不啟動計時；running 未開，此時點擊／按鍵都不計分也不算失誤 */
+    preview() {
         this._showCurrentMarker();
     }
 
@@ -170,12 +176,17 @@ PC.CookSession = class {
         // 點點做完、進入完美熟度區的那一刻 → 提示音（HUD 起鍋鈕同步發光）
         if (this.idx >= this.N && !this._serveCued && this.clock >= C.PERFECT_ZONE[0]) {
             this._serveCued = true;
-            PC.audio.play('sfx_countdown', { rate: 1.4 });
+            PC.audio.play('sfx_ready');
         }
         // 漸焦視覺
         if (this.clock > C.BURN_VISUAL_FROM) {
             const k = Math.min(1, (this.clock - C.BURN_VISUAL_FROM) / (C.FORCE_SERVE - C.BURN_VISUAL_FROM));
             this.rig.setBurn(k);
+        }
+        // 燒焦前預警：強制起鍋前 BURN_WARN_LEAD 秒先響一次警示音（提早 3.5 秒提醒）
+        if (!this._burnWarned && this.clock >= C.FORCE_SERVE - C.BURN_WARN_LEAD) {
+            this._burnWarned = true;
+            PC.audio.play('sfx_burnt');
         }
         // 強制起鍋（燒焦）
         if (this.clock >= C.FORCE_SERVE) this.serve(true);
