@@ -88,14 +88,14 @@ PC.config = {
     // 注意：配料「超難」的加分規格未定（使用者只給到 難+5），暫依織圖/醬料倍率規則取 +10
     DIFF: {
         pattern: {
-            normal: { label: '一般', bonus: 0, dots: 3 },
-            hard: { label: '難', bonus: 10, dots: 5 },
+            normal: { label: '一般', bonus: 0, dots: 4 },
+            hard: { label: '難', bonus: 10, dots: 6 },
             expert: { label: '超難', bonus: 25, dots: 9 }
         },
         sauce: {
             normal: { label: '一般', bonus: 0, dots: 1 },
             hard: { label: '難', bonus: 8, dots: 3 },
-            expert: { label: '超難', bonus: 18, dots: 5 }
+            expert: { label: '超難', bonus: 16, dots: 5 }
         },
         topping: {
             normal: { label: '一般', bonus: 0, dots: 1 },
