@@ -133,6 +133,8 @@ PC.CookSession = class {
         const d = this.dots[this.idx];
         if (num === d.key) this._hitCurrent();
         else {
+            // 按錯鍵：扣該點基礎分的 WRONG_KEY_MULT（不推進 idx，這一點還能再按對）
+            this.scoreDots = Math.max(0, this.scoreDots - this.perDot * PC.config.WRONG_KEY_MULT);
             PC.audio.play('sfx_hit_wrong');
             PC.ui.wrongKeyFx(this.sideIdx);
         }

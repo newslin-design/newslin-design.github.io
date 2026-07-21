@@ -273,12 +273,15 @@ PC.GameFlow = class {
         PC.audio.bgm(this._resultBgm(Math.max(...plates.map(p => p.total))));
         PC.audio.play('sfx_result');
         const last = this.roundIdx + 1 >= this.roundCount;
-        PC.ui.showDuelVerdict({
-            roundLabel: `第 ${this.roundIdx + 1} 場`,
-            stores: this.stores,
+        // 兩隊分數相加沒有意義 → 用 headline 放勝負橫幅取代滾動總分，其餘與雙廚同一套版面
+        const [pa, pb] = plates;
+        const win = pa.total === pb.total ? null : (pa.total > pb.total ? this.stores[0] : this.stores[1]);
+        PC.ui.showVerdict({
+            eyebrow: `⚔️ 第 ${this.roundIdx + 1} 場`,
+            headline: win ? `${win.emoji} ${win.name} 這場勝出！` : '🤝 這場平手！',
+            plates,
             chefs: this.sessions.map(s => s.chef),
             inputs: this.sessions.map(s => s.input),
-            plates,
             order,
             pattern: order && order.pattern,
             nextLabel: last ? `看最終結果 <span class="mi">sports_score</span>` : `下一場 <span class="mi">play_arrow</span>`,
@@ -293,7 +296,7 @@ PC.GameFlow = class {
         store.results[this.roundIdx] = { score, plates };
         store.total += score;
         this.mgr.freeView();
-        PC.audio.bgm(this._resultBgm(score));
+        PC.audio.bgm(this._resultBgm(score, plates.length));
         PC.audio.play('sfx_result');
         PC.ui.showVerdict({
             store,
@@ -341,8 +344,11 @@ PC.GameFlow = class {
         return S.turns[this.roundIdx] || null;
     }
     _pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
-    // 看分數時的 BGM：分數超過門檻換更熱鬧的高分曲（#4）
-    _resultBgm(score) { return score > PC.config.RESULT_HIGH_SCORE ? 'bgm_result_high' : 'bgm_result'; }
+    // 看分數時的 BGM：達到門檻換更熱鬧的高分曲（#4）
+    // 門檻按「盤數」放大：雙廚的 score 是兩盤相加，門檻同乘 2（110 → 220）
+    _resultBgm(score, plateCount = 1) {
+        return score >= PC.config.RESULT_HIGH_SCORE * plateCount ? 'bgm_result_high' : 'bgm_result';
+    }
     // 難度綁在品項本身 → 依難度權重挑「品項」（顧客偏溫和、對手偏兇）
     _genOrder(kind) {
         // kind 可為 ORDER_WEIGHTS 的鍵，或直接傳難度權重陣列 [一般, 難, 超難]（劇本模式用）

@@ -341,10 +341,11 @@ body {
 }
 
 /* ---- 點菜單：滿版雙欄＋圖片卡 ---- */
+/* stretch：右側欄跟著左欄一樣高，從 modal 頂端撐到底，右上／右下都不留洞 */
 .orderCols {
     display: flex;
-    gap: 20px;
-    align-items: flex-start;
+    gap: 14px;
+    align-items: stretch;
 }
 
 .orderMain {
@@ -353,10 +354,12 @@ body {
 }
 
 .orderSide {
-    width: 280px;
+    width: 240px;
     flex: none;
+    display: flex;
+    flex-direction: column;
     box-sizing: border-box;
-    padding: 10px 14px 12px;
+    padding: 8px 11px 10px;
     background: rgba(255, 249, 240, .55);
     border: 2px solid rgba(255, 255, 255, .6);
     border-radius: 16px;
@@ -366,8 +369,8 @@ body {
 }
 
 #mChartSlot {
-    width: 200px;
-    margin: 0 auto 8px;
+    width: 160px;
+    margin: 0 auto 6px;
 }
 
 /* 織圖置頂置中 */
@@ -386,10 +389,13 @@ body {
     padding: 8px;
 }
 
+/* 不用 margin-top:auto 釘底：側欄被 stretch 撐高後，釘底會把「開始編織」推到摺線以下。
+   讓它接在摘要後面，畫面再矮都按得到。 */
 .orderSide .bigBtn {
     margin-top: 10px;
     padding: 12px;
 }
+
 
 /* ---- 點菜單：雙盤操作分配（誰滑鼠誰鍵盤），坐在「接單開做」上方 ---- */
 .inputAssign {
@@ -543,8 +549,8 @@ body.order #overlay {
 /* ---- 點菜單頭：角色對話橫幅（dialogSay 底圖：左圓框放角色、右木牌放台詞）---- */
 .dialogSay {
     position: relative;
-    width: min(620px, 72%);
-    margin: -4px auto 12px 0;
+    width: min(500px, 66%);
+    margin: -4px auto 8px 0;
     /* 靠左上，不置中 */
     aspect-ratio: 1603 / 474;
     /* 鎖住底圖比例，內部才能用百分比對位 */
@@ -603,11 +609,12 @@ body.order #overlay {
     line-height: 1.5;
 }
 
+/* 固定欄數的 Grid（不用 flex-wrap）：每排右緣才會對齊，不會因品項數不同而參差 */
 .itemGrid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 9px;
-    margin: 4px 0 10px;
+    display: grid;
+    grid-template-columns: repeat(9, minmax(0, 1fr));
+    gap: 6px;
+    margin: 2px 0 7px;
 }
 
 /* 分區標題直排（一字一行）：絕對定位掛在選項區左外側、不佔排版空間，
@@ -635,8 +642,9 @@ body.order #overlay {
 .itemCard {
     font: inherit;
     color: var(--ink);
-    width: 104px;
-    padding: 9px 6px 9px;
+    width: auto;
+    /* 寬度交給 Grid 決定 */
+    padding: 6px 4px;
     background: none;
     border: none;
     cursor: pointer;
@@ -670,7 +678,7 @@ body.order #overlay {
 }
 
 .itemThumb {
-    height: 64px;
+    height: 54px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -678,28 +686,29 @@ body.order #overlay {
 
 .itemThumb img {
     max-width: 100%;
-    max-height: 64px;
+    max-height: 54px;
     border-radius: 8px;
     object-fit: contain;
 }
 
 /* 織圖卡：卡片放大、間距與內距收緊 */
+/* 織圖＝主選擇（大卡 6 欄）；醬料／配料＝次選擇（小卡 9 欄）。全站只有這兩級尺寸。 */
 .itemGrid.pat {
-    gap: 4px;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 6px;
 }
 
 .itemGrid.pat .itemCard {
-    width: 172px;
-    padding: 4px 3px;
+    padding: 3px 2px;
 }
 
 .itemGrid.pat .itemThumb {
-    height: 130px;
+    height: 96px;
 }
 
 /* 織圖縮圖：白邊貼紙感＋大圓角（border-box 讓白邊算在高度內不撐高） */
 .itemGrid.pat .itemThumb img {
-    max-height: 130px;
+    max-height: 96px;
     box-sizing: border-box;
     border: 4px solid #faf0ec5e;
     border-radius: 16px;
@@ -786,11 +795,12 @@ body.order #overlay {
 }
 
 /* ---- 游標起鍋鈕：滑鼠盤點點做完後，起鍋 icon 貼著游標，就地一點即起鍋 ---- */
+/* 跟著游標跑 → 必須高過工具列(120)，否則游標移到右下角時起鍋鈕會被工具列蓋住點不到 */
 #cursorServe {
     position: fixed;
     left: 0;
     top: 0;
-    z-index: 70;
+    z-index: 130;
     width: 46px;
     height: 46px;
     padding: 0;
@@ -984,7 +994,7 @@ body.setup #overlay>.menuCard:not(.menuHome) {
 }
 
 .modalCard.orderModal {
-    width: min(1340px, 90vw);
+    width: min(1120px, 88vw);
     text-align: left;
 }
 
@@ -1408,6 +1418,49 @@ body.setup #overlay>.menuCard:not(.menuHome) {
 
 #storyLayer.hide {
     display: none;
+}
+
+/* ---- 確認對話框：自己一層，蓋過工具列(120)/游標起鍋鈕(130)，但讓劇情(400)優先 ---- */
+#confirmLayer {
+    position: fixed;
+    inset: 0;
+    z-index: 300;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(74, 59, 50, .45);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+}
+
+#confirmLayer.hide {
+    display: none;
+}
+
+.modalCard.confirmCard {
+    width: min(400px, 92vw);
+    animation: cfPop .28s cubic-bezier(.2, 1.3, .4, 1) both;
+}
+
+@keyframes cfPop {
+    from {
+        transform: scale(.9);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.confirmBtns {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    justify-content: center;
+    margin-top: 18px;
 }
 
 .storySlide {
@@ -2399,197 +2452,6 @@ body.peekUi #peekRestore {
     -webkit-backdrop-filter: blur(14px);
 }
 
-/* 對戰比較表：頂部＝菜名／滿分／配料一欄，中段＝織圖(左)＋QRcode/織法(右)，下方＝比較表全寬 */
-.vDetail.duelDetail {
-    width: min(406px, 45vw);
-}
-
-/* 頂部整欄：菜名＋滿分＋配料 */
-.ddDishBar {
-    text-align: center;
-    margin-bottom: 9px;
-}
-
-.ddDishBar .vDishName {
-    text-align: center;
-    font-size: 18px;
-    margin: 0 0 3px;
-}
-
-.ddDishBar .vFullMark {
-    text-align: center;
-    margin: 0 0 6px;
-}
-
-.ddDishBar .vRecipeChips {
-    justify-content: center;
-    margin: 0;
-}
-
-.ddTop {
-    display: flex;
-    gap: 14px;
-    align-items: flex-start;
-    margin-bottom: 10px;
-}
-
-/* 左欄：織圖縮小 */
-.ddChart {
-    width: 120px;
-    flex: none;
-    text-align: center;
-}
-
-.duelDetail #vChartSlot {
-    margin: 0 auto;
-    max-width: 120px;
-}
-
-/* 右欄：QRcode＋織法資訊（沿用橫排：QR 左、說明右）*/
-.ddInfo {
-    flex: 1;
-    min-width: 0;
-}
-
-.ddInfo .crochetGuide {
-    margin: 0;
-    padding: 0;
-    border-top: none;
-}
-
-.vDetail.duelDetail .crochetGuide .cgQr,
-.vDetail.duelDetail .crochetGuide .cgQr svg {
-    width: 72px;
-}
-
-.vDetail.duelDetail .crochetGuide .cgQr svg {
-    height: 72px;
-}
-
-.ddInfo .cgMeta {
-    font-size: 10px;
-}
-
-.ddInfo .cgSteps {
-    font-size: 10.5px;
-    padding-left: 14px;
-}
-
-.vFullMark {
-    text-align: center;
-    font-size: 13px;
-    font-weight: 700;
-    color: var(--muted);
-    margin: -2px 0 8px;
-}
-
-.duelTable {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 4px;
-}
-
-.duelTable th,
-.duelTable td {
-    padding: 6px 5px;
-    text-align: center;
-    border-bottom: 1px solid #ffffff8f;
-}
-
-/* 針目得分那欄（左側項目欄）窄一點 */
-.duelTable .dtLabel {
-    text-align: left;
-    font-weight: 700;
-    font-size: 12.5px;
-    color: var(--ink);
-    white-space: nowrap;
-    width: 1px;
-    padding-right: 6px;
-}
-
-.duelTable td {
-    font-size: 16px;
-    font-weight: 800;
-}
-
-.duelTable tr.sub .dtLabel {
-    font-weight: 600;
-    font-size: 12.5px;
-    color: var(--muted);
-}
-
-.duelTable tr.sub td {
-    font-size: 13.5px;
-    font-weight: 700;
-    color: var(--muted);
-}
-
-.duelTable .dtTeam {
-    vertical-align: bottom;
-    padding-bottom: 8px;
-    border-bottom-width: 3px;
-}
-
-.duelTable .dtTeamName {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 5px;
-    font-size: 15px;
-    font-weight: 900;
-}
-
-.duelTable .dtTag {
-    display: block;
-    font-size: 10.5px;
-    font-weight: 700;
-    color: var(--muted);
-    margin-top: 3px;
-}
-
-.dtFace {
-    font-size: 20px;
-    line-height: 1;
-}
-
-.dtFace.chefImg {
-    width: 26px;
-    height: 26px;
-    vertical-align: middle;
-}
-
-.duelTable td.win {
-    background: #fff3e2bd;
-}
-
-.duelTable th.dtTeam.win {
-    background: #fff3e2;
-}
-
-.duelTable .dtTeam.win .dtTeamName {
-    color: var(--accent);
-}
-
-.duelTable .dtSub {
-    display: block;
-    font-size: 10.5px;
-    font-weight: 600;
-    color: var(--muted);
-}
-
-.duelTable tr.dtTotal .dtLabel {
-    font-size: 15px;
-    font-weight: 900;
-}
-
-.duelTable tr.dtTotal td {
-    font-size: 24px;
-    font-weight: 900;
-    color: var(--accent);
-    border-bottom: none;
-    border-top: 3px solid var(--wood);
-}
-
 .giDone {
     height: 1.35em;
     vertical-align: -.3em;
@@ -2716,13 +2578,15 @@ body.peekUi #peekRestore {
 }
 
 /* ---- 右下工具 ---- */
+/* z-index 要高過 #overlay(100) 與結算卡(110)：選單／點菜／結算都鋪滿版覆蓋層，
+   工具列若在底下，音樂／音效／回首頁在這些畫面就按不到（也看不到）。story(400) 除外。 */
 #toolCard {
     bottom: 18px;
     right: 16px;
     padding: 8px;
     display: flex;
     gap: 6px;
-    z-index: 40;
+    z-index: 120;
 }
 
 #toolCard button {
@@ -2741,6 +2605,15 @@ body.peekUi #peekRestore {
 #toolCard button:active {
     transform: translateY(2px);
     box-shadow: 0 1px 0 rgba(168, 106, 55, .35);
+}
+
+/* 設定流程（首頁→選廚師→選場數→隊伍）還沒有成品可看；點菜單也被 dialogBg 蓋滿看不到 3D
+   → 旋轉／拍照在這些畫面都無意義，收起來。順帶讓工具列縮短，不會壓到點菜單的「開始編織」。 */
+body.setup #spinBtn,
+body.setup #shotBtn,
+body.order #spinBtn,
+body.order #shotBtn {
+    display: none;
 }
 
 #toolCard button.on {

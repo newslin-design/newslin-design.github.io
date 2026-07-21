@@ -10,7 +10,7 @@ PC.audio = (function () {
     let ctx = null;
     const buffers = {};          // name → AudioBuffer
     const missing = [];
-    let muted = false;
+    let musicMuted = false;   // 關背景音樂（音樂鈕）；音效不受影響
     let bgmNode = null, bgmName = null, bgmGain = null;
     let pendingBgm = null;       // 解鎖前就被要求播的 BGM
     let loaded = false;
@@ -38,7 +38,7 @@ PC.audio = (function () {
     }
 
     function play(name, opt = {}) {
-        if (muted || !ctx || !buffers[name]) return;
+        if (!ctx || !buffers[name]) return;
         const def = PC.config.SOUNDS[name];
         const src = ctx.createBufferSource();
         src.buffer = buffers[name];
@@ -50,7 +50,7 @@ PC.audio = (function () {
     }
 
     function bgm(name) {
-        if (!ctx || !loaded || muted) { pendingBgm = name; return; }
+        if (!ctx || !loaded || musicMuted) { pendingBgm = name; return; }
         if (bgmName === name) return;
         stopBgm();
         bgmName = name;
@@ -69,16 +69,17 @@ PC.audio = (function () {
         bgmName = null;
     }
 
-    function toggleMute() {
-        muted = !muted;
-        if (muted) { pendingBgm = bgmName || pendingBgm; stopBgm(); }
+    // 切背景音樂（音效不受影響）
+    function toggleMusic() {
+        musicMuted = !musicMuted;
+        if (musicMuted) { pendingBgm = bgmName || pendingBgm; stopBgm(); }
         else if (pendingBgm) { const n = pendingBgm; pendingBgm = null; bgm(n); }
-        return muted;
+        return musicMuted;
     }
 
     // 任何第一次手勢都解鎖（點擊/按鍵）
     addEventListener('pointerdown', unlock, { once: false });
     addEventListener('keydown', unlock, { once: false });
 
-    return { play, bgm, stopBgm, toggleMute, get muted() { return muted; } };
+    return { play, bgm, stopBgm, toggleMusic, get musicMuted() { return musicMuted; } };
 })();
