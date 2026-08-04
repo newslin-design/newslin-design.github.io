@@ -1,0 +1,18 @@
+[
+  {"query": "幫我在 d_meetup 頁面加一個滾動時會自己畫出來的流程圖", "should_trigger": true},
+  {"query": "the homepage cards feel static, can you make them animate in nicely on load", "should_trigger": true},
+  {"query": "想在 d_uc.html 加 scroll reveal，圖片滾到才淡入", "should_trigger": true},
+  {"query": "把這張 SVG 架構圖做成會自己描繪線條的效果", "should_trigger": true},
+  {"query": "about 頁那個年資數字可以做成 count-up 動畫嗎", "should_trigger": true},
+  {"query": "the builder diagram feels flat — make it feel more alive with some motion", "should_trigger": true},
+  {"query": "anime.js 的 stagger 怎麼套在我這排卡片", "should_trigger": true},
+  {"query": "讓 hero 標題的字一個一個浮現", "should_trigger": true},
+  {"query": "nav 連結的 CSS hover transition 太慢，調快一點", "should_trigger": false},
+  {"query": "新增一個作品卡片到 portfolioData", "should_trigger": false},
+  {"query": "幫我把 d_meetup 翻成日文", "should_trigger": false},
+  {"query": "修一下 sidebar 的 Home 連結路徑跑掉的問題", "should_trigger": false},
+  {"query": "GA4 的事件追蹤要怎麼設定", "should_trigger": false},
+  {"query": "壓縮 image/ 底下圖片的檔案大小", "should_trigger": false},
+  {"query": "幫我規劃一支 After Effects 影片動畫", "should_trigger": false},
+  {"query": "footer 的 email 寫錯了，改一下", "should_trigger": false}
+]
