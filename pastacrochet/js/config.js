@@ -182,7 +182,7 @@ PC.config = {
     // 依難度排序（一般 → 難 → 超難），魷魚圈固定放第一個；菜單直接照此物件順序渲染
     TOPPINGS: {
         tomato: { label: '🍅 番茄', color: '#cf4630', n: 5, diff: 'normal', img: 'assets/topping_tomato.png' },
-        squid: { label: '🦑 魷魚圈', color: '#efe7d8', n: 3, diff: 'normal', img: 'assets/topping_Calamari.png' },
+        squid: { label: '🦑 魷魚圈', color: '#efe7d8', n: 5, diff: 'normal', img: 'assets/topping_Calamari.png' },
 
         basil: { label: '🌿 羅勒', color: '#4f7c39', n: 8, diff: 'normal', img: 'assets/topping_basil.png' },
         cheese: { label: '🧀 起司', color: '#fedf8b', n: 5, diff: 'hard', img: 'assets/topping_cheese.png' },
@@ -191,7 +191,7 @@ PC.config = {
         blueberry: { label: '🫐 藍莓', color: '#4e5da6', n: 5, diff: 'hard', img: 'assets/topping_blueberry.png' },
         bacon: { label: '🥓 培根', color: '#823a35', n: 3, diff: 'expert', img: 'assets/topping_bacon.png' },
         broccoli: { label: '🥦 花椰菜', color: '#5c8b3a', n: 3, diff: 'expert', img: 'assets/topping_broccoli.png' },
-        caviar: { label: '🖤 魚子醬', color: '#2a2730', n: 3, diff: 'expert', img: 'assets/topping_caviari.png' }
+        caviar: { label: '🖤 魚子醬', color: '#2a2730', n: 5, diff: 'expert', img: 'assets/topping_caviari.png' }
     },
     DEFAULT_ORDER: { pattern: 'sakura', sauce: '白醬', tops: ['squid', 'squid'] },
 

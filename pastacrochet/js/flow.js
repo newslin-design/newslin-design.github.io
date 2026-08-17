@@ -170,7 +170,7 @@ PC.GameFlow = class {
             title: story ? `第 ${this.roundIdx + 1} 場 · ${story.theme}` : `第 ${this.roundIdx + 1} 場`,
             mascot: who.img || store.chef.img,
             mascotEmoji: who.emoji || store.chef.emoji,
-            sub: `${who.emoji} ${who.name}：「${story ? story.line : who.line}」——${duel ? '兩隊接同一張單' : '自己配一盤'}，或按 🎲 ${story ? '出題' : `讓 ${who.name} 隨機點`}！`,
+            sub: `${PC.config.HIDE_ORDER_DIALOG_EMOJI ? '' : `${who.emoji} `}${who.name}：「${story ? story.line : who.line}」${PC.config.HIDE_ORDER_RANDOM_HINT ? '' : `——${duel ? '兩隊接同一張單' : '自己配一盤'}，或按 🎲 ${story ? '出題' : `讓 ${who.name} 隨機點`}！`}`,
             order: JSON.parse(JSON.stringify(PC.config.DEFAULT_ORDER)),
             confirmText: '🔥 接單開做',
             dice,

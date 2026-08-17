@@ -344,7 +344,7 @@ body {
 /* stretch：右側欄跟著左欄一樣高，從 modal 頂端撐到底，右上／右下都不留洞 */
 .orderCols {
     display: flex;
-    gap: 14px;
+    gap: 18px;
     align-items: stretch;
 }
 
@@ -354,7 +354,7 @@ body {
 }
 
 .orderSide {
-    width: 240px;
+    width: 286px;
     flex: none;
     display: flex;
     flex-direction: column;
@@ -369,8 +369,51 @@ body {
 }
 
 #mChartSlot {
-    width: 160px;
-    margin: 0 auto 6px;
+    width: 100%;
+    margin: 0 auto 8px;
+}
+
+/* 左側只負責選形狀；右側用較大的實拍成品確認真正鉤織樣貌。 */
+.patternPhoto {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    border: 3px solid rgba(255, 255, 255, .8);
+    border-radius: 14px;
+    background: rgba(255, 249, 240, .7);
+    box-shadow: 0 8px 18px -12px rgba(55, 44, 32, .7);
+}
+
+.patternPhoto img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+}
+
+.patternPhoto > span {
+    position: absolute;
+    left: 9px;
+    bottom: 8px;
+    padding: 4px 9px;
+    border-radius: 999px;
+    color: #fff;
+    background: rgba(43, 83, 61, .86);
+    box-shadow: 0 2px 8px rgba(40, 30, 22, .22);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: .08em;
+}
+
+/* chartBox 仍需在 DOM 內解析 SVG 並驅動 3D 上色，但不和成品照搶視覺。 */
+#mChartData {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    opacity: 0;
+    pointer-events: none;
 }
 
 /* 織圖置頂置中 */
@@ -526,14 +569,15 @@ img.seatFace {
     color: var(--muted);
 }
 
-#mChartSlot #chartBox {
-    border: 2px solid var(--line);
-    border-radius: 10px;
+#mChartData #chartBox {
+    width: 1px;
+    height: 1px;
+    border: 0;
 }
 
 /* ---- 點菜單：滿版手繪背景（dialogBg，body.order 由 openOrderModal 掛上）---- */
 body.order #overlay {
-    background: url(../assets/dialogBg.png) center / cover no-repeat, var(--panel-2);
+    background: var(--order-bg, url(../assets/dialogBg.png)) center / cover no-repeat, var(--panel-2);
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
 }
@@ -554,7 +598,7 @@ body.order #overlay {
     /* 靠左上，不置中 */
     aspect-ratio: 1603 / 474;
     /* 鎖住底圖比例，內部才能用百分比對位 */
-    background: url(../assets/dialogSay.png) center / contain no-repeat;
+    background: var(--dialog-say-bg, url(../assets/dialogSay.png)) center / contain no-repeat;
     filter: drop-shadow(0 10px 14px rgba(90, 60, 40, .26));
 }
 
@@ -692,27 +736,46 @@ body.order #overlay {
 }
 
 /* 織圖卡：卡片放大、間距與內距收緊 */
-/* 織圖＝主選擇（大卡 6 欄）；醬料／配料＝次選擇（小卡 9 欄）。全站只有這兩級尺寸。 */
+/* 織圖＝主選擇（大卡 5 欄）；醬料／配料＝次選擇（小卡 9 欄）。全站只有這兩級尺寸。 */
 .itemGrid.pat {
-    grid-template-columns: repeat(6, minmax(0, 1fr));
-    gap: 6px;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 8px;
 }
 
 .itemGrid.pat .itemCard {
-    padding: 3px 2px;
+    padding: 4px 4px 6px;
 }
 
 .itemGrid.pat .itemThumb {
-    height: 96px;
+    height: 84px;
 }
 
-/* 織圖縮圖：白邊貼紙感＋大圓角（border-box 讓白邊算在高度內不撐高） */
-.itemGrid.pat .itemThumb img {
-    max-height: 96px;
-    box-sizing: border-box;
-    border: 4px solid #faf0ec5e;
-    border-radius: 16px;
-    box-shadow: 0 3px 8px -3px rgba(90, 60, 40, .3);
+/* 織圖選項使用一致的線性圖形，不在小格裡塞實拍照片。 */
+.patternGlyph {
+    width: 78px;
+    height: 78px;
+    overflow: visible;
+    color: #315f48;
+    filter: drop-shadow(0 2px 0 rgba(255, 255, 255, .55));
+}
+
+.patternGlyph * {
+    fill: rgba(255, 249, 230, .38);
+    stroke: currentColor;
+    stroke-width: 4;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    vector-effect: non-scaling-stroke;
+}
+
+.itemGrid.pat .itemName {
+    margin-top: 2px;
+    color: #4d684f;
+    font-size: 11px;
+    font-weight: 800;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .bigSwatch {
@@ -961,7 +1024,7 @@ body.order #overlay {
 body.setup #overlay {
     background:
         /* linear-gradient(rgba(74, 59, 50, .32), rgba(74, 59, 50, .5)), */
-        url(../assets/menu_bg.png) center / cover no-repeat,
+        var(--setup-bg, url(../assets/menu_bg.png)) center / cover no-repeat,
         var(--panel-2);
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
@@ -994,7 +1057,7 @@ body.setup #overlay>.menuCard:not(.menuHome) {
 }
 
 .modalCard.orderModal {
-    width: min(1120px, 88vw);
+    width: min(1280px, 92vw);
     text-align: left;
 }
 
@@ -1456,11 +1519,20 @@ body.setup #overlay>.menuCard:not(.menuHome) {
 }
 
 .confirmBtns {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 12px;
     align-items: center;
-    justify-content: center;
     margin-top: 18px;
+}
+
+.confirmBtns > button {
+    width: 100%;
+    height: 46px;
+    min-width: 0;
+    margin: 0;
+    padding: 9px 12px;
+    box-sizing: border-box;
 }
 
 .storySlide {
@@ -2660,7 +2732,732 @@ body.order #shotBtn {
         width: 100%;
     }
 
-    .orderSide #chartBox {
+    .orderSide .patternPhoto {
+        margin-inline: auto;
         max-width: 220px;
+    }
+}
+
+#orderUiBtn {
+    display: none;
+}
+
+.art-v2 body.order #orderUiBtn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.art-v2 body.order .dialogSay,
+.art-v2 body.order .orderBottomDock {
+    transition: opacity .18s ease, visibility .18s ease;
+}
+
+.art-v2 body.order.order-ui-hidden .dialogSay,
+.art-v2 body.order.order-ui-hidden .orderBottomDock {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+/* ============================================================
+   新美術預覽（game-new.html）
+   只在 config-v2.js 掛上 .art-v2 時生效，不影響正式版 game.html。
+   色彩取自新插畫：森林綠、薄荷綠、奶油紙張與番茄橘。
+   ============================================================ */
+.art-v2 {
+    --ink: #173c33;
+    --line: #9fc7ad;
+    --accent: #e86f45;
+    --green: #4f8e68;
+    --card: rgba(245, 244, 219, .94);
+    --muted: #587267;
+    --panel: #f7f2d9;
+    --panel-2: #e7f0dd;
+    --wood: #5e9670;
+    --wood-dark: #285b49;
+    --frame-in: #fff9df;
+    --awn-a: #2f7057;
+    --awn-b: #f4edcf;
+    --btn-red: #ec7a49;
+    --btn-red-d: #b84d31;
+    --btn-green: #5f9d72;
+    --btn-green-d: #306849;
+    --btn-yellow: #f0bb4f;
+    --btn-yellow-d: #c8842d;
+}
+
+.art-v2 button:focus-visible {
+    outline: 3px solid #f4bd4d;
+    outline-offset: 3px;
+}
+
+.art-v2 .card,
+.art-v2 .modalCard {
+    border-color: var(--wood-dark);
+    box-shadow:
+        0 20px 42px -20px rgba(16, 54, 43, .58),
+        inset 0 0 0 3px var(--frame-in),
+        inset 0 2px 0 rgba(255, 255, 255, .68);
+}
+
+.art-v2 #titleCard {
+    background: linear-gradient(180deg, #f9f4d9, #e6efd9);
+}
+
+.art-v2 .menuHome {
+    left: clamp(12px, 4vw, 72px);
+    right: auto;
+    width: min(440px, calc(100vw - 32px));
+    margin: 12px;
+    padding: 52px 24px 26px;
+    overflow: visible;
+    border: 3px solid rgba(242, 239, 207, .92);
+    border-radius: 28px;
+    background: linear-gradient(155deg, rgba(237, 244, 215, .94), rgba(199, 224, 199, .9));
+    box-shadow:
+        0 24px 48px -22px rgba(9, 43, 34, .68),
+        inset 0 0 0 2px rgba(50, 103, 78, .28);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+}
+
+.art-v2 .menuSign {
+    width: 232px;
+    margin: -176px auto 6px;
+    pointer-events: none;
+}
+
+.art-v2 .menuSign img {
+    aspect-ratio: 1;
+    object-fit: contain;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    filter: drop-shadow(0 12px 10px rgba(15, 61, 47, .28));
+}
+
+.art-v2 .menuHome .choice {
+    color: #fff9df;
+    border-color: #d8e8ca;
+    background: linear-gradient(180deg, #497f62 0%, #2d614c 100%);
+    text-shadow: 0 1.5px 0 rgba(16, 54, 43, .55);
+    box-shadow:
+        0 5px 0 #1f4a3a,
+        0 16px 26px -14px rgba(16, 54, 43, .68),
+        inset 0 2px 0 rgba(255, 255, 255, .22);
+}
+
+.art-v2 .menuHome .choice b,
+.art-v2 .menuHome .choice span {
+    color: inherit;
+}
+
+.art-v2 .menuHome .choice:hover {
+    border-color: #f7e6a8;
+    box-shadow:
+        0 7px 0 #1f4a3a,
+        0 20px 30px -14px rgba(16, 54, 43, .74),
+        inset 0 2px 0 rgba(255, 255, 255, .28);
+}
+
+.art-v2 .menuHome .choice:active {
+    box-shadow: 0 2px 0 #1f4a3a, inset 0 2px 0 rgba(255, 255, 255, .18);
+}
+
+.art-v2 .menuHome .practiceChoice {
+    color: #234d3d;
+    border-color: #77a486;
+    background: linear-gradient(180deg, #f4efd1, #d9e8cf);
+    text-shadow: none;
+}
+
+.art-v2 .menuHome .storyChoice {
+    color: #fff9df;
+    border-color: #f4c29c;
+    background: linear-gradient(180deg, #ec8154, #c35437);
+    box-shadow:
+        0 5px 0 #9b402e,
+        0 16px 24px -14px rgba(132, 48, 33, .62),
+        inset 0 2px 0 rgba(255, 255, 255, .25);
+}
+
+.art-v2 .modalCard:not(.menuHome) {
+    background: linear-gradient(155deg, rgba(248, 243, 218, .97), rgba(226, 238, 211, .97));
+}
+
+.art-v2 .choice,
+.art-v2 .chefCard,
+.art-v2 .itemCard {
+    border-color: #78a58a;
+    background: rgba(248, 244, 218, .88);
+    box-shadow: 0 4px 0 rgba(40, 91, 73, .24), inset 0 2px 0 rgba(255, 255, 255, .66);
+}
+
+.art-v2 .choice:hover,
+.art-v2 .chefCard:hover,
+.art-v2 .itemCard:hover {
+    border-color: var(--accent);
+}
+
+.art-v2 .choice.on,
+.art-v2 .chefCard.on,
+.art-v2 .itemCard.on {
+    border-color: var(--accent);
+    background: #fff3d8;
+    box-shadow: 0 4px 0 var(--btn-red-d), 0 12px 22px -14px rgba(184, 77, 49, .7);
+}
+
+.art-v2 .patternGlyph {
+    color: #2f6c52;
+}
+
+.art-v2 .bigBtn {
+    background: linear-gradient(180deg, var(--btn-red), var(--btn-red-d));
+}
+
+.art-v2 .diceBtn {
+    color: #2e674f;
+    border-color: #5f9670;
+    background: #f7f2d9;
+}
+
+.art-v2 body.order #overlay {
+    background-position: center;
+    background-size: cover;
+    padding: 0;
+}
+
+.art-v2 body.order .modalCard.orderModal {
+    /* 內容直接落在背景插畫的奶油白紙上，不再疊第二張卡片。 */
+    width: min(1120px, 62vw);
+    max-height: 64vh;
+    margin: 1vh auto 0;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    overflow: visible;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(47, 108, 82, .55) transparent;
+}
+
+.art-v2 body.order .orderCols {
+    display: block;
+}
+
+.art-v2 body.order .orderMain {
+    width: 100%;
+    max-width: 820px;
+    margin-inline: auto;
+    padding-top: 16px;
+    text-align: left;
+}
+
+.art-v2 body.order .dialogSay {
+    position: absolute;
+    z-index: 5;
+    left: 0;
+    top: -132px;
+    width: min(470px, 62vw);
+    height: 114px;
+    margin: 0;
+    aspect-ratio: auto;
+    border: 2px solid rgba(35, 87, 68, .55);
+    border-radius: 20px;
+    background: linear-gradient(90deg, #39725f 0 116px, #dce9cf 116px 100%);
+    box-shadow: 0 13px 24px -13px rgba(16, 54, 43, .68);
+    filter: none;
+}
+
+.art-v2 body.order .dialogSay::after {
+    display: none;
+}
+
+.art-v2 body.order .dialogFace {
+    left: 10px;
+    top: 8px;
+    width: 96px;
+    height: 96px;
+    box-sizing: border-box;
+    border: 4px solid #f8f2d5;
+    border-radius: 50%;
+    background: #f8f2d5;
+    box-shadow: 0 4px 10px rgba(19, 59, 45, .35);
+}
+
+.art-v2 body.order .dialogText {
+    left: 132px;
+    right: 20px;
+    top: 14px;
+    bottom: 14px;
+    gap: 2px;
+}
+
+.art-v2 body.order .dialogDice {
+    position: absolute;
+    z-index: 3;
+    left: auto;
+    right: -22px;
+    top: -18px;
+    width: 56px;
+    height: 56px;
+    margin: 0;
+    padding: 0;
+    border-radius: 17px;
+    font-size: 27px;
+    line-height: 1;
+    transform: rotate(10deg);
+}
+
+.art-v2 body.order .dialogTitle {
+    color: #245541;
+    font-size: clamp(16px, 1.7vw, 21px);
+}
+
+.art-v2 body.order .dialogLine {
+    color: #4d6859;
+    font-size: clamp(11px, 1.15vw, 14px);
+}
+
+.art-v2 body.order .orderSide {
+    width: 210px;
+    align-self: flex-start;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+}
+
+.art-v2 body.order .itemCard {
+    width: 78px;
+    height: 92px;
+    min-height: 92px;
+    flex: 0 0 78px;
+    padding: 2px;
+    border: 0;
+    border-radius: 8px;
+    background: transparent;
+    box-shadow: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: opacity .14s, filter .14s, transform .14s;
+}
+
+.art-v2 body.order .itemCard:hover {
+    border: 0;
+    background: transparent;
+    opacity: 1;
+    filter: none;
+}
+
+.art-v2 body.order .itemCard:hover > .itemThumb > img,
+.art-v2 body.order .itemCard:hover > .itemThumb > svg {
+    opacity: .72;
+    filter: saturate(.82) brightness(1.05);
+}
+
+.art-v2 body.order .itemCard.on {
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+}
+
+.art-v2 body.order .itemGrid {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    margin: 8px 0 22px;
+    overflow: visible;
+}
+
+.art-v2 body.order .itemGrid.pat {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+    gap: 5px;
+}
+
+.art-v2 body.order .itemGrid.pat .itemCard {
+    padding: 2px;
+}
+
+.art-v2 body.order .itemThumb,
+.art-v2 body.order .itemThumb img {
+    width: 86px;
+    height: 82px;
+    max-width: 86px;
+    max-height: 82px;
+}
+
+.art-v2 body.order .itemGrid.pat .itemThumb {
+    width: 86px;
+    height: 82px;
+}
+
+.art-v2 body.order .itemGrid.pat .itemThumb img {
+    width: 86px;
+    height: 86px;
+    max-width: 86px;
+    max-height: 86px;
+}
+
+.art-v2 body.order .itemGrid.pat .patternGlyph {
+    width: 86px;
+    height: 86px;
+}
+
+.art-v2 body.order #mSauce .itemThumb,
+.art-v2 body.order #mSauce .itemThumb img {
+    width: 114px;
+    height: 106px;
+    max-width: 114px;
+    max-height: 106px;
+}
+
+.art-v2 body.order #mSauce {
+    gap: 14px;
+}
+
+.art-v2 body.order #mTops .itemThumb,
+.art-v2 body.order #mTops .itemThumb img {
+    width: 106px;
+    height: 100px;
+    max-width: 106px;
+    max-height: 100px;
+}
+
+.art-v2 body.order .fireTag {
+    display: none;
+}
+
+.art-v2 body.order .toppingsUnified {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+    gap: 9px;
+}
+
+.art-v2 body.order .itemName {
+    margin-top: -1px;
+    font-size: 10px;
+    line-height: 1.1;
+}
+
+.art-v2 body.order .pickCount {
+    position: absolute;
+    z-index: 4;
+    top: 1px;
+    right: -5px;
+    min-width: 23px;
+    height: 23px;
+    display: grid;
+    place-items: center;
+    padding: 0 4px;
+    box-sizing: border-box;
+    border-radius: 999px;
+    color: #fff9df;
+    background: #d85f3f;
+    box-shadow: 0 2px 7px rgba(77, 43, 29, .28);
+    font-size: 11px;
+    font-weight: 900;
+    line-height: 1;
+}
+
+.art-v2 body.order .orderMain > .secRow {
+    width: 100%;
+}
+
+.art-v2 body.order .secRow .secTitle {
+    position: static;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 75%;
+    margin: 8px auto;
+    transform: none;
+    writing-mode: horizontal-tb;
+    font-size: 9px;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: .2em;
+    color: rgba(33, 74, 59, .62);
+    cursor: default;
+}
+
+.art-v2 body.order .secRow .secTitle::before,
+.art-v2 body.order .secRow .secTitle::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: rgba(47, 108, 82, .2);
+}
+
+.art-v2 body.order .patternPhoto {
+    overflow: visible;
+    width: 96px;
+    height: 96px;
+    max-height: 96px;
+    margin: 0;
+    border-width: 2px;
+}
+
+.art-v2 body.order .patternPhoto > img {
+    border-radius: 11px;
+}
+
+.art-v2 body.order .scoreHoverPhoto {
+    cursor: help;
+    outline: none;
+}
+
+.art-v2 body.order .scoreHoverPhoto:hover,
+.art-v2 body.order .scoreHoverPhoto:focus-visible {
+    box-shadow: 0 0 0 3px rgba(232, 111, 69, .28), 0 8px 18px -12px rgba(55, 44, 32, .7);
+}
+
+.art-v2 body.order .photoScoreTooltip {
+    position: absolute;
+    z-index: 150;
+    left: 50%;
+    right: auto;
+    top: auto;
+    bottom: calc(100% + 10px);
+    width: 220px;
+    box-sizing: border-box;
+    padding: 8px 10px;
+    border: 2px solid rgba(47, 108, 82, .72);
+    border-radius: 13px;
+    color: #214a3b;
+    background: rgba(255, 250, 224, .98);
+    box-shadow: 0 16px 30px -14px rgba(16, 54, 43, .7);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translate(-50%, 6px) scale(.97);
+    transform-origin: center bottom;
+    transition: opacity .14s, transform .14s, visibility .14s;
+}
+
+.art-v2 body.order .photoScoreTooltip .sumLine {
+    gap: 8px;
+}
+
+.art-v2 body.order .photoScoreTooltip .sumLine > span,
+.art-v2 body.order .photoScoreTooltip .sumLine > em {
+    position: static;
+    min-width: 0;
+    white-space: nowrap;
+}
+
+.art-v2 body.order .photoScoreTooltip .sumLine > span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.art-v2 body.order .scoreHoverPhoto:hover .photoScoreTooltip,
+.art-v2 body.order .scoreHoverPhoto:focus-visible .photoScoreTooltip {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, 0) scale(1);
+}
+
+.art-v2 body.order #mChartSlot {
+    width: 96px;
+    height: 96px;
+    margin: 0;
+}
+
+.art-v2 body.order .orderSummary {
+    font-size: 11px;
+}
+
+.art-v2 body.order .orderSide .sumLine {
+    padding: 1px 2px;
+}
+
+.art-v2 body.order .orderSide .sumStats {
+    font-size: 10px;
+    line-height: 1.25;
+}
+
+.art-v2 body.order .orderSide .diceBtn {
+    width: 52px;
+    height: 52px;
+    margin: 0;
+    padding: 0;
+    border-radius: 15px;
+    font-size: 25px;
+    line-height: 1;
+}
+
+.art-v2 body.order .inputAssign {
+    position: static;
+    width: 210px;
+    height: 96px;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 4px 6px 6px;
+    background: rgba(255, 252, 229, .38);
+}
+
+.art-v2 body.order .inputAssign .seatRow {
+    width: 100%;
+}
+
+.art-v2 body.order .orderBottomDock {
+    position: fixed;
+    z-index: 119;
+    left: 50%;
+    right: auto;
+    bottom: 8px;
+    width: auto;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    box-sizing: border-box;
+    padding: 8px 10px;
+    border: 1px solid rgba(248, 242, 213, .52);
+    border-radius: 22px;
+    background: rgba(226, 236, 211, .42);
+    box-shadow: 0 12px 30px -18px rgba(14, 52, 40, .75);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    transform: translateX(-50%);
+}
+
+.art-v2 body.order .seatCard {
+    grid-template-columns: 44px 1fr;
+    min-height: 46px;
+    padding-block: 3px;
+}
+
+.art-v2 body.order img.seatFace {
+    width: 38px;
+    height: 38px;
+}
+
+.art-v2 body.order .seatDev {
+    justify-content: center;
+    font-size: 12px;
+}
+
+.art-v2 body.order .iaHead {
+    display: none;
+}
+
+.art-v2 body.order .orderSide .bigBtn {
+    position: static;
+    width: 78px;
+    height: 90px;
+    margin: 0;
+    padding: 8px;
+    border-radius: 18px;
+    line-height: 1.25;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+/* 隊伍介紹：新立繪有完整身形，放大呈現並維持整張不裁切。 */
+.art-v2 .teamCard {
+    max-width: 270px;
+    padding: 10px 8px 12px;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+}
+
+.art-v2 .teamArt {
+    width: min(220px, 36vw);
+    height: min(250px, 34vh);
+    margin-bottom: 2px;
+}
+
+.art-v2 .teamIntroModal {
+    width: min(680px, 92vw);
+}
+
+.art-v2 .storyDialog {
+    color: #214a3b;
+    border-color: #2f6c52;
+    background: linear-gradient(180deg, rgba(249, 245, 219, .98), rgba(220, 234, 207, .98));
+    box-shadow:
+        0 0 0 4px rgba(255, 255, 255, .35) inset,
+        0 16px 32px rgba(8, 37, 29, .48);
+}
+
+.art-v2 .storySkip {
+    color: #f8f2d5;
+    border-color: rgba(248, 242, 213, .7);
+    background: rgba(25, 74, 56, .72);
+}
+
+.art-v2 #toolCard button {
+    color: #244e3e;
+    border-color: #639777;
+    background: linear-gradient(180deg, #f8f2d8, #dbe9d0);
+    box-shadow: 0 3px 0 rgba(40, 91, 73, .34), inset 0 1px 0 rgba(255, 255, 255, .72);
+}
+
+.art-v2 #toolCard button.on {
+    color: #fff;
+    border-color: var(--btn-red-d);
+    background: linear-gradient(180deg, var(--btn-red), var(--btn-red-d));
+}
+
+@media (max-width: 760px) {
+    .art-v2 .menuHome {
+        left: 0;
+        right: 0;
+        width: auto;
+        margin-inline: 16px;
+        padding-inline: 18px;
+    }
+
+    .art-v2 .menuSign {
+        width: 150px;
+        margin-top: -124px;
+    }
+
+    .art-v2 body.order .photoScoreTooltip {
+        left: 50%;
+        right: auto;
+        top: auto;
+        bottom: calc(100% + 9px);
+        transform: translate(-50%, 5px) scale(.97);
+        transform-origin: center bottom;
+    }
+
+    .art-v2 body.order .scoreHoverPhoto:hover .photoScoreTooltip,
+    .art-v2 body.order .scoreHoverPhoto:focus-visible .photoScoreTooltip {
+        transform: translate(-50%, 0) scale(1);
+    }
+
+    .art-v2 body.order .orderBottomDock {
+        left: 12px;
+        right: 12px;
+        width: auto;
+        justify-content: flex-start;
+        overflow-x: auto;
+        transform: none;
     }
 }

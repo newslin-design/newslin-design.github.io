@@ -16,9 +16,9 @@ PC.ui = (function () {
     const el = (html) => { const d = document.createElement('div'); d.innerHTML = html.trim(); return d.firstChild; };
     // 本地圖示字體（Material Icons Round，ligature）
     const mi = (name) => `<span class="mi">${name}</span>`;
-    // 遊戲風圖示：優先用 assets/ 圖片；圖片不存在時自動退回 emoji
+    // 遊戲風圖示：優先用設定中的素材資料夾；圖片不存在時自動退回 emoji
     const gicon = (name, emoji, extra = '') =>
-        `<img class="gi ${extra}" src="assets/${name}.png" alt="${emoji}" data-emoji="${emoji}" onerror="PC.ui._iconFail(this)">`;
+        `<img class="gi ${extra}" src="${PC.config.UI_ASSET_BASE || 'assets/'}${name}.png" alt="${emoji}" data-emoji="${emoji}" onerror="PC.ui._iconFail(this)">`;
     function _iconFail(img) {
         const s = document.createElement('span');
         s.className = 'giFallback ' + img.className.replace('gi', '').trim();
@@ -35,11 +35,12 @@ PC.ui = (function () {
     // 難度統一用火焰表示（一般不顯示火）
     const DIFF_LABEL = (cat, key) => {
         const d = PC.config.DIFF[cat][key];
-        const fire = key === 'normal' ? '' : key === 'hard' ? '🔥 ' : '🔥🔥 ';
+        const fire = PC.config.HIDE_DIFFICULTY_FIRE ? ''
+            : key === 'normal' ? '' : key === 'hard' ? '🔥 ' : '🔥🔥 ';
         return `${fire}${d.dots}點${d.bonus ? `+${d.bonus}分` : ''}`;
     };
     // 品項自帶難度 → 火焰徽章（一般不顯示、難 🔥、超難 🔥🔥）
-    const tierTag = d => d === 'normal' ? ''
+    const tierTag = d => PC.config.HIDE_DIFFICULTY_FIRE || d === 'normal' ? ''
         : `<i class="fireTag">${d === 'hard' ? '🔥' : '🔥🔥'}</i>`;
     // 廚師頭像：有立繪用圖，否則退回 emoji
     const chefFaceHTML = (chef, cls) => {
@@ -193,6 +194,11 @@ PC.ui = (function () {
             e.currentTarget.classList.toggle('on', !off);
             e.currentTarget.innerHTML = mi(off ? 'music_off' : 'music_note');
         };
+        const orderUiBtn = $('#orderUiBtn');
+        if (orderUiBtn) orderUiBtn.onclick = () => {
+            clickSfx();
+            setOrderUiHidden(!document.body.classList.contains('order-ui-hidden'));
+        };
         $('#homeBtn').onclick = () => {
             clickSfx();
             askConfirm({
@@ -254,8 +260,19 @@ PC.ui = (function () {
             recipeCard.classList.remove('hide');
         }
     }
+    function setOrderUiHidden(hidden) {
+        document.body.classList.toggle('order-ui-hidden', hidden);
+        const btn = $('#orderUiBtn');
+        if (!btn) return;
+        const label = hidden ? '顯示對話與接單操作' : '隱藏對話與接單操作';
+        btn.innerHTML = mi(hidden ? 'visibility_off' : 'visibility');
+        btn.title = label;
+        btn.setAttribute('aria-label', label);
+        btn.setAttribute('aria-pressed', String(hidden));
+    }
     function showOverlay(html) {
         restoreChart();
+        setOrderUiHidden(false);
         hudWrap.classList.add('hide');
         ov.classList.remove('hide', 'verdictLayer');
         document.body.classList.remove('peek', 'peekUi', 'setup', 'order');
@@ -263,6 +280,7 @@ PC.ui = (function () {
     }
     function hideOverlays() {
         restoreChart();
+        setOrderUiHidden(false);
         ov.classList.add('hide'); ov.classList.remove('verdictLayer'); ov.innerHTML = '';
         document.body.classList.remove('peek', 'peekUi', 'setup', 'order');
     }
@@ -276,7 +294,7 @@ PC.ui = (function () {
         showOverlay(`
         <div class="modalCard menuCard menuHome">
             <div class="menuSign">
-                <img src="assets/logo.png" alt="編織義大利麵">
+                <img src="${PC.config.HOME_LOGO || 'assets/logo.png'}" alt="毛線麵餐廳標誌">
             </div>
             
             <div class="bigChoices">
@@ -354,10 +372,10 @@ PC.ui = (function () {
                 ${st.chef.img ? `<img class="teamArt" src="${st.chef.img}" alt="">`
                 : `<span class="teamArtEmoji">${st.chef.emoji}</span>`}
                 <b class="teamName">${st.name}</b>
-                <span class="teamTag">${vs ? (i === 0 ? '第一隊' : '第二隊') : '你們這隊'}</span>
+                ${PC.config.HIDE_TEAM_TAGS ? '' : `<span class="teamTag">${vs ? (i === 0 ? '第一隊' : '第二隊') : '你們這隊'}</span>`}
             </div>`;
         showOverlay(`
-        <div class="modalCard menuCard">
+        <div class="modalCard menuCard teamIntroModal">
             <h2>${vs ? '兩隊對決！' : '你們的隊伍'}</h2>
             <p class="lead">隊伍固定，<b>隊友現場自己喬</b>就好 😉<br>${roleHint}</p>
             <div class="teamGrid${vs ? ' vs' : ''}">
@@ -596,7 +614,7 @@ PC.ui = (function () {
         <div class="sumStats">${mi('adjust')} 點點 <b>${st.dots}</b> 顆（每點 ${st.dotSec.toFixed(1)}s）<br>${mi('paid')} 基礎總分 <b>${st.base}</b>（100＋難度 ${st.bonus}）<br>每點 ${st.perDot.toFixed(1)} 分</div>`;
     }
 
-    // ---------- 點菜單（圖片卡＋配料一/二＋織圖即時上色預覽＋可選 🎲 隨機）----------
+    // ---------- 點菜單（圖形織圖選擇＋右側成品照＋配料一/二＋可選 🎲 隨機）----------
     // 版面：dialogSay 收在左欄內 → 右側欄（orderSide）才能從 modal 頂端一路撐到底，右上不留洞。
     // 配料兩排各自獨立（兩格可以選同一種料，如預設的 squid+squid）——別合併成單一清單。
     function openOrderModal({ title, sub, mascot, mascotEmoji, order, confirmText, dice, inputChoice, onChange, onConfirm }) {
@@ -612,43 +630,58 @@ PC.ui = (function () {
                             <b class="dialogTitle">${title}</b>
                             <span class="dialogLine">${sub}</span>
                         </div>
+                        ${C.DICE_AFTER_DIALOG && dice ? `<button class="diceBtn dialogDice" id="mDice" title="${dice.label || '隨機點餐'}" aria-label="${dice.label || '隨機點餐'}">${C.DICE_ICON_ONLY ? '🎲' : (dice.label || '🎲 隨機點餐')}</button>` : ''}
                     </div>
-                    <div class="itemGrid pat" id="mPat"></div>
+                    ${C.COMPACT_ENGLISH_SECTION_LABELS ? `<div class="secRow patternSection">
+                        <span class="secTitle">PATTERN</span>
+                        <div class="itemGrid pat" id="mPat"></div>
+                    </div>` : '<div class="itemGrid pat" id="mPat"></div>'}
                     <div class="secRow">
-                        <span class="secTitle" title="醬料是你會用最多的毛線顏色">醬料</span>
+                        <span class="secTitle" title="醬料是你會用最多的毛線顏色">${C.COMPACT_ENGLISH_SECTION_LABELS ? 'SAUCE' : '醬料'}</span>
                         <div class="itemGrid" id="mSauce"></div>
                     </div>
                     <div class="secRow">
-                        <span class="secTitle" title="可以選兩個配料，點綴你的編織義大利麵">配料</span>
-                        <div class="secGrids">
+                        <span class="secTitle" title="可以選兩個配料，點綴你的編織義大利麵">${C.COMPACT_ENGLISH_SECTION_LABELS ? 'TOPPINGS' : '配料'}</span>
+                        ${C.UNIFIED_TOPPINGS ? '<div class="itemGrid toppingsUnified" id="mTops"></div>' : `<div class="secGrids">
                             <div class="itemGrid" id="mTop0"></div>
                             <div class="itemGrid" id="mTop1"></div>
-                        </div>
+                        </div>`}
                     </div>
                 </div>
-                <div class="orderSide">
-                    <div id="mChartSlot"></div>
-                    <div class="orderSummary" id="mSum"></div>
-                    ${dice ? `<button class="diceBtn" id="mDice">${dice.label || '🎲 隨機點餐'}</button>` : ''}
+                <div class="orderSide${C.BOTTOM_ORDER_DOCK ? ' orderBottomDock' : ''}">
+                    <div id="mChartSlot">
+                        <div class="patternPhoto${C.PHOTO_SCORE_HOVER ? ' scoreHoverPhoto' : ''}"${C.PHOTO_SCORE_HOVER ? ' tabindex="0" aria-label="實際鉤織參考；滑過或聚焦查看目前分數詳情"' : ''}>
+                            <img id="mPatternPhoto" src="" alt="">
+                            ${C.HIDE_ORDER_HELP_LABELS ? '' : `<span>${C.PHOTO_SCORE_HOVER ? '實際鉤織 · HOVER' : '實際鉤織參考'}</span>`}
+                            ${C.PHOTO_SCORE_HOVER ? '<div class="photoScoreTooltip orderSummary" id="mSum"></div>' : ''}
+                        </div>
+                        <div id="mChartData" aria-hidden="true"></div>
+                    </div>
+                    ${C.PHOTO_SCORE_HOVER ? '' : '<div class="orderSummary" id="mSum"></div>'}
+                    ${!C.BOTTOM_ORDER_DOCK && dice ? `<button class="diceBtn" id="mDice">${dice.label || '🎲 隨機點餐'}</button>` : ''}
                     ${inputChoice ? `<div class="inputAssign" id="mInput"></div>` : ''}
-                    <button class="bigBtn" id="mOk">${confirmText || '🧶 開始編織'}</button>
+                    <button class="bigBtn" id="mOk">${C.BOTTOM_ORDER_DOCK ? '<span>接單<br>開做</span>' : (C.HIDE_DIFFICULTY_FIRE ? (confirmText || '🧶 開始編織').replace(/🔥+/g, '').trim() : (confirmText || '🧶 開始編織'))}</button>
+                    ${C.BOTTOM_ORDER_DOCK && dice && !C.DICE_AFTER_DIALOG ? `<button class="diceBtn" id="mDice" title="${dice.label || '隨機點餐'}" aria-label="${dice.label || '隨機點餐'}">${C.DICE_ICON_ONLY ? '🎲' : (dice.label || '🎲 隨機點餐')}</button>` : ''}
                 </div>
             </div>
         </div>`);
         // 點菜單專屬滿版手繪背景（dialogBg）；換畫面時 showOverlay/hideOverlays 會拿掉
         document.body.classList.add('order');
-        // 可即時上色的織圖預覽搬進點菜單（關閉／換畫面時 restoreChart 會搬回菜譜卡）
-        $('#mChartSlot').appendChild(document.getElementById('chartBox'));
+        // chartBox 仍負責解析織圖與驅動 3D 上色，但點菜時藏在成品照後方。
+        // 關閉／換畫面時 restoreChart 會搬回菜譜卡。
+        $('#mChartData').appendChild(document.getElementById('chartBox'));
         recipeCard.classList.add('hide');
 
-        // 織圖／配料只放圖不放名稱（縮圖本身就認得出來）；名稱掛 title，滑過去還是查得到。
+        // 左側織圖只顯示簡化幾何圖形；右側才顯示實際鉤織成品照。
+        // 配料只放圖不放名稱；名稱掛 title，滑過去仍可查到。
         // 醬料才給 name：色票／醬汁照片分不出「紅醬 vs 粉紅醬」「白醬 vs 清炒」。
-        const itemCard = ({ img, swatch, emoji, name, title, tier, on, fn }) => {
-            const thumb = img ? `<img src="${img}" alt="" loading="lazy">`
+        const itemCard = ({ img, thumbHTML, swatch, emoji, name, title, tier, on, count = 0, fn }) => {
+            const thumb = thumbHTML || (img ? `<img src="${img}" alt="" loading="lazy">`
                 : swatch ? `<i class="bigSwatch" style="background:${swatch}"></i>`
-                    : `<span class="bigEmoji">${emoji || '🧶'}</span>`;
+                    : `<span class="bigEmoji">${emoji || '🧶'}</span>`);
             const b = el(`<button class="itemCard${on ? ' on' : ''}"${title ? ` title="${title}"` : ''}>
                 ${tierTag(tier)}
+                ${count > 1 ? `<span class="pickCount" aria-label="已選 ${count} 份">×${count}</span>` : ''}
                 <span class="itemThumb">${thumb}</span>
                 ${name ? `<span class="itemName">${name}</span>` : ''}</button>`);
             b.onclick = fn;
@@ -658,19 +691,49 @@ PC.ui = (function () {
         const topEmoji = k => C.TOPPINGS[k].label.split(' ')[0];
         const topName = k => C.TOPPINGS[k].label.replace(/^\S+\s+/, '');
 
-        // 織圖依難度排序（一般→難→超難），縮圖用同檔名成品 PNG
+        // 選項只需要辨認外形，不放真實照片。相近的圓形款以內圈／花瓣數區分。
+        const patternIconSVG = key => {
+            const wrap = body => `<svg class="patternGlyph" viewBox="0 0 100 100" aria-hidden="true" focusable="false">${body}</svg>`;
+            const petals = n => Array.from({ length: n }, (_, i) =>
+                `<ellipse cx="50" cy="25" rx="9" ry="20" transform="rotate(${i * 360 / n} 50 50)"></ellipse>`).join('');
+            const icons = {
+                sakura: `<g>${petals(5)}<circle cx="50" cy="50" r="10"></circle></g>`,
+                d012: '<circle cx="50" cy="50" r="34"></circle><circle cx="50" cy="50" r="23" stroke-dasharray="3 5"></circle><circle cx="50" cy="50" r="8"></circle>',
+                d032: '<rect x="23" y="23" width="54" height="54" rx="7" transform="rotate(45 50 50)"></rect><rect x="36" y="36" width="28" height="28" rx="4" transform="rotate(45 50 50)"></rect>',
+                d004: `<g>${petals(8)}<circle cx="50" cy="50" r="18"></circle></g>`,
+                star: '<polygon points="50,8 61,31 88,25 72,49 89,70 62,68 50,92 38,68 11,70 28,49 12,25 39,31"></polygon><circle cx="50" cy="50" r="12"></circle>',
+                circle1: '<circle cx="50" cy="50" r="37"></circle><circle cx="50" cy="50" r="25"></circle><circle cx="50" cy="50" r="11"></circle>',
+                circle2: '<circle cx="50" cy="50" r="38"></circle><circle cx="50" cy="50" r="29" stroke-dasharray="2 5"></circle><circle cx="50" cy="50" r="17"></circle><circle cx="50" cy="50" r="6"></circle>',
+                flower1: `<g>${petals(8)}<circle cx="50" cy="50" r="9"></circle></g>`,
+                flower2: '<g><path d="M50 10V90M15 30L85 70M15 70L85 30"></path><path d="M50 10L44 22M50 10L56 22M50 90L44 78M50 90L56 78M15 30L29 30M15 30L22 42M85 70L71 70M85 70L78 58M15 70L29 70M15 70L22 58M85 30L71 30M85 30L78 42"></path><circle cx="50" cy="50" r="8"></circle></g>',
+                hexagon: '<polygon points="50,10 84,30 84,70 50,90 16,70 16,30"></polygon><polygon points="50,27 69,38 69,62 50,73 31,62 31,38"></polygon>'
+            };
+            return wrap(icons[key] || icons.circle1);
+        };
+        const patternName = label => label.replace(/^[◆●✦❁❄⬡]\s*/, '');
+
+        // 織圖依難度排序（一般→難→超難）；左側使用簡化圖形，成品 PNG 只在右側顯示。
         const diffRank = { normal: 0, hard: 1, expert: 2 };
+        let nextTopSlot = 0;
         const render = () => {
             const pat = $('#mPat'); pat.innerHTML = '';
             Object.entries(C.PATTERNS)
                 .sort(([, a], [, b]) => (diffRank[a.diff] ?? 9) - (diffRank[b.diff] ?? 9))
-                .forEach(([k, p]) =>
+                .forEach(([k, p]) => {
                     pat.appendChild(itemCard({
-                        img: (p.img || '').replace(/\.svg$/i, '.png'), tier: p.diff,
+                        thumbHTML: p.icon ? `<img class="patternGeneratedIcon" src="${p.icon}" alt="">` : patternIconSVG(k),
+                        name: C.HIDE_PATTERN_NAMES ? '' : patternName(p.label), tier: p.diff,
                         title: p.label,
                         on: order.pattern === k,
                         fn: () => { clickSfx(); order.pattern = k; render(); }
-                    })));
+                    }));
+                });
+            const selectedPattern = C.PATTERNS[order.pattern];
+            const patternPhoto = $('#mPatternPhoto');
+            if (patternPhoto) {
+                patternPhoto.src = (selectedPattern.img || '').replace(/\.svg$/i, '.png');
+                patternPhoto.alt = `${selectedPattern.label}實際鉤織成品`;
+            }
             const sau = $('#mSauce'); sau.innerHTML = '';
             Object.entries(C.SAUCES).forEach(([name, s]) =>
                 sau.appendChild(itemCard({
@@ -678,16 +741,40 @@ PC.ui = (function () {
                     on: order.sauce === name,
                     fn: () => { clickSfx(); order.sauce = name; render(); }
                 })));
-            // 兩排各自獨立選一格；兩格可以選同一種料
-            [0, 1].forEach(slot => {
-                const box = $('#mTop' + slot); box.innerHTML = '';
-                Object.entries(C.TOPPINGS).forEach(([k, d]) =>
+            if (C.UNIFIED_TOPPINGS) {
+                const box = $('#mTops'); box.innerHTML = '';
+                Object.entries(C.TOPPINGS).forEach(([k, d]) => {
+                    const count = order.tops.filter(top => top === k).length;
                     box.appendChild(itemCard({
                         img: d.img, emoji: topEmoji(k), title: topName(k), tier: d.diff,
-                        on: order.tops[slot] === k,
-                        fn: () => { clickSfx(); order.tops[slot] = k; render(); }
-                    })));
-            });
+                        on: count > 0,
+                        count,
+                        fn: () => {
+                            if (count === 2) return;
+                            clickSfx();
+                            if (count === 1) {
+                                const selectedSlot = order.tops.indexOf(k);
+                                order.tops[1 - selectedSlot] = k;
+                                nextTopSlot = selectedSlot;
+                            } else {
+                                order.tops[nextTopSlot] = k;
+                                nextTopSlot = (nextTopSlot + 1) % 2;
+                            }
+                            render();
+                        }
+                    }));
+                });
+            } else {
+                [0, 1].forEach(slot => {
+                    const box = $('#mTop' + slot); box.innerHTML = '';
+                    Object.entries(C.TOPPINGS).forEach(([k, d]) =>
+                        box.appendChild(itemCard({
+                            img: d.img, emoji: topEmoji(k), title: topName(k), tier: d.diff,
+                            on: order.tops[slot] === k,
+                            fn: () => { clickSfx(); order.tops[slot] = k; render(); }
+                        })));
+                });
+            }
             $('#mSum').innerHTML = orderSummaryHTML(order);
             if (onChange) onChange(order);
         };
@@ -701,12 +788,12 @@ PC.ui = (function () {
                 const mouse = inputChoice.mouseSide === i;
                 return `<button class="seatCard ${mouse ? 'mouse' : 'keys'}" data-side="${i}" title="${mouse ? '這盤用滑鼠' : '點一下改用滑鼠'}">
                     ${chefFaceHTML(seat.face, 'seatFace')}
-                    <span class="seatWho"><b>${seat.name}</b>${seat.sub ? `<small>${seat.sub}</small>` : ''}</span>
+                    ${C.HIDE_INPUT_NAMES ? '' : `<span class="seatWho"><b>${seat.name}</b>${seat.sub ? `<small>${seat.sub}</small>` : ''}</span>`}
                     <span class="seatDev">${mouse ? mi('mouse') + ' 滑鼠' : mi('keyboard') + ' 鍵盤'}</span>
                 </button>`;
             };
             box.innerHTML = `
-                <div class="iaHead">${mi('sports_esports')} 這場的操作 <small>點頭像交換</small></div>
+                ${C.HIDE_ORDER_HELP_LABELS ? '' : `<div class="iaHead">${mi('sports_esports')} 這場的操作 <small>點頭像交換</small></div>`}
                 <div class="seatRow">${inputChoice.seats.map(seatBtn).join('<span class="iaVs">⇄</span>')}</div>`;
             box.querySelectorAll('.seatCard').forEach(b => b.onclick = () => {
                 const side = +b.dataset.side;
@@ -927,8 +1014,8 @@ PC.ui = (function () {
         </div>`;
     }
 
-    // 所有模式共用（單廚 1 盤／雙廚 2 盤／對戰 2 盤）：一盤一張 plateResult。
-    // headline＝有給就取代滾動總分（對戰用來放勝負橫幅，兩隊分數相加沒有意義）
+    // 所有模式共用單廚競賽版型：上方結果標題＋右側每盤一張 plateResult。
+    // 對戰顯示勝負文字；其他模式顯示本場總分，但卡片結構與每盤得分列完全一致。
     function showVerdict({ store, roundLabel, plates, chefs, inputs, score, onNext, eyebrow, headline, nextLabel, onHome, pattern, order }) {
         const plateHTML = plates.map((r, i) => {
             const chef = chefs[i] || { emoji: '👨‍🍳', name: '主廚' };
@@ -936,7 +1023,7 @@ PC.ui = (function () {
             return `
             <div class="plateResult">
                 <div class="plateHead">${chefFaceHTML(chef, 'plateChefFace')}${chef.name}${tag}</div>
-                ${plateStatsHTML(r, plates.length > 1)}
+                ${plateStatsHTML(r, true)}
             </div>`;
         }).join('');
         // 非阻擋式結算：不蓋住 3D 成品。分數置中上方、細節靠右、下一步置中下方
@@ -950,8 +1037,7 @@ PC.ui = (function () {
         ov.innerHTML = `
             <div class="vScoreTop">
                 <div class="verdictEyebrow">${eyebrow || `${store.emoji} ${store.name}｜${roundLabel}`}</div>
-                ${headline ? `<div class="duelResultLine">${headline}</div>`
-                : `<div class="turnScore">0<small>分</small></div>`}
+                <div class="duelResultLine">${headline || `本場 ${score} 分`}</div>
             </div>
             <div class="card vDetail"><div id="vChartSlot"></div>${order ? `<div class="dishName vDishName">${PC.dishName(order)}</div><div class="vRecipeChips">${recipeChipsHTML(order)}</div>` : ''}${plateHTML}${crochetGuideHTML(pattern)}</div>
             <div class="vFoot">
@@ -963,17 +1049,6 @@ PC.ui = (function () {
         const cb = document.getElementById('chartBox');
         if (cb) document.getElementById('vChartSlot').appendChild(cb);
         updateTally();
-        // 總分從 0 滾動跳分到實際分數；畫面被換掉（元素移出 DOM）就停
-        const big = $('.turnScore', ov);
-        if (big) {
-            const t0 = performance.now(), dur = 900;
-            (function tick() {
-                if (!big.isConnected) return;
-                const p = Math.min(1, (performance.now() - t0) / dur);
-                big.firstChild.textContent = Math.round(score * (1 - Math.pow(1 - p, 3)));
-                if (p < 1) requestAnimationFrame(tick);
-            })();
-        }
         $('#vPeek').onclick = () => document.body.classList.add('peek');
         if (onHome) $('#vHome').onclick = () => { clickSfx(); document.body.classList.remove('peek'); onHome(); };
         $('#vNext').onclick = () => { clickSfx(); document.body.classList.remove('peek'); onNext(); };

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🧶 毛線麵餐廳 — 節奏編織料理</title>
+    <title>🧶 毛線麵餐廳 — 新美術預覽</title>
     <link rel="stylesheet" href="css/game.css?v=20260815-menu3">
 </head>
 
@@ -13,7 +13,7 @@
 
     <div class="card" id="titleCard">
         <b>🧶 毛線麵餐廳</b>
-        <span id="titleInfo">載入中…</span>
+        <span id="titleInfo">載入新美術中…</span>
     </div>
 
     <div class="card hide" id="recipeCard">
@@ -24,15 +24,14 @@
     </div>
 
     <div id="hudWrap" class="hide"></div>
-
     <div class="card hide" id="tally"></div>
-
     <button id="peekRestore"><span class="mi">visibility</span> 顯示分數</button>
 
     <div class="card" id="toolCard">
         <button id="spinBtn" class="on" title="自動旋轉"><span class="mi">autorenew</span></button>
         <button id="shotBtn" title="下載美照"><span class="mi">photo_camera</span></button>
         <button id="musicBtn" class="on" title="音樂開關"><span class="mi">music_note</span></button>
+        <button id="orderUiBtn" title="隱藏對話與接單操作" aria-label="隱藏對話與接單操作" aria-pressed="false"><span class="mi">visibility</span></button>
         <button id="homeBtn" title="回主選單"><span class="mi">home</span></button>
     </div>
 
@@ -45,17 +44,16 @@
     <script src="js/vendor/three.min.js"></script>
     <script src="js/vendor/qrcode.js"></script>
     <script src="js/config.js?v=20260815-score1"></script>
+    <script src="js/config-v2.js?v=20260814-ui10"></script>
     <script src="js/audio.js"></script>
     <script src="js/charts.js"></script>
     <script src="js/scene.js"></script>
     <script src="js/cooking.js"></script>
-    <script src="js/flow.js"></script>
+    <script src="js/flow.js?v=20260814-ui10"></script>
     <script src="js/ui.js?v=20260815-score1"></script>
     <script>
         const flow = new PC.GameFlow();
         flow.boot();
-
-        // ---- 驗證掛鉤（自動測試用；不影響遊戲）----
         window.__game = {
             flow,
             mgr: flow.mgr,
@@ -72,9 +70,7 @@
                     grades: s.grades, result: s.result && { total: s.result.total, doneness: s.result.doneness.key }
                 }))
             }),
-            // 直接以偏移（秒，相對窗中心）命中目前點：0=完美、0.4=不完美、99=超糟
             hitAt: (side, offset) => flow.sessions[side] && flow.sessions[side].debugHitAt(offset),
-            // 把所有點以完美時機打完
             perfectAll: side => { const s = flow.sessions[side]; while (s && s.idx < s.N) s.debugHitAt(0); },
             setClock: (side, t) => { const s = flow.sessions[side]; if (s) s.clock = t; },
             serve: side => flow.sessions[side] && flow.sessions[side].serve(),
