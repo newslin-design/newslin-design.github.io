@@ -329,12 +329,22 @@
 
     var picker = bar.querySelector("#sheet-picker");
     if (picker) {
+      /* 練習單多了之後平鋪很難找，依等級分群（manifest 的順序＝由易到難） */
+      var group = null;
+      var groupKey = null;
       (window.SHEET_MANIFEST || []).forEach(function (s) {
+        var key = gradeLabel(s.grade);
+        if (key !== groupKey) {
+          group = document.createElement("optgroup");
+          group.label = key;
+          picker.appendChild(group);
+          groupKey = key;
+        }
         var o = document.createElement("option");
         o.value = s.id;
-        o.textContent = gradeLabel(s.grade) + " ／ " + s.label + " ／ " + s.kanji.join("・");
+        o.textContent = s.label + " ／ " + s.kanji.join("・");
         if (ids.indexOf(s.id) >= 0) o.selected = true;
-        picker.appendChild(o);
+        group.appendChild(o);
       });
       picker.addEventListener("change", function () {
         location.search = "?id=" + picker.value;

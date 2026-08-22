@@ -55,11 +55,10 @@
 <div class="home">
   <div class="home__banner">
     <h1>かん字れんしゅうシート</h1>
-    <span>小学1年生 ・ JLPT N3</span>
+    <span>小学1年生 ・ JLPT N5〜N3</span>
   </div>
 
-  <h2>れんしゅうシート</h2>
-  <ul class="cards" id="cards"></ul>
+  <div id="levels"></div>
 
   <h2>あたらしいシートをつくる</h2>
   <a class="cta" href="builder.html">
@@ -75,8 +74,23 @@
 
 <script src="data/manifest.js"></script>
 <script>
-  var list = document.getElementById("cards");
+  var host = document.getElementById("levels");
+  var group = null, key = null;
+
   (window.SHEET_MANIFEST || []).forEach(function (s) {
+    var label = typeof s.grade === "number" ? "小学 " + s.grade + "年生" : "JLPT " + s.grade;
+
+    /* manifest 的排列順序就是由易到難，換等級就開一區 */
+    if (label !== key) {
+      var h = document.createElement("h2");
+      h.textContent = label;
+      host.appendChild(h);
+      group = document.createElement("ul");
+      group.className = "cards";
+      host.appendChild(group);
+      key = label;
+    }
+
     var li = document.createElement("li");
     var a = document.createElement("a");
     a.className = "card";
@@ -89,11 +103,11 @@
 
     var l = document.createElement("div");
     l.className = "card__label";
-    l.textContent = (typeof s.grade === "number" ? s.grade + "年生" : s.grade) + " ／ " + s.label;
+    l.textContent = s.label;
     a.appendChild(l);
 
     li.appendChild(a);
-    list.appendChild(li);
+    group.appendChild(li);
   });
 </script>
 </body>

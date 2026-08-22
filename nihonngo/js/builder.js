@@ -127,14 +127,39 @@
     $("bd-scale").textContent = "プレビュー " + Math.round(k * 100) + "%";
   }
 
-  /** A4 是 overflow:hidden，超出的內容會被無聲裁掉，所以一定要主動檢查 */
+  /**
+   * A4 是 overflow:hidden，超出的內容會被無聲裁掉，所以一定要主動檢查。
+   * 順便看作答線塞不塞得下答案——句子太長會把括號裡的線擠到剩幾 px。
+   */
   function checkFit(sheetNode) {
+    var problems = [];
+
     var over = sheetNode.scrollHeight - sheetNode.clientHeight;
-    var warn = $("f-fitwarn");
     if (over > 0) {
+      problems.push("A4 に " + over + "px はみ出しています（漢字をへらす／大問をオフ／"
+                  + "なぞり書きの「1行の高さ」を下げる）");
+    }
+
+    /* 答案平常是隱藏的，量不到寬度，所以暫時切到解答模式再量 */
+    var mode = document.body.dataset.mode;
+    document.body.dataset.mode = "answer";
+    var tight = [];
+    Array.prototype.forEach.call(sheetNode.querySelectorAll(".fill-in"), function (n) {
+      if (n.textContent && n.scrollWidth > n.parentNode.clientWidth + 1) {
+        tight.push(n.textContent);
+      }
+    });
+    document.body.dataset.mode = mode;
+
+    if (tight.length) {
+      problems.push("こたえがはみ出す行があります（" + tight.join("、") + "）。"
+                  + "そのぶんを短くしてください");
+    }
+
+    var warn = $("f-fitwarn");
+    if (problems.length) {
       warn.className = "bd-hint bd-warn";
-      warn.textContent = "⚠ A4 に " + over + "px はみ出しています。漢字をへらすか、"
-                       + "大問をオフにするか、なぞり書きの「1行の高さ」を下げてください。";
+      warn.textContent = "⚠ " + problems.join(" ／ ");
     } else {
       warn.className = "bd-hint bd-ok";
       warn.textContent = "✓ A4 1ページにおさまっています。";
