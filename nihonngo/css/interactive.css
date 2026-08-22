@@ -55,9 +55,9 @@ body[data-mode="practice"] .cell__canvas {
 body[data-mode="practice"] .cell:hover > .cell__clear { display: block; }
 .cell__clear:hover { background: var(--info-label-bg); }
 
-/* 沒開描字模式時，那兩顆按鈕沒有意義，收起來 */
+/* 沒開練習模式時，這些按鈕沒有意義，收起來 */
 .trace-only { display: none; }
-body[data-mode="practice"] .trace-only { display: inline-flex; }
+body[data-mode="practice"] .trace-only { display: grid; }
 
 .btn-plain {
   font: inherit;
@@ -204,7 +204,7 @@ body[data-mode="practice"] .trace-only { display: inline-flex; }
   border: 0;
   background: transparent;
   font: inherit;
-  font-size: 15px;
+  font-size: 13.5px;
   text-align: center;
   color: var(--accent-deep);
 }

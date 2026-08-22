@@ -26,11 +26,21 @@
     return el("div", "cell__glyph" + (cls ? " " + cls : ""), ch);
   }
 
+  /** grade 是數字就是日本小學年級，是字串（"N3"）就照原樣顯示 */
+  function gradeLabel(grade) {
+    return typeof grade === "number" ? grade + "年生" : String(grade || "");
+  }
+
   function kanjiInfo(ch) {
     var info = window.KANJI_DB && window.KANJI_DB[ch];
     if (!info) {
       console.warn("[render] kanji.js 裡找不到「" + ch + "」，請先補進字庫");
-      return { strokes: "", yomi: "", examples: [] };
+      info = { yomi: "", examples: [] };
+    }
+    /* 畫數沒填就拿筆順資料的筆數，兩邊不會對不起來 */
+    if (info.strokes == null) {
+      var sd = window.STROKES && window.STROKES[ch];
+      info = Object.assign({}, info, { strokes: sd ? sd.paths.length : "" });
     }
     return info;
   }
@@ -254,6 +264,9 @@
       var box = sectionShell(i + 1, section);
       box.setAttribute("data-type", section.type);
       if (section.points) box.setAttribute("data-points", section.points);
+      /* 一頁放 4 個字時要縮，所以列高與格子大小可以由資料覆寫 */
+      if (section.rowHeight) box.style.setProperty("--row", section.rowHeight + "px");
+      if (section.cellSize) box.style.setProperty("--cell", section.cellSize + "px");
       box.appendChild(fn(section, sheet));
       page.appendChild(box);
     });
@@ -291,15 +304,35 @@
   /* ---------- 工具列 ---------- */
 
   function buildToolbar(ids) {
-    var bar = document.querySelector(".toolbar");
+    var bar = document.querySelector(".sidebar");
     if (!bar) return;
+
+    /* 手機版：漢堡按鈕拉出／收起側欄 */
+    var toggle = document.getElementById("nav-toggle");
+    var scrim = document.getElementById("nav-scrim");
+    function setNav(open) {
+      document.body.classList.toggle("nav-open", open);
+      if (toggle) toggle.setAttribute("aria-expanded", open ? "true" : "false");
+    }
+    if (toggle) toggle.addEventListener("click", function () {
+      setNav(!document.body.classList.contains("nav-open"));
+    });
+    if (scrim) scrim.addEventListener("click", function () { setNav(false); });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") setNav(false);
+    });
+    /* 手機上選完一項就把側欄收起來，免得擋住紙 */
+    bar.addEventListener("click", function (e) {
+      if (window.matchMedia("(max-width: 980px)").matches &&
+          e.target.tagName === "BUTTON") setNav(false);
+    });
 
     var picker = bar.querySelector("#sheet-picker");
     if (picker) {
       (window.SHEET_MANIFEST || []).forEach(function (s) {
         var o = document.createElement("option");
         o.value = s.id;
-        o.textContent = s.grade + "年生 ／ " + s.label + " ／ " + s.kanji.join("・");
+        o.textContent = gradeLabel(s.grade) + " ／ " + s.label + " ／ " + s.kanji.join("・");
         if (ids.indexOf(s.id) >= 0) o.selected = true;
         picker.appendChild(o);
       });

@@ -13,6 +13,16 @@
 
   function ratio() { return window.devicePixelRatio || 1; }
 
+  /**
+   * 筆尖粗細。畫數多的字（経 11 畫、験 18 畫）用原本的粗細會整片黏在一起，
+   * 所以線寬要隨畫數縮。查不到筆順資料時當作 5 畫處理。
+   */
+  function penWidth(ch, cellSize) {
+    var d = window.STROKES && window.STROKES[ch];
+    var strokes = d ? d.paths.length : 5;
+    return Math.max(1.5, cellSize / (7 + strokes * 0.7));
+  }
+
   function setup(cell) {
     if (cell.__traceCanvas) return cell.__traceCanvas;
 
@@ -39,6 +49,7 @@
     cv.__box = { w: w, h: h };
     cv.__cell = cell;
     cv.__write = cell.getAttribute("data-write") || "";
+    cv.__pen = penWidth(cv.__write, w);
 
     cell.appendChild(cv);
     cell.appendChild(clearButton(cv));
@@ -98,7 +109,7 @@
     function point(e) {
       var r = cv.getBoundingClientRect();
       /* 有壓感的筆才用壓力，滑鼠固定粗細 */
-      var base = cv.__box.w / 9;
+      var base = cv.__pen;
       var p = (e.pointerType === "pen" && e.pressure > 0) ? e.pressure : 0.5;
       return {
         x: e.clientX - r.left,

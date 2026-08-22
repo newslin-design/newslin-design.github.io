@@ -31,6 +31,15 @@
     return (window.STROKES && window.STROKES[ch]) || null;
   }
 
+  /**
+   * 筆畫線寬。畫數越多線要越細，不然像「験」（18 畫）會糊成一團。
+   * 回傳的是 109 單位 viewBox 裡的 stroke-width。
+   */
+  function inkWidth(strokes, scale) {
+    var w = 5.6 - strokes * 0.16;
+    return Math.max(2.4, Math.min(5.2, w)) * (scale || 1);
+  }
+
   /* 田字格底線（虛線十字），畫在 SVG 裡才能跟著縮放 */
   function guides(size) {
     var g = svgEl("g", {
@@ -57,7 +66,7 @@
       fill: "none",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      "stroke-width": opts.width || 4.5
+      "stroke-width": opts.width || inkWidth(d.paths.length, opts.scale)
     };
 
     if (opts.ghost) {
@@ -145,10 +154,20 @@
 
     /* 主畫面：大字動畫 */
     var stageBox = el("div", "kv-stage");
-    var main = buildSvg(d, { ghost: true, color: "#2c4f95", width: 4.5 });
+    var main = buildSvg(d, { ghost: true, color: "#2c4f95" });
     stageBox.appendChild(main.svg);
 
-    var numLayer = svgEl("g", { class: "kv-nums", "font-size": "9", fill: "var(--accent)" });
+    /* 畫數多的字（験 18 畫）號碼會擠成一團，縮小並加白色外框才看得清 */
+    var numSize = Math.max(6, 9.4 - d.paths.length * 0.17);
+    var numLayer = svgEl("g", {
+      class: "kv-nums",
+      "font-size": numSize,
+      "font-weight": "700",
+      fill: "var(--accent)",
+      stroke: "#fff",
+      "stroke-width": numSize * 0.42,
+      "paint-order": "stroke fill"
+    });
     (d.nums || []).forEach(function (n, i) {
       var t = svgEl("text", { x: n[0], y: n[1] });
       t.textContent = String(i + 1);
@@ -194,7 +213,8 @@
     var strip = el("div", "kv-strip");
     d.paths.forEach(function (_, i) {
       var item = el("div", "kv-step");
-      var mini = buildSvg(d, { upTo: i, highlight: i, color: "#8a94a3", width: 6 });
+      /* 縮圖只有 48px，同樣的 stroke-width 看起來會太細，補一點回來 */
+      var mini = buildSvg(d, { upTo: i, highlight: i, color: "#8a94a3", scale: 1.3 });
       item.appendChild(mini.svg);
       item.appendChild(el("span", "kv-step__no", String(i + 1)));
       strip.appendChild(item);

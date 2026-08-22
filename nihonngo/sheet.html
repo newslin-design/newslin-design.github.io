@@ -13,47 +13,56 @@
 </head>
 <body data-mode="print">
 
-<div class="toolbar no-print">
-  <span class="toolbar__brand"><a href="index.html">かん字れんしゅうシート</a></span>
+<button type="button" id="nav-toggle" class="sidebar-toggle no-print"
+        aria-label="メニュー" aria-expanded="false" aria-controls="sidebar">☰</button>
+<div id="nav-scrim" class="sidebar-scrim no-print"></div>
 
-  <label>
-    れんしゅう
-    <select id="sheet-picker"></select>
-  </label>
+<aside id="sidebar" class="sidebar no-print">
+  <div class="sidebar__brand"><a href="index.html">かん字れんしゅうシート</a></div>
 
-  <label>
-    モード
-    <select id="mode-picker">
-      <option value="print">いんさつ（白紙）</option>
-      <option value="practice">れんしゅう（自分で書く）</option>
-      <option value="answer">こたえ</option>
-    </select>
-  </label>
+  <div class="sidebar__group">
+    <label class="field">
+      <span>れんしゅう</span>
+      <select id="sheet-picker"></select>
+    </label>
 
-  <label>
-    描紅
-    <select id="guide-level">
-      <option value="1">濃い</option>
-      <option value="0.45">うすい</option>
-      <option value="0">なし</option>
-    </select>
-  </label>
+    <label class="field">
+      <span>モード</span>
+      <select id="mode-picker">
+        <option value="print">いんさつ（白紙）</option>
+        <option value="practice">れんしゅう（自分で書く）</option>
+        <option value="answer">こたえ</option>
+      </select>
+    </label>
 
-  <button type="button" id="btn-mark" class="btn-plain trace-only">まるつけ</button>
-  <button type="button" id="btn-undo" class="btn-plain trace-only">ひとつ もどす</button>
-  <button type="button" id="btn-retry" class="btn-plain trace-only">やりなおす</button>
+    <label class="field">
+      <span>描紅</span>
+      <select id="guide-level">
+        <option value="1">濃い</option>
+        <option value="0.45">うすい</option>
+        <option value="0">なし</option>
+      </select>
+    </label>
+  </div>
 
-  <span class="toolbar__spacer"></span>
-  <button type="button" id="btn-print" class="btn-print">印刷 / PDF に保存</button>
+  <div class="sidebar__group trace-only">
+    <button type="button" id="btn-mark" class="btn-plain">まるつけ</button>
+    <button type="button" id="btn-undo" class="btn-plain">ひとつ もどす</button>
+    <button type="button" id="btn-retry" class="btn-plain">やりなおす</button>
+  </div>
 
-  <p class="toolbar__hint">
-    紅色的範字（和大題 4 左邊的字）點下去會播<b>筆順動畫</b>。
-    模式選 <b>れんしゅう</b> 之後：大題 1・4 可以直接在田字格上寫字，大題 2 打假名，大題 3 點格子選字，
-    按 <b>まるつけ</b> 批改並算分，80 分以上會蓋「よくできました」。<br>
-    列印視窗打開後：紙張選 <b>A4</b>、邊界選 <b>無 (None)</b>、
-    勾選 <b>背景圖形 (Background graphics)</b>、取消 <b>頁首及頁尾</b>，再選「另存為 PDF」即可。
-  </p>
-</div>
+  <div class="sidebar__group">
+    <button type="button" id="btn-print" class="btn-print">印刷 / PDF に保存</button>
+  </div>
+
+  <details class="sidebar__help">
+    <summary>つかいかた</summary>
+    <p>紅色的範字（和自由練習左邊的字）點下去會播<b>筆順動畫</b>。</p>
+    <p>模式選 <b>れんしゅう</b> 之後：田字格可以直接寫字，讀音題打假名，
+       填字題點格子選字，按 <b>まるつけ</b> 批改並算分。</p>
+    <p>列印時紙張選 <b>A4</b>、邊界 <b>無</b>、勾選 <b>背景圖形</b>、取消 <b>頁首及頁尾</b>。</p>
+  </details>
+</aside>
 
 <main class="stage"></main>
 
