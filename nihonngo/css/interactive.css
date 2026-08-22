@@ -1,0 +1,343 @@
+/* ============================================================
+   interactive.css ─ 只跟「螢幕上的互動」有關的樣式
+   （筆順動畫視窗、田字格手寫 canvas）。列印時全部消失。
+   ============================================================ */
+
+/* ------------------------------------------------------------
+   可以點的範字
+   ------------------------------------------------------------ */
+.has-stroke { cursor: pointer; }
+.has-stroke:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.cell.has-stroke::after,
+.cell.has-stroke::before { pointer-events: none; }
+
+/* 滑過範字時右下角冒出一個小三角，提示「這裡可以點」 */
+.cell.has-stroke { position: relative; }
+.cell.has-stroke .cell__play,
+.free-row__label.has-stroke .cell__play { display: none; }
+.cell.has-stroke:hover { background: #e3edfa; }
+.free-row__label.has-stroke:hover { color: var(--accent-deep); text-decoration: underline dotted; }
+
+/* ------------------------------------------------------------
+   田字格上的手寫層
+   ------------------------------------------------------------ */
+.cell__canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  border-radius: 3px;
+}
+body[data-mode="practice"] .cell__canvas {
+  pointer-events: auto;
+  touch-action: none;
+  cursor: crosshair;
+}
+
+.cell__clear {
+  position: absolute;
+  top: -7px;
+  right: -7px;
+  z-index: 4;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  border: 1px solid var(--info-border);
+  border-radius: 50%;
+  background: #fff;
+  color: var(--model-ink);
+  font-size: 11px;
+  line-height: 1;
+  cursor: pointer;
+  display: none;
+}
+body[data-mode="practice"] .cell:hover > .cell__clear { display: block; }
+.cell__clear:hover { background: var(--info-label-bg); }
+
+/* 沒開描字模式時，那兩顆按鈕沒有意義，收起來 */
+.trace-only { display: none; }
+body[data-mode="practice"] .trace-only { display: inline-flex; }
+
+.btn-plain {
+  font: inherit;
+  padding: 5px 12px;
+  border: 1px solid #c3ccd6;
+  border-radius: 6px;
+  background: #fff;
+  color: var(--ink);
+  cursor: pointer;
+}
+.btn-plain:hover { background: #f2f6fb; }
+
+/* ------------------------------------------------------------
+   筆順動畫視窗
+   ------------------------------------------------------------ */
+.kv-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(24, 36, 54, .55);
+  animation: kv-fade .16s ease;
+}
+@keyframes kv-fade { from { opacity: 0; } }
+
+.kv-panel {
+  width: min(420px, 100%);
+  max-height: 100%;
+  overflow: auto;
+  padding: 18px 20px 16px;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, .35);
+  font-family: var(--font-ui);
+}
+
+.kv-head { display: flex; align-items: center; gap: 10px; }
+.kv-char {
+  font-family: var(--font-write);
+  font-size: 26px;
+  color: var(--accent-deep);
+}
+.kv-count {
+  padding: 3px 9px;
+  border: 1px solid var(--badge-border);
+  border-radius: 5px;
+  background: var(--badge-bg);
+  color: var(--badge-ink);
+  font-size: 12px;
+}
+.kv-close {
+  margin-left: auto;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: #eef2f7;
+  color: var(--ink-soft);
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+}
+.kv-close:hover { background: #e0e7ef; }
+
+.kv-stage {
+  margin: 14px auto 0;
+  width: 232px;
+  height: 232px;
+  border: 1px solid var(--box-border);
+  border-radius: 6px;
+  background: #fff;
+}
+.kv-stage svg { display: block; width: 100%; height: 100%; }
+
+.kv-ctrl {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 14px;
+  font-size: 13px;
+}
+.kv-toggle { display: inline-flex; align-items: center; gap: 5px; cursor: pointer; }
+.kv-btn {
+  font: inherit;
+  font-weight: 700;
+  padding: 7px 16px;
+  border: 0;
+  border-radius: 8px;
+  color: #fff;
+  background: linear-gradient(135deg, var(--accent-light), var(--accent));
+  cursor: pointer;
+}
+.kv-btn:hover { filter: brightness(1.07); }
+
+/* 筆順表：一畫一格 */
+.kv-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid #e6ecf3;
+}
+.kv-step {
+  position: relative;
+  width: 48px;
+  height: 48px;
+  border: 1px solid var(--box-border);
+  border-radius: 4px;
+  background: #fff;
+}
+.kv-step svg { display: block; width: 100%; height: 100%; }
+.kv-step__no {
+  position: absolute;
+  top: 1px;
+  left: 3px;
+  font-size: 9px;
+  color: var(--ink-mute);
+}
+
+.kv-credit {
+  margin-top: 12px;
+  font-size: 10px;
+  color: var(--ink-mute);
+  text-align: right;
+}
+
+/* ------------------------------------------------------------
+   練習模式：作答欄、選字、○×、貼紙
+   ------------------------------------------------------------ */
+
+/* 大題 2 的輸入格：疊在原本那條點線上，版面完全不動 */
+.q__input {
+  display: none;
+  position: absolute;
+  left: 0; right: 0; bottom: 1px;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font: inherit;
+  font-size: 15px;
+  text-align: center;
+  color: var(--accent-deep);
+}
+.q__input:focus { outline: 0; background: #eaf2fd; }
+body[data-mode="practice"] .q__input { display: block; }
+
+/* 大題 3：格子可以點 */
+body[data-mode="practice"] .f__box .cell {
+  cursor: pointer;
+  transition: background .12s ease;
+}
+body[data-mode="practice"] .f__box .cell:hover { background: #eaf2fd; }
+.cell__glyph.pick {
+  font-size: 28px;
+  color: var(--accent-deep);
+  z-index: 2;
+}
+
+.picker {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 20;
+  margin-top: 5px;
+  padding: 6px;
+  gap: 4px;
+  border: 1px solid var(--panel-border);
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 8px 22px rgba(30, 50, 80, .22);
+  white-space: nowrap;
+}
+.picker.is-open { display: flex; }
+.picker__opt {
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border: 1px solid var(--box-border);
+  border-radius: 5px;
+  background: #fff;
+  font-family: var(--font-write);
+  font-size: 20px;
+  color: var(--ink);
+  cursor: pointer;
+}
+.picker__opt:hover { background: var(--model-bg); border-color: var(--accent); }
+.picker__opt--clear {
+  width: auto;
+  padding: 0 9px;
+  font-family: var(--font-ui);
+  font-size: 11px;
+  color: var(--ink-soft);
+}
+
+/* ○ × */
+.mark {
+  flex: 0 0 auto;
+  margin-left: 4px;
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1;
+}
+.is-right .mark { color: #2f9e5e; }
+.is-wrong .mark { color: var(--model-ink); }
+.f .mark { align-self: center; padding-bottom: 4px; }
+
+.score-value {
+  display: block;
+  text-align: center;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--accent-deep);
+}
+
+/* 「よくできました」貼紙 */
+.stamp {
+  position: absolute;
+  top: 116px;
+  right: 40px;
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 112px;
+  height: 112px;
+  border: 3px double #d94f3d;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .5);
+  color: #d94f3d;
+  transform: rotate(-13deg);
+  animation: stamp-in .45s cubic-bezier(.2, 1.4, .4, 1);
+}
+.stamp__main { font-size: 14px; font-weight: 700; letter-spacing: .02em; }
+.stamp__sub { margin-top: 4px; font-size: 12px; }
+@keyframes stamp-in {
+  from { opacity: 0; transform: rotate(-13deg) scale(2.4); }
+  to   { opacity: 1; transform: rotate(-13deg) scale(1); }
+}
+
+/* 筆順提示 */
+.order-hint {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 25;
+  margin-top: 6px;
+  padding: 4px 9px;
+  border-radius: 6px;
+  background: #d94f3d;
+  color: #fff;
+  font-size: 11px;
+  line-height: 1.3;
+  white-space: nowrap;
+  pointer-events: none;
+  animation: hint-in .18s ease;
+}
+.order-hint::before {
+  content: "";
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  margin-left: -4px;
+  border: 4px solid transparent;
+  border-bottom-color: #d94f3d;
+}
+@keyframes hint-in { from { opacity: 0; transform: translateX(-50%) translateY(-4px); } }
+
+@media print {
+  .kv-modal, .cell__clear, .picker, .stamp, .order-hint { display: none !important; }
+  .cell__canvas { pointer-events: none; }
+  /* 印出來要看得到學生打的答案 */
+  .q__input { display: block !important; }
+}
