@@ -343,7 +343,10 @@
 
     var mode = bar.querySelector("#mode-picker");
     if (mode) {
-      mode.addEventListener("change", function () { setMode(mode.value); });
+      mode.addEventListener("click", function (e) {
+        var btn = e.target.closest("[data-mode]");
+        if (btn) setMode(btn.getAttribute("data-mode"));
+      });
     }
 
     var guide = bar.querySelector("#guide-level");
@@ -383,8 +386,22 @@
    *   practice 學生自己作答：可以寫字、填答案、採點
    *   answer   解答版，答案直接印在上面
    */
+  var MODE_NOTE = {
+    print:    "印刷用の白紙。まちがえても消せる紙で練習しましょう。",
+    practice: "画面で書いて、まるつけまでできます。",
+    answer:   "こたえ入りです。先生の採点用に。"
+  };
+
   function setMode(next) {
     document.body.dataset.mode = next;
+
+    var tabs = document.querySelectorAll("#mode-picker [data-mode]");
+    Array.prototype.forEach.call(tabs, function (t) {
+      t.setAttribute("aria-selected", t.getAttribute("data-mode") === next ? "true" : "false");
+    });
+    var note = document.getElementById("mode-note");
+    if (note) note.textContent = MODE_NOTE[next] || "";
+
     if (next === "practice") {
       if (window.KanjiTrace) window.KanjiTrace.enable();
       if (window.KanjiQuiz) window.KanjiQuiz.enable();
@@ -393,10 +410,22 @@
     }
   }
 
+  /**
+   * 手機版把整張 A4 縮到視窗寬。--fit 給 CSS 的 transform: scale() 用。
+   * 桌機（>980px）一律 1，維持等比例的實際尺寸。
+   */
+  var SHEET_W = 793.7;   // 210mm @96dpi
+  function fitToWindow() {
+    var wide = window.matchMedia("(min-width: 981px)").matches;
+    var fit = wide ? 1 : Math.min(1, (document.documentElement.clientWidth - 16) / SHEET_W);
+    document.documentElement.style.setProperty("--fit", fit.toFixed(4));
+  }
+
   /* ---------- 啟動 ---------- */
 
   document.addEventListener("DOMContentLoaded", function () {
     var stage = document.querySelector(".stage");
+    if (!stage) return;          // builder.html 沒有 .stage，只借用 renderSheet
     var ids = requestedIds();
 
     if (!ids.length) {
@@ -405,6 +434,10 @@
     }
 
     buildToolbar(ids);
+    setMode(document.body.dataset.mode || "print");
+    fitToWindow();
+    window.addEventListener("resize", fitToWindow);
+    window.addEventListener("orientationchange", fitToWindow);
 
     Promise.all(ids.map(ensureSheet)).then(function (sheets) {
       sheets.forEach(function (sheet, i) {
@@ -423,4 +456,6 @@
       stage.appendChild(el("p", "no-print", err.message));
     });
   });
+  /* 出題器（builder.html）借用同一套排版，確保預覽 = 實際輸出 */
+  window.KanjiRender = { renderSheet: renderSheet, gradeLabel: gradeLabel };
 })();

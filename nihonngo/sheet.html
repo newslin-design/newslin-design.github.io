@@ -26,14 +26,15 @@
       <select id="sheet-picker"></select>
     </label>
 
-    <label class="field">
+    <div class="field">
       <span>モード</span>
-      <select id="mode-picker">
-        <option value="print">いんさつ（白紙）</option>
-        <option value="practice">れんしゅう（自分で書く）</option>
-        <option value="answer">こたえ</option>
-      </select>
-    </label>
+      <div class="segmented" id="mode-picker" role="tablist" aria-label="モード">
+        <button type="button" role="tab" data-mode="print"    aria-selected="true">白紙</button>
+        <button type="button" role="tab" data-mode="practice" aria-selected="false">練習</button>
+        <button type="button" role="tab" data-mode="answer"   aria-selected="false">解答</button>
+      </div>
+      <p class="field__note" id="mode-note"></p>
+    </div>
 
     <label class="field">
       <span>描紅</span>

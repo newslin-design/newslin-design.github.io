@@ -39,6 +39,15 @@
           padding: 16px 20px; font-size: 13px; line-height: 1.9; color: var(--ink-soft); }
   .note code { background: var(--info-label-bg); border-radius: 4px; padding: 1px 5px;
                font-size: 12px; color: var(--badge-ink); }
+  .cta {
+    display: block; padding: 16px 20px; margin-bottom: 14px; border-radius: 10px;
+    background: linear-gradient(135deg, var(--accent-light), var(--accent));
+    color: #fff; text-decoration: none;
+    transition: transform .12s ease, box-shadow .12s ease;
+  }
+  .cta:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(63,111,196,.35); }
+  .cta__title { display: block; font-size: 16px; font-weight: 700; }
+  .cta__sub { display: block; margin-top: 4px; font-size: 12px; opacity: .92; }
 </style>
 </head>
 <body>
@@ -53,10 +62,13 @@
   <ul class="cards" id="cards"></ul>
 
   <h2>あたらしいシートをつくる</h2>
+  <a class="cta" href="builder.html">
+    <span class="cta__title">出題器をひらく</span>
+    <span class="cta__sub">漢字をえらんで、といを入れるだけ。プログラムは書きません。</span>
+  </a>
   <div class="note">
-    1. <code>data/kanji.js</code> に かん字を たす（よみかた・かくすう・つかいかた）。<br>
-    2. <code>data/sheets/</code> に <code>n3-03.js</code> のような ファイルを つくる。<br>
-    3. <code>data/manifest.js</code> に 1ぎょう たす。<br>
+    できたファイルを <code>data/sheets/</code> に置いて、
+    <code>data/manifest.js</code> に 1ぎょう たせば おわりです。<br>
     HTML と CSS は さわらなくて いいです。
   </div>
 </div>

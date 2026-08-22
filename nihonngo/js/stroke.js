@@ -242,7 +242,14 @@
       node.classList.add("has-stroke");
       node.setAttribute("role", "button");
       node.setAttribute("tabindex", "0");
-      node.setAttribute("title", ch + " の ひつじゅん");
+      node.setAttribute("title", ch + " の ひつじゅん を みる");
+
+      /* 光靠 cursor:pointer 看不出來可以點，補一個播放小圓點 */
+      var badge = document.createElement("span");
+      badge.className = "play-badge no-print";
+      badge.setAttribute("aria-hidden", "true");
+      badge.textContent = "▶";
+      node.appendChild(badge);
       node.addEventListener("click", function () { open(ch); });
       node.addEventListener("keydown", function (e) {
         if (e.key === "Enter" || e.key === " ") { e.preventDefault(); open(ch); }

@@ -17,12 +17,12 @@
 - 想一次印好幾張：`sheet.html?id=g1-06,g1-07`（逗號分隔，每張自動分頁）。
 
 控制項在**左側欄**（螢幕寬度 980px 以下會收起來，用左上角的 ☰ 拉出，
-點遮罩、按 Esc 或選完一個按鈕都會自動收回）：
+點遮罩、按 Esc 或選完一個按鈕都會自動收回）。手機上整張 A4 會自動縮到視窗寬。
 
 | 開關 | 作用 |
 |---|---|
 | れんしゅう | 換一張練習單 |
-| モード | 三選一，見下表 |
+| モード | 三格切換：白紙／練習／解答，見下表 |
 | 描紅 | 淡灰範字的濃度：濃い／うすい／なし |
 
 三種模式：
@@ -80,6 +80,22 @@
 - 目的地選「另存為 PDF」
 
 ## 怎麼加新的練習單
+
+### 最簡單：用出題器
+
+開 `builder.html`（目錄頁上有入口）：勾漢字、填題目，右邊即時預覽，
+按「ファイルをダウンロード」就會產生資料檔。**完全不用寫程式。**
+
+它還會幫你做兩件事：
+
+- **A4 溢出檢查**：內容超過一頁會直接顯示超出幾 px 並提示怎麼調。
+  這很重要——`.sheet` 是 `overflow: hidden`，超出的部分會被**無聲裁掉**。
+- **新字自動抓筆順**：字庫沒有的字，打進去就會連到 KanjiVG 補上畫數和筆順資料，
+  一併產生新的 `kanji.js` 和 `strokes.js`（這步需要網路）。
+
+下載的檔案放進 `data/sheets/`，再把畫面上那一行貼進 `data/manifest.js` 就完成了。
+
+### 或者直接改資料檔
 
 HTML 和 CSS 都不用動，只改 `data/` 底下三個地方。
 
@@ -176,15 +192,18 @@ node tools/fetch-kanjivg.js 三 四 五
 nihonngo/
 ├─ index.html            目錄頁
 ├─ sheet.html            練習單
+├─ builder.html          出題器
 ├─ css/
 │  ├─ sheet.css          版面 + 列印樣式（色票都在最上面的 :root）
-│  └─ interactive.css    筆順視窗、手寫 canvas（列印時全部消失）
+│  ├─ interactive.css    筆順視窗、手寫 canvas（列印時全部消失）
+│  └─ builder.css        出題器
 ├─ js/
 │  ├─ render.js          把資料畫成版面；要加題型就在 RENDERERS 裡多寫一個函式
 │  ├─ stroke.js          筆順動畫
 │  ├─ trace.js           田字格手寫
 │  ├─ order-check.js     筆順檢查（判定門檻在檔案最上面）
-│  └─ quiz.js            線上作答、採點、貼紙
+│  ├─ quiz.js            線上作答、採點、貼紙
+│  └─ builder.js         出題器（預覽借用 render.js，所見即所印）
 ├─ data/
 │  ├─ kanji.js           漢字字庫
 │  ├─ strokes.js         筆順資料（機器產生，勿手改）
@@ -216,5 +235,4 @@ Copyright (C) 2009-2011 Ulrich Apel，採 CC BY-SA 3.0。
 ## 之後可以加的
 
 - 語例朗讀（Web Speech API）
-- 老師出題器：勾漢字自動組卷、匯出 JSON
 - 成績／錯字記錄（localStorage），做間隔複習

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>出題器 ─ かん字れんしゅうシート</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Klee+One:wght@400;600&family=Noto+Sans+JP:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="css/sheet.css">
+<link rel="stylesheet" href="css/interactive.css">
+<link rel="stylesheet" href="css/builder.css">
+</head>
+<body class="builder" data-mode="print">
+
+<button type="button" id="nav-toggle" class="sidebar-toggle no-print"
+        aria-label="メニュー" aria-expanded="false">☰</button>
+<div id="nav-scrim" class="sidebar-scrim no-print"></div>
+
+<aside class="bd-panel" id="bd-panel">
+  <div class="sidebar__brand"><a href="index.html">← かん字れんしゅうシート</a></div>
+  <h1 class="bd-title">出題器</h1>
+  <p class="bd-lead">填一填就會產生練習單的資料檔，不用寫程式。右邊是即時預覽，跟印出來的一模一樣。</p>
+
+  <!-- 1. 基本資料 -->
+  <section class="bd-block">
+    <h2>1. 基本データ</h2>
+    <div class="bd-grid2">
+      <label class="bd-f"><span>ファイル名 / id</span>
+        <input id="f-id" placeholder="n3-03"></label>
+      <label class="bd-f"><span>レベル</span>
+        <input id="f-grade" placeholder="N3 または 1"></label>
+    </div>
+    <div class="bd-grid2">
+      <label class="bd-f"><span>ラベル（左上）</span>
+        <input id="f-label" placeholder="N3 ③"></label>
+      <label class="bd-f"><span>ブランド（右上）</span>
+        <input id="f-brand" placeholder="JLPT N3 漢字ドリル"></label>
+    </div>
+    <label class="bd-f"><span>点数のひとこと</span>
+      <input id="f-note" placeholder="80点以上で合格。"></label>
+    <label class="bd-f"><span>ページ下のテキスト</span>
+      <input id="f-footer" placeholder="漢字れんしゅうシート ／ …"></label>
+  </section>
+
+  <!-- 2. 漢字 -->
+  <section class="bd-block">
+    <h2>2. 漢字をえらぶ</h2>
+    <p class="bd-hint">字庫にある字：クリックで出し入れ</p>
+    <div class="bd-chips" id="f-pool"></div>
+
+    <p class="bd-hint">えらんだ字（この順で並びます）</p>
+    <div class="bd-chips bd-chips--picked" id="f-picked">
+      <span class="bd-empty">まだありません</span>
+    </div>
+
+    <details class="bd-new">
+      <summary>字庫にない字をたす</summary>
+      <div class="bd-grid2">
+        <label class="bd-f"><span>漢字</span><input id="n-char" maxlength="2"></label>
+        <label class="bd-f"><span>かくすう</span><input id="n-strokes" type="number" min="1" max="34"></label>
+      </div>
+      <label class="bd-f"><span>よみかた</span><input id="n-yomi" placeholder="ケイ・へる"></label>
+      <div class="bd-grid2">
+        <label class="bd-f"><span>語例 1</span><input id="n-w1" placeholder="経験"></label>
+        <label class="bd-f"><span>よみ 1</span><input id="n-r1" placeholder="けいけん"></label>
+      </div>
+      <div class="bd-grid2">
+        <label class="bd-f"><span>語例 2</span><input id="n-w2"></label>
+        <label class="bd-f"><span>よみ 2</span><input id="n-r2"></label>
+      </div>
+      <p class="bd-hint" id="n-status">漢字を入れると、かくすうと筆順を KanjiVG から取ってきます。</p>
+      <button type="button" class="btn-plain" id="n-add">字庫にたす</button>
+    </details>
+  </section>
+
+  <!-- 3. 大題 -->
+  <section class="bd-block">
+    <h2>3. 大問</h2>
+    <div id="f-sections"></div>
+  </section>
+
+  <!-- 4. 匯出 -->
+  <section class="bd-block">
+    <h2>4. 書き出し</h2>
+    <p class="bd-hint" id="f-fitwarn"></p>
+    <button type="button" class="btn-print" id="f-download">ファイルをダウンロード</button>
+    <p class="bd-hint">ダウンロードしたファイルを <code>data/sheets/</code> に置いて、
+       下の 1 行を <code>data/manifest.js</code> にコピーしてください。</p>
+    <pre class="bd-code" id="f-manifest"></pre>
+  </section>
+</aside>
+
+<main class="bd-preview">
+  <div class="bd-preview__bar">
+    <span id="bd-scale"></span>
+    <a class="bd-openlink" id="bd-open" href="#" target="_blank" rel="noopener">別のタブで開く ↗</a>
+  </div>
+  <div class="bd-paper" id="bd-paper"></div>
+</main>
+
+<script src="data/kanji.js"></script>
+<script src="data/strokes.js"></script>
+<script src="data/manifest.js"></script>
+<script src="js/render.js"></script>
+<script src="js/builder.js"></script>
+</body>
+</html>

@@ -1,0 +1,171 @@
+/* ============================================================
+   builder.css ─ 出題器
+   左邊表單、右邊即時預覽。預覽用的是 render.js 同一支排版程式，
+   所以看到的就是印出來的樣子。
+   ============================================================ */
+
+body.builder { background: #eef2f7; }
+
+/* ---------- 左邊表單 ---------- */
+.bd-panel {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 40;
+  width: 400px;
+  height: 100vh;
+  padding: 20px 22px 60px;
+  overflow-y: auto;
+  background: #fff;
+  border-right: 1px solid #d5dde6;
+  box-shadow: 1px 0 8px rgba(0, 0, 0, .1);
+  font-size: 13px;
+  transition: transform .22s ease;
+}
+
+.bd-title { margin: 12px 0 4px; font-size: 20px; color: var(--accent-deep); }
+.bd-lead { margin: 0 0 4px; font-size: 12px; line-height: 1.7; color: var(--ink-soft); }
+
+.bd-block { padding-top: 18px; margin-top: 18px; border-top: 1px solid #e6ecf3; }
+.bd-block h2 { margin: 0 0 12px; font-size: 14px; color: var(--accent-deep); }
+.bd-hint { margin: 10px 0 6px; font-size: 11px; line-height: 1.6; color: var(--ink-mute); }
+.bd-hint code { background: #eef2f7; border-radius: 3px; padding: 1px 4px; }
+
+.bd-f { display: grid; gap: 4px; margin-bottom: 9px; }
+.bd-f > span { font-size: 11px; color: var(--ink-soft); }
+.bd-f input, .bd-f select, .bd-f textarea {
+  font: inherit;
+  width: 100%;
+  padding: 6px 8px;
+  border: 1px solid #c3ccd6;
+  border-radius: 6px;
+  background: #fff;
+}
+.bd-f input:focus, .bd-f textarea:focus { outline: 2px solid var(--accent-light); outline-offset: -1px; }
+.bd-grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+/* ---------- 漢字 chips ---------- */
+.bd-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  min-height: 42px;
+  padding: 7px;
+  border: 1px solid #dde4ec;
+  border-radius: 8px;
+  background: #f7fafd;
+}
+.bd-chips--picked { background: #eef4fc; border-color: var(--box-border); }
+.bd-empty { font-size: 11px; color: var(--ink-mute); align-self: center; }
+
+.bd-chip {
+  font-family: var(--font-write);
+  font-size: 19px;
+  line-height: 1;
+  padding: 6px 9px;
+  border: 1px solid var(--box-border);
+  border-radius: 6px;
+  background: #fff;
+  color: var(--ink);
+  cursor: pointer;
+  transition: transform .1s ease;
+}
+.bd-chip:hover { transform: translateY(-1px); border-color: var(--accent); }
+.bd-chip.is-on { background: var(--accent); border-color: var(--accent); color: #fff; }
+.bd-chip small {
+  display: block;
+  font-family: var(--font-ui);
+  font-size: 9px;
+  color: var(--ink-mute);
+  margin-top: 2px;
+}
+.bd-chip.is-on small { color: rgba(255, 255, 255, .8); }
+
+.bd-new { margin-top: 14px; font-size: 12px; }
+.bd-new summary { cursor: pointer; color: var(--accent-deep); font-weight: 700; margin-bottom: 10px; }
+
+/* ---------- 大題 ---------- */
+.bd-sec {
+  padding: 12px;
+  margin-bottom: 10px;
+  border: 1px solid #dde4ec;
+  border-radius: 8px;
+  background: #f7fafd;
+}
+.bd-sec__head { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+.bd-sec__head label { display: flex; align-items: center; gap: 6px; font-weight: 700; cursor: pointer; }
+.bd-sec__body { padding-top: 10px; }
+.bd-sec.is-off .bd-sec__body { display: none; }
+.bd-sec.is-off { opacity: .55; }
+
+.bd-item {
+  display: grid;
+  grid-template-columns: 1fr 92px 26px;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+.bd-item input {
+  font: inherit;
+  font-size: 12px;
+  padding: 5px 7px;
+  border: 1px solid #c3ccd6;
+  border-radius: 5px;
+}
+.bd-item--fill { grid-template-columns: 1fr 62px 52px 26px; }
+.bd-del {
+  border: 1px solid #e3c0bb;
+  border-radius: 5px;
+  background: #fff;
+  color: var(--model-ink);
+  cursor: pointer;
+  font-size: 13px;
+  line-height: 1;
+}
+.bd-del:hover { background: #fdeeeb; }
+.bd-add { margin-top: 4px; }
+
+.bd-code {
+  margin: 8px 0 0;
+  padding: 9px 11px;
+  border-radius: 6px;
+  background: #202a36;
+  color: #cfe3ff;
+  font-size: 11px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.bd-warn { color: var(--model-ink); font-weight: 700; }
+.bd-ok { color: #2f9e5e; }
+
+/* ---------- 右邊預覽 ---------- */
+.bd-preview {
+  margin-left: 400px;
+  min-height: 100vh;
+  padding: 16px 20px 40px;
+}
+.bd-preview__bar {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 12px;
+  font-size: 12px;
+  color: var(--ink-soft);
+}
+.bd-openlink { color: var(--accent-deep); }
+
+/* 預覽的紙張縮放：跟手機版同一招，用負 margin 把版面盒收掉 */
+.bd-paper .sheet {
+  transform: scale(var(--pv, 1));
+  transform-origin: top left;
+  margin: 0 0 calc((var(--pv, 1) - 1) * 1123px);
+}
+
+@media (max-width: 1100px) {
+  .bd-panel { transform: translateX(-100%); }
+  body.nav-open .bd-panel { transform: none; }
+  body.nav-open .sidebar-scrim { display: block; }
+  .sidebar-toggle { display: block; }
+  .bd-preview { margin-left: 0; padding-top: 60px; }
+}

@@ -108,12 +108,15 @@
 
     function point(e) {
       var r = cv.getBoundingClientRect();
+      /* 手機版整張紙會被 scale()，getBoundingClientRect 回的是縮放後的尺寸，
+         要除回 canvas 自己的座標系，不然筆跡位置會偏。 */
+      var k = (r.width / cv.__box.w) || 1;
       /* 有壓感的筆才用壓力，滑鼠固定粗細 */
       var base = cv.__pen;
       var p = (e.pointerType === "pen" && e.pressure > 0) ? e.pressure : 0.5;
       return {
-        x: e.clientX - r.left,
-        y: e.clientY - r.top,
+        x: (e.clientX - r.left) / k,
+        y: (e.clientY - r.top) / k,
         w: base * (0.55 + p * 0.9)
       };
     }

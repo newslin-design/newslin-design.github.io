@@ -100,6 +100,36 @@ body {
   background: #fff;
 }
 .field--check { display: flex; align-items: center; gap: 7px; cursor: pointer; }
+.field__note { margin: 2px 0 0; font-size: 11px; line-height: 1.5; color: var(--ink-mute); }
+
+/* 三格切換。側欄扣掉 padding 有 200px，兩個字的標籤一格 66px 綽綽有餘 */
+.segmented {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+  padding: 2px;
+  border: 1px solid #c3ccd6;
+  border-radius: 7px;
+  background: #eef2f7;
+}
+.segmented button {
+  font: inherit;
+  font-size: 12px;
+  padding: 6px 2px;
+  border: 0;
+  border-radius: 5px;
+  background: transparent;
+  color: var(--ink-soft);
+  cursor: pointer;
+  white-space: nowrap;
+}
+.segmented button:hover { background: rgba(255, 255, 255, .7); }
+.segmented button[aria-selected="true"] {
+  background: #fff;
+  color: var(--accent-deep);
+  font-weight: 700;
+  box-shadow: 0 1px 3px rgba(30, 50, 80, .18);
+}
 
 .btn-print {
   font: inherit;
@@ -148,12 +178,12 @@ body {
 
 .stage { padding: 24px 0 60px; margin-left: var(--sidebar-w); }
 
-@media (max-width: 980px) {
+@media screen and (max-width: 980px) {
   .sidebar { transform: translateX(-100%); }
   body.nav-open .sidebar { transform: none; }
   body.nav-open .sidebar-scrim { display: block; }
   .sidebar-toggle { display: block; }
-  .stage { margin-left: 0; padding-top: 60px; }
+  .stage { margin-left: 0; padding-top: 60px; overflow-x: hidden; }
 }
 
 
@@ -497,6 +527,24 @@ body {
 .answer { display: none; }
 body[data-mode="answer"] .cell__glyph.answer { display: flex; }
 body[data-mode="answer"] .fill-in { display: block; }
+
+/* ============================================================
+   手機版：整張 A4 縮到視窗寬
+   ------------------------------------------------------------
+   這段一定要放在 .sheet 基礎規則「之後」，同權重下才贏得了。
+   --fit 由 render.js 依視窗寬度算出來；transform 不影響版面盒，
+   所以要用負的 margin-bottom 把多出來的高度收掉。
+   media query 也一定要寫 screen——列印時頁寬 794px 也會命中 980，
+   紙張會被縮第二次。
+   ============================================================ */
+@media screen and (max-width: 980px) {
+  .sheet {
+    transform: scale(var(--fit, 1));
+    transform-origin: top left;
+    margin: 0 0 calc(16px + (var(--fit, 1) - 1) * 1123px);
+    box-shadow: none;
+  }
+}
 
 /* ============================================================
    列印
