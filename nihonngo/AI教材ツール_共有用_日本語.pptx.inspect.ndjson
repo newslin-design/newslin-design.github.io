@@ -1,0 +1,245 @@
+{"kind":"deck","id":"pr/2v2hgf","name":"Deck"}
+{"kind":"layout","layoutId":"7be7c320-21ae-4582-8e64-122582d1c1f8","name":"Master","type":"master"}
+{"kind":"layout","layoutId":"5a384d25-9604-4f88-957e-5ce1ca933f0c","name":"Title Slide","type":"title"}
+{"kind":"slide","id":"sl/mv8bt1","slide":1,"title":"AI × 日本語教育","textShapes":6}
+{"kind":"textbox","id":"sh/kvax0n25","slide":1,"text":"AI × 日本語教育","textPreview":"AI × 日本語教育","textChars":10,"textLines":1,"bbox":[64,52,280,28]}
+{"kind":"textbox","id":"sh/ja1wri1k","slide":1,"text":"AIで自分専用の\n教材ツールを作る","textPreview":"AIで自分専用の | 教材ツールを作る","textChars":17,"textLines":2,"bbox":[64,150,760,180]}
+{"kind":"textbox","id":"sh/y9sfydkf","slide":1,"text":"アイデアを形にするまでに考えたこと","textPreview":"アイデアを形にするまでに考えたこと","textChars":17,"textLines":1,"bbox":[68,360,700,46]}
+{"kind":"shape","id":"sh/x8jep8ju","slide":1,"bbox":[846,94,360,480]}
+{"kind":"textbox","id":"sh/w7qxwn29","slide":1,"text":"AIは\n能力を拡張する。","textPreview":"AIは | 能力を拡張する。","textChars":12,"textLines":2,"bbox":[884,150,290,120]}
+{"kind":"shape","id":"sh/b6hwni1o","slide":1,"bbox":[884,302,220,0]}
+{"kind":"textbox","id":"sh/a58fudk3","slide":1,"text":"中心にあるのは、\n教師の専門知識。","textPreview":"中心にあるのは、 | 教師の専門知識。","textChars":17,"textLines":2,"bbox":[884,342,280,120]}
+{"kind":"textbox","id":"sh/h43y1cjy","slide":1,"text":"すでにClaudeを使っている先生へ","textPreview":"すでにClaudeを使っている先生へ","textChars":18,"textLines":1,"bbox":[68,646,500,28]}
+{"kind":"notes","id":"nt/mv8bt1","slide":1,"text":"先生はすでにClaudeを使って教材や小さなツールを作っています。今日はAIの使い方を一から説明するのではなく、何を作るか、どこまで作るか、どの媒体を選ぶかを一緒に整理します。\n\n[Sources]\n- User-authored workshop draft\n[/Sources]"}
+{"kind":"slide","id":"sl/2sa0mq","slide":2,"title":"1｜考え方","textShapes":11}
+{"kind":"textbox","id":"sh/q98vmh0f","slide":2,"text":"1｜考え方","textPreview":"1｜考え方","textChars":5,"textLines":1,"bbox":[56,30,360,28]}
+{"kind":"textbox","id":"sh/dczexwzq","slide":2,"text":"Vibe Coding＝AIと会話しながら作る","textPreview":"Vibe Coding＝AIと会話しながら作る","textChars":23,"textLines":1,"bbox":[56,66,1168,64]}
+{"kind":"shape","id":"sh/sbqdori5","slide":2,"bbox":[56,144,1168,0]}
+{"kind":"textbox","id":"sh/fyhwz6hw","slide":2,"text":"02","textPreview":"02","textChars":2,"textLines":1,"bbox":[1170,674,54,20]}
+{"kind":"textbox","id":"sh/ed8fq10b","slide":2,"text":"「漢字を練習できて、\n筆順も見られ、A4で印刷できる\nWebページを作ってください」","textPreview":"「漢字を練習できて、 | 筆順も見られ、A4で印刷できる | Webページを作ってください」","textChars":42,"textLines":3,"bbox":[64,196,580,220]}
+{"kind":"textbox","id":"sh/10je1wz2","slide":2,"text":"見る","textPreview":"見る","textChars":2,"textLines":1,"bbox":[760,196,300,52]}
+{"kind":"textbox","id":"sh/0zaxsrih","slide":2,"text":"結果を実際に使う","textPreview":"結果を実際に使う","textChars":8,"textLines":1,"bbox":[760,250,380,38]}
+{"kind":"shape","id":"sh/v2xwn21s","slide":2,"bbox":[760,310,360,0]}
+{"kind":"textbox","id":"sh/uhovex07","slide":2,"text":"伝える","textPreview":"伝える","textChars":3,"textLines":1,"bbox":[760,332,300,52]}
+{"kind":"textbox","id":"sh/gjy9wzux","slide":2,"text":"違いを普通の言葉で説明する","textPreview":"違いを普通の言葉で説明する","textChars":13,"textLines":1,"bbox":[760,386,420,38]}
+{"kind":"shape","id":"sh/hk7ap4bi","slide":2,"bbox":[760,446,360,0]}
+{"kind":"textbox","id":"sh/uhgrupc7","slide":2,"text":"直す","textPreview":"直す","textChars":2,"textLines":1,"bbox":[760,468,300,52]}
+{"kind":"textbox","id":"sh/fipsnuts","slide":2,"text":"AIがコードを修正する","textPreview":"AIがコードを修正する","textChars":11,"textLines":1,"bbox":[760,522,380,38]}
+{"kind":"textbox","id":"sh/47y90zu9","slide":2,"text":"コードを書くより、問題を説明し、結果を判断する。","textPreview":"コードを書くより、問題を説明し、結果を判断する。","textChars":24,"textLines":1,"bbox":[64,584,1050,54]}
+{"kind":"notes","id":"nt/2sa0mq","slide":2,"text":"Vibe Codingでは、利用者がすべてのコードを書くのではなく、AIと会話し、結果を見て修正を頼みます。先生に必要なのは、解決したい問題を説明し、結果が本当に求めるものか判断することです。AIは能力の高いインターンのような存在です。\n\n[Sources]\n- User-authored workshop draft\n[/Sources]"}
+{"kind":"slide","id":"sl/zwes6r","slide":3,"title":"1｜考え方","textShapes":10}
+{"kind":"textbox","id":"sh/nu1gbetk","slide":3,"text":"1｜考え方","textPreview":"1｜考え方","textChars":5,"textLines":1,"bbox":[56,30,360,28]}
+{"kind":"textbox","id":"sh/ovuhkja5","slide":3,"text":"最初にAとBを分ける","textPreview":"最初にAとBを分ける","textChars":10,"textLines":1,"bbox":[56,66,1168,64]}
+{"kind":"shape","id":"sh/pw3idobq","slide":3,"bbox":[56,144,1168,0]}
+{"kind":"textbox","id":"sh/ahcz6tsv","slide":3,"text":"03","textPreview":"03","textChars":2,"textLines":1,"bbox":[1170,674,54,20]}
+{"kind":"textbox","id":"sh/bil0fytg","slide":3,"text":"A","textPreview":"A","textChars":1,"textLines":1,"bbox":[70,196,120,110]}
+{"kind":"textbox","id":"sh/cjuh83a1","slide":3,"text":"AIを使って\nツールを作る","textPreview":"AIを使って | ツールを作る","textChars":13,"textLines":2,"bbox":[184,196,380,100]}
+{"kind":"textbox","id":"sh/xk3ihobm","slide":3,"text":"完成後はAI不要\n静的サイトでも公開できる\n例：漢字練習、単語カード","textPreview":"完成後はAI不要 | 静的サイトでも公開できる | 例：漢字練習、単語カード","textChars":34,"textLines":3,"bbox":[184,326,410,150]}
+{"kind":"shape","id":"sh/6l8zapcr","slide":3,"bbox":[640,190,0,0]}
+{"kind":"textbox","id":"sh/rmhg3utc","slide":3,"text":"B","textPreview":"B","textChars":1,"textLines":1,"bbox":[686,196,120,110]}
+{"kind":"textbox","id":"sh/7ytg3upw","slide":3,"text":"ツール自体に\nAI機能がある","textPreview":"ツール自体に | AI機能がある","textChars":14,"textLines":2,"bbox":[800,196,390,100]}
+{"kind":"textbox","id":"sh/mxkfupor","slide":3,"text":"利用のたびにAIを呼ぶ\n後端・運営・品質管理が必要\n例：AI会話、作文添削","textPreview":"利用のたびにAIを呼ぶ | 後端・運営・品質管理が必要 | 例：AI会話、作文添削","textChars":37,"textLines":3,"bbox":[800,326,410,150]}
+{"kind":"shape","id":"sh/9kby5472","slide":3,"bbox":[64,530,1152,92]}
+{"kind":"textbox","id":"sh/8z2xwz6h","slide":3,"text":"同じ「AIで作る」でも、開発難易度と運営コストは大きく違う。","textPreview":"同じ「AIで作る」でも、開発難易度と運営コストは大きく違う。","textChars":30,"textLines":1,"bbox":[92,554,1096,44]}
+{"kind":"notes","id":"nt/zwes6r","slide":3,"text":"一番重要な分類です。Aは開発時にAIを使いますが、完成後は学生が使うたびにAIを呼びません。Bは、会話や添削のたびにAIを呼びます。この違いが、開発難易度と運営コストを大きく変えます。\n\n[Sources]\n- User-authored workshop draft\n[/Sources]"}
+{"kind":"slide","id":"sl/mc5s7z","slide":4,"title":"1｜考え方","textShapes":10}
+{"kind":"textbox","id":"sh/903mlc7a","slide":4,"text":"1｜考え方","textPreview":"1｜考え方","textChars":5,"textLines":1,"bbox":[56,30,360,28]}
+{"kind":"textbox","id":"sh/mdcnqxoj","slide":4,"text":"AI機能は、使われるほど費用も増える","textPreview":"AI機能は、使われるほど費用も増える","textChars":18,"textLines":1,"bbox":[56,66,1168,64]}
+{"kind":"shape","id":"sh/nel4j2p4","slide":4,"bbox":[56,144,1168,0]}
+{"kind":"textbox","id":"sh/w3e5wr6l","slide":4,"text":"04","textPreview":"04","textChars":2,"textLines":1,"bbox":[1170,674,54,20]}
+{"kind":"shape","id":"sh/x4nmpc76","slide":4,"bbox":[64,194,520,350]}
+{"kind":"textbox","id":"sh/a1wnuhov","slide":4,"text":"一般的な静的ツール","textPreview":"一般的な静的ツール","textChars":9,"textLines":1,"bbox":[96,226,450,48]}
+{"kind":"textbox","id":"sh/b254nmp0","slide":4,"text":"開発後","textPreview":"開発後","textChars":3,"textLines":1,"bbox":[96,312,180,56]}
+{"kind":"textbox","id":"sh/c7alknqh","slide":4,"text":"利用者が増えても\n追加コストは比較的小さい","textPreview":"利用者が増えても | 追加コストは比較的小さい","textChars":21,"textLines":2,"bbox":[96,386,420,100]}
+{"kind":"shape","id":"sh/d8jmds72","slide":4,"bbox":[648,194,568,350]}
+{"kind":"textbox","id":"sh/x0rahonu","slide":4,"text":"AIを内蔵したサービス","textPreview":"AIを内蔵したサービス","textChars":11,"textLines":1,"bbox":[680,226,480,48]}
+{"kind":"textbox","id":"sh/czi9o369","slide":4,"text":"利用ごと","textPreview":"利用ごと","textChars":4,"textLines":1,"bbox":[680,312,210,56]}
+{"kind":"textbox","id":"sh/by9sfy5o","slide":4,"text":"Token・音声・APIの\nコストが積み上がる","textPreview":"Token・音声・APIの | コストが積み上がる","textChars":23,"textLines":2,"bbox":[680,386,430,100]}
+{"kind":"textbox","id":"sh/ax0rmto3","slide":4,"text":"人気が出るほど赤字になる設計もある。","textPreview":"人気が出るほど赤字になる設計もある。","textChars":18,"textLines":1,"bbox":[64,580,1100,52]}
+{"kind":"notes","id":"nt/mc5s7z","slide":4,"text":"一般的な静的ソフトウェアは、完成後に利用者が増えても追加コストは比較的小さいことが多いです。しかしAIサービスは、利用のたびにTokenや音声料金が発生します。使われるほど赤字になる設計もあるので、最初に区別しておく必要があります。\n\n[Sources]\n- User-authored workshop draft\n[/Sources]"}
+{"kind":"slide","id":"sl/yepiow","slide":5,"title":"1｜考え方","textShapes":11}
+{"kind":"textbox","id":"sh/3mpgbu5w","slide":5,"text":"1｜考え方","textPreview":"1｜考え方","textChars":5,"textLines":1,"bbox":[56,30,360,28]}
+{"kind":"textbox","id":"sh/4nyhkzmh","slide":5,"text":"まずはCanvasで「使えるか」を試す","textPreview":"まずはCanvasで「使えるか」を試す","textChars":19,"textLines":1,"bbox":[56,66,1168,64]}
+{"kind":"shape","id":"sh/po7yd4n2","slide":5,"bbox":[56,144,1168,0]}
+{"kind":"textbox","id":"sh/uhwzep4f","slide":5,"text":"05","textPreview":"05","textChars":2,"textLines":1,"bbox":[1170,674,54,20]}
+{"kind":"textbox","id":"sh/fi5g7a50","slide":5,"text":"1  アイデアを伝える","textPreview":"1  アイデアを伝える","textChars":11,"textLines":1,"bbox":[72,218,320,56]}
+{"kind":"shape","id":"sh/gjyhgfml","slide":5,"bbox":[72,292,300,0]}
+{"kind":"textbox","id":"sh/hk7y9knq","slide":5,"text":"問題形式・対象レベル・\n使う場面を説明","textPreview":"問題形式・対象レベル・ | 使う場面を説明","textChars":19,"textLines":2,"bbox":[72,324,320,110]}
+{"kind":"textbox","id":"sh/6twza5o3","slide":5,"text":"2  その場で試す","textPreview":"2  その場で試す","textChars":9,"textLines":1,"bbox":[444,218,320,56]}
+{"kind":"shape","id":"sh/7u5g3a5o","slide":5,"bbox":[444,292,300,0]}
+{"kind":"textbox","id":"sh/rydc3mlo","slide":5,"text":"WebページやTTSを\nすぐプレビュー","textPreview":"WebページやTTSを | すぐプレビュー","textChars":19,"textLines":2,"bbox":[444,324,320,110]}
+{"kind":"textbox","id":"sh/qx4bah43","slide":5,"text":"3  会話で直す","textPreview":"3  会話で直す","textChars":8,"textLines":1,"bbox":[816,218,320,56]}
+{"kind":"shape","id":"sh/d0vu5w3u","slide":5,"bbox":[816,292,300,0]}
+{"kind":"textbox","id":"sh/czmtcrm9","slide":5,"text":"学生の反応を想像し、\n必要な部分だけ修正","textPreview":"学生の反応を想像し、 | 必要な部分だけ修正","textChars":20,"textLines":2,"bbox":[816,324,320,110]}
+{"kind":"textbox","id":"sh/z2dc7ml0","slide":5,"text":"N1聴解テスト　／　日本語会話練習","textPreview":"N1聴解テスト　／　日本語会話練習","textChars":17,"textLines":1,"bbox":[72,500,1100,54]}
+{"kind":"textbox","id":"sh/e14be14f","slide":5,"text":"Prototypeは正式サービスではない。利用枠・データ・権限は別に確認する。","textPreview":"Prototypeは正式サービスではない。利用枠・データ・権限は別に確認する。","textChars":39,"textLines":1,"bbox":[72,566,1100,52]}
+{"kind":"notes","id":"nt/yepiow","slide":5,"text":"Gemini Canvasは、会話の中でWebページやTTS、Gemini機能を試せるため、アイデアの価値を早く確認するのに便利です。ただし共有できるPrototypeと、多数の学生が長期利用できる正式サービスは別です。利用枠、共有データ、権限を確認します。\n\n[Sources]\n- https://support.google.com/gemini/answer/16047321?hl=en\n- https://support.google.com/gemini/answer/16419134?hl=en-GB\n- User-provided Gemini examples\n[/Sources]"}
+{"kind":"slide","id":"sl/8oarz5","slide":6,"title":"2｜技術を理解する","textShapes":16}
+{"kind":"textbox","id":"sh/ryx8nih0","slide":6,"text":"2｜技術を理解する","textPreview":"2｜技術を理解する","textChars":9,"textLines":1,"bbox":[56,30,360,28]}
+{"kind":"textbox","id":"sh/cz6pgnyl","slide":6,"text":"サーバーの話は、レストランで考える","textPreview":"サーバーの話は、レストランで考える","textChars":17,"textLines":1,"bbox":[56,66,1168,64]}
+{"kind":"shape","id":"sh/d0fqpsz6","slide":6,"bbox":[56,144,1168,0]}
+{"kind":"textbox","id":"sh/e1o7ixgr","slide":6,"text":"06","textPreview":"06","textChars":2,"textLines":1,"bbox":[1170,674,54,20]}
+{"kind":"textbox","id":"sh/z2x8r2hc","slide":6,"text":"フロントエンド","textPreview":"フロントエンド","textChars":7,"textLines":1,"bbox":[72,190,310,52]}
+{"kind":"textbox","id":"sh/036pknyh","slide":6,"text":"内装とメニュー","textPreview":"内装とメニュー","textChars":7,"textLines":1,"bbox":[404,190,260,52]}
+{"kind":"textbox","id":"sh/14fqtsz2","slide":6,"text":"学生が見て操作する画面","textPreview":"学生が見て操作する画面","textChars":11,"textLines":1,"bbox":[692,190,480,52]}
+{"kind":"shape","id":"sh/m587mxgn","slide":6,"bbox":[72,258,1100,0]}
+{"kind":"textbox","id":"sh/n6h8v2h8","slide":6,"text":"バックエンド","textPreview":"バックエンド","textChars":6,"textLines":1,"bbox":[72,294,310,52]}
+{"kind":"textbox","id":"sh/v2lcn6lk","slide":6,"text":"厨房","textPreview":"厨房","textChars":2,"textLines":1,"bbox":[404,294,260,52]}
+{"kind":"textbox","id":"sh/u1sbe14z","slide":6,"text":"認証・計算・ルールの処理","textPreview":"認証・計算・ルールの処理","textChars":12,"textLines":1,"bbox":[692,294,480,52]}
+{"kind":"shape","id":"sh/h43upw3a","slide":6,"bbox":[72,362,1100,0]}
+{"kind":"textbox","id":"sh/w3udgbm5","slide":6,"text":"データベース","textPreview":"データベース","textChars":6,"textLines":1,"bbox":[72,398,310,52]}
+{"kind":"textbox","id":"sh/7y1cjml8","slide":6,"text":"冷蔵庫と帳簿","textPreview":"冷蔵庫と帳簿","textChars":6,"textLines":1,"bbox":[404,398,260,52]}
+{"kind":"textbox","id":"sh/mdsbah4n","slide":6,"text":"会員・教材・学習履歴","textPreview":"会員・教材・学習履歴","textChars":10,"textLines":1,"bbox":[692,398,480,52]}
+{"kind":"shape","id":"sh/90julw3e","slide":6,"bbox":[72,466,1100,0]}
+{"kind":"textbox","id":"sh/8zatcrmt","slide":6,"text":"サーバー／クラウド","textPreview":"サーバー／クラウド","textChars":9,"textLines":1,"bbox":[72,502,310,52]}
+{"kind":"textbox","id":"sh/ru5cvqls","slide":6,"text":"場所と設備","textPreview":"場所と設備","textChars":5,"textLines":1,"bbox":[404,502,260,52]}
+{"kind":"textbox","id":"sh/69wvmlk7","slide":6,"text":"サービスを継続して動かす","textPreview":"サービスを継続して動かす","textChars":12,"textLines":1,"bbox":[692,502,480,52]}
+{"kind":"shape","id":"sh/m10na9sr","slide":6,"bbox":[72,570,1100,0]}
+{"kind":"textbox","id":"sh/n29o3e9w","slide":6,"text":"ログイン・保存・決済・AI API Key → バックエンドが必要","textPreview":"ログイン・保存・決済・AI API Key → バックエンドが必要","textChars":33,"textLines":1,"bbox":[72,606,1100,44]}
+{"kind":"notes","id":"nt/8oarz5","slide":6,"text":"フロントエンドは学生が見る画面、バックエンドはルールを処理する厨房、データベースは情報を保存する冷蔵庫と帳簿、サーバーは店を動かす場所と設備です。ログイン、学習履歴、決済、API Keyの安全な保存にはバックエンドが必要です。\n\n[Sources]\n- User-authored workshop draft\n[/Sources]"}
+{"kind":"slide","id":"sl/036jue","slide":7,"title":"2｜技術を理解する","textShapes":20}
+{"kind":"textbox","id":"sh/z2p07i10","slide":7,"text":"2｜技術を理解する","textPreview":"2｜技術を理解する","textChars":9,"textLines":1,"bbox":[56,30,360,28]}
+{"kind":"textbox","id":"sh/0ny1gnil","slide":7,"text":"作りたいものは、どのレベルか","textPreview":"作りたいものは、どのレベルか","textChars":14,"textLines":1,"bbox":[56,66,1168,64]}
+{"kind":"shape","id":"sh/lo7i9sjq","slide":7,"bbox":[56,144,1168,0]}
+{"kind":"textbox","id":"sh/mpgjid0b","slide":7,"text":"07","textPreview":"07","textChars":2,"textLines":1,"bbox":[1170,674,54,20]}
+{"kind":"textbox","id":"sh/nq90bi1w","slide":7,"text":"1","textPreview":"1","textChars":1,"textLines":1,"bbox":[72,178,72,72]}
+{"kind":"textbox","id":"sh/8ri1knih","slide":7,"text":"授業用・自分用","textPreview":"授業用・自分用","textChars":7,"textLines":1,"bbox":[176,182,300,38]}
+{"kind":"textbox","id":"sh/9sridsj2","slide":7,"text":"静的サイト／保存なし","textPreview":"静的サイト／保存なし","textChars":10,"textLines":1,"bbox":[500,182,310,38]}
+{"kind":"textbox","id":"sh/2twz6tk7","slide":7,"text":"漢字練習・教材生成","textPreview":"漢字練習・教材生成","textChars":9,"textLines":1,"bbox":[846,182,330,38]}
+{"kind":"textbox","id":"sh/3u50zy1s","slide":7,"text":"2","textPreview":"2","textChars":1,"textLines":1,"bbox":[72,290,72,72]}
+{"kind":"textbox","id":"sh/r2xgvit4","slide":7,"text":"小規模な学生向け","textPreview":"小規模な学生向け","textChars":8,"textLines":1,"bbox":[176,294,300,38]}
+{"kind":"textbox","id":"sh/q1of2dcj","slide":7,"text":"学生データを保存","textPreview":"学生データを保存","textChars":8,"textLines":1,"bbox":[500,294,310,38]}
+{"kind":"textbox","id":"sh/dofyxsba","slide":7,"text":"Google Sheet＋GAS","textPreview":"Google Sheet＋GAS","textChars":16,"textLines":1,"bbox":[846,294,330,38]}
+{"kind":"textbox","id":"sh/cn6x4nup","slide":7,"text":"3","textPreview":"3","textChars":1,"textLines":1,"bbox":[72,402,72,72]}
+{"kind":"textbox","id":"sh/3ydg7yt8","slide":7,"text":"学生向け＋AI","textPreview":"学生向け＋AI","textChars":7,"textLines":1,"bbox":[176,406,300,38]}
+{"kind":"textbox","id":"sh/2x4fytcn","slide":7,"text":"生成・添削・個別化","textPreview":"生成・添削・個別化","textChars":9,"textLines":1,"bbox":[500,406,310,38]}
+{"kind":"textbox","id":"sh/p0fyt8by","slide":7,"text":"Tokenと品質管理","textPreview":"Tokenと品質管理","textChars":10,"textLines":1,"bbox":[846,406,330,38]}
+{"kind":"textbox","id":"sh/4z6x03ut","slide":7,"text":"4","textPreview":"4","textChars":1,"textLines":1,"bbox":[72,514,72,72]}
+{"kind":"textbox","id":"sh/fudg3ytw","slide":7,"text":"外部向け商用","textPreview":"外部向け商用","textChars":6,"textLines":1,"bbox":[176,518,300,38]}
+{"kind":"textbox","id":"sh/ut4futcb","slide":7,"text":"会員・決済・資安","textPreview":"会員・決済・資安","textChars":8,"textLines":1,"bbox":[500,518,310,38]}
+{"kind":"textbox","id":"sh/ipkz6twj","slide":7,"text":"製品と運営全体","textPreview":"製品と運営全体","textChars":7,"textLines":1,"bbox":[846,518,330,38]}
+{"kind":"textbox","id":"sh/jqtgfyxo","slide":7,"text":"Levelは品質ではなく、技術と運営責任の大きさ。","textPreview":"Levelは品質ではなく、技術と運営責任の大きさ。","textChars":25,"textLines":1,"bbox":[72,626,1080,36]}
+{"kind":"notes","id":"nt/036jue","slide":7,"text":"Levelは品質順位ではなく、技術と運営責任の大きさです。初心者はLevel 1から始め、学生データが必要ならLevel 2、生成AIを入れるならLevel 3、商用公開ならLevel 4として考えます。個人単語カードはLevel 2の例です。\n\n[Sources]\n- User-authored workshop draft\n- https://newslin-design.github.io/wordCard.html\n[/Sources]"}
+{"kind":"slide","id":"sl/ukeda0","slide":8,"title":"3｜漢字サイトの実例","textShapes":6}
+{"kind":"textbox","id":"sh/ut0rydc3","slide":8,"text":"3｜漢字サイトの実例","textPreview":"3｜漢字サイトの実例","textChars":10,"textLines":1,"bbox":[56,30,360,28]}
+{"kind":"textbox","id":"sh/hwba9sbu","slide":8,"text":"PDFではなく「作り続けられる道具」にする","textPreview":"PDFではなく「作り続けられる道具」にする","textChars":21,"textLines":1,"bbox":[56,66,1168,64]}
+{"kind":"shape","id":"sh/gv290na9","slide":8,"bbox":[56,144,1168,0]}
+{"kind":"textbox","id":"sh/7q983its","slide":8,"text":"08","textPreview":"08","textChars":2,"textLines":1,"bbox":[1170,674,54,20]}
+{"kind":"textbox","id":"sh/6p0rudc7","slide":8,"text":"PDFは\n最終的な出力。","textPreview":"PDFは | 最終的な出力。","textChars":12,"textLines":2,"bbox":[64,214,390,120]}
+{"kind":"textbox","id":"sh/tsrq58by","slide":8,"text":"Webは\n教材を生産する道具。","textPreview":"Webは | 教材を生産する道具。","textChars":15,"textLines":2,"bbox":[64,352,450,130]}
+{"kind":"textbox","id":"sh/sri9w3ud","slide":8,"text":"データを足せる\nテンプレートを一度に直せる\n操作も印刷もできる","textPreview":"データを足せる | テンプレートを一度に直せる | 操作も印刷もできる","textChars":31,"textLines":3,"bbox":[64,522,440,110]}
+{"kind":"shape","id":"sh/rmdsf2tw","slide":8,"bbox":[548,176,664,438]}
+{"kind":"image","id":"im/nyh07ets","slide":8,"name":"","geometry":"roundRect","alt":"漢字練習シートのWeb画面","bbox":[560,188,640,414]}
+{"kind":"notes","id":"nt/ukeda0","slide":8,"text":"最初はClaudeでPDFを作りました。最初の成果を見るには便利ですが、次の課やレイアウト変更のたびに作り直す問題が出ます。本当に必要だったのは一枚のPDFではなく、教材を繰り返し作れる道具でした。Webも印刷やPDF保存ができます。\n\n[Sources]\n- User-authored workshop draft\n- Screenshot: https://newslin-design.github.io/nihonngo/sheet.html?id=n3-02\n[/Sources]"}
+{"kind":"slide","id":"sl/106o61","slide":9,"title":"3｜漢字サイトの実例","textShapes":8}
+{"kind":"textbox","id":"sh/bexsret0","slide":9,"text":"3｜漢字サイトの実例","textPreview":"3｜漢字サイトの実例","textChars":10,"textLines":1,"bbox":[56,30,360,28]}
+{"kind":"textbox","id":"sh/cf6t0zal","slide":9,"text":"最初に決めるのは「何を作らないか」","textPreview":"最初に決めるのは「何を作らないか」","textChars":17,"textLines":1,"bbox":[56,66,1168,64]}
+{"kind":"shape","id":"sh/xgfat4b6","slide":9,"bbox":[56,144,1168,0]}
+{"kind":"textbox","id":"sh/2p4rupsj","slide":9,"text":"09","textPreview":"09","textChars":2,"textLines":1,"bbox":[1170,674,54,20]}
+{"kind":"textbox","id":"sh/nqdsnut4","slide":9,"text":"今回はやめた","textPreview":"今回はやめた","textChars":6,"textLines":1,"bbox":[72,200,470,52]}
+{"kind":"textbox","id":"sh/obm9wzap","slide":9,"text":"学生ログイン\nオンライン保存\n先生への提出\nオンライン添削","textPreview":"学生ログイン | オンライン保存 | 先生への提出 | オンライン添削","textChars":29,"textLines":4,"bbox":[72,274,470,230]}
+{"kind":"shape","id":"sh/pcfap4ba","slide":9,"bbox":[630,188,0,0]}
+{"kind":"textbox","id":"sh/ml8b6tsn","slide":9,"text":"最初に残した","textPreview":"最初に残した","textChars":6,"textLines":1,"bbox":[690,200,470,52]}
+{"kind":"textbox","id":"sh/7mhszy98","slide":9,"text":"繰り返し生成できる\n筆順と練習を見られる\nA4で正しく印刷できる","textPreview":"繰り返し生成できる | 筆順と練習を見られる | A4で正しく印刷できる","textChars":32,"textLines":3,"bbox":[690,274,470,210]}
+{"kind":"shape","id":"sh/fqx4vqtk","slide":9,"bbox":[72,548,1088,80]}
+{"kind":"textbox","id":"sh/epo32lsz","slide":9,"text":"機能を削る＝失敗ではない。重要な機能を先に完成させる。","textPreview":"機能を削る＝失敗ではない。重要な機能を先に完成させる。","textChars":27,"textLines":1,"bbox":[96,568,1040,42]}
+{"kind":"notes","id":"nt/106o61","slide":9,"text":"学生の保存や提出は不可能ではありません。ただし、アカウント、データベース、権限、個人情報が必要になります。最初のバージョンでは、繰り返し生成でき、操作と印刷ができる漢字練習シートだけに集中しました。\n\n[Sources]\n- User-authored workshop draft\n[/Sources]"}
+{"kind":"slide","id":"sl/xm1r55","slide":10,"title":"3｜漢字サイトの実例","textShapes":8}
+{"kind":"textbox","id":"sh/8fuhc3a9","slide":10,"text":"3｜漢字サイトの実例","textPreview":"3｜漢字サイトの実例","textChars":10,"textLines":1,"bbox":[56,30,360,28]}
+{"kind":"textbox","id":"sh/7elg3ito","slide":10,"text":"「中身」と「包み」を分けて考える","textPreview":"「中身」と「包み」を分けて考える","textChars":16,"textLines":1,"bbox":[56,66,1168,64]}
+{"kind":"shape","id":"sh/6dczads3","slide":10,"bbox":[56,144,1168,0]}
+{"kind":"textbox","id":"sh/h4ny9sbq","slide":10,"text":"10","textPreview":"10","textChars":2,"textLines":1,"bbox":[1170,674,54,20]}
+{"kind":"textbox","id":"sh/g3ehgna5","slide":10,"text":"中身｜データ","textPreview":"中身｜データ","textChars":6,"textLines":1,"bbox":[72,200,480,54]}
+{"kind":"textbox","id":"sh/f25g7itk","slide":10,"text":"漢字リスト\n読み方・例語\n筆画数・筆順パス\n問題・答え","textPreview":"漢字リスト | 読み方・例語 | 筆画数・筆順パス | 問題・答え","textChars":27,"textLines":4,"bbox":[72,282,480,230]}
+{"kind":"textbox","id":"sh/u1wzedsz","slide":10,"text":"包み｜UIと機能","textPreview":"包み｜UIと機能","textChars":8,"textLines":1,"bbox":[690,200,480,54]}
+{"kind":"textbox","id":"sh/p87idsbm","slide":10,"text":"なぞり書き\n筆順アニメーション\n練習／解答モード\nA4印刷","textPreview":"なぞり書き | 筆順アニメーション | 練習／解答モード | A4印刷","textChars":29,"textLines":4,"bbox":[690,282,480,230]}
+{"kind":"shape","id":"sh/47yhknah","slide":10,"bbox":[620,190,0,0]}
+{"kind":"textbox","id":"sh/q9cz6xcz","slide":10,"text":"一番難しかったのは画面ではなく、筆順データ。→ KanjiVG","textPreview":"一番難しかったのは画面ではなく、筆順データ。→ KanjiVG","textChars":31,"textLines":1,"bbox":[72,580,1100,48]}
+{"kind":"notes","id":"nt/xm1r55","slide":10,"text":"データとUIを分けます。今回一番難しかったのは、画面ではなく筆順データでした。KanjiVGが見つかったことで、筆順パスを利用できました。データとUIを分ければ、新しい漢字を追加するときはデータだけを増やし、テンプレート修正は全教材へ反映できます。\n\n[Sources]\n- https://kanjivg.tagaini.net/\n- User-authored workshop draft\n[/Sources]"}
+{"kind":"slide","id":"sl/yaxgjp","slide":11,"title":"3｜漢字サイトの実例","textShapes":8}
+{"kind":"textbox","id":"sh/hsvqp0zq","slide":11,"text":"3｜漢字サイトの実例","textPreview":"3｜漢字サイトの実例","textChars":10,"textLines":1,"bbox":[56,30,360,28]}
+{"kind":"textbox","id":"sh/upk7ul0z","slide":11,"text":"ChatとAgentは、見えている範囲が違う","textPreview":"ChatとAgentは、見えている範囲が違う","textChars":22,"textLines":1,"bbox":[56,66,1168,64]}
+{"kind":"shape","id":"sh/vqd8nqhk","slide":11,"bbox":[56,144,1168,0]}
+{"kind":"textbox","id":"sh/4fmp0vi1","slide":11,"text":"11","textPreview":"11","textChars":2,"textLines":1,"bbox":[1170,674,54,20]}
+{"kind":"textbox","id":"sh/5gvqt0zm","slide":11,"text":"一般的なChat","textPreview":"一般的なChat","textChars":8,"textLines":1,"bbox":[72,200,500,56]}
+{"kind":"textbox","id":"sh/it47y50v","slide":11,"text":"渡した内容をもとに回答\n一段のコードを生成\n利用者がコピーして戻す\n発想・整理・単発質問に向く","textPreview":"渡した内容をもとに回答 | 一段のコードを生成 | 利用者がコピーして戻す | 発想・整理・単発質問に向く","textChars":47,"textLines":4,"bbox":[72,286,500,220]}
+{"kind":"textbox","id":"sh/3ed8rqhg","slide":11,"text":"Claude Code／Agent","textPreview":"Claude Code／Agent","textChars":17,"textLines":1,"bbox":[682,200,500,56]}
+{"kind":"textbox","id":"sh/sj6p4fid","slide":11,"text":"プロジェクト全体を探索\n複数ファイルを直接修正\nチェックやテストを実行\n継続開発・修正に向く","textPreview":"プロジェクト全体を探索 | 複数ファイルを直接修正 | チェックやテストを実行 | 継続開発・修正に向く","textChars":46,"textLines":4,"bbox":[682,286,500,220]}
+{"kind":"shape","id":"sh/dkfqxkzi","slide":11,"bbox":[628,190,0,0]}
+{"kind":"textbox","id":"sh/d8jepcru","slide":11,"text":"必要なのはコマンドではなく、目的・判断・フィードバック。","textPreview":"必要なのはコマンドではなく、目的・判断・フィードバック。","textChars":28,"textLines":1,"bbox":[72,578,1100,46]}
+{"kind":"notes","id":"nt/yaxgjp","slide":11,"text":"一般的なChatは、こちらが渡した内容をもとに回答します。Claude CodeのようなAgentは、プロジェクト全体を探索し、複数ファイルを修正し、チェックやテストを実行できます。先生が覚えるべきなのはコマンドではなく、目的を説明し、提案と結果を判断することです。\n\n[Sources]\n- https://docs.anthropic.com/ja/docs/claude-code\n- User-authored workshop draft\n[/Sources]"}
+{"kind":"slide","id":"sl/5xlf4p","slide":12,"title":"3｜実演","textShapes":16}
+{"kind":"textbox","id":"sh/jutkbalk","slide":12,"text":"3｜実演","textPreview":"3｜実演","textChars":4,"textLines":1,"bbox":[56,30,360,28]}
+{"kind":"textbox","id":"sh/4v21kfm5","slide":12,"text":"Claude Codeは、4回すり合わせる","textPreview":"Claude Codeは、4回すり合わせる","textChars":21,"textLines":1,"bbox":[56,66,1168,64]}
+{"kind":"shape","id":"sh/5wb2dk3q","slide":12,"bbox":[56,144,1168,0]}
+{"kind":"textbox","id":"sh/u50je543","slide":12,"text":"12","textPreview":"12","textChars":2,"textLines":1,"bbox":[1170,674,54,20]}
+{"kind":"textbox","id":"sh/v690nalo","slide":12,"text":"1","textPreview":"1","textChars":1,"textLines":1,"bbox":[62,205,72,72]}
+{"kind":"textbox","id":"sh/w7i1gvmt","slide":12,"text":"理解","textPreview":"理解","textChars":2,"textLines":1,"bbox":[62,310,240,54]}
+{"kind":"textbox","id":"sh/h8r2p03e","slide":12,"text":"まだ変更しない\n構造を説明してもらう","textPreview":"まだ変更しない | 構造を説明してもらう","textChars":18,"textLines":2,"bbox":[62,382,250,110]}
+{"kind":"shape","id":"sh/e14jqp47","slide":12,"bbox":[152,240,186,0]}
+{"kind":"textbox","id":"sh/f2dkjuls","slide":12,"text":"2","textPreview":"2","textChars":1,"textLines":1,"bbox":[360,205,72,72]}
+{"kind":"textbox","id":"sh/bmx8ba98","slide":12,"text":"提案","textPreview":"提案","textChars":2,"textLines":1,"bbox":[360,310,240,54]}
+{"kind":"textbox","id":"sh/alo7i58n","slide":12,"text":"最小の修正案を\n先に出してもらう","textPreview":"最小の修正案を | 先に出してもらう","textChars":16,"textLines":2,"bbox":[360,382,250,110]}
+{"kind":"shape","id":"sh/x8fqdk7y","slide":12,"bbox":[450,240,186,0]}
+{"kind":"textbox","id":"sh/w76pkfqt","slide":12,"text":"3","textPreview":"3","textChars":1,"textLines":1,"bbox":[658,205,72,72]}
+{"kind":"textbox","id":"sh/jah8fup4","slide":12,"text":"実行","textPreview":"実行","textChars":2,"textLines":1,"bbox":[658,310,240,54]}
+{"kind":"textbox","id":"sh/y9o7mp8j","slide":12,"text":"確認後に修正し\n影響をチェックする","textPreview":"確認後に修正し | 影響をチェックする","textChars":17,"textLines":2,"bbox":[658,382,250,110]}
+{"kind":"shape","id":"sh/lczqhk7a","slide":12,"bbox":[748,240,186,0]}
+{"kind":"textbox","id":"sh/kbqpofqp","slide":12,"text":"4","textPreview":"4","textChars":1,"textLines":1,"bbox":[956,205,72,72]}
+{"kind":"textbox","id":"sh/7eh8jupg","slide":12,"text":"再調整","textPreview":"再調整","textChars":3,"textLines":1,"bbox":[956,310,240,54]}
+{"kind":"textbox","id":"sh/6d87qp8v","slide":12,"text":"実物を見て\n普通の言葉で直す","textPreview":"実物を見て | 普通の言葉で直す","textChars":14,"textLines":2,"bbox":[956,382,250,110]}
+{"kind":"shape","id":"sh/i9cbits3","slide":12,"bbox":[62,548,1128,80]}
+{"kind":"textbox","id":"sh/3alsry9o","slide":12,"text":"分からない権限要求は、許可せず、分かりやすい言葉で説明してもらう。","textPreview":"分からない権限要求は、許可せず、分かりやすい言葉で説明してもらう。","textChars":33,"textLines":1,"bbox":[90,568,1070,42]}
+{"kind":"notes","id":"nt/5xlf4p","slide":12,"text":"デモでは四回すり合わせます。まず変更せずに構造を説明してもらい、次に最小の案を出してもらいます。方向を確認してから実行し、画面と印刷結果を見て自然な言葉で再調整します。権限要求が分からない場合は許可せず、何をするのか簡単に説明してもらいます。\n\nデモ用プロンプト1：この漢字練習サイトの構造を読んでください。まだ変更しないでください。教材データ、テンプレート、機能がどこにあるか説明してください。\n\nプロンプト2：解答モードで答えを見分けやすくしたいです。最小限の案を先に出してください。\n\nプロンプト3：この方向で修正し、練習モードとA4印刷への影響を確認してください。\n\nプロンプト4：画面は見やすいですが、印刷では色が薄すぎます。印刷用スタイルだけ調整してください。\n\n[Sources]\n- https://docs.anthropic.com/ja/docs/claude-code\n- User-authored workshop draft\n[/Sources]"}
+{"kind":"slide","id":"sl/waoz1h","slide":13,"title":"3｜無料・低コストの選択肢","textShapes":10}
+{"kind":"textbox","id":"sh/qls3ud8f","slide":13,"text":"3｜無料・低コストの選択肢","textPreview":"3｜無料・低コストの選択肢","textChars":13,"textLines":1,"bbox":[56,30,360,28]}
+{"kind":"textbox","id":"sh/doj258r6","slide":13,"text":"小さく始めるための道具","textPreview":"小さく始めるための道具","textChars":11,"textLines":1,"bbox":[56,66,1168,64]}
+{"kind":"shape","id":"sh/snalw3ql","slide":13,"bbox":[56,144,1168,0]}
+{"kind":"textbox","id":"sh/fqlk7i9c","slide":13,"text":"13","textPreview":"13","textChars":2,"textLines":1,"bbox":[1170,674,54,20]}
+{"kind":"textbox","id":"sh/epc3yd8r","slide":13,"text":"GitHub Pages","textPreview":"GitHub Pages","textChars":12,"textLines":1,"bbox":[64,205,340,52]}
+{"kind":"textbox","id":"sh/1s3m9sr2","slide":13,"text":"静的Webサイトを無料公開\nAタイプ・Level 1向け\n完成後のAI費用なし","textPreview":"静的Webサイトを無料公開 | Aタイプ・Level 1向け | 完成後のAI費用なし","textChars":39,"textLines":3,"bbox":[64,292,340,160]}
+{"kind":"textbox","id":"sh/0rul0nqx","slide":13,"text":"Google Apps Script","textPreview":"Google Apps Script","textChars":18,"textLines":1,"bbox":[470,205,340,52]}
+{"kind":"textbox","id":"sh/vuhkve9s","slide":13,"text":"Google Sheetと連携\n小規模なデータ保存\n自分でServer管理不要","textPreview":"Google Sheetと連携 | 小規模なデータ保存 | 自分でServer管理不要","textChars":39,"textLines":3,"bbox":[470,292,340,160]}
+{"kind":"textbox","id":"sh/ut8jm9sn","slide":13,"text":"Chat／Canvas／Agent","textPreview":"Chat／Canvas／Agent","textChars":17,"textLines":1,"bbox":[876,205,340,52]}
+{"kind":"textbox","id":"sh/wzilcfu1","slide":13,"text":"考える → Chat\n試す → Canvas\n育てる → Agent","textPreview":"考える → Chat | 試す → Canvas | 育てる → Agent","textChars":34,"textLines":3,"bbox":[876,292,340,160]}
+{"kind":"textbox","id":"sh/x0b2lkbm","slide":13,"text":"一つを選び続ける必要はない。段階ごとに使い分ける。","textPreview":"一つを選び続ける必要はない。段階ごとに使い分ける。","textChars":25,"textLines":1,"bbox":[64,560,1120,58]}
+{"kind":"notes","id":"nt/waoz1h","slide":13,"text":"純粋な静的サイトはGitHub Pagesで公開できます。Google Sheetをデータとして使う小規模ツールにはGoogle Apps Scriptが便利です。AIツールはランキングで一つを選ぶのではなく、考える段階はChat、試す段階はCanvas、実際のプロジェクトを育てる段階はAgentとして使い分けます。\n\n[Sources]\n- https://docs.github.com/en/pages/getting-started-with-github-pages/what-is-github-pages\n- User-authored workshop draft\n[/Sources]"}
+{"kind":"slide","id":"sl/59v681","slide":14,"title":"4｜まとめ","textShapes":10}
+{"kind":"textbox","id":"sh/1srmpk7y","slide":14,"text":"4｜まとめ","textPreview":"4｜まとめ","textChars":5,"textLines":1,"bbox":[56,30,360,28]}
+{"kind":"textbox","id":"sh/ep0nu5o7","slide":14,"text":"教師の強みは、教育のKnow-how","textPreview":"教師の強みは、教育のKnow-how","textChars":18,"textLines":1,"bbox":[56,66,1168,64]}
+{"kind":"shape","id":"sh/zq94naps","slide":14,"bbox":[56,144,1168,0]}
+{"kind":"textbox","id":"sh/cnilsf6h","slide":14,"text":"14","textPreview":"14","textChars":2,"textLines":1,"bbox":[1170,674,54,20]}
+{"kind":"textbox","id":"sh/dormlk72","slide":14,"text":"学生を知る","textPreview":"学生を知る","textChars":5,"textLines":1,"bbox":[64,216,330,56]}
+{"kind":"shape","id":"sh/qlg3q5ob","slide":14,"bbox":[64,292,310,0]}
+{"kind":"textbox","id":"sh/rmp4japw","slide":14,"text":"国・目的・レベルで\n必要な語彙が違う","textPreview":"国・目的・レベルで | 必要な語彙が違う","textChars":18,"textLines":2,"bbox":[64,326,330,130]}
+{"kind":"textbox","id":"sh/wj254z6l","slide":14,"text":"教材を判断する","textPreview":"教材を判断する","textChars":7,"textLines":1,"bbox":[450,216,330,56]}
+{"kind":"shape","id":"sh/xkbmx4n6","slide":14,"bbox":[450,292,310,0]}
+{"kind":"textbox","id":"sh/h47690fy","slide":14,"text":"自然さ・難易度・\n教育的価値を見抜く","textPreview":"自然さ・難易度・ | 教育的価値を見抜く","textChars":18,"textLines":2,"bbox":[450,326,330,130]}
+{"kind":"textbox","id":"sh/g3y5gvyd","slide":14,"text":"すぐ試して直す","textPreview":"すぐ試して直す","textChars":7,"textLines":1,"bbox":[836,216,330,56]}
+{"kind":"shape","id":"sh/f2po7qxs","slide":14,"bbox":[836,292,310,0]}
+{"kind":"textbox","id":"sh/u1wnelg7","slide":14,"text":"実際の授業で使い\n反応をAIへ返す","textPreview":"実際の授業で使い | 反応をAIへ返す","textChars":17,"textLines":2,"bbox":[836,326,330,130]}
+{"kind":"shape","id":"sh/t0n65gfm","slide":14,"bbox":[64,524,1102,110]}
+{"kind":"textbox","id":"sh/sfe5cby1","slide":14,"text":"台湾の学習者：漢字の意味には強い。\nしかし、日本語の読み方や実用場面は別の課題。","textPreview":"台湾の学習者：漢字の意味には強い。 | しかし、日本語の読み方や実用場面は別の課題。","textChars":40,"textLines":2,"bbox":[92,546,1046,70]}
+{"kind":"notes","id":"nt/59v681","slide":14,"text":"教師の本当の強みは、学生を知っていることです。台湾の学習者は漢字の意味に慣れていても、日本語の読み方が弱い場合があります。旅行、交流、日本文化への興味など、目的も違います。教師はAIが生成した教材の自然さ、難易度、教育的価値を判断し、実際の授業で試して改善できます。\n\n[Sources]\n- User-authored workshop draft\n[/Sources]"}
+{"kind":"slide","id":"sl/gj07ko","slide":15,"title":"AIは能力を拡張する。","textShapes":5}
+{"kind":"textbox","id":"sh/cv2t8vmt","slide":15,"text":"AIは能力を拡張する。","textPreview":"AIは能力を拡張する。","textChars":11,"textLines":1,"bbox":[72,104,1000,76]}
+{"kind":"textbox","id":"sh/rutsfql8","slide":15,"text":"だからこそ、\n何を拡張するかが大切。","textPreview":"だからこそ、 | 何を拡張するかが大切。","textChars":18,"textLines":2,"bbox":[72,210,900,140]}
+{"kind":"shape","id":"sh/qtkb654n","slide":15,"bbox":[72,402,260,0]}
+{"kind":"textbox","id":"sh/5sbad032","slide":15,"text":"AIは、学生がなぜ日本語を学ぶのか知らない。\nでも先生は知っている。","textPreview":"AIは、学生がなぜ日本語を学ぶのか知らない。 | でも先生は知っている。","textChars":34,"textLines":2,"bbox":[72,448,1080,110]}
+{"kind":"textbox","id":"sh/4rit4vmh","slide":15,"text":"教育の洞察で、AIという優秀なインターンを導く。","textPreview":"教育の洞察で、AIという優秀なインターンを導く。","textChars":24,"textLines":1,"bbox":[72,612,1080,42]}
+{"kind":"textbox","id":"sh/369sbqlc","slide":15,"text":"15","textPreview":"15","textChars":2,"textLines":1,"bbox":[1170,674,54,20]}
+{"kind":"notes","id":"nt/gj07ko","slide":15,"text":"AIは能力を拡張する道具です。得意な部分も、間違いも拡張します。大切なのは、教師が持つ教育の洞察を中心に置き、AIという能力の高いインターンを導くことです。AIは学生がなぜ日本語を学ぶのか知りません。でも先生は知っています。\n\n[Sources]\n- User-authored workshop draft\n[/Sources]"}
+{"kind":"slide","id":"sl/sqv818","slide":16,"title":"付録｜今回は詳しく扱わない","textShapes":10}
+{"kind":"textbox","id":"sh/jyl8fip8","slide":16,"text":"付録｜今回は詳しく扱わない","textPreview":"付録｜今回は詳しく扱わない","textChars":13,"textLines":1,"bbox":[56,30,360,28]}
+{"kind":"textbox","id":"sh/kzuponqt","slide":16,"text":"次回：MCPとAIワークフロー","textPreview":"次回：MCPとAIワークフロー","textChars":15,"textLines":1,"bbox":[56,66,1168,64]}
+{"kind":"shape","id":"sh/503qhs7e","slide":16,"bbox":[56,144,1168,0]}
+{"kind":"textbox","id":"sh/61c7qx8z","slide":16,"text":"16","textPreview":"16","textChars":2,"textLines":1,"bbox":[1170,674,54,20]}
+{"kind":"textbox","id":"sh/72l8j2pk","slide":16,"text":"Notion","textPreview":"Notion","textChars":6,"textLines":1,"bbox":[72,218,330,56]}
+{"kind":"textbox","id":"sh/s3eps7qp","slide":16,"text":"プロジェクト整理\nタスクボード作成","textPreview":"プロジェクト整理 | タスクボード作成","textChars":17,"textLines":2,"bbox":[72,300,330,100]}
+{"kind":"textbox","id":"sh/t4nqlc7a","slide":16,"text":"Figma／3D","textPreview":"Figma／3D","textChars":8,"textLines":1,"bbox":[456,218,300,56]}
+{"kind":"textbox","id":"sh/u5w7uh8v","slide":16,"text":"デザインを読む\nシーンを作る・直す","textPreview":"デザインを読む | シーンを作る・直す","textChars":17,"textLines":2,"bbox":[456,300,300,100]}
+{"kind":"textbox","id":"sh/f658n2pg","slide":16,"text":"Browser","textPreview":"Browser","textChars":7,"textLines":1,"bbox":[860,218,300,56]}
+{"kind":"textbox","id":"sh/7q5kzipc","slide":16,"text":"Webサイトを開く\n操作してテストする","textPreview":"Webサイトを開く | 操作してテストする","textChars":19,"textLines":2,"bbox":[860,300,300,100]}
+{"kind":"shape","id":"sh/6pcjqd8r","slide":16,"bbox":[72,514,1098,100]}
+{"kind":"textbox","id":"sh/tcn21s7i","slide":16,"text":"MCPは、AIを外部のデータやツールにつなぐ共通の仕組み。","textPreview":"MCPは、AIを外部のデータやツールにつなぐ共通の仕組み。","textChars":29,"textLines":1,"bbox":[98,542,1046,50]}
+{"kind":"notes","id":"nt/sqv818","slide":16,"text":"これは次回のテーマです。MCPはAIを外部のデータやツールにつなぐ仕組みです。Notionでタスクを整理したり、Figmaや3Dソフトを操作したり、ブラウザでWebサイトをテストしたりできます。今回はプログラムサービスの設計に絞るため、詳しく扱いません。\n\n[Sources]\n- https://modelcontextprotocol.io/docs/getting-started/intro\n- User-authored workshop draft\n[/Sources]"}

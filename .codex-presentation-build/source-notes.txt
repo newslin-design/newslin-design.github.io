@@ -1,0 +1,21 @@
+Communication job: By the end, a non-engineer Japanese teacher who already uses Claude should be able to classify a teaching-tool idea, choose a reasonable first version, and understand that their pedagogical judgment—not coding—is the core value.
+
+Primary user-authored source:
+- C:/Users/s9348/new folder/github/newslin-design.github.io/nihonngo/AI教學工具分享-貼近原稿版.md
+
+Local screenshots:
+- kanji-sheet.png captured from https://newslin-design.github.io/nihonngo/sheet.html?id=n3-02 on 2026-08-25.
+- word-card.png was captured but not used because data did not load clearly.
+
+External factual sources used in speaker notes:
+- Gemini Canvas help: https://support.google.com/gemini/answer/16047321?hl=en
+- Gemini Canvas safety: https://support.google.com/gemini/answer/16419134?hl=en-GB
+- GitHub Pages documentation: https://docs.github.com/en/pages/getting-started-with-github-pages/what-is-github-pages
+- Claude Code overview: https://docs.anthropic.com/ja/docs/claude-code
+- MCP introduction: https://modelcontextprotocol.io/docs/getting-started/intro
+- KanjiVG: https://kanjivg.tagaini.net/
+
+User-provided examples:
+- N1 listening: https://gemini.google.com/share/504f148f337c?skid=60cd732b-e064-4c90-994d-317159cfadf6
+- Spoken Japanese practice: https://gemini.google.com/share/9c367038fa42?skid=3cfa4950-cd35-4221-af28-71d35e40ebe5
+- Custom vocabulary: https://newslin-design.github.io/wordCard.html
