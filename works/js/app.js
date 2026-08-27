@@ -775,7 +775,7 @@ try {
                             </div>
                         </a>
                         <ul class="row flex-jus-end">
-                            <li><a href="${pageBasePath}../password.html">Portfolio</a></li>
+                            <li><a href="${pageBasePath}index.html">Portfolio</a></li>
                             <li><a href="${pageBasePath}../index.html">Blog</a></li>
                         </ul>
                     </div>`;
