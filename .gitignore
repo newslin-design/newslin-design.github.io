@@ -1,3 +1,5 @@
 program/aten/20252Cweb/styles.css
 .claude/
 **/.claude/
+# API 金鑰（make-audio.js 讀取用，不可上傳）
+nihonngo/vocab/tools/gemini-key.txt

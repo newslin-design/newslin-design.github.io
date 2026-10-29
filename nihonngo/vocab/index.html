@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>見てわかる単語カード</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Klee+One:wght@400;600&family=Noto+Sans+TC:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700&family=Noto+Sans+KR:wght@400;500;700&family=Noto+Sans:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="css/style.css">
+<script>
+  /* 深色／淺色：先照上次按鈕選的，沒選過就跟裝置。放在最前面，畫面才不會先閃一下另一種顏色 */
+  (function () {
+    var t = null;
+    try { t = JSON.parse(localStorage.getItem("vocab.prefs") || "{}").theme; } catch (e) { /* 用裝置的 */ }
+    if (t !== "light" && t !== "dark") t = window.matchMedia && matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    document.documentElement.setAttribute("data-theme", t);
+  })();
+</script>
+</head>
+<body>
+<div class="wrap">
+  <!-- 標題列：首頁顯示網站名稱；進了主題換成「上一頁＋主題名稱和翻譯」。右邊是設定（母語、背景） -->
+  <header class="top">
+    <div class="brand" id="brand">
+      <h1>見てわかる単語カード</h1>
+      <p data-t="brandSub"></p>
+    </div>
+    <div class="titlebar" id="titleBar" hidden>
+      <button class="iconbtn" id="backBtn" data-ta="back">
+        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>
+      </button>
+      <div class="ttl">
+        <span class="ttl-ja"><span class="kana" id="themeJa"></span><small class="kana" id="themeKana"></small></span>
+        <span class="ttl-tr" id="themeName"></span>
+      </div>
+    </div>
+    <button class="iconbtn" id="setBtn" data-ta="settings" aria-haspopup="dialog">
+      <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>
+    </button>
+  </header>
+
+  <!-- 設定：母語、背景（跟裝置／淺色／深色）。第一次打開網頁也用它問母語：標題換成歡迎、只顯示母語，選了就關 -->
+  <dialog class="sheet" id="setDlg" aria-labelledby="setDlgTitle">
+    <div class="sheet-in">
+      <div class="sheet-head">
+        <h2 id="setDlgTitle"></h2>
+        <button class="sheet-x" id="setDlgClose" data-ta="close">×</button>
+      </div>
+      <p class="setnote" id="setNote" data-t="welcomeNote" hidden></p>
+      <h3 class="set-h" data-t="langLabel"></h3>
+      <div class="choices" id="langChoices"></div>
+      <div id="bgSet">
+        <h3 class="set-h" data-t="bgLabel"></h3>
+        <div class="seg" id="bgSeg"></div>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- 首頁：主題卡片照組排（每組一個小標題，組在 data/themes.js）＋「新增單字主題」（目前只有按鈕和模板選項，還不能真的建立） -->
+  <section id="homeView">
+    <div id="themeList"></div>
+    <button class="addtheme" id="addThemeBtn" data-t="addTheme" aria-haspopup="dialog"></button>
+  </section>
+
+  <dialog class="sheet" id="addDlg" aria-labelledby="addDlgTitle">
+    <div class="sheet-in">
+      <div class="sheet-head">
+        <h2 id="addDlgTitle" data-t="addThemeTitle"></h2>
+        <button class="sheet-x" id="addDlgClose" data-ta="close">×</button>
+      </div>
+      <p class="tplnote" data-t="templatesNote"></p>
+      <div class="tpls" id="tplList"></div>
+      <p class="sheet-soon" id="addSoon" aria-live="polite"></p>
+    </div>
+  </dialog>
+
+  <!-- 主題頁：主題名稱在最上面的標題列，內容由模板畫進 #themeBody -->
+  <section id="themeView" hidden>
+    <div class="prefs">
+      <button class="chip" id="btnVoice" data-ta="voiceSwitch"></button>
+      <button class="chip" id="btnSlow" aria-pressed="false" data-t="slow"></button>
+      <button class="chip" id="btnSe" aria-pressed="true" data-t="se"></button>
+    </div>
+    <div class="notice" id="voiceNotice" data-t="voiceNotice" hidden></div>
+    <div id="themeBody"></div>
+  </section>
+</div>
+
+<script src="data/templates.js"></script>
+<script src="data/themes.js"></script>
+<script src="audio/index.js"></script>
+<script src="js/i18n.js"></script>
+<script src="js/speech.js"></script>
+<script src="js/sfx.js"></script>
+<script src="js/deck.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

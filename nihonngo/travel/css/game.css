@@ -1,0 +1,1345 @@
+/* ============================================================
+   日本旅行シミュレーター ── 第一版（便利商店）
+   手機滿版：場景圖鋪滿整個畫面，上面的工具列、下面的對話框都浮在圖上。
+   圖照自己的比例（9:16）撐滿畫面寬度：螢幕比較寬就裁掉一點上下，
+   螢幕比較長就上下留空，空的地方露出後面同一張圖的模糊版（.backdrop）。
+   電腦版：同一個直式畫面置中，兩側也是那張模糊的圖。
+   ============================================================ */
+
+:root {
+  /* --- 色票：冷色系，主色是藍色（2026-10-26 從珊瑚色改成藍色，配店裡的藍白） --- */
+  --page:         #0f1520;   /* 桌機時 app 外面的底色（通常被模糊的圖蓋住） */
+  --bg:           #f2f4f7;   /* 結果頁的底色 */
+  --paper:        #ffffff;   /* 卡片 */
+  --ink:          #1f2733;
+  --ink-soft:     #596474;
+  --ink-mute:     #8b95a3;
+  --line:         #dde3ea;
+
+  --accent:       #2563c9;   /* 藍：主要按鈕、店員名牌 */
+  --accent-deep:  #1a4a99;
+  --accent-soft:  #e3ecfa;
+  --accent-rgb:   37, 99, 201;   /* 同 --accent，要調透明度時用（熱點的光圈） */
+  --teal:         #3d8b85;   /* 你的回應 */
+  --teal-soft:    #dcefed;
+  --gold:         #f2cc8f;   /* 小知識 */
+  --trap:         #f7c6c0;   /* 中文母語者注意 */
+  --stamp:        #c8323c;
+  --screen:       #2f3640;   /* 客人用的小螢幕 */
+  --screen-btn:   #2a7de1;
+  --brand:        #1f5fae;   /* 店的藍色：招牌、社群推薦 */
+  --brand-soft:   #e2ecf8;
+  --glass:        rgba(255, 255, 255, .92);   /* 浮在圖上的工具列、對話框 */
+  --glass-dark:   rgba(12, 18, 30, .8);      /* 首頁（夜景）的深色面板 */
+  --float:        0 2px 10px rgba(0, 0, 0, .16);
+
+  /* --- 字型：中文用 Noto Sans TC，日文用圓體（Zen Maru Gothic） --- */
+  --font-zh: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+  --font-ja: "Zen Maru Gothic", "Hiragino Maru Gothic ProN", "Yu Gothic", "Noto Sans JP", sans-serif;
+
+  /* --- 場景圖的寬高比（9:16）：改這裡要一起改 game.js 的 IMG_RATIO --- */
+  --img-w: 9;
+  --img-h: 16;
+
+  /* --- 尺寸 --- */
+  --topbar-h: 52px;
+  --top-h:    calc(var(--topbar-h) + env(safe-area-inset-top));   /* 工具列實際佔的高度 */
+  --radius:   14px;
+}
+
+* { box-sizing: border-box; }
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background: var(--page);
+  color: var(--ink);
+  font-family: var(--font-zh);
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+}
+
+:lang(ja) { font-family: var(--font-ja); }
+
+button {
+  font: inherit;
+  color: inherit;
+}
+
+p { margin: 0; }
+
+.app {
+  position: relative;
+  height: 100vh;
+  height: 100dvh;
+  margin: 0 auto;
+  overflow: hidden;
+  box-shadow: 0 0 48px rgba(0, 0, 0, .3);
+}
+
+/* 後面那張模糊的圖：手機上露在圖的上下，電腦版鋪在兩側 */
+.backdrop {
+  position: fixed;
+  inset: -60px;          /* 模糊會讓邊緣變淡，放大一點蓋掉 */
+  z-index: -1;
+  background: #1c2233 center / cover no-repeat;
+  filter: blur(28px) brightness(.8);
+}
+
+/* 電腦版：畫面維持圖的比例，置中 */
+@media (min-width: 600px) {
+  .app {
+    max-width: min(520px, 100vh * var(--img-w) / var(--img-h));
+    max-width: min(520px, 100dvh * var(--img-w) / var(--img-h));
+  }
+}
+
+/* ---------- 上方工具列：浮在圖上，底是透明的，只有標題和按鈕擋得到 ---------- */
+
+.topbar {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  height: var(--top-h);
+  padding: env(safe-area-inset-top) 10px 0;
+  pointer-events: none;
+}
+
+.topbar > * { pointer-events: auto; }
+
+.topbar__title {
+  min-width: 0;
+  margin: 0;
+  overflow: hidden;
+  padding: 7px 12px;
+  border-radius: 999px;
+  background: var(--glass);
+  box-shadow: var(--float);
+  font-size: clamp(12px, 3.4vw, 14px);
+  font-weight: 700;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.topbar__tools {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 8px;
+}
+
+.seg {
+  display: inline-flex;
+  padding: 3px;
+  border-radius: 999px;
+  background: #fff;
+  box-shadow: inset 0 0 0 1.5px var(--line), var(--float);
+}
+
+.seg button {
+  padding: 5px 10px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink-soft);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.seg button[aria-pressed="true"] {
+  background: var(--accent);
+  color: #fff;
+}
+
+.icon-btn {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: inset 0 0 0 1.5px var(--line), var(--float);
+  color: var(--ink-soft);
+  cursor: pointer;
+}
+
+.icon-btn[aria-pressed="false"] { color: var(--ink-mute); }
+
+/* ---------- 場景圖 ---------- */
+
+.view {
+  position: absolute;
+  inset: 0;
+}
+
+.stage {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  container-type: size;   /* 圖的大小、標題的字級都照畫面算（cqw、cqh） */
+}
+
+/* 圖、疊上去的字、熱點放在同一層：寬度撐滿畫面、高度照圖的比例、上下置中。
+   結帳拉近時整層一起變形，見 game.js 的 zoom() */
+.stage__canvas {
+  position: absolute;
+  top: calc(50cqh - 50cqw * var(--img-h) / var(--img-w));
+  left: 0;
+  width: 100cqw;
+  height: calc(100cqw * var(--img-h) / var(--img-w));
+  container-type: size;   /* 疊上去的字用 cqh 跟著圖縮放 */
+  transform-origin: 0 0;
+  transition: transform .6s cubic-bezier(.3, .7, .2, 1);
+}
+
+.stage__img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity .35s ease;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.stage__labels,
+.stage__spots,
+.stage__overlay {
+  position: absolute;
+  inset: 0;
+}
+
+.stage__labels,
+.stage__overlay { pointer-events: none; }
+
+.stage__overlay > * { pointer-events: auto; }
+
+/* 疊在空白招牌上的字：字級跟著招牌高度（--h 是圖高的百分比，cqh 也是） */
+.label {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #4a4f57;
+  font-size: calc(var(--h) * .68cqh);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: .02em;
+  white-space: nowrap;
+}
+
+.label--sign {
+  color: var(--brand);
+  font-size: calc(var(--h) * .54cqh);
+  letter-spacing: .12em;
+}
+
+/* 有底板的字（資料寫了 bg）：蓋掉圖上的亂碼 */
+.label--plate {
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, .2);
+}
+
+/* 熱點：透明按鈕＋中間一個會呼吸的點 */
+.spot {
+  position: absolute;
+  padding: 0;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  cursor: pointer;
+}
+
+.spot::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 14px;
+  height: 14px;
+  margin: -7px 0 0 -7px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(var(--accent-rgb), .75), 0 2px 6px rgba(0, 0, 0, .25);
+  animation: spot-pulse 2.4s ease-in-out infinite;
+}
+
+.spot:nth-child(2n)::after { animation-delay: .6s; }
+.spot:nth-child(3n)::after { animation-delay: 1.2s; }
+
+.spot:hover,
+.spot:focus-visible {
+  outline: none;
+  background: rgba(255, 255, 255, .18);
+  box-shadow: inset 0 0 0 3px rgba(var(--accent-rgb), .8);
+}
+
+.spot.is-seen::after {
+  animation: none;
+  opacity: .7;
+}
+
+.spot.is-in-basket::after {
+  content: "✓";
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  margin: -11px 0 0 -11px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  animation: none;
+  opacity: 1;
+}
+
+/* 社群推薦的商品：點的旁邊多一個「人気」 */
+.spot__tag {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: -30px 0 0 2px;
+  padding: 1px 5px;
+  border-radius: 6px;
+  background: var(--brand);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, .25);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1.4;
+  white-space: nowrap;
+}
+
+.stage__spots.is-off { pointer-events: none; }
+.stage__spots.is-off .spot::after,
+.stage__spots.is-off .spot__tag { opacity: 0; }
+
+@keyframes spot-pulse {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.35); }
+}
+
+/* 籃子：逛貨架和結帳時放在工具列左邊，標題先藏起來（body.is-shopping），圖上少擋一點 */
+body.is-shopping .topbar__title { visibility: hidden; }
+
+.basket {
+  position: absolute;
+  top: calc(env(safe-area-inset-top) + 9px);
+  left: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px 6px 10px;
+  border-radius: 999px;
+  background: rgba(255, 253, 248, .94);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, .15);
+  color: var(--accent-deep);
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.basket { touch-action: manipulation; }   /* 連點三下換店內圖（js/alts.js）時，手機不要放大畫面 */
+.basket[hidden] { display: none; }
+
+/* 偷偷換店內圖時，右上短暫顯示是哪一張（js/alts.js） */
+.alt-toast {
+  position: absolute;
+  top: calc(var(--top-h) + 8px);
+  right: 10px;
+  z-index: 21;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: rgba(12, 18, 30, .8);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  pointer-events: none;
+}
+
+.alt-toast[hidden] { display: none; }
+.basket.is-bump { animation: bump .35s ease; }
+
+@keyframes bump {
+  50% { transform: scale(1.18); }
+}
+
+/* 標題（疊在店外夜景上） */
+.title {
+  position: absolute;
+  top: calc(var(--top-h) + 4%);
+  right: 0;
+  left: 0;
+  padding: 0 6%;
+  color: #ffffff;
+  text-align: center;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, .45);
+}
+
+.title__ja {
+  font-size: 7.4cqw;
+  font-weight: 700;
+  letter-spacing: .04em;
+}
+
+.title__zh {
+  margin-top: 1.6cqw;
+  font-size: 4cqw;
+  opacity: .9;
+}
+
+/* 客人用的小螢幕（年齡確認、付款） */
+.cscreen {
+  position: absolute;
+  top: calc(var(--top-h) + 10px);
+  left: 50%;
+  width: 76%;
+  padding: 10px;
+  border-radius: 18px;
+  background: var(--screen);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, .38);
+  transform: translateX(-50%);
+  animation: pop .3s cubic-bezier(.2, 1.3, .4, 1) both;
+}
+
+.cscreen__inner {
+  padding: 14px 14px 16px;
+  border-radius: 10px;
+  background: #f6f9fc;
+  text-align: center;
+}
+
+.cscreen__title .t-ja { font-size: 20px; }
+.cscreen__title .t-zh { font-size: 13px; }
+
+.cscreen__total {
+  margin: 4px 0 2px;
+  font-size: 26px;
+  font-weight: 700;
+}
+
+.cscreen__buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.cscreen__buttons.is-col { grid-template-columns: 1fr; }
+
+.cscreen__btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 50px;
+  padding: 4px 8px;
+  border: 0;
+  border-radius: 10px;
+  background: var(--screen-btn);
+  color: #fff;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.5;
+  cursor: pointer;
+}
+
+.cscreen__btn:active { transform: scale(.97); }
+.cscreen__btn rt { font-size: .5em; }
+
+.cscreen__btn .t-zh {
+  margin: 0;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 400;
+  opacity: .85;
+}
+
+.cscreen.is-pulse { animation: nudge .5s ease-in-out 2; }
+
+@keyframes pop {
+  from { opacity: 0; transform: translateX(-50%) scale(.85); }
+  to   { opacity: 1; transform: translateX(-50%) scale(1); }
+}
+
+@keyframes nudge {
+  0%, 100% { transform: translateX(-50%) scale(1); }
+  50% {
+    transform: translateX(-50%) scale(1.06);
+    box-shadow: 0 0 0 6px rgba(42, 125, 225, .45), 0 16px 36px rgba(0, 0, 0, .38);
+  }
+}
+
+/* ---------- 對話框 ---------- */
+
+/* 浮在圖上的底部面板，內容多就捲動 */
+.panel {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 5;
+  max-height: 62%;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 16px 16px calc(18px + env(safe-area-inset-bottom));
+  border-radius: 20px 20px 0 0;
+  background: var(--glass);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  box-shadow: 0 -8px 28px rgba(0, 0, 0, .2);
+}
+
+/* 逛貨架時縮小，讓圖多露出來 */
+.panel--compact { padding-top: 12px; }
+.panel--compact .lead { font-size: 14px; line-height: 1.6; }
+.panel--compact .basket-list { margin-top: 8px; }
+.panel--compact .row { margin-top: 10px; }
+
+/* 暗的圖（夜景：店外、飯店房間，見場景資料的 dark）上，
+   面板和上面的按鈕改成深色，跟圖搭在一起（body.is-dark） */
+body.is-dark .panel {
+  background: var(--glass-dark);
+  box-shadow: 0 -8px 28px rgba(0, 0, 0, .45);
+  color: #e9eef6;
+}
+
+body.is-dark .panel .field-label,
+body.is-dark .panel .levels__desc { color: #a3b1c5; }
+
+body.is-dark .panel .note { color: #9cc3ff; }
+
+body.is-dark .panel .level {
+  border-color: rgba(255, 255, 255, .16);
+  background: rgba(255, 255, 255, .06);
+  color: #dbe3ee;
+}
+
+body.is-dark .panel .level[aria-pressed="true"] {
+  border-color: #5b93ec;
+  background: rgba(var(--accent-rgb), .45);
+  color: #fff;
+}
+
+body.is-dark .topbar__title,
+body.is-dark .seg,
+body.is-dark .icon-btn {
+  background: rgba(12, 18, 30, .6);
+  box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, .14), var(--float);
+  color: #e9eef6;
+}
+
+body.is-dark .seg button { color: #aebbcc; }
+body.is-dark .seg button[aria-pressed="true"] { color: #fff; }
+
+.lead {
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+.muted {
+  color: var(--ink-mute);
+  font-size: 14px;
+}
+
+.note {
+  margin-top: 8px;
+  color: var(--accent-deep);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.note:empty { display: none; }
+
+.flash {
+  margin-top: 8px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: #fff4d6;
+  color: #7a5a12;
+  font-size: 14px;
+}
+
+/* 選難度（標題、結果頁） */
+.field-label {
+  margin-top: 12px;
+  color: var(--ink-soft);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.levels { margin-top: 6px; }
+
+.levels__row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+}
+
+.level {
+  padding: 9px 0;
+  border: 2px solid var(--line);
+  border-radius: 12px;
+  background: #fff;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.level[aria-pressed="true"] {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent-deep);
+}
+
+/* 選中那個難度的說明（留兩行高，換難度時版面不會跳） */
+.levels__desc {
+  min-height: 3em;
+  margin-top: 6px;
+  color: var(--ink-soft);
+  font-size: 12.5px;
+  line-height: 1.5;
+}
+
+/* 一句話：日文（ルビ）／拼音／中文 */
+.t-ja {
+  font-size: 21px;
+  font-weight: 700;
+  line-height: 1.85;
+}
+
+.t-ja rt {
+  color: var(--ink-soft);
+  font-size: .48em;
+  font-weight: 500;
+}
+
+.t-romaji {
+  margin-top: 1px;
+  color: var(--ink-mute);
+  /* 中文字型的 ō、ū 長音符號會歪，拼音改用西文字型 */
+  font-family: "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+  font-size: 13px;
+  letter-spacing: .02em;
+}
+
+.t-zh {
+  margin-top: 3px;
+  color: var(--ink-soft);
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+/* 只看日文：拼音和中文收起來，按「看中文」才出現 */
+body.mode-ja .t-romaji,
+body.mode-ja .t-zh { display: none; }
+body.mode-ja .is-revealed .t-zh { display: block; }
+
+.reveal,
+.reveal-sub {
+  display: none;
+  align-items: center;
+  padding: 3px 10px;
+  border: 0;
+  border-radius: 999px;
+  background: #fff;
+  box-shadow: inset 0 0 0 1.5px var(--line);
+  color: var(--ink-soft);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+body.mode-ja .reveal,
+.reveal-sub { display: inline-flex; }
+
+/* 老手：先只聽聲音，回應之後或按「看字幕」才出現 */
+.say__listen {
+  display: none;
+  padding: 4px 0 2px;
+  color: var(--ink-mute);
+  font-size: 15px;
+}
+
+.say--listen:not(.is-shown) .say__listen { display: block; }
+.say--listen:not(.is-shown) .t { display: none; }
+.say--listen.is-shown .reveal-sub { display: none; }
+
+/* 店員說的話 */
+.say__head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 2px;
+}
+
+.speaker {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.speak {
+  display: inline-flex;
+  gap: 6px;
+  margin-left: auto;
+}
+
+.speak button {
+  display: inline-grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--accent-soft);
+  color: var(--accent-deep);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.turn > * + .say { margin-top: 14px; }
+
+/* 選項 */
+.choices {
+  display: grid;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.choice {
+  display: block;
+  width: 100%;
+  padding: 8px 14px;
+  border: 2px solid var(--line);
+  border-radius: var(--radius);
+  background: #fff;
+  color: var(--ink);
+  text-align: left;
+  cursor: pointer;
+  transition: border-color .15s, transform .1s;
+}
+
+.choice:hover,
+.choice:focus-visible {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.choice:active { transform: scale(.98); }
+
+.choice .t-ja {
+  font-size: 17px;
+  line-height: 1.75;
+}
+
+.choice .t-romaji { font-size: 12px; }
+
+.choice .t-zh {
+  margin-top: 0;
+  font-size: 13px;
+}
+
+.choice--nod {
+  padding: 12px 14px;
+  border-style: dashed;
+  background: transparent;
+  color: var(--ink-soft);
+  font-size: 15px;
+}
+
+/* 你的回應 */
+.reply {
+  width: fit-content;
+  max-width: 88%;
+  margin: 12px 0 0 auto;
+  padding: 7px 12px 9px;
+  border-radius: 14px 14px 4px 14px;
+  background: var(--teal-soft);
+}
+
+.reply__who {
+  display: block;
+  color: var(--teal);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.reply .t-ja {
+  font-size: 17px;
+  line-height: 1.75;
+}
+
+.reply .t-zh { font-size: 13px; }
+
+.reply__act {
+  color: var(--ink-soft);
+  font-size: 15px;
+}
+
+/* 旁白、小知識、提示 */
+.narr {
+  margin-top: 12px;
+  padding: 9px 12px;
+  border-radius: 10px;
+  background: #eef2f7;
+  color: var(--ink);
+  font-size: 15px;
+  line-height: 1.6;
+  white-space: pre-line;
+}
+
+.tip {
+  margin-top: 10px;
+  color: var(--ink-soft);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.tip__tag {
+  display: inline-block;
+  margin-right: 6px;
+  padding: 1px 7px;
+  border-radius: 5px;
+  background: var(--gold);
+  color: #6b4e16;
+  font-size: 11px;
+  font-weight: 700;
+  vertical-align: 1px;
+}
+
+.tip--trap .tip__tag {
+  background: var(--trap);
+  color: #8a2a1f;
+}
+
+.tip--pick .tip__tag {
+  background: var(--brand-soft);
+  color: var(--brand);
+}
+
+.hint {
+  margin-top: 10px;
+  color: var(--accent-deep);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+/* 按鈕 */
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.row--between { justify-content: space-between; }
+.row--center { justify-content: center; }
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 46px;
+  padding: 0 22px;
+  border: 0;
+  border-radius: 999px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform .1s, background .15s;
+}
+
+.btn:active { transform: scale(.97); }
+
+.btn--primary {
+  background: var(--accent);
+  box-shadow: 0 3px 0 var(--accent-deep);
+  color: #fff;
+}
+
+.btn--primary:disabled {
+  background: #cfd6df;
+  box-shadow: none;
+  cursor: default;
+}
+
+.btn--ghost {
+  background: transparent;
+  box-shadow: inset 0 0 0 2px var(--line);
+  color: var(--ink-soft);
+}
+
+/* 逛貨架：籃子裡的東西 */
+.basket-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 8px 5px 12px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent-deep);
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.chip__x {
+  display: inline-grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: rgba(var(--accent-rgb), .14);
+  font-size: 12px;
+}
+
+.total {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+/* 單字卡 */
+.card {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.card__thumb {
+  flex: none;
+  width: 104px;    /* 改這裡的寬高比，要一起改 game.js 的 THUMB_RATIO */
+  height: 80px;
+  border-radius: 12px;
+  background-color: #e7ecf2;
+  background-repeat: no-repeat;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .06);
+}
+
+.card__body {
+  flex: 1;
+  min-width: 0;
+}
+
+.card .t-ja {
+  font-size: 28px;
+  line-height: 1.6;
+}
+
+.card__meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.card__meta .speak { margin-left: 0; }
+
+.card__price {
+  margin-left: auto;
+  color: var(--accent-deep);
+  font-size: 17px;
+  font-weight: 700;
+}
+
+/* 海報：社群推薦必買的清單 */
+.picks__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.picks__title .t-ja {
+  color: var(--brand);
+  font-size: 22px;
+}
+
+.picks {
+  display: grid;
+  gap: 8px;
+  margin: 10px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pick {
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: inset 0 0 0 1.5px var(--line);
+}
+
+.pick__top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pick__chain {
+  padding: 1px 8px;
+  border-radius: 6px;
+  background: var(--brand-soft);
+  color: var(--brand);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.pick .t-ja {
+  font-size: 19px;
+  line-height: 1.7;
+}
+
+.pick__why {
+  margin-top: 4px;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* 要跟店員點的：這樣說 */
+.pick__ask {
+  margin-top: 8px;
+  padding: 6px 10px 8px;
+  border-radius: 10px;
+  background: var(--teal-soft);
+}
+
+.pick__ask .say__head { margin-bottom: 0; }
+
+.pick__ask-tag {
+  color: var(--teal);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.pick__ask .t-ja {
+  font-size: 17px;
+  line-height: 1.75;
+}
+
+.pick__go {
+  margin-top: 8px;
+  padding: 5px 12px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent-deep);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.picks__foot {
+  margin-top: 10px;
+  color: var(--ink-mute);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+/* 回到飯店：發生的事 */
+.happen {
+  display: grid;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.happen__item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: inset 0 0 0 1.5px var(--line);
+  color: var(--ink);   /* 白卡片在深色面板上也要是深色字 */
+  animation: rise .4s ease both;
+}
+
+.happen__icon {
+  flex: none;
+  font-size: 28px;
+  line-height: 1.2;
+}
+
+.happen__text {
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+.happen .tip { margin-top: 4px; }
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* ---------- 結果頁 ---------- */
+
+/* 從工具列下面一直蓋到底，上面露出一點飯店的圖 */
+.sheet {
+  position: absolute;
+  top: calc(var(--top-h) + 6px);
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 10;
+  overflow-y: auto;
+  padding: 22px 16px calc(28px + env(safe-area-inset-bottom));
+  border-radius: 20px 20px 0 0;
+  background: var(--bg);
+  box-shadow: 0 -8px 28px rgba(0, 0, 0, .2);
+  animation: rise .35s ease both;
+}
+
+.sheet[hidden] { display: none; }
+
+.stamp {
+  position: relative;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  width: 124px;
+  height: 124px;
+  margin: 6px auto 10px;
+  border: 4px solid var(--stamp);
+  border-radius: 50%;
+  color: var(--stamp);
+  transform: rotate(-12deg);
+  animation: stamp .55s cubic-bezier(.2, 1.4, .4, 1) .15s both;
+}
+
+.stamp::before {
+  content: "";
+  position: absolute;
+  inset: 6px;
+  border: 1.5px solid var(--stamp);
+  border-radius: 50%;
+}
+
+.stamp__main {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: .06em;
+}
+
+.stamp__date {
+  margin-top: 2px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+@keyframes stamp {
+  from { opacity: 0; transform: rotate(-12deg) scale(1.8); }
+  to   { opacity: .92; transform: rotate(-12deg) scale(1); }
+}
+
+.found {
+  font-size: 17px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.found__n {
+  color: var(--accent-deep);
+  font-size: 22px;
+}
+
+.endings {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.ending {
+  position: relative;
+  padding: 10px 6px 12px;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: inset 0 0 0 1.5px var(--line);
+  text-align: center;
+}
+
+.ending__icon {
+  font-size: 26px;
+  line-height: 1.3;
+}
+
+.ending__title {
+  margin-top: 2px;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.ending__hint {
+  margin-top: 4px;
+  color: var(--ink-mute);
+  font-size: 11px;
+  line-height: 1.45;
+}
+
+.ending.is-locked {
+  background: transparent;
+  box-shadow: none;
+  border: 2px dashed var(--line);
+}
+
+.ending.is-locked .ending__icon,
+.ending.is-locked .ending__title { color: var(--ink-mute); }
+
+.ending.is-new::after {
+  content: "NEW";
+  position: absolute;
+  top: -6px;
+  right: -4px;
+  padding: 1px 6px;
+  border-radius: 6px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.sheet__h {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 24px 0 8px;
+  font-size: 16px;
+}
+
+.recap {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.recap li {
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: inset 0 0 0 1.5px var(--line);
+}
+
+.recap .t-ja { font-size: 18px; }
+.recap .reply { margin-top: 8px; }
+
+.noscript {
+  padding: 24px;
+  text-align: center;
+}
+
+/* ---------- ?edit：對座標用 ---------- */
+
+body.is-edit .spot {
+  background: rgba(230, 57, 70, .12);
+  box-shadow: inset 0 0 0 2px #e63946;
+}
+
+body.is-edit .spot::before {
+  content: attr(data-id);
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  padding: 1px 4px;
+  border-radius: 3px;
+  background: #e63946;
+  color: #fff;
+  font: 10px/1.3 ui-monospace, Consolas, monospace;
+}
+
+body.is-edit .label { box-shadow: inset 0 0 0 1px #457b9d; }
+body.is-edit .title { display: none; }   /* 對座標時標題會擋到圖 */
+body.edit-hide-panel .panel { display: none; }   /* 對話框浮在圖上，對座標時先藏起來 */
+
+.edit-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 8;
+  cursor: crosshair;
+  touch-action: none;
+}
+
+.edit-rect {
+  position: absolute;
+  z-index: 9;
+  border: 2px solid #e63946;
+  background: rgba(230, 57, 70, .15);
+  pointer-events: none;
+}
+
+.edit-bar {
+  position: absolute;
+  top: calc(var(--top-h) + 6px);
+  right: 6px;
+  left: 6px;
+  z-index: 12;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  padding: 8px;
+  border-radius: 10px;
+  background: rgba(20, 20, 20, .86);
+  color: #fff;
+  font: 12px/1.4 ui-monospace, Consolas, monospace;
+}
+
+.edit-bar button {
+  padding: 3px 8px;
+  border: 1px solid #888;
+  border-radius: 6px;
+  background: #333;
+  color: #fff;
+  font: inherit;
+  cursor: pointer;
+}
+
+.edit-bar code {
+  flex: 1 1 100%;
+  user-select: all;
+}
+
+/* ---------- 不想要動畫的人 ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+}
