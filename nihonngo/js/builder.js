@@ -4,10 +4,11 @@
    老師填表 → 即時預覽 → 下載資料檔。預覽用的是 render.js 的
    renderSheet()，所以「看到的」就是「印出來的」，不會有兩套排版。
 
-   產出的檔案：
-     data/sheets/<id>.js  這張練習單
-     data/kanji.js        只有在加了新字時才需要換
-     data/strokes.js      同上（新字的筆順）
+   產出的檔案只有一個：data/sheets/<id>.js
+
+   用到字庫沒有的字時，那個字的資料（畫數／よみ／筆順）會一起寫進
+   同一個檔，不動 data/kanji.js 和 data/strokes.js。
+   ——整份共用檔換掉的話，會把別張單新加的字無聲洗掉。
    ============================================================ */
 (function () {
   "use strict";
@@ -224,49 +225,63 @@
 
     lines.push("  ]");
     lines.push("};");
+    return extrasSource(sheet) + lines.join("\n") + "\n";
+  }
+
+  /* 這張單用到、但 data/kanji.js 還沒收的字，挑出來跟著練習單一起走 */
+  function pickNew(store, kanji) {
+    var out = {};
+    kanji.forEach(function (ch) { if (store[ch]) out[ch] = store[ch]; });
+    return out;
+  }
+
+  function kanjiEntry(ch, d, pad) {
+    var ex = (d.examples || []).map(function (e) {
+      return pad + "    { w: " + q(e.w) + ", r: " + q(e.r) + " }";
+    }).join(",\n");
+    return pad + q(ch) + ": {\n" +
+           pad + "  strokes: " + d.strokes + ",\n" +
+           pad + "  yomi: " + q(d.yomi) + ",\n" +
+           pad + "  examples: [\n" + ex + "\n" + pad + "  ]\n" +
+           pad + "}";
+  }
+
+  function strokesEntry(ch, d, pad) {
+    return pad + q(ch) + ": {\n" +
+           pad + "  size: " + d.size + ",\n" +
+           pad + "  paths: [\n" +
+           d.paths.map(function (p) { return pad + "    " + q(p); }).join(",\n") + "\n" +
+           pad + "  ],\n" +
+           pad + "  nums: " + JSON.stringify(d.nums) + "\n" +
+           pad + "}";
+  }
+
+  /* 新字的資料塊，放在練習單檔的最前面。
+     載入時只補「字庫還沒有的字」，已經有的一律不動——所以這個檔
+     不管載入幾次、跟哪些單一起載，都不會蓋掉共用字庫。 */
+  function extrasSource(sheet) {
+    var k = pickNew(newKanji, sheet.kanji);
+    var s = pickNew(newStrokes, sheet.kanji);
+    var kk = Object.keys(k), sk = Object.keys(s);
+    if (!kk.length && !sk.length) return "";
+
+    var lines = [];
+    lines.push("/* この練習単で使う、字庫（data/kanji.js）にまだ無い漢字。");
+    lines.push("   すでにある字は上書きしません。字庫ファイルはさわらなくて大丈夫です。");
+    lines.push("   筆順データ：KanjiVG, CC BY-SA 3.0 / https://kanjivg.tagaini.net/ */");
+    lines.push("window.KANJI_DB = window.KANJI_DB || {};");
+    lines.push("window.STROKES  = window.STROKES  || {};");
+    lines.push("(function (kanji, strokes) {");
+    lines.push("  var c;");
+    lines.push("  for (c in kanji)   if (!window.KANJI_DB[c]) window.KANJI_DB[c] = kanji[c];");
+    lines.push("  for (c in strokes) if (!window.STROKES[c])  window.STROKES[c]  = strokes[c];");
+    lines.push("})({");
+    lines.push(kk.map(function (ch) { return kanjiEntry(ch, k[ch], "  "); }).join(",\n"));
+    lines.push("}, {");
+    lines.push(sk.map(function (ch) { return strokesEntry(ch, s[ch], "  "); }).join(",\n"));
+    lines.push("});");
+    lines.push("");
     return lines.join("\n") + "\n";
-  }
-
-  function kanjiSource() {
-    var db = allKanji();
-    var body = Object.keys(db).map(function (ch) {
-      var d = db[ch];
-      var ex = (d.examples || []).map(function (e) {
-        return "      { w: " + q(e.w) + ", r: " + q(e.r) + " }";
-      }).join(",\n");
-      return "  " + q(ch) + ": {\n" +
-             "    strokes: " + d.strokes + ",\n" +
-             "    yomi: " + q(d.yomi) + ",\n" +
-             "    examples: [\n" + ex + "\n    ]\n" +
-             "  }";
-    }).join(",\n");
-
-    return "/* ============================================================\n" +
-           "   かん字れんしゅうシート ─ 漢字字庫（全練習單共用）\n" +
-           "   出題器（builder.html）で更新。\n" +
-           "   ============================================================ */\n" +
-           "window.KANJI_DB = {\n" + body + "\n};\n";
-  }
-
-  function strokesSource() {
-    var db = {};
-    Object.keys(window.STROKES || {}).forEach(function (k) { db[k] = window.STROKES[k]; });
-    Object.keys(newStrokes).forEach(function (k) { db[k] = newStrokes[k]; });
-
-    var body = Object.keys(db).sort().map(function (ch) {
-      var d = db[ch];
-      return "  " + q(ch) + ": {\n" +
-             "    size: " + d.size + ",\n" +
-             "    paths: [\n" +
-             d.paths.map(function (p) { return "      " + q(p); }).join(",\n") + "\n" +
-             "    ],\n" +
-             "    nums: " + JSON.stringify(d.nums) + "\n" +
-             "  }";
-    }).join(",\n");
-
-    return "/* 筆順資料（KanjiVG, CC BY-SA 3.0 / https://kanjivg.tagaini.net/）\n" +
-           "   出題器または tools/fetch-kanjivg.js で生成。手で直さないでください。 */\n" +
-           "window.STROKES = {\n" + body + "\n};\n";
   }
 
   function download(name, text) {
@@ -562,8 +577,6 @@
       var sheet = toSheet();
       if (!sheet.kanji.length) { alert("漢字をえらんでください。"); return; }
       download(sheet.id + ".js", sheetSource(sheet));
-      if (Object.keys(newKanji).length) download("kanji.js", kanjiSource());
-      if (Object.keys(newStrokes).length) download("strokes.js", strokesSource());
     });
   }
 

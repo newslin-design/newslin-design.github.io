@@ -86,7 +86,11 @@
     <h2>4. 書き出し</h2>
     <p class="bd-hint" id="f-fitwarn"></p>
     <button type="button" class="btn-print" id="f-download">ファイルをダウンロード</button>
-    <p class="bd-hint">ダウンロードしたファイルを <code>data/sheets/</code> に置いて、
+    <p class="bd-hint">ダウンロードされるのは <b>1つのファイルだけ</b> です。
+       字庫にない漢字を使っていても、その字のデータ（画数・よみ・筆順）は
+       このファイルの中に入っています——<code>data/kanji.js</code> と
+       <code>data/strokes.js</code> はさわらなくて大丈夫です。</p>
+    <p class="bd-hint">ファイルを <code>data/sheets/</code> に置いて、
        下の 1 行を <code>data/manifest.js</code> にコピーしてください。</p>
     <pre class="bd-code" id="f-manifest"></pre>
   </section>
